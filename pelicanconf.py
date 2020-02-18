@@ -75,7 +75,7 @@ MAIN_MENU = True
 USE_FOLDER_AS_CATEGORY = True
 LOAD_CONTENT_CACHE = False
 
-DISQUS_SITENAME = 'incolumitas'
+# DISQUS_SITENAME = 'incolumitas'
 
 EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py')
 COMMENTS_PAGES = ('about', 'contact')

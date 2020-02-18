@@ -1,0 +1,20 @@
+[Unit]
+Description=isso commenting system
+
+[Service]
+ExecStart=/opt/isso/isso-start.sh
+
+Restart=on-failure
+TimeoutSec=1
+User=root
+
+LimitNOFILE=16384
+LimitNPROC=16384
+LimitLOCKS=16384
+
+# ensures that the service process and all its children can never gain new
+# privileges.
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

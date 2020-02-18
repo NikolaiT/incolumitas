@@ -7,6 +7,8 @@ content_backup/
 
 .idea
 
+login.sh
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -88,8 +88,17 @@ def publish():
     )
 
 @hosts(production)
+def isso():
+    """Publish to production via rsync"""
+    local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso-start.sh root@167.99.241.135:/opt/isso/isso-start.sh')
+    local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.cfg root@167.99.241.135:/etc/isso.cfg')
+    local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.service root@167.99.241.135:/etc/systemd/system/isso.service')
+    local('ssh -i /home/nikolai/.ssh/root_new_server root@167.99.241.135 "systemctl daemon-reload && systemctl restart isso')
+
+@hosts(production)
 def publish2():
     """Publish to production via rsync"""
+    local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.cfg root@167.99.241.135:/etc/isso.cfg')
     local('pelican -s publishconf.py')
     local("""rsync -avc --delete -e "ssh -i /home/nikolai/.ssh/root_new_server" output/ root@167.99.241.135:/var/www/incolumitas.com/""")
     local('ssh -i /home/nikolai/.ssh/root_new_server root@167.99.241.135 "chown -R www-data:www-data /var/www/incolumitas.com/"')
