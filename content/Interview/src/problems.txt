@@ -1,0 +1,112 @@
+https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/
+
+First version:
+
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) == 1:
+            return 1
+        lt = dict()
+        m = 0
+        for i, c in enumerate(s):
+            lt[i] = [c,]
+            for key in lt:
+                if key != i:
+                    if lt[key]:
+                        if c not in lt[key]:
+                            lt[key].append(c)
+                            test = len(lt[key])
+                            if test > m:
+                                m = test
+                        else:
+                            lt[key] = None
+                            
+        if m == 0:
+            if len(s) == 0:
+                return 0
+            return 1
+                        
+        return m
+
+
+
+Last version:
+
+Runtime: 116 ms, faster than 51.06% of Python3 online submissions for Longest Substring Without Repeating Characters.
+
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        substr = []
+        m = 0
+        for i, c in enumerate(s):
+            if c not in substr:
+                substr.append(c)
+            else:
+                test = len(substr)
+                if test > m:
+                    m = test
+                substr.append(c)
+                substr = substr[substr.index(c)+1:]
+                
+        return max(m, len(substr))
+        
+        
+Best version:
+
+Runtime: 88 ms, faster than 81.51% of Python3 online submissions for Longest Substring Without Repeating Characters.
+
+This algorithm takes O(N^2) time.
+                    
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        substr = []
+        m = 0
+        for i, c in enumerate(s):
+            if c not in substr:
+                substr.append(c)
+            else:
+                m = max(m, len(substr))
+                substr.append(c)
+                substr = substr[substr.index(c)+1:]
+                
+        return max(m, len(substr))
+        
+        
+Solution with O(n) using sliding window and a set:
+
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        n = len(s)
+        ss = set()
+        m = i = j = 0
+        while i < n and j < n:
+            if s[j] not in ss:
+                ss.add(s[j])
+                j = j + 1
+                m = max(m, j - i)
+            else:
+                ss.remove(s[i])
+                i = i + 1
+        return m
+        
+        
+        
+next problem: https://leetcode.com/problems/longest-palindromic-substring/
+
+

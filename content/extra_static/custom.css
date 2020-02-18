@@ -1,0 +1,85 @@
+nav li a {
+    text-transform: capitalize;
+}
+
+body {
+    background-color: #fdfdfd;
+    color: #333;
+    font: 400 16px/1.2 "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    -moz-font-feature-settings: "kern" 1;
+    -o-font-feature-settings: "kern" 1;
+    -webkit-font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
+    -webkit-text-size-adjust: 100%;
+}
+
+time {
+    font-weight: bolder;
+    color: black;
+}
+
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight {
+    margin-bottom: 15px;
+}
+
+figure {
+    margin-bottom: 30px;
+}
+
+.highlight {
+    font-size: 76%;
+    line-height: 20px;
+}
+
+.post-content {
+    line-height: 24px;
+    margin-bottom: 30px;
+}
+
+.post-content img:hover, .post-content figure:hover {
+    cursor: pointer;
+}
+
+figure figcaption {
+    color: rgb(94, 94, 94);
+    font-style: italic;
+}
+
+.post-title {
+    font-size: 56px;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 2rem;
+}
+
+.post-meta .author {
+    color: black;
+    font-weight: bold;
+}
+
+.post-title-index {
+    font-size: 32px;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.blog-title {
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 2rem;
+}
+
+aside nav a:hover {
+    color: #d9411e;
+    text-decoration: none;
+}
+
+.post-title-index a {
+    color: black;
+}

@@ -1,0 +1,81 @@
+1. Introduction
+
+Watch these videos for introduction: https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
+
+https://towardsdatascience.com/estimating-probabilities-with-bayesian-modeling-in-python-7144be007815
+
+https://www.youtube.com/watch?v=IHZwWFHWa-w&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&index=2
+
+http://michaelnielsen.org/
+
+https://www.theatlantic.com/science/archive/2018/11/diminishing-returns-science/575665/
+
+https://github.com/mnielsen/neural-networks-and-deep-learning
+
+https://twitter.com/michael_nielsen
+
+READ THIS BOOK: http://neuralnetworksanddeeplearning.com/chap1.html#a_simple_network_to_classify_handwritten_digits
+
+START HERE: http://neuralnetworksanddeeplearning.com/index.html
+
+CODE HERE: https://github.com/mnielsen/neural-networks-and-deep-learning
+
+I AM HERE: http://neuralnetworksanddeeplearning.com/chap1.html
+
+	- SOLVE EXERCISES:
+	- http://neuralnetworksanddeeplearning.com/chap1.html#exercises_191892
+
+
+UPDATE: I AM HERE: http://neuralnetworksanddeeplearning.com/chap1.html#exercises_647181
+REREAD THE LAST PARAGRAPH TO UNDERSTAND GRADIENT DESCENT. UNDERSTAND THE FORMULAS, TAKE NOTES.
+Coding is not far from here!
+11.1.2019: 2h
+
+UPDATE: I AM HERE: http://neuralnetworksanddeeplearning.com/chap1.html#implementing_our_network_to_classify_digits
+
+https://elib.dlr.de/113714/1/Master-Kornfeld.pdf
+
+
+READ THIS: https://www.iro.umontreal.ca/~vincentp/ift3395/lectures/backprop_old.pdf
+
+FIRST READ THE PAPER: https://www.iro.umontreal.ca/~pift6266/A06/refs/backprop_old.pdf
+UPDATE: I AM HERE NOW: http://neuralnetworksanddeeplearning.com/chap2.html
+
+16.1.2019: 1h30
+UPDATE: http://neuralnetworksanddeeplearning.com/chap2.html#the_four_fundamental_equations_behind_backpropagation
+
+is defined to be a vector whose components are the partial derivatives
+
+
+3. Really good:
+
+Work through those tutorials: https://scikit-learn.org/stable/tutorial/index.html
+
+https://medium.com/@ageitgey/how-to-break-a-captcha-system-in-15-minutes-with-machine-learning-dbebb035a710
+
+https://www.blackhat.com/docs/asia-16/materials/asia-16-Sivakorn-Im-Not-a-Human-Breaking-the-Google-reCAPTCHA-wp.pdf
+
+
+2. Advanced 
+
+Visualize Gradient Descent: http://www.adeveloperdiary.com/data-science/how-to-visualize-gradient-descent-using-contour-plot-in-python/
+
+https://books.google.de/books?id=Yo3CAQAACAAJ&redir_esc=y
+
+ABSOLUTELY GOLD: https://github.com/mnielsen/notes-on-writing/blob/master/notes_on_writing.md
+
+https://arxiv.org/abs/1706.05394
+
+https://arxiv.org/abs/1611.03530
+
+http://colah.github.io/
+
+https://towardsdatascience.com/recurrent-neural-networks-by-example-in-python-ffd204f99470
+
+https://distill.pub/2017/aia/
+
+https://medium.com/syncedreview/stn-ocr-a-single-neural-network-for-text-detection-and-text-recognition-220debe6ded4
+
+3. Other stuff
+
+https://tylermcginnis.com/courses/react-fundamentals/
