@@ -6,7 +6,9 @@ AUTHOR = 'Nikolai Tschacher'
 SITEURL = 'http://localhost:8000'
 SITENAME = 'Where coding meets entrepreneurship'
 SITETITLE = 'Where coding meets entrepreneurship'
-SITESUBTITLE = 'Tales and stories from computer science and the business world. A blog about entrepreneurship and the grind.'
+
+SITESUBTITLE = 'Whenever I have difficulties solving a problem, I tend to write down what I am currently attempting. This process has two advantages: Fresh blog articles that are published here and it helps me solve those issues.'
+
 SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas and projects around IT security and computer science'
 SITELOGO = 'https://incolumitas.com/images/me-on-chasseral.jpg'
 PYGMENTS_STYLE = 'github'
@@ -60,7 +62,7 @@ STATIC_PATHS = ['uploads/', 'images/', 'data/', 'extra_static/']
 #RELATIVE_URLS = True
 
 
-THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
+THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex-modified'
 
 CUSTOM_CSS = 'extra_static/custom.css'
 CUSTOM_JS = 'extra_static/custom.js'
