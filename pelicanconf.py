@@ -7,7 +7,7 @@ SITEURL = 'http://localhost:8000'
 SITENAME = 'Where coding meets entrepreneurship'
 SITETITLE = 'Where coding meets entrepreneurship'
 
-SITESUBTITLE = 'Whenever I have difficulties solving a problem, I tend to write down what I am currently attempting. This process has two advantages: Fresh blog articles that are published here and it helps me solve those issues.'
+SITESUBTITLE = 'Whenever I have difficulties solving a problem, I try to put it in words. This process has two advantages: Fresh published blog articles and the problem being solved because I need to define and describe it properly.'
 
 SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas and projects around IT security and computer science'
 SITELOGO = 'https://incolumitas.com/images/me-on-chasseral.jpg'
