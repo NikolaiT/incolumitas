@@ -15,8 +15,8 @@ body {
 }
 
 time {
+    color: #5e5e5e;
     font-weight: bolder;
-    color: black;
 }
 
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight {
@@ -58,11 +58,6 @@ figure figcaption {
     margin-bottom: 2rem;
 }
 
-.post-meta .author {
-    color: black;
-    font-weight: bold;
-}
-
 .post-title-index {
     font-size: 32px;
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -86,4 +81,13 @@ aside nav a:hover {
 
 .post-title-index a {
     color: black;
+}
+
+.metadata-description {
+    margin-left: .4rem;
+    color: #909090;
+}
+
+.meta-item {
+    margin-bottom: .2rem;
 }

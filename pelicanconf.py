@@ -83,7 +83,7 @@ COMMENTS_IN_PAGES = True
 
 
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['assets', 'sitemap', 'gravatar', 'render_math']
+PLUGINS = ['assets', 'sitemap', 'gravatar', 'render_math', 'post_stats']
 
 
 MATH_JAX = {'color': 'black', 'align': 'left'}
