@@ -1,4 +1,5 @@
 isso/isso.cfg
+isso/*.cfg
 
 pelican-plugins/
 
