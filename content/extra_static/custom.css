@@ -20,7 +20,7 @@ time {
 }
 
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight {
-    margin-bottom: 15px;
+    margin-bottom: 1.6rem;
 }
 
 figure {
@@ -35,6 +35,10 @@ figure {
 .post-content {
     line-height: 24px;
     margin-bottom: 30px;
+}
+
+.post-header {
+    margin-bottom: 36px;
 }
 
 .post-content img:hover, .post-content figure:hover {
