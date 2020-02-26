@@ -91,9 +91,13 @@ def publish():
 def isso():
     """Publish to production via rsync"""
 
+    # local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/work/backups/var/lib/isso/comments.db root@167.99.241.135:/var/lib/isso/comments.db')
+
     local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.cfg root@167.99.241.135:/etc/isso.cfg')
 
     local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso_nginx.conf root@167.99.241.135:/etc/nginx/sites-available/isso_nginx.conf')
+
+    # local('ssh -i /home/nikolai/.ssh/root_new_server root@167.99.241.135 "ln -s /etc/nginx/sites-available/isso_nginx.conf /etc/nginx/sites-enabled/isso_nginx.conf"')
 
     local('scp -i /home/nikolai/.ssh/root_new_server /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.service root@167.99.241.135:/etc/systemd/system/isso.service')
 

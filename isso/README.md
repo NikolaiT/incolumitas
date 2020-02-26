@@ -8,7 +8,7 @@ https://posativ.org/isso/docs/configuration/client/
 ```bash
 mkdir -p /var/lib/isso/
 
-source /opt/isso/bin/activate
+source /var/lib/isso/env/bin/activate
 
 pip install git+https://github.com/posativ/isso.git
 
@@ -29,6 +29,12 @@ to the installation in
 
 ```
 pip install git+https://github.com/posativ/isso.git
+```
+
+```
+cp -r  env/lib/python3.6/site-packages/isso/js/ .
+pip install git+https://github.com/posativ/isso.git
+cp -r js/ env/lib/python3.6/site-packages/isso/
 ```
 
 ### Import disqus comments

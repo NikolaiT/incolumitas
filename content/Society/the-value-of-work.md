@@ -6,7 +6,7 @@ Tags: Digitalization, Society, automation, Second-Machine-Age, Work
 Slug: the-value-of-work-in-the-coming-decades
 Author: Nikolai Tschacher
 
-This article makes an attempt to understand and predict the **consequences of the rapid automation/computerization** in the realm of human work. I make them based on my experiences as a software engineer, while I am fully aware that programming is not threatened to be eradicated by automation in the next decades. For that reason, I realize that I am holding a privileged position.  
+This article makes an attempt to understand and predict the **consequences of the rapid automation/computerization** in the realm of human work. I make them based on my experiences as a software engineer, while I am fully aware that programming is not threatened to be eradicated by automation in the next decades. For that reason, I realize that I am holding a privileged position. 
 
 In the second part of the article, I argue **why work in general should be voluntary** within a welfare state and why the governments main task should be to create a situation where humans dont' have to work in order to obtain the bare essentials such as housing, food and healthcare.
 
