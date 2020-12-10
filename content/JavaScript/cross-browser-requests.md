@@ -8,12 +8,12 @@ Author: Nikolai Tschacher
 In this article I demonstrate how to reliably communicate any kind of data (in my case I need to transmit JSON data)
 to a cross domain server after the user is about to end the browsing session by either:
 
-- leaving the page
-- switching to another page
+- switching the focus to another page
+- switching browser focus
 - closing the tab
 - closing the browser
 
-or any other means of terminating the current browsing session.
+or any other means of terminating or interrupting the current browsing session.
 
 Why do I have this very specific requirement?
 
@@ -34,9 +34,15 @@ document.addEventListener("visibilitychange", function() {
 })
 ```
 
-This event fires when the user loses focus of the current window.
+This event fires when the user loses focus of the current window, the page visiblity becomes hidden.
 
-But how can we send JSON data to our remote server?
+However, the event `visibilitychange` is NOT FIRED when the user closes the tab or closes the entire browser. 
+This is bad. We absolutely need to catch all the events that terminate or interrupt the session on the monitored page.
+
+So in this blog article, we have to solve the following two problems:
+
+1. Find an appropriate event that fires when the user interruptes or closes the current browsing session
+2. Find a reliable mechanism to send JSON data to our remote server as soon as the above event occurs.
 
 We have the following requirements:
 
@@ -44,7 +50,16 @@ We have the following requirements:
 + CORS can be enabled on our server, thus CORS requests are allowed
 + Data transmission needs to be as reliable as possible. It would be very bad if recorded data is lost.
 
-### The server
+### Finding the correct event
+
+As discussed above, `visibilitychange` is not sufficient for our purpose. This event is not fired when the user either 
+
+- closes the browser
+- closes the current tab
+
+But we still want to store the recorded user interactions up to that point on our remote server.
+
+### The test server
 
 I use a simple express server to test my application. This is the server code:
 
@@ -175,7 +190,7 @@ are horribly unreliable and broken if you want to reliably send data at the end 
 
 [This discussion](https://github.com/mdn/sprints/issues/3722) on Github explains in depth why this is the case.
 
-### Solution: Reliable cross domain communication with <img> tags
+### Solution: Reliable cross domain communication with `<img>` tags
 
 The above article (https://volument.com/blog/sendbeacon-is-broken) suggested to use `<img>` tags to transmit data instead!
 
