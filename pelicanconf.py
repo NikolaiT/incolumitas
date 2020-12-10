@@ -4,16 +4,12 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Nikolai Tschacher'
 SITEURL = 'http://localhost:8000'
-SITENAME = 'Where coding meets entrepreneurship'
-SITETITLE = 'Where coding meets entrepreneurship'
+SITENAME = 'Where computer science meets Entrepreneurship'
+SITETITLE = 'Where computer science meets Entrepreneurship'
 
-SITESUBTITLE = '''
-Whenever I have difficulties solving a problem, I try to put it in words. This process has two advantages: <br><br>
-1) Fresh blog articles are created <br>
-2) The problem at hand is solved by properly defining and describing it <br>
-'''
+SITESUBTITLE = 'Blog articles about various topics in Computer Science'
 
-SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas and projects around IT security and computer science'
+SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas around IT security and computer science'
 SITELOGO = 'https://incolumitas.com/images/me-on-chasseral.jpg'
 PYGMENTS_STYLE = 'github'
 
