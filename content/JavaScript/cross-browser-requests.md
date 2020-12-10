@@ -1,25 +1,27 @@
-Title: Reliable Cross Domain Requests with JavaScript
+Title: Reliable Cross Domain Requests when the User leaves the Page
 Date: 2020-12-10 21:58
 Category: JavaScript
-Tags: Navigator.sendBeacon(), visibilitychange, cross domain request
-Slug: reliable-cross-domain-requests
+Tags: Navigator.sendBeacon(), visibilitychange, onbeforeunload, cross domain request
+Slug: reliable-cross-domain-requests-on-page-close
 Author: Nikolai Tschacher
 
 In this article I demonstrate how to reliably communicate any kind of data (in my case I need to transmit JSON data)
 to a cross domain server after the user is about to end the browsing session by either:
 
 - switching the focus to another page
-- switching browser focus
+- switching from the browser to another applicaton
 - closing the tab
 - closing the browser
 
 or any other means of terminating or interrupting the current browsing session.
 
+Mobile devices and desktop devices should be both supported.
+
 Why do I have this very specific requirement?
 
 I am in the process of developing a JavaScript analytics application
 and I need to record user interactions and send those user interactions from any
-website that embeds the JavaScript library to my remote server.
+website to my remote server.
 
 I need to record user interactions up until the point where the user leaves the browsing session.
 
