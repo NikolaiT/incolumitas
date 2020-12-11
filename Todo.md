@@ -16,13 +16,15 @@
 
 - fix all warnings from pelican [done]
 
+- fix mobile version!
+
 - check header font
 
 - integrate isso comment system template
 
 - add number of comments to the metadata (if there are comments)
 
-- add orange particles.js to the sidebar
+- add orange particles.js to the sidebar [done]
   - get inspiration from the creator: https://vincentgarreau.com/
   - background image from here: http://bg.siteorigin.com/
   - better: https://www.transparenttextures.com/
