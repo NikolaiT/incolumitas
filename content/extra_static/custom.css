@@ -143,20 +143,22 @@ aside div p {
     left: 0;
     z-index: -1;
     overflow: hidden;
-    width: 100%;
+    width: 90%;
     height: 100%;
 }
 
-aside {
-    width: 26vw;
-    overflow: hidden;
-}
-
-main {
-    left: 26vw;
-    overflow-x: visible;
-}
-
-main article {
-    margin: 0 6% 2%;
+@media screen and (min-width: 768px) {
+    aside {
+        width: 26vw;
+        overflow: hidden;
+    }
+    
+    main {
+        left: 26vw;
+        overflow-x: visible;
+    }
+    
+    main article {
+        margin: 0 6% 2%;
+    }
 }
