@@ -7,7 +7,7 @@ Slug: https-and-socks-proxies-with-puppeteer-and-squid-and-danted
 Author: Nikolai Tschacher
 Summary: This blogs post demonstrates how puppeteer and the chrome browser can be used with http/s and socks4/5 proxies. For that reason, a proxy server is setup on Ubuntu 18.04 with **squid3** and **dante**.
 
-# For what reason are proxies used when crawling/scraping with puppeteer?
+## For what reason are proxies used when crawling/scraping with puppeteer?
 
 When we are crawling different websites, it's usually a good idea to change the browsing fingerprint by re-routing the TCP traffic through multiple distinct hops.
  
@@ -24,14 +24,14 @@ In this blog post, we will learn how Puppeteer/Chromium can be used with
 
 For this reason, we will also show instructions how to create your own http/s proxy server and socks proxy server on Ubuntu 18.04.
 
-# Proxy Server Setup
+## Proxy Server Setup
 
 All proxy server software is going to be installed on a Ubuntu 18.04 server. The only requirement is that the server should have a static, public IP address.
 
 1. **Client IP address** (the computer that uses the proxy) = **1.1.1.1**
 2. **Proxy Server IP address** (the server that *is* the proxy) = **100.100.100.100**
 
-## Creating a http/s proxy server with squid3 on Ubuntu 18.04
+### Creating a http/s proxy server with squid3 on Ubuntu 18.04
 
 Squid is a powerful and mature http/s proxy server and caching software. For our purposes, we are solely interested in the proxying functionality. The configuration is based on a [stackoverflow answer](https://stackoverflow.com/questions/48239975/how-do-i-setup-an-elite-http-squid-proxy-with-password-protection-on-ubuntu) that explains in depth how to setup squid to work as an anonymous http/s proxy.
 
@@ -98,7 +98,7 @@ curl --proxy http://proxyuser:proxypass@100.100.100.100:3128 http://ipinfo.io/js
 The above command should show you the IP details of the proxy server.
 
 
-## Configuring a socks proxy server with danted
+### Configuring a socks proxy server with danted
 
 In order to create a socks4/socks5 server, we will use [dante](https://www.inet.no/dante/). **dante** is the name of the software, `danted` stands for *dante daemon*.
 
@@ -174,11 +174,11 @@ Then we can test the socks server without auth (which is **socks4**) with:
 curl --proxy socks4://100.100.100.100:53425 http://ipinfo.io/json
 ```
 
-# Puppeteer with proxies
+## Puppeteer with proxies
 
 Now we can see how to use the http/s and socks proxy server that we configured in the previous steps with a fully functional browser controlled via puppeteer.
 
-## Puppeteer with http/s proxy
+### Puppeteer with http/s proxy
 
 You can test puppeteer with a http proxy by launching the following node script. The output should show IP address details of the proxy.
 
@@ -206,7 +206,7 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-## Puppeteer with socks4 proxy
+### Puppeteer with socks4 proxy
 
 You can test puppeteer in combination with a socks proxy server by launching the following node program. The output should show IP address details of the proxy.
 
@@ -228,7 +228,7 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-# Tear down the proxy servers
+## Tear down the proxy servers
 
 To stop the proxy servers, execute the following commands on your servers:
 
@@ -237,7 +237,7 @@ systemctl stop danted
 systemctl stop squid
 ```
 
-# Known Limitations
+## Known Limitations
 
 Unfortunately, **it is not possible to use puppeteer/chromium with a socks5 proxy**. The chrome browser does not support socks with authentication.
 

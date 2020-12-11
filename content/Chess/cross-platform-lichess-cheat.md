@@ -10,7 +10,7 @@ Status: published
 Edit: Cheat updated on 1.10.2015
 --------------------------------
 
-**Visit [Lichess Bot Projects Page]({static}/pages/lichess-bot.md) for the newest information for this bot!**
+**Visit [Lichess Bot Projects Page]({filename}/pages/lichess-bot.md) for the newest information for this bot!**
 The description and code below will probably not work anymore!
 
 ***

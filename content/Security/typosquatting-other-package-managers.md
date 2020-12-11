@@ -7,7 +7,7 @@ Tags: security, Typosquatting, nuget, cargo
 Slug: what-other-package-managers-are-vulnerable-to-typosquatting
 Status: published
 
-In my last blog post about [typosquatting package managers]({static}/Security/typosquatting-package-managers.md) I discussed my findings about attacking the programming language package managers from *rubygems.org, PyPi* and *npmjs.com*.
+In my last blog post about [typosquatting package managers]({filename}/Security/typosquatting-package-managers.md) I discussed my findings about attacking the programming language package managers from *rubygems.org, PyPi* and *npmjs.com*.
 
 This blog contribution generated quite some interest and people subsequently asked themselves whether **other package managers
 might also be vulnerable to this hybrid attack** (typosquatting involves a technical and psychological attack vector). During the time I wrote my thesis, I encountered some other package managers. A very good overview of some of the most recent package managers gives the [github showcase page](https://github.com/showcases/package-managers) about package managers which is summarized in the table below:

@@ -24,10 +24,10 @@ My most recent projects are:
 
 A new project of mine (November and December 2018) is a introduction into machine learning. The following blog posts cover the topic:
 
-- [Introduction to machine learning]({static}/ML/Introduction Machine Learning.md)
+- [Introduction to machine learning]({filename}/ML/Introduction Machine Learning.md)
 
 Some old projects of mine:
 
-- [GoogleScraper]({static}/pages/googlescraper-py.md) deprecated since 2018, gathered 2000 stars on Github and taught me that there is a demand for data extraction and scraping.
-- [SVG Captcha]({static}/pages/svgcaptcha.md) A captcha implementation with SVG.
-- [Lichess Bot]({static}/pages/lichess-bot.md) based on Stockfish engine
+- [GoogleScraper]({filename}/pages/googlescraper-py.md) deprecated since 2018, gathered 2000 stars on Github and taught me that there is a demand for data extraction and scraping.
+- [SVG Captcha]({filename}/pages/svgcaptcha.md) A captcha implementation with SVG.
+- [Lichess Bot]({filename}/pages/lichess-bot.md) based on Stockfish engine

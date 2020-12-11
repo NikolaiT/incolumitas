@@ -21,4 +21,4 @@ You will receive the scraping results as either json or csv files. If you use th
 
 By using this service, you are able to quickly scrape thousands of keywords and make use of the SERP data to analyze trends and make important business decisions.
 
-If you are interested, please [**visit the how it works page**](https://scrapeulous.com/howto/) on scrapeulous.com.
+If you are interested, please [**visit the how it works page**](https://scrapeulous.com/api-howto) on scrapeulous.com.

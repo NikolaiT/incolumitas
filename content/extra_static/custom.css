@@ -19,8 +19,38 @@ time {
     font-weight: bolder;
 }
 
-h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight {
-    margin-bottom: 1.6rem;
+.post-content strong, .single strong {
+    font-weight: 650;
+}
+
+.post-content p, .single p {
+    line-height: 1.4;
+}
+
+.post-content li, .single li {
+    line-height: 1.6;
+}
+
+.post-content h1, .single h1 {
+    font-size: 230%;
+    font-weight: 550;
+}
+
+.post-content h2, .single h2 {
+    font-size: 190%;
+    font-weight: 550;
+}
+
+.post-content h3, .single h2 {
+    margin-top: 2.0em;
+    font-size: 150%;
+    font-weight: 550;
+}
+
+.post-content h4, .single h4 {
+    margin-top: 1.6em;
+    font-size: 130%;
+    font-weight: 550;
 }
 
 figure {
@@ -28,12 +58,10 @@ figure {
 }
 
 .highlight {
-    font-size: 76%;
-    line-height: 20px;
+    font-size: 90%;
 }
 
 .post-content {
-    line-height: 24px;
     margin-bottom: 30px;
 }
 
@@ -51,7 +79,7 @@ figure figcaption {
 }
 
 .post-title {
-    font-size: 56px;
+    font-size: 46px;
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
     letter-spacing: -1px;
     line-height: 1;
@@ -67,11 +95,14 @@ figure figcaption {
 }
 
 .blog-title {
-    font-weight: 500;
-    font-size: 32px;
-    letter-spacing: -1px;
+    font-weight: 600;
+    font-size: 28px;
     line-height: 1;
     margin-bottom: 2rem;
+}
+
+aside {
+    background: url(/extra_static/bg.png) no-repeat #0a0d0f;;
 }
 
 aside nav a:hover {
@@ -83,6 +114,16 @@ aside nav a:hover {
     color: black;
 }
 
+aside nav ul li {
+    line-height: 1.6em;
+    font-size: 1.0em;
+    text-transform: lowercase;
+}
+
+aside div p {
+    font-size: .88em;
+}
+
 .metadata-description {
     margin-left: .4rem;
     color: #909090;
@@ -90,4 +131,32 @@ aside nav a:hover {
 
 .meta-item {
     margin-bottom: .2rem;
+}
+
+.archive dd {
+    margin-bottom: 0.5rem;
+}
+
+#particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+aside {
+    width: 26vw;
+    overflow: hidden;
+}
+
+main {
+    left: 26vw;
+    overflow-x: visible;
+}
+
+main article {
+    margin: 0 6% 2%;
 }

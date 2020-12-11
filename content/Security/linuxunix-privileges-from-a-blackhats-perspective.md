@@ -17,5 +17,4 @@ goddamnit...
 
 Hell, it's time to read some phrack stuff again :)
 
-**Download PDF here:** [blackhats\_view]({static}/uploads/2012/12/blackhats_view.pdf)
-)
+**Download PDF here:** [blackhats\_view](/uploads/2012/12/blackhats_view.pdf)

@@ -8,7 +8,7 @@ Status: published
 All content on incolumitas.com is carefully reviewed and published with
 best intentions of the creator. If you nevertheless find a mistake or
 misconception, please contact me. Go to [this
-page]({static}/pages/contact.md "contact me") to do so.
+page]({filename}/pages/contact.md "contact me") to do so.
 
 If not stated differently, all source code posted on this site and on
 [my github](https://github.com/NikolaiT "my github account") belongs to

@@ -12,10 +12,10 @@ Status: published
 
 ## Blog
 
-Whenever I have difficulties solving a problem, I put it in words. This process has two advantages:
+Whenever I have difficulties solving a particular problem, I try to put it into words. This process has two advantages:
 
-1) Fresh blog articles are created
-2) The problem at hand is solved by properly defining and describing it
+1. Fresh blog articles are created
+2. The problem at hand is solved by properly defining and describing it
 
 For that reason, I am writing this blog.
 
@@ -51,7 +51,7 @@ Currently, I am interested in **web scraping / information extraction**, **large
 
 ## Freelance work and contracting
 
-I am always looking for interesting freelance work. If you think that my projects and work might be of use for your latest projects, do not hesitate to [contact me]({static}/pages/contact.md "contact me").
+I am always looking for interesting freelance work. If you think that my projects and work might be of use for your latest projects, do not hesitate to [contact me]({filename}/pages/contact.md "contact me").
 
 ## Background of this blog
 

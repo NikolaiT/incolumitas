@@ -11,7 +11,7 @@ Status: published
 
 ## Preface
 
-In the last [blog post]({static}/Wargames/nebula-wargame-walkthrough.md) I covered the Nebula Wargame levels from 0 to 9. Now I will
+In the last [blog post]({filename}/Wargames/nebula-wargame-walkthrough.md) I covered the Nebula Wargame levels from 0 to 9. Now I will
 try to solve the levels 10 to 19. In this blog post I am sharing my thoughts by trying to solve these linux shell exploit exercises.
 
 

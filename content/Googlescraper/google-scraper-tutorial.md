@@ -13,7 +13,7 @@ The best way to learn a new tool is to use it in a real world case study. And be
 query search engines automatically, we are going to scrape 1000 keywords with GoogleScraper.
 
 If you don't want to use this software to scrape data and you want this job to be done for you, you can submit a scrape job
-at [scrapeulous.com](https://scrapeulous.com/). Or you can visit the [site that explains scrapeulous.com]({static}pages/scrapeulous.md).
+at [scrapeulous.com](https://scrapeulous.com/). Or you can visit the [site that explains scrapeulous.com]({filename}/pages/scrapeulous.md).
 
 Anyways, lets continue...
 

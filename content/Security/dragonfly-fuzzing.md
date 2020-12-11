@@ -26,7 +26,7 @@ With this collected key exchange material it is feasible to launch a offline dic
 With WPA3, this offline dictionary attack and deauthentiation attack are no longer feasible.
 
 <figure>
-    <img src="https://incolumitas.com/images/dragon_overview.png" alt="Dragonfly Overview" alt="" style="width: 100%" />
+    <img src="https://incolumitas.com/images/dragon_overview.png" alt="Dragonfly Overview" style="width: 100%" />
     <figcaption>The complete model of the WPA3-SAE handshake, including announcing beacons frames, probe request and probe response frames, association request frames and the finalizing 4-way handshake.
     </figcaption>
 </figure>

@@ -28,4 +28,4 @@ LAN card.
 Sources will **not** be published this time. This would spoil the fun for chess players. This was just a small project of mine to find the best techniques to cheat on websocket games...
 
 If someone however is deeply interested in the bot, you can send me a message. I will consider giving you the sources. View
-the contact page for this: [Contact Page]({static}/pages/contact.md)
+the contact page for this: [Contact Page]({filename}/pages/contact.md)

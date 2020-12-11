@@ -52,7 +52,7 @@ Waterfall party is even worse than the Jungle Experience Party, because there is
 Every month during full moon, there is a huge party on the south-east part of Koh Phangan: Haad Rin beach. The location is perfect for a beach party. There is a constant breeze coming from the open sea, such that the hot climate is somewhat neutralized by the wind. The wide beach allows you to find some private space even with thousands of party people dancing on the beach.
 
 <figure>
-    <img src="https://incolumitas.com/images/thailand/fmp/haadrin_day.jpg" alt="" style="width: 100%" />
+    <img src="https://incolumitas.com/images/thailand/fmp/haadrin_day.jpg" alt="Haadrin on daylight" style="width: 100%" />
     <figcaption>The full moon party beach on day with preparations.</figcaption>
 </figure>
 
