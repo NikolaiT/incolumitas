@@ -13,7 +13,7 @@ SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas around IT security and computer sc
 SITELOGO = 'https://incolumitas.com/images/me-on-chasseral.jpg'
 
 # https://github.com/alexandrevicenzi/Flex/wiki/Code-Highlight
-PYGMENTS_STYLE = 'vs'
+PYGMENTS_STYLE = 'github'
 
 DISABLE_URL_HASH = True
 
