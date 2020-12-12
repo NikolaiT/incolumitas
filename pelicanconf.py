@@ -35,6 +35,24 @@ LOAD_CONTENT_CACHE = False
 
 DEFAULT_LANG = 'en'
 
+# isso comment server settings 
+# https://github.com/NikolaiT/incolumitas/blob/71e63bd3e509542139379e2deab08f116d8756bc/Flex-modified/templates/article.html
+ISSO_URL = 'https://isso.incolumitas.com/'
+ISSO_EMBED_JS_PATH = 'https://isso.incolumitas.com/js/embed.min.js'
+ISSO_OPTIONS = {
+    'css': 'true',
+    'lang': 'en',
+    'avatar': 'false',
+    'gravatar': 'true',
+    'reply-to-self': 'true',
+    'reply-notifications': 'true',
+    'require-author': 'false',
+    'require-email': 'false',
+    'max-comments-top': '10',
+    'max-comments-nested': '5',
+    'vote': 'true',
+}
+
 # Feed generation is usually not desired when developing
 
 ROBOTS = 'index, follow'
@@ -91,7 +109,7 @@ COMMENTS_IN_PAGES = True
 
 
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['assets', 'sitemap', 'gravatar', 'render_math', 'post_stats']
+PLUGINS = ['assets', 'sitemap', 'gravatar', 'render_math', 'post_stats', 'neighbors']
 
 
 MATH_JAX = {'color': 'black', 'align': 'left'}

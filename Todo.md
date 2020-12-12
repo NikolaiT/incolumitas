@@ -22,7 +22,7 @@
 
 - fix quoting style 
 
-- integrate isso comment system template
+- integrate isso comment system template [done]
 
 - add number of comments to the metadata (if there are comments)
 
@@ -34,6 +34,8 @@
 - taken over metadata and ideas from: https://volument.com/blog/sendbeacon-is-broken [done]
   - took margin-top in headings
   - took line-height spacing
+
+- taken style ideas from: https://stanislas.blog/
 
 ## 18.2.2020
 

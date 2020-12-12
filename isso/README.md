@@ -1,7 +1,8 @@
-## Configure isso
+## Install and configure isso
 
 ### Read this:
 
+https://posativ.org/isso/docs/install/
 https://oktomus.com/posts/2020/add-comments-to-a-static-blog-with-isso/
 https://posativ.org/isso/docs/configuration/client/
 
@@ -44,3 +45,11 @@ cd /opt/isso/
 source /opt/isso/bin/activate
 isso -c /etc/isso.cfg import incolumitas-disqus.xml
 ```
+
+### TODO
+
+run isso with gunicorn.
+
+Reason: Way better for production and also faster.
+
+Howto: https://posativ.org/isso/docs/extras/deployment/

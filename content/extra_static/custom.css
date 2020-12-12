@@ -138,16 +138,24 @@ aside div p {
     margin-bottom: 0.5rem;
 }
 
+/* Dont show particles with mobile devices */
 #particles-js {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    overflow: hidden;
-    height: 100%;
+    height: 0;
+    width: 0;
 }
 
+/* Handle tablet and larger devices */
 @media screen and (min-width: 768px) {
+    #particles-js {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+    }
+
     aside {
         width: 26vw;
         overflow: hidden;
@@ -156,6 +164,7 @@ aside div p {
     main {
         left: 26vw;
         overflow-x: visible;
+        width: 73vw;
     }
     
     main article {
