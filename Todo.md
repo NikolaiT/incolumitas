@@ -16,7 +16,7 @@
 
 - fix all warnings from pelican [done]
 
-- fix mobile version!
+- fix mobile version! [done]
 
 - check header font
 
