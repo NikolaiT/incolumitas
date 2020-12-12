@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta name="author" content="{{ article.author.name }}" />
+<meta name="description" content="{{ article.summary|striptags|escape }}" />
+<meta name="keywords" content="{{ article.tags|join(', ')|escape }}">
+
+{% if article.translations -%}
+<link rel="alternate" href="{{ SITEURL }}/{{ article.url }}" hreflang="{{ article.lang }}" />
+{% for a in article.translations %}
+<link rel="alternate" href="{{ SITEURL }}/{{ a.url }}" hreflang="{{ a.lang }}" />
+{% endfor %}
+{% endif %}
+
+{% include "partial/og_article.html" %}
+{% endblock %}
+
+{% block title %} &ndash; {{ article.title|striptags|escape }}{% endblock %}
+
+{% block content %}
+<article class="single">
+  <header class="post-header">
+    {% if not ARTICLE_HIDE_TRANSLATION %}
+      {% import 'partial/translations.html' as translations with context %}
+      {{ translations.translations_for(article) }}
+    {% endif %}
+    <h1 class="post-title" id="{{ article.slug }}">{{ article.title }}</h1>
+    <div class="post-meta">
+      <div class="published-date meta-item">
+          <i class="fas fa-clock"></i>
+          <span class="metadata-description">Published on </span>
+          <time class="date dt-published" datetime="{{ article.locale_date }}" itemprop="datePublished">
+              {{ article.locale_date }}
+          </time>
+          {% if 'post_stats' in PLUGINS %}
+              <span class="metadata-description">&#8226; {{ article.stats['read_mins'] }} min read</span>
+          {% endif %}
+      </div>
+      {% if article.modified %}
+      <div class="modified-date meta-item">
+          <i class="fas fa-history"></i>
+          <span class="metadata-description">Modified on </span>
+          <time class="date dt-modified" datetime="{{ article.modified }}" itemprop="dateModified">
+              {{ article.modified.strftime('%c') }}
+          </time>
+      </div>
+      {% endif %}
+      <div class="category meta-item">
+          <i class="fas fa-folder"></i>
+          <span class="metadata-description">Category </span>
+          <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>
+      </div>
+      <div class="author meta-item">
+          <i class="fas fa-user-alt"></i>
+          <span class="metadata-description">Author </span>
+          <a href="https://incolumitas.com/pages/about/">{{ article.author }}</a>
+      </div>
+
+      <div class="tag-cloud">
+          <p>
+              {% if article.tags %}
+                  {% for tag in article.tags %}
+                      <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
+                  {% endfor %}
+              {% endif %}
+          </p>
+      </div>
+    </div>
+  </header>
+
+  {% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads.article_top %}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="{{ GOOGLE_ADSENSE.ca_id }}"
+         data-ad-slot="{{ GOOGLE_ADSENSE.ads.article_top }}"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  {% endif %}
+
+  <div class="post-content">
+    {{ article.content }}
+  </div>
+
+  <div class="tag-cloud">
+    <p>
+      {% if article.tags %}
+      {% for tag in article.tags %}
+      <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
+      {% endfor %}
+      {% endif %}
+    </p>
+  </div>
+
+  {% if ADD_THIS_ID %}
+  <div class="center social-share">
+    <p>{{ _('Like this article? Share it with your friends!') }}</p>
+    <div class="addthis_native_toolbox"></div>
+    <div class="addthis_sharing_toolbox"></div>
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+  {% endif %}
+
+  {% include "partial/neighbors.html" %}
+
+  {% if article.related_posts %}
+  <div class="related-posts">
+    <h4>{{ _('You might enjoy') }}</h4>
+    <ul class="related-posts">
+    {% for related_post in article.related_posts %}
+      <li><a href="{{ SITEURL }}/{{ related_post.url }}">{{ related_post.title }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% elif ADD_THIS_ID %}
+    <div class="addthis_relatedposts_inline"></div>
+  {% endif %}
+
+  {% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads.article_bottom %}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="{{ GOOGLE_ADSENSE.ca_id }}"
+         data-ad-slot="{{ GOOGLE_ADSENSE.ads.article_bottom }}"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  {% endif %}
+
+  {% include "partial/disqus.html" %}
+  {% include "partial/isso.html" %}
+</article>
+{% endblock %}

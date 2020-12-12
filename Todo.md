@@ -18,7 +18,9 @@
 
 - fix mobile version! [done]
 
-- check header font
+- check header font [done]
+
+- fix quoting style 
 
 - integrate isso comment system template
 

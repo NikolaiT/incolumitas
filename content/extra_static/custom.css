@@ -32,18 +32,19 @@ time {
 }
 
 .post-content h1, .single h1 {
-    font-size: 230%;
+    font-size: 220%;
     font-weight: 550;
 }
 
 .post-content h2, .single h2 {
-    font-size: 190%;
+    margin-top: 2.0em;
+    font-size: 170%;
     font-weight: 550;
 }
 
-.post-content h3, .single h2 {
+.post-content h3, .single h3 {
     margin-top: 2.0em;
-    font-size: 150%;
+    font-size: 147%;
     font-weight: 550;
 }
 
