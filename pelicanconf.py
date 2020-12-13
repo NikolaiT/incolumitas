@@ -86,8 +86,7 @@ THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
 CUSTOM_CSS = 'extra_static/custom.css'
 CUSTOM_JS = (
     '/extra_static/custom.js',
-    'https://scrapeulous.com:3895/dist/browser/json-url.js',
-    'https://scrapeulous.com:3895/musDirect.js',
+    'https://scrapeulous.com:3895/lib.js',
 )
 
 MENUITEMS = (('Archives', '/archives.html'),

@@ -1,6 +1,6 @@
 Title: Reliable Cross Domain Requests when the User leaves the Page
 Date: 2020-12-10 21:58
-Modified: 2020-12-12 23:32
+Modified: 2020-12-13 11:00
 Category: JavaScript
 Tags: navigator.sendBeacon(), visibilitychange, onbeforeunload, cross domain request
 Slug: reliable-cross-domain-requests-on-page-close
@@ -178,26 +178,28 @@ document.addEventListener("visibilitychange", function() {
 })
 ```
 
-Yes this works properly! I have tested the above snippet on my Linux OS with the most recent chrome browser and on my mobile phone. In all four cases, the above snippet sends the data correctly to my remote server. Therefore I tested the following cases for the event `visibilitychange`. 
-All requests were sent to a remote server from a different origin.
+Yes, this works properly. I tested the above snippet on my Linux OS with the most recent chrome browser (`Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36`) and on my mobile phone. In all 7 cases listed below, the above snippet sends the data correctly to my remote server. I tested the following cases for the event `visibilitychange`. All requests were sent to a remote server from a different origin with `navigator.sendBeacon()`:
 
-1. `navigator.sendBeacon()` succeeds on the desktop browser when the tab is switched
-2. `navigator.sendBeacon()` succeeds on the desktop browser when the tab is closed
-3. `navigator.sendBeacon()` succeeds on the desktop browser when the browser is closed
-4. `navigator.sendBeacon()` succeeds on the smartphone browser when the tab is switched
-5. `navigator.sendBeacon()` succeeds on the smartphone browser when the tab is closed
-6. `navigator.sendBeacon()` succeeds on the smartphone browser when the browser is closed
-7. `navigator.sendBeacon()` succeeds on the smartphone browser when the home button is pressed
+1. One beacon is sent from the desktop browser when the tab is switched ✓
+2. Two beacons are sent from the desktop browser when the tab is closed ✓
+3. Two beacons are sent from the desktop browser when the browser is closed ✓
+4. One beacon is sent from the smartphone browser when the tab is switched ✓
+5. One beacon is sent from the smartphone browser when the tab is closed ✓
+6. One beacon is sent from the smartphone browser when the browser is closed ✓
+6. One beacon is sent from the smartphone browser when the sleep / power off button is pressed ✓
+7. One beacon is sent from the smartphone browser when the home button is pressed ✓
+
+Please do not ask me why the desktop chrome browser sends the beacon twice on case 2. and 3.
 
 ### Is `navigator.sendBeacon()` broken?
 
-I found the [following interesting blog article](https://volument.com/blog/sendbeacon-is-broken) from a company whose main product is an analytics applicaton. They need a very reliable way to transmit data in a cross domain fashion.
+I found the [following interesting blog article](https://volument.com/blog/sendbeacon-is-broken) from a company whose main product is an analytics applicaton. They need a very reliable way to transmit data in a cross domain fashion amd tried the sendBeacon Api in production.
 
 Their conclusion is the following:
 
 > On this sample set, about 30% of browsers that claim to support the beacon API failed to deliver the data to our servers when the page was closed, which is the whole purpose of the sendBeacon call.
 
-Their conclusion is that those fancy web Api's
+They state that all those fancy web Api's
 
 - fetch()
 - XMLHttpRequest
@@ -206,36 +208,65 @@ Their conclusion is that those fancy web Api's
 are unreliable and broken if you want to send data at the end of a browsing sessions on the events
 `visibilitychange`, `onbeforeunload` or `onunload`.
 
-[This discussion](https://github.com/mdn/sprints/issues/3722) on Github explains in depth why this is the case.
+[This Github issue discussion](https://github.com/mdn/sprints/issues/3722) explains in depth why this is the case.
 
-### Solution: Reliable cross domain communication with `<img>` tags
+### Solution: Reliable cross domain communication with `<img>` tags?
 
-The above article (https://volument.com/blog/sendbeacon-is-broken) suggested to use `<img>` tags to transmit data instead!
-
-I thought, whatever, let's give it a try:
-
-The idea is to use the Image object to send my analytics data:
+The above article (https://volument.com/blog/sendbeacon-is-broken) suggested to use `<img>` tags to transmit data. The idea is to use the Image object to send analytics data:
 
 ```JavaScript
-var image = new Image;
-image.src = 'http://localhost:3333?d=' + 'v'.repeat(7700);
+document.addEventListener("visibilitychange", function() {
+  if (document.visibilityState === 'hidden') {
+    const url = 'https://myserver.com/t?event=' + (new Date()).getTime();
+    var image = new Image;
+    image.src = url;
+  }
+})
 ```
 
-After some experiments, I came up with the following restrictions:
+I tested the exact same 7 steps as above:
+
+1. One img request is sent from the desktop browser when the tab is switched ✓
+2. One img request is sent from the desktop browser when the tab is closed ✓
+3. One img request is sent from the desktop browser when the browser is closed ✓
+4. One img request is sent from the smartphone browser when the tab is switched ✓
+5. One img request is sent from the smartphone browser when the tab is closed ✓
+6. One img request is sent from the smartphone browser when the browser is closed ✓
+6. One img request is sent from the smartphone browser when the sleep / power off button is pressed ✓
+7. One img request is sent from the smartphone browser when the home button is pressed ✓
+
+According to my tests, it doesn't matter whether we use `navigator.sendBeacon()` or `<img>` requests. However, 
+I only tested with two up-to-date browsers and **my sample size is by far not representative**. The best idea would be to conduct 
+a statistically sound test under live conditions:
+
+- Increase a counter on the server side when our analytics javascript is loaded. Add a uuid to the analytics javascript.
+- The analytics javascript sends a initial request on page load with a uuid generated in the served javascript
+- Decrease the counter when we receive a analytics request on the event `visibilitychange` with the matching uuid
+
+Hint: Disregard all requests to our application that do not have a valid uuid.
+
+After the above, we have three internal states assigned to the uuid:
+
+1. flag javascript delivered
+2. flag page load request received
+3. flag analytics request received
+
+With those flags we can state that the following: Assuming the javascript is delivered and a page load event is received,
+but no analytics request ever arrives:
+
+- either a malicous user intentionally crafted the two requests like that
+- the browser failed to deliver the request on `visibilitychange`
+
+After some more experiments with `<img>`, I came up with the following restrictions with `<img>` requests:
 
 - Not more than ~7700 bytes of GET payload allowed for the `<img>` `src` attribute
 - url data needs to be url safe base64 encoded
+- because of caching, the same image url cannot be used twice, otherwise the request is not fired
 
-However, the image requests were fired very reliably! I didn't have the previous issues anymore. 
-Requests wouldn't magically disappear. This is exactly what I wanted. Furthermore, `<img>` tags probably 
-are supported on way more browsers than the relatively new `navigator.sendBeacon()` Api.
+In summary, the image requests were fired reliably. Furthermore, `<img>` tags probably 
+are supported on more browsers than the relatively new `navigator.sendBeacon()` Api.
 
-But, since my application sometimes has more than 7700 bytes (even in compressed form) to send,
-I needed to send data incrementally.
-
-As soon as lets say 15kb of bytes of data is collected, make the first <img> request. When the next 15kb of data is available, send the second batch.
-
-Send the rest of recorded user interaction on end when the event `visibilitychange` is triggered.
+But, since my application sometimes has more than 7700 bytes (even in compressed form) to send, I would need to send data incrementally. As soon as lets say 15kb of bytes of data is collected, make the first <img> request. When the next 15kb of data is available, send the second batch. The rest of recorded user interaction is sent at the end when the event `visibilitychange` is triggered.
 
 We just have to keep track of this web session with an counter, such that the server can merge the session as soon
 as it is finished.
