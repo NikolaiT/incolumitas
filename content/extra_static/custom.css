@@ -171,3 +171,9 @@ aside div p {
         margin: 0 6% 2%;
     }
 }
+
+@media screen and (min-width: 768px) {
+    .smallimg {
+        width: 36%;
+    }
+}
