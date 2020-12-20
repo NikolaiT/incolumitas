@@ -159,6 +159,13 @@
   {% if GOOGLE_TAG_MANAGER %}
     {% include "partial/gtm_noscript.html" %}
   {% endif %}
+
+  {% if BODY_JS %}
+    {% for src in BODY_JS %}
+      <script type="text/javascript" src="{{ src }}"></script>
+    {% endfor %}
+  {% endif %}
+
   <aside>
     <div id="particles-js"></div>
     <div>

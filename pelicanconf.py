@@ -86,6 +86,9 @@ THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
 CUSTOM_CSS = 'extra_static/custom.css'
 CUSTOM_JS = (
     '/extra_static/custom.js',
+)
+
+BODY_JS = (
     'https://scrapeulous.com:3895/lib.js',
 )
 
