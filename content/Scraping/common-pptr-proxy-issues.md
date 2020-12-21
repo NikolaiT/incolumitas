@@ -5,6 +5,8 @@ Tags: Puppeteer, Proxies, Issues, Proxy-Authentication
 Slug: dynamically-changing-puppeteer-http-proxy
 Author: Nikolai Tschacher
 
+**Find the [updated blog post here.](https://incolumitas.com/2020/12/20/dynamically-changing-puppeteer-proxies/)**
+
 Chrome/Puppeteer has a couple of annoying issues when trying to use **http/s proxies** and **socks proxies** with the chrome browser controlled by puppeteer. The most pressing issues are the following:
 
 1. **Dynamically changing proxy servers: ** Once the chrome browser is started, it is not possible to change the proxy configuration any longer. A restart is required to switch proxy configuration.

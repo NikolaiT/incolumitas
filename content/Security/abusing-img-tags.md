@@ -4,7 +4,7 @@ Category: Security
 Tags: cross-domain-requests, cors, browser
 Slug: abusing-img-tags-for-cross-domain-requests
 Author: Nikolai Tschacher
-Summary: Cross domain requests with `<img>` tags are not bound to the same origin policy. I will shed light on several possibilities how malicous web site owners can potentially abuse cross domain request done with `<img>` and `script` tags created with JavaScript.
+Summary: Cross domain requests with `<img>` tags are not bound to the same origin policy. I will shed light on several possibilities how malicious web site owners can potentially abuse cross domain request done with `<img>` and `script` tags created with JavaScript.
 
 I am currently in the process of developing an analytics application in JavaScript. One of my requirements is to transmit analytics data right before the user leaves the surveyed website. A common strategy is to send the analytics data when the event `visibilitychange` is fired and the `visibilityState` changes to `hidden`:
 
@@ -42,7 +42,7 @@ The same origin policy is very important to maintain browser security. It preven
 
 Since requesting scripts will only work when the requested resource is served with the `content-type: application/javascript; charset=utf-8` response header and images are only obtained when the response header content type is something like `content-type: image/webp`, we have no possibility to get the response contents of a cross domain request.
 
-However, the request is nevertheless fired. The browser can only judge about Cross-Origin Read Blocking (CORB) after the requested server sent an response. Put differently: In order to falsify if the response is acceptable, a request needs to be made in the first place. But making aribtrary GET request can be dangerous by itself.
+However, the request is nevertheless fired. The browser can only judge about Cross-Origin Read Blocking (CORB) after the requested server sent an response. Put differently: In order to falsify if the response is acceptable, a request needs to be made in the first place. But making arbitrary GET request can be dangerous by itself.
 
 ### Abusing `<img>` requests
 
@@ -54,11 +54,11 @@ image.src = 'https://google.com/search?q=nichebusiness.com%20someHighRankingKeyw
 ```
 
 What happens here? We make a google search with the query **nichebusiness.com someHighRankingKeyword**. The idea is to manipulate the Google search algorithm.
-The hope is that a steady search volume of 500 Google searches a day with our own domain and a desired SEO keyword somehow influences Google's algorithm. There are probably way better ways to improve the SEO of a website (and also more ehtical ways), but I am just trying to make the point that those `<img>` request could potentially have an harmful impact.
+The hope is that a steady search volume of 500 Google searches a day with our own domain and a desired SEO keyword somehow influences Google's algorithm. There are probably way better ways to improve the SEO of a website (and also more ethical ways), but I am just trying to make the point that those `<img>` request could potentially have an harmful impact.
 
 But does Google even serve the SERP response if an `<img>` tag launches a Google search? After all, there are many headers set by the browser, when a image is requested. 
 
-After rebuilding the image request done by the browser, I can confirm that Google answers with a valid SERP response. The search is not rejected based on the request headers. See the reconstructured request below:
+After rebuilding the image request done by the browser, I can confirm that Google answers with a valid SERP response. The search is not rejected based on the request headers. See the reconstructed request below:
 
 ```JavaScript
 const got = require('got');
@@ -89,6 +89,6 @@ const fs = require('fs');
 
 There are many other ways how such cross domain image requests could potentially be abused:
 
-1. Promote your own youtube video by increasing views. Make an request to `https://www.youtube.com/watch?v={someVideo}` in the `<img>` tag.
+1. Promote your own YouTube video by increasing views. Make an request to `https://www.youtube.com/watch?v={someVideo}` in the `<img>` tag.
 2. Drain your competitors Google Ads volume by making request to your competitors ad links.
 3. Invoking any other action that can be reached by a GET request.
