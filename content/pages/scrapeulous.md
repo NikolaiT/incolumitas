@@ -5,7 +5,7 @@ Author: Nikolai Tschacher
 Slug: scrapeulous
 Status: published
 
-## A scraping service for scientists, marketing professionals, analysts or SEO folk
+### A scraping service for scientists, marketing professionals, analysts or SEO professionals
 
 In autumn 2018, I created a scraping service called **[scrapeulous.com](https://scrapeulous.com/)**.
 
@@ -17,7 +17,7 @@ Common scenarios why people use this service:
 2. Market intelligence research 
 3. Many other scenarios
 
-You will receive the scraping results as either json or csv files. If you use the API, you will receive results immediately.
+You will receive the scraping results as either JSON or CSV files. If you use the API, you will receive results immediately.
 
 By using this service, you are able to quickly scrape thousands of keywords and make use of the SERP data to analyze trends and make important business decisions.
 

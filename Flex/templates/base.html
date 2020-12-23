@@ -78,18 +78,16 @@
     <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.css" />
   {% endif %}
 
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font-awesome/css/fontawesome.css">
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font-awesome/css/brands.css">
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font-awesome/css/solid.css">
+  {% if USE_FONTAWESOME %}
+    <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font-awesome/css/font-awesome.min.css">
+  {% endif %}
 
   {% if CUSTOM_CSS %}
-    <link href="{{ SITEURL }}/{{ CUSTOM_CSS }}" rel="stylesheet">
+    <link href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/{{ CUSTOM_CSS }}" rel="stylesheet">
   {% endif %}
 
   {% if CUSTOM_JS %}
-    {% for src in CUSTOM_JS %}
-      <script type="text/javascript" src="{{ src }}"></script>
-    {% endfor %}
+    <script type="text/javascript" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/{{ CUSTOM_JS }}"></script>
   {% endif %}
 
   {% if FEED_ALL_ATOM %}
@@ -101,8 +99,8 @@
   {% endif %}
 
   {% if FAVICON %}
-    <link rel="shortcut icon" href="{{ FAVICON }}" type="image/x-icon">
-    <link rel="icon" href="{{ FAVICON }}" type="image/x-icon">
+    <link rel="shortcut icon" href="/{{ THEME_STATIC_DIR }}/{{ FAVICON }}" type="image/x-icon">
+    <link rel="icon" href="/{{ THEME_STATIC_DIR }}/{{ FAVICON }}" type="image/x-icon">
   {% endif %}
 
   {% if GOOGLE_ANALYTICS %}
@@ -233,7 +231,7 @@
         {% for name, link in SOCIAL %}
           <li>
             <a {% if name == 'mastodon' %}rel="me"{% endif %} class="sc-{{ name }}" href="{{ link }}" target="_blank">
-              <i class="{% if name in ['envelope', 'rss'] %}fas{% else %}fab{% endif %} fa-{{ name }}"></i>
+              <i class="fa fa-{{ name }}"></i>
             </a>
           </li>
         {% endfor %}
@@ -320,7 +318,7 @@
   <!-- particles.js -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
-  particlesJS.load('particles-js', '/extra_static/particlesjs-config.json', function() {
+  particlesJS.load('particles-js', '/theme/particlesjs-config.json', function() {
     console.log('callback - particles.js config loaded');
   });
   </script>

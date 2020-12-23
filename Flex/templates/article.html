@@ -27,7 +27,7 @@
     <h1 class="post-title" id="{{ article.slug }}">{{ article.title }}</h1>
     <div class="post-meta">
       <div class="published-date meta-item">
-          <i class="fas fa-clock"></i>
+          <i class="fa fa-clock-o"></i>
           <span class="metadata-description">Published on </span>
           <time class="date dt-published" datetime="{{ article.locale_date }}" itemprop="datePublished">
               {{ article.locale_date }}
@@ -38,7 +38,7 @@
       </div>
       {% if article.modified %}
       <div class="modified-date meta-item">
-          <i class="fas fa-history"></i>
+          <i class="fa fa-history"></i>
           <span class="metadata-description">Modified on </span>
           <time class="date dt-modified" datetime="{{ article.modified }}" itemprop="dateModified">
               {{ article.modified.strftime('%c') }}
@@ -46,12 +46,12 @@
       </div>
       {% endif %}
       <div class="category meta-item">
-          <i class="fas fa-folder"></i>
+          <i class="fa fa-folder"></i>
           <span class="metadata-description">Category </span>
           <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>
       </div>
       <div class="author meta-item">
-          <i class="fas fa-user-alt"></i>
+          <i class="fa fa-user"></i>
           <span class="metadata-description">Author </span>
           <a href="https://incolumitas.com/pages/about/">{{ article.author }}</a>
       </div>

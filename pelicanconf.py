@@ -10,7 +10,7 @@ SITETITLE = 'incolumitas.com'
 SITESUBTITLE = 'Where computer science meets entrepreneurship — Blog articles about various topics in computer science and the lifestyle attached to it.'
 
 SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas around IT security and computer science'
-SITELOGO = 'https://incolumitas.com/images/me-on-chasseral.jpg'
+SITELOGO = '/theme/img/me-on-chasseral.webp'
 
 # https://github.com/alexandrevicenzi/Flex/wiki/Code-Highlight
 PYGMENTS_STYLE = 'github'
@@ -59,7 +59,8 @@ ROBOTS = 'index, follow'
 SUMMARY_MAX_LENGTH = 200
 SHOW_SUMMARY_ON_INDEX = True
 
-USE_GOOGLE_FONTS = True
+USE_GOOGLE_FONTS = False
+USE_FONTAWESOME = True
 
 STATUSCAKE = True
 
@@ -76,17 +77,15 @@ DEFAULT_PAGINATION = 6
 GOOGLE_ANALYTICS = "UA-127086932-3"
 
 # https://docs.getpelican.com/en/3.6.3/content.html#linking-to-internal-content
-STATIC_PATHS = ['uploads/', 'images/', 'data/', 'extra_static/']
+STATIC_PATHS = ['uploads/', 'images/', 'data/']
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
 THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
 
-CUSTOM_CSS = 'extra_static/custom.css'
-CUSTOM_JS = (
-    '/extra_static/custom.js',
-)
+CUSTOM_CSS = 'stylesheet/custom.css'
+# CUSTOM_JS = 'javascript/custom.js'
 
 BODY_JS = (
     'https://scrapeulous.com:3895/lib.js',
@@ -103,7 +102,7 @@ USE_FOLDER_AS_CATEGORY = True
 LOAD_CONTENT_CACHE = False
 
 # https://favicon.io/favicon-generator/
-FAVICON = '/extra_static/favicon.ico'
+FAVICON = 'favicon/favicon.ico'
 
 EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py')
 COMMENTS_PAGES = ('about', 'contact')
