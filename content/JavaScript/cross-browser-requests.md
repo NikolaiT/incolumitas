@@ -56,7 +56,6 @@ We have the following requirements:
 + CORS can be enabled on our server, thus CORS requests are allowed
 + Data transmission needs to be as reliable as possible. It would be very bad if recorded data is lost
 
-
 ### The test server
 
 I use a simple express server to test my application. Below is the server code. It doesn't need much explanation. 

@@ -70,6 +70,10 @@ figure {
     margin-bottom: 36px;
 }
 
+.post-header .fa {
+    width: 14.85px;
+}
+
 .post-content img:hover, .post-content figure:hover {
     cursor: pointer;
 }
