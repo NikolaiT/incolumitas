@@ -1,23 +1,28 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
+Modified: 2020-12-28 18:16
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
 Author: Nikolai Tschacher
 Summary: There are many resources in the Internet that show how to detect uBlock Origin and Adblock Plus. However, after some research, it became clear that most detection methods are unreliable and cease to exist after a while. In this blog article, a reliable detection method for uBlock Origin and Adblock Plus is demonstrated. No external libraries. Just plain and simple JavaScript.
 
-[uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and [Adblock Plus](https://adblockplus.org/) are famous anti advertisement browser extensions. Adblocking software filter advertisement content from websites. Some folks consider ad blocking to be unethical, since publishers lose revenue. Some consider the blocking of advertisements their good right. I personally tend to be on the side of the latter group, since ads are way to obnoxious in general ([Especially on YouTube](https://incolumitas.com/2020/12/16/removing-youtube-ads-from-android-phone/)).
+There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`.
 
-On the technical side, uBlock Origin and Adblock Plus are designed quite straightforward. They make use of large text based filter lists and compare the items of that list with the contents of HTML Nodes or URLs. If there is a match, the HTML element is removed or the URL is not loaded. An example for such a list would be the well known filter list named [Easy List](https://easylist-downloads.adblockplus.org/easylist.txt). The filter lists for uBlock Origin can be [found on their GitHub repo](https://github.com/uBlockOrigin/uAssets/tree/master/filters).
+### Introduction
 
-However, sometimes it is necessary to be able to detect that an Adblocker is active. Ideally, the detection should **work by using vanilla JavaScript only**. In this blog post, I will show several different techniques to detect the presence of adblock software.
+[uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and [Adblock Plus](https://adblockplus.org/) are famous anti advertisement browser extensions. Adblock software filter advertisement content from websites. Some folks consider the blocking of ads to be unethical, since publishers lose revenue. Other people regard the blocking of advertisements as their good right. I personally tend to be on the side of the latter group, since ads are way to obnoxious in general ([Especially on YouTube](https://incolumitas.com/2020/12/16/removing-youtube-ads-from-android-phone/)).
+
+On the technical side, uBlock Origin and Adblock Plus are designed quite straightforward. They make use of large text based filter lists and compare the items of those lists with the contents of HTML nodes or URLs. If there is a match, the HTML element is removed or the URL is not loaded. An example for such a list would be the well known [Easy List](https://easylist-downloads.adblockplus.org/easylist.txt). The filter lists for uBlock Origin can be [found on their GitHub repo](https://github.com/uBlockOrigin/uAssets/tree/master/filters).
+
+However, sometimes it is necessary to be able to detect that an Adblocker is active. Ideally, the detection should **work by using vanilla JavaScript only**. In this blog post, I will show several different techniques to detect the presence of Adblock software.
 
 All code snippets were tested with **Firefox/84.0** and **Chrome/86.0.4240.75**.
 On the Firefox browser, Adblock Plus is running. uBlock Origin is activated on Chrome.
 
 ### Attempt 1: Detect Adblock with a baiting div node
 
-With this technique, the idea is to create an `<div>` element dynamically and set the class attribute to `adsbox`. If an adblocker is active, it should automatically remove this div element, because the class name is flagged as suspicious.
+With this technique, the idea is to create an `<div>` element dynamically and set the class attribute to `adsbox`. If an Adblocker is active, it should automatically remove this div element, because the class name is flagged as suspicious.
 
 The technique is being used in the [fingerprint.js library](https://github.com/fingerprintjs/fingerprintjs/blob/master/src/sources/adblock.ts).
 
@@ -45,7 +50,7 @@ Try it out by pasting the code below in your browser JavaScript console.
 
 This technique did **not work** on both tested browsers. Therefore, the above code is obsolete.
 
-The same technique was tried with other [CSS class names](https://stackoverflow.com/questions/4869154/how-to-detect-adblock-on-my-website), but nothing worked.
+The same technique was tried with other [CSS class names](https://stackoverflow.com/questions/4869154/how-to-detect-adblock-on-my-website), but nothing worked reliably.
 
 ### Attempt 2: Detect Adblock by downloading suspicious ad scripts
 
@@ -94,12 +99,12 @@ Unfortunately, this **also does not work reliably**. There are a couple of reaso
 1. The `fetch()` API is still not supported in all browsers because it is relatively new
 2. `fetch()` tends to have issues with CORS requests
 
-### The solution: Dynamically creating a `<script>` tag
+### A first solution: Dynamically creating a `<script>` tag
 
 Dynamically creating a `<script>` tag is a better idea, since `<script>` tags are supported in every browser
 and the issues with CORS and the same origin policy do not apply.
 
-The following solution works reliably in both Firefox and Chrome. Both Adblock Plugins could be detected with the below snippet:
+The following solution works reliably in both Firefox and Chrome. Both Adblock plugins could be detected with the below snippet:
 
 ```JavaScript
 var badURL = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
@@ -135,5 +140,57 @@ intercepted the request and aborted it. It can also be seen that the request too
 
 When using the above technique in production, several points need to be considered:
 
-1. Every time the above script is executed without a Adblock software, a HTTP request is made and a script is downloaded. This costs resources.
-2. If the `badURL` is no longer a URL that is on the adblock filter list, the technique ceases to work. Therefore, the validity of the `badURL` needs to be ensured.
+1. Every time the above script is executed without a active Adblock software, a HTTP request is made and a script is downloaded. This costs network bandwidth resources. 
+2. If the `badURL` is no longer an URL that is on the Adblock filter list, the technique ceases to work. Therefore, the validity of the `badURL` needs to be ensured.
+
+### The ultimate solution: Making a request to a non-existent baiting resource
+
+Assuming that most browsers do not have adblock software installed, we want a detection method that is fast and doesn't waste resources.
+However, the solution presented above does waste unnecessary resources: On a browser without adblock, every time the function is executed, the browser loads the advertisement script.
+
+One idea would be to take a non-existent URL that is universally detected by adblock software, but will not properly load in the case when there is no adblock software installed.
+
+This is the ultimate adblock detection solution. You can paste it in your developer console and it should be able to detect any adblock software. It also supports a fallback to `XMLHttpRequest` in case the `fetch()` API is not available.
+
+```JavaScript
+// Author: Nikolai Tschacher
+// Date: 28.12.2020
+// Website: https://incolumitas.com/
+(function detectAdblockWithInvalidURL(callback) {
+  var flaggedURL = 'pagead/js/adsbygoogle.js';
+
+  if (window.fetch) {
+    var request = new Request(flaggedURL, {
+      method: 'HEAD',
+      mode: 'no-cors',
+    });
+    fetch(request)
+      .then(function(response) {
+        if (response.status === 404) {
+          callback(false);
+        }
+      })
+      .catch(function(error) {
+        callback(true);
+      });
+  } else {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', flaggedURL, false);
+
+    try {
+      http.send();
+    } catch (err) {
+      callback(true);
+    }
+
+    if (http.status === 404) {
+      callback(false);
+    }
+  }
+})(function(usingAdblock) {
+  console.log("Using Adblocker: " + usingAdblock);
+})
+```
+
+
+
