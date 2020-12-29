@@ -1,7 +1,7 @@
 {
   "particles": {
     "number": {
-      "value": 60,
+      "value": 70,
       "density": {
         "enable": true,
         "value_area": 800
@@ -71,7 +71,7 @@
     "events": {
       "onhover": {
         "enable": true,
-        "mode": "bubble"
+        "mode": "grab"
       },
       "onclick": {
         "enable": true,
@@ -81,9 +81,9 @@
     },
     "modes": {
       "grab": {
-        "distance": 400,
+        "distance": 200,
         "line_linked": {
-          "opacity": 1
+          "opacity": 0.5
         }
       },
       "bubble": {
@@ -97,7 +97,7 @@
         "distance": 50
       },
       "push": {
-        "particles_nb": 4
+        "particles_nb": 3
       },
       "remove": {
         "particles_nb": 2
