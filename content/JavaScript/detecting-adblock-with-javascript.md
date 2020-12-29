@@ -9,6 +9,60 @@ Summary: There are many resources in the Internet that show how to detect uBlock
 
 There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`.
 
+<script type="text/javascript">
+  (function detectAdblock(callback) {
+    var flaggedURL = 'pagead/js/adsbygoogle.js';
+
+    if (window.fetch) {
+      var request = new Request(flaggedURL, {
+        method: 'HEAD',
+        mode: 'no-cors',
+      });
+      fetch(request)
+        .then(function(response) {
+          if (response.status === 404) {
+            callback(false);
+          } else {
+            callback('unknown');
+          }
+        })
+        .catch(function(error) {
+          callback(true);
+        });
+    } else {
+      var http = new XMLHttpRequest();
+      http.open('HEAD', flaggedURL, false);
+
+      try {
+        http.send();
+      } catch (err) {
+        callback(true);
+      }
+
+      if (http.status === 404) {
+        callback(false);
+      } else {
+        callback('unknown');
+      }
+    }
+  })(function (detected) {
+    var el = document.getElementById('ad_demo');
+    if (detected) {
+      el.innerHTML = 'You are using Adblock!';
+    } else {
+      el.style.backgroundColor = '#63ff85';
+      el.innerHTML = 'You are not using Adblock';
+    }
+  })
+</script>
+
+<strong>Adblock Detection Demo:</strong> <span id="ad_demo" style="border: 3px #4f4f4f solid;
+    padding: 10px;
+    background-color: #ff6363;
+    margin-top: 20px;
+    display: block;
+    width: 300px;"></span>
+
 ### Introduction
 
 [uBlock Origin](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and [Adblock Plus](https://adblockplus.org/) are famous anti advertisement browser extensions. Adblock software filter advertisement content from websites. Some folks consider the blocking of ads to be unethical, since publishers lose revenue. Other people regard the blocking of advertisements as their good right. I personally tend to be on the side of the latter group, since ads are way to obnoxious in general ([Especially on YouTube](https://incolumitas.com/2020/12/16/removing-youtube-ads-from-android-phone/)).
