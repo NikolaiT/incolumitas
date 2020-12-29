@@ -29,7 +29,14 @@ PAGE_SAVE_AS = 'pages/{slug}/index.html'
 PATH = 'content'
 
 TIMEZONE = 'Europe/Berlin'
-DEFAULT_DATE_FORMAT = '%c'
+
+# https://huofu.github.io/%E5%86%99%E4%BB%A3%E7%A0%81/2016/07/02/datetime-format-code
+# December 27, 2020 at 08:47 PM
+# '%B %d, %Y at %I:%M %p'
+# format in template: article.modified.strftime('%B %d, %Y at %I:%M %p')
+
+DEFAULT_DATE_FORMAT = '%B %d, %Y'
+LOCALE = ('en_US',)
 
 LOAD_CONTENT_CACHE = False
 

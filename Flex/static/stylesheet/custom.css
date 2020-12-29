@@ -15,8 +15,8 @@ body {
 }
 
 time {
-    color: #5e5e5e;
-    font-weight: bolder;
+    color: #505050;
+    font-weight: bold;
 }
 
 .post-content strong, .single strong {

@@ -41,7 +41,7 @@
           <i class="fa fa-history"></i>
           <span class="metadata-description">Modified on </span>
           <time class="date dt-modified" datetime="{{ article.modified }}" itemprop="dateModified">
-              {{ article.modified.strftime('%c') }}
+              {{ article.modified.strftime('%B %d, %Y') }}
           </time>
       </div>
       {% endif %}
