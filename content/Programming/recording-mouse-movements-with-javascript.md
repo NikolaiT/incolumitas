@@ -28,7 +28,9 @@ Only very sophisticated bots actually aim to mimic and replicate human behavior 
 
 ### ReCaptcha v2 and v3
 
-The standard way of telling humans apart from bots is Google's ReCaptcha system. In 2018, the new ReCaptcha v3 was introduced. The v2 version basically tasked the suspected user with a challenge that is hard to solve for computers, but relatively easy for humans. The new v3 version is fully transparent and computes a continuous score between 0 (bot) and 1 (human) to rate all actions appearing on a website. This [blog post](https://datadome.co/bot-detection/recaptchav2-recaptchav3-efficient-bot-protection/) gives an excellent overview of the subject.
+The standard method of telling humans apart from bots is Google's ReCaptcha system. In 2018, the new ReCaptcha v3 was introduced. The v2 version basically tasked the suspected user with a challenge that is hard to solve for computers, but relatively easy for humans.
+
+The new v3 version is fully transparent and computes a continuous score between 0 (bot) and 1 (human) to rate all actions occurring on a website. This [blog post](https://datadome.co/bot-detection/recaptchav2-recaptchav3-efficient-bot-protection/) gives an excellent overview of the subject.
 
 Both ReCaptcha versions give a significantly better score to users that are using Google's Chrome browser and are logged in into their Google account. If you delete your Google cookies and you are using Firefox and you block third party cookies, you will be faced with a significantly lower score. 
 
@@ -37,17 +39,17 @@ The consequence of a low score can be twofold:
 1. You will get banned from using the website that is using Google ReCaptcha v3
 2. You will have to solve an actual ReCaptcha v2 challenge to prove your humanness 
 
-It makes perfect sense to sanction users that are not logged into the manifold Google Services or are are not using the Chrome browser. Owning a Google account proves a lot: That you are watching YouTube videos, writing E-Mails with Gmail or that you are using your Android Phone. All those apps verify that you are an human. 
+From Google's perspective, it makes perfect sense to sanction users that are not logged into one of the many Google services or are are not using the Chrome browser. Owning a Google account proves a lot: That you are watching YouTube videos, writing E-Mails with Gmail or that you are using your Android Phone. All those apps verify on the side that you are an human. 
 
-The big BUT is obvious: 
+The **big BUT** is obvious: 
 
 When there is no active usage history of you, you are automatically deemed as second class Internet citizen. This is very dangerous. The classification whether you are considered a human or a bot should be based on current data, not on past usage history.
 
 In that sense, this essay makes an argument for instant bot classification based on behavioral analytics on your current session.
 
-Worded differently, if you jump around like crazy and your mouse is typing millions of words per second, you are a bot.
+Worded differently, if you jump around like crazy and your keyboard is typing millions of words per second, you are probably a bot.
 
-On the other hand, when you read a blog article like this very carefully and *your mouse pointer is following each line* in a smooth, human like fashion, you probably are not a bot.
+On the other hand, when you read a blog article like this very carefully and *your mouse pointer is following each line* in a smooth, human like fashion, you probably are a human.
 
 ### User Interaction Data
 
@@ -237,10 +239,59 @@ Again, on both mobile browsers, the `visibilitychange` seems to be the only rati
 
 ### Analytics Algorithm
 
-Now that it has been established that it's best to consider the `visibilitychange` event, let's implement a simple algorithm that sends data to our remote server.
+Now that it has been established that it's best to consider the `visibilitychange` event, let's implement a simple algorithm that sends data to our remote server to collect the analytics data. The following JavaScript needs to be embedded in the `<body>` element.
 
-To be done.
+```JavaScript
+// to be generated randomly by the server
+var uuid = '{random-uuid}';
+
+// base url 
+var url = 'https://example.org/path';
+
+// Instantiate a analytics object
+var analytics = new Analytics();
+
+// Start recording analytics data
+analytics.record();
+
+document.addEventListener("visibilitychange", function(event) {
+  if (document.visibilityState === 'hidden') {
+		var data = {
+      uuid: uuid,
+      // subsequent calls to getData() 
+      // will yield newly generated analytics data only
+			data: analytics.getData(),
+			href: window.location.href,
+		};
+
+		navigator.sendBeacon(url, JSON.stringify(data));
+  }
+});
+```
 
 ### What is the maximum payload size of `sendBeacon()`?
 
-To be done.
+The last question that needs to be answered: How much analytics data can we transmit at once with `sendBeacon()`?
+
+This question was [already asked on Stackoverflow](https://stackoverflow.com/questions/28989640/navigator-sendbeacon-data-size-limits#) and it seems that the maximum payload is `2^16 = 65536 Bytes`.
+
+This means that analytics data needs to be either compressed or sent in chunks (or both actually).
+
+Some good compression libraries for JavaScript would be [pako](https://github.com/nodeca/pako) and [fflate](https://github.com/101arrowz/fflate). fflate is probably the better choice, since it is smaller and faster.
+
+Another solution would be to just send the analytics data to the server as soon as we approach the 65536 byte limit and then reassemble the chunks on the server. 
+
+### Statistics
+
+In this section, statistics of analytics sessions are published as soon as enough data was gathered. With this data, it can be answered how many browsers support the `visibilitychange` and `navigator.sendBeacon()` combination.
+
+To be done. 
+
+### Conclusion
+
+There are several tricky problems that need to be solved when you want to create an analytics application that is widely supported on most browsers.
+
+To summarize, the following problems were solved in this blog article:
+
+1. What event is the best to listen for when you want to capture the moment a user leaves or terminates the browsing session? **Answer: `visibilitychange`**
+2. What HTTP API is the best to use in order to transmit your analytics data to the remote server? **Answer: `navigator.sendBeacon()`**
