@@ -1,7 +1,7 @@
 Title: Running a WPA3 access point with hostapd 2.7 and SAE/Dragonfly
 Date: 2019-2-22 18:15
-Modified: 2019-2-22 18:15
-Category: Tutorials, WPA3, 802.11
+Modified: 2020-12-31 13:15
+Category: WPA3
 Tags: WPA3, 802.11, hostapd, wpa_supplicant
 Slug: running-a-WPA3-access-point-with-hostapd-SAE-Dragonfly
 Author: Nikolai Tschacher
@@ -40,13 +40,13 @@ In my case I have a Ubuntu 18.04 on my laptop and Kali Linux 2019.1 in a VMWare 
 I have three 802.11 network devices. 
 
 1. One integrated wireless card in my laptop: 
-    ```
-    $ lspci -k
-    02:00.0 Network controller: Intel Corporation Centrino Advanced-N 6235 (rev 24)
-	Subsystem: Intel Corporation Centrino Advanced-N 6235 AGN
-	Kernel driver in use: iwlwifi
-	Kernel modules: iwlwifi
-    ```
+```text
+$ lspci -k
+02:00.0 Network controller: Intel Corporation Centrino Advanced-N 6235 (rev 24)
+Subsystem: Intel Corporation Centrino Advanced-N 6235 AGN
+Kernel driver in use: iwlwifi
+Kernel modules: iwlwifi
+```
     
 2. The Alfa dual band AWUS036ACH USB NIC. This is the driver I used: https://github.com/aircrack-ng/rtl8812au
     To install the driver, read this blog post: https://forums.hak5.org/topic/43124-alfa-awus036ach-kali-configuration-guide/
@@ -67,7 +67,7 @@ All commands are executed from within the virtual machine running Kali Linux 201
 
 Download and extract the latest version of hostapd:
 
-```
+```bash
 wget https://w1.fi/releases/hostapd-2.7.tar.gz
 tar xzvf hostapd-2.7.tar.gz
 cd hostapd-2.7/hostapd
@@ -75,7 +75,7 @@ cd hostapd-2.7/hostapd
 
 After downloading the sources of hostapd, we need to install several packages/libraries that are necessary to compile hostapd and the supplicant.
 
-```text
+```bash
 apt install pkg-config
 apt install libnl-3-dev
 apt install libssl-dev
@@ -84,13 +84,13 @@ apt install libnl-genl-3-dev
 
 Append the following lines to the end of the **defconfig** file:
 
-```
+```text
 CONFIG_SAE=y
 ```
 
 then compile hostapd
 
-```
+```bash
 cp defconfig .config
 make -j 2
 cd ..
@@ -112,7 +112,7 @@ Copyright (c) 2002-2018, Jouni Malinen <j@w1.fi> and contributors
 
 This is the configuration file (**wpa3.conf**) for hostapd that enbables WPA3 authentication:
 
-```
+```text
 interface=wlan0
 ssid=WPA3-Network
 
@@ -186,7 +186,7 @@ chmod +x prepare.sh
 
 Now we can finally start hostapd with
 
-```sh
+```bash
 ./hostapd wpa3.conf -dd -K
 ```
 
@@ -197,7 +197,7 @@ This commands need to be executed on the laptop (host machine).
 
 First compile wpa_supplicant similar to how we compiled hostapd:
 
-```
+```bash
 wget https://w1.fi/releases/wpa_supplicant-2.7.tar.gz
 tar xzvf wpa_supplicant-2.7.tar.gz
 cd wpa_supplicant-2.7/wpa_supplicant
@@ -207,7 +207,7 @@ Append `CONFIG_SAE=y` to **defconfig**
 
 then
 
-```
+```bash
 cp defconfig .config
 make -j 2
 cd ..
@@ -215,7 +215,7 @@ cd ..
 
 then save the supplicant configuration as **supp.conf** with the following contents:
 
-```
+```text
 network={
 	ssid="WPA3-Network"
 	psk="abcdefgh"
@@ -226,14 +226,14 @@ network={
 
 Kill all interfering processes with the following commands:
 
-```
+```bash
 sudo service network-manager stop
 sudo pkill wpa_supplicant
 ```
 
 Then run the supplicant with
 
-```
+```bash
 sudo ./wpa_supplicant -D nl80211 -i wlan0 -c supp.conf -K -dd
 ```
 
@@ -246,7 +246,7 @@ This are the outputs of the logfiles:
 
 The interesting parts are the following exerpt from the wpa_supplicant logfile:
 
-```
+```text
 SAE: counter = 40
 SAE: pwd-seed - hexdump(len=32): af c2 76 6d e8 b7 ab c3 df da 4c 40 8d 04 a3 65 f8 03 90 2f d0 f9 ea cb 5b 41 63 6e cb 14 d3 ab
 SAE: pwd-value - hexdump(len=32): d5 79 09 44 00 2f 7d ca 0e 6b 82 22 37 00 ea 43 84 c0 75 94 7e eb 40 74 c4 55 a6 62 1b 0e e8 da

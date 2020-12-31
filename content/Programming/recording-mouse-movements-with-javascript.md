@@ -43,13 +43,13 @@ From Google's perspective, it makes perfect sense to sanction users that are not
 
 The **big BUT** is obvious: 
 
-When there is no active usage history of you, you are automatically deemed as second class Internet citizen. This is very dangerous. The classification whether you are considered a human or a bot should be based on current data, not on past usage history.
+When there is no active usage history of you, you are automatically considered as second class Internet citizen. This is very dangerous. The classification whether you are considered a human or a bot should be based on current data, not on past usage history.
 
 In that sense, this essay makes an argument for instant bot classification based on behavioral analytics on your current session.
 
 Worded differently, if you jump around like crazy and your keyboard is typing millions of words per second, you are probably a bot.
 
-On the other hand, when you read a blog article like this very carefully and *your mouse pointer is following each line* in a smooth, human like fashion, you probably are a human.
+On the other hand, when you read a blog article *like this* very carefully and your mouse pointer is following each line in a smooth, human like fashion, you probably are a human being.
 
 ### User Interaction Data
 
