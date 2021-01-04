@@ -11,7 +11,7 @@ Status: published
 
 ## Preface
 
-In the last [blog post]({filename}/Wargames/nebula-wargame-walkthrough.md) I covered the Nebula Wargame levels from 0 to 9. Now I will
+In the last [blog post]({filename}/Wargames/nebula-wargame-walkthrough-clean.md) I covered the Nebula Wargame levels from 0 to 9. Now I will
 try to solve the levels 10 to 19. In this blog post I am sharing my thoughts by trying to solve these linux shell exploit exercises.
 
 
@@ -834,8 +834,8 @@ and issued the following commands:
 		return 0;
 	}
 	level15@nebula:/home/flag15$ gcc -Wall -fPIC -shared -o /var/tmp/flag15/libc.so.6 /tmp/write.c 
-	/tmp/write.c: In function ‘write’:
-	/tmp/write.c:7:2: warning: implicit declaration of function ‘strcmp’ [-Wimplicit-function-declaration]
+	/tmp/write.c: In function write:
+	/tmp/write.c:7:2: warning: implicit declaration of function strcmp [-Wimplicit-function-declaration]
 	level15@nebula:/home/flag15$ ./flag15 
 	./flag15: /var/tmp/flag15/libc.so.6: no version information available (required by ./flag15)
 	./flag15: /var/tmp/flag15/libc.so.6: no version information available (required by /var/tmp/flag15/libc.so.6)
@@ -1291,8 +1291,8 @@ after having called flag18 with `./flag18 -vvvvv -d /dev/tty`:
 	:::bash
 	site exec %s%s%s%s%s%s%s%s%s
 	got [site exec %s%s%s%s%s%s%s%s%s] as input
-	�����F<~����F<����F<��Āu'�VH�B�����Bu��,��O�O�O�O�O�O�O�P�got [%s] as input
-	,���--> [%s%s%s%s%s%s%s%s%s] is unsupported at this current time.
+	F<~F<F<u'VHBBu,OOOOOOOPgot [%s] as input
+	,--> [%s%s%s%s%s%s%s%s%s] is unsupported at this current time.
 
 
 #### The solution
