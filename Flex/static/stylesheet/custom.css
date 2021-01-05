@@ -32,7 +32,7 @@ time {
 }
 
 .post-content h1, .single h1 {
-    font-size: 220%;
+    font-size: 210%;
     font-weight: 550;
 }
 
@@ -69,6 +69,10 @@ figure {
 
 .post-header {
     margin-bottom: 36px;
+}
+
+header h2 {
+    font-size: 1.6em;
 }
 
 .post-header .fa {
@@ -183,7 +187,7 @@ main article blockquote {
     }
     
     main article {
-        margin: 0 6% 2%;
+        margin: 0 4% 2%;
     }
 }
 

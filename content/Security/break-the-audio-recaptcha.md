@@ -1,10 +1,19 @@
 Title: Breaking the Google Audio reCAPTCHA with Google's own Speech to Text API
 Date: 2021-01-02 19:16
+Modified: 2021-01-05 18:45
 Category: Security
 Tags: uncaptcha3, ReCaptcha, Google, Speech to Text API
 Slug: breaking-audio-recaptcha-with-googles-own-speech-to-text-api
 Author: Nikolai Tschacher
 Summary: In this project, I make use of a method from early 2019 that demonstrates how to solve the Audio reCAPTCHA with Googel's own Speech to Text API. This method still works, which is quite astonishing.
+
+### Video Demonstration and Explanation
+
+In the YouTube video below, I explain the technical details behind solving the Google Audio reCAPTCHA. I even make some remarks about philosophical implications when AI is becoming smarter than humans in certain fields. I am in no way qualified to talk about such matters though ;)
+
+<div class="embed-youtube" style="margin-bottom: 30px">
+    <iframe width="750" height="563" src="https://www.youtube.com/embed/1kBmbEwJpYo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 <div><a class="btn" style="width: 240px" href="https://github.com/NikolaiT/uncaptcha3">Link to GitHub repository</a></div>
 
