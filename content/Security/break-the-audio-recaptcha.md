@@ -53,7 +53,9 @@ For the inclusion of visually impaired people, there is also an audio version of
 
 The idea of the attack is very simple: You grab the mp3 file of the audio reCAPTCHA and you submit it to Google's own Speech to Text API.
 
-**Google will return the correct answer in over 97% of all cases.**
+**Google will return the correct answer in over 97% (* Edit: 91%] of all cases.**
+
+\* The figure 91% comes from the original [uncaptcha2](https://github.com/ecthros/uncaptcha2) repository. I have not run statistical significant tests with the current bot, but based on intuition, it seems to be more than 90% when you rotate IP addresses and browser fingerprints.
 
 ### Proof of Concept
 

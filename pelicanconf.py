@@ -111,7 +111,7 @@ LOAD_CONTENT_CACHE = False
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 
-EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py')
+EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous')
 COMMENTS_PAGES = ('about', 'contact')
 COMMENTS_IN_PAGES = True
 
