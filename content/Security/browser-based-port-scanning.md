@@ -1,4 +1,4 @@
-Title: Browser based port scanning and a dive into the Chromium code base
+Title: Browser based Port Scanning and a Dive into the Chromium Code Base
 Date: 2021-01-10 16:06
 Category: Security
 Tags: browser, port scanning, JavaScript
@@ -14,11 +14,77 @@ A Ubuntu 18.04 Linux system with a recent chrome browser will be used (Chrome/86
 
 Port scanning from within the browser [recently caused quite some uproar](https://news.ycombinator.com/item?id=23246170), when a security researcher observed that Ebay is port scanning the local network. Here is another article that goes into [much more technical detail](https://blog.nem.ec/2020/05/24/ebay-port-scanning/) as the previous one and tries to debug and reverse engineer the port scanning source code from ThreatMatrix.
 
-### Resources
+### The Idea
+
+When creating a WebSocket object `var ws = new WebSocket("ws://127.0.0.1:8888/")` that points to local HTTP server started with the command `python -m http.server --bind 127.0.0.1 8888`, we get the JavaScript error message in the console:
+
+```text
+WebSocket connection to 'ws://127.0.0.1:8888/' failed: Error during WebSocket handshake: Unexpected response code: 404
+```
+
+When creating a WebSocket object `var ws = new WebSocket("ws://127.0.0.1:8889/")` with a URL that points to non-existant service on port 8889 , we get the following error in the developer console
+
+```text
+WebSocket connection to 'ws://127.0.0.1:8889/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+```
+
+Boom. Problem solved. We can distinguish based on error message whether a port is open or not.
+
+Not so fast. 
+
+When trying to grab the error details with 
+
+```JavaScript
+// outputs: Error: null
+var errorMessage = null;
+try {
+  var ws = new WebSocket("ws://127.0.0.1:8889/")
+} catch (err) {
+  // this code will never run
+  errorMessage = err.toString();
+}
+  console.log('Error: ' + errorMessage)
+```
+
+But since we are plenty smart, maybe try to get error details with `WebSocket.onerror` event handler:
+
+```JavaScript
+var ws = new WebSocket("ws://127.0.0.1:8889/")
+
+ws.onerror = function(error) {
+  console.error("WebSocket error observed:", error);
+};
+```
+
+However, the `error` object does not differ depending on the two cases. Based on the `error` object, it is not possible to determine 
+whether the port was open or not!
+
+The same applies to `<img>` tags.
+
+The following code will not reveal error information that helps us to infer whether the port was open or not:
+
+```JavaScript
+var img = new Image();
+
+img.onerror = function (error) {
+  console.error("Image error observed:", error);
+};
+
+img.onload = img.onerror;
+img.src = "http://127.0.0.1:8889/";
+```
+
+There is simply not much information in the `onerror` kind of event messages.
+
+What to do? 
+
+Yes, we will see if we can detect open ports by timing the responses ;)
+
+### About Timing things with JavaScript
 
 One problem is that `performance.now()` has reduced accuracy: [Hacker news article](https://news.ycombinator.com/item?id=16103270) about `performance.now()` accuracy.
 
-### Test performance.now() resolution
+The following snippet tests `performance.now()` accuracy:
 
 ```JavaScript
 const results = []
@@ -77,18 +143,6 @@ python -m http.server --bind 127.0.0.1 8888
 ```
 
 The I launched the browser, navigated to `incolumitas.com` and pasted the above script into the console.
-
-When creating a WebSocket object (`var ws = new WebSocket("ws://127.0.0.1:8888/")`) that points to a normal and running HTTP server `ws://127.0.0.1:8888/`, we get the JavaScript error message:
-
-```text
-WebSocket connection to 'ws://127.0.0.1:8888/' failed: Error during WebSocket handshake: Unexpected response code: 404
-```
-
-When creating a WebSocket object (`var ws = new WebSocket("ws://127.0.0.1:8889/")`) with a URL that points to a closed port `ws://127.0.0.1:8889/`, we get:
-
-```text
-WebSocket connection to 'ws://127.0.0.1:8889/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
-```
 
 Unfortunately, we cannot access the Error message in a try/catch block. The browser does not give us error information :/
 
@@ -339,6 +393,8 @@ var ctx = document.getElementById('chartJSContainer').getContext('2d');
 new Chart(ctx, options);
 </script>
 
+This is very weird and inconsistent behavior. It seems like there is only a consistent pattern in the first 7 requests, then the open/closed property doesn't seem to correlate anymore.
+
 And then I did the same for the Firefox browser (but only with 12 measurements):
 
 <canvas id="chartFirefox" width="600" height="400"></canvas>
@@ -377,9 +433,164 @@ var ctx = document.getElementById('chartFirefox').getContext('2d');
 new Chart(ctx, options);
 </script>
 
-### Port Scanning Script
+What we see here, is that closed ports seem to be taking more time than open ports. 
 
-The script below conducts port scanning with image tags and the `fetch()` API.
+[Those slides](https://datatracker.ietf.org/meeting/96/materials/slides-96-saag-1/) explain exactly what counter measures are employed against browser based port scanning. There is definitely throttling happening here.
+
+### Statistics with Image Tags
+
+Port scanning with Image tags on Chrome with `N=20` and service `python -m http.server --bind localhost 8888`.
+
+<canvas id="chromeImage" width="600" height="400"></canvas>
+<script>
+var options = {
+  type: 'line',
+  data: {
+    labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    datasets: [
+	    {
+	      label: 'Open Port Timings',
+	      data: [14.095,7.125,8.28,6.8,7.2,20.73,8.78,9.685,10.2,6.895,8.265,7.17,7.17,9.405,27.39,8.255,16.39,6.69,12.01,7.56],
+      	borderWidth: 1,
+        borderColor: 'rgba(255, 0, 0, 0.3)',
+    	},	
+			{
+				label: 'Closed Port Timings',
+				data: [5.065,5.235,3.59,3.72,4.775,7.215,11.62,6.74,3.785,3.81,7.875,3.725,5.33,4.325,5.765,3.785,3.865,4.42,3.675,3.44],
+				borderWidth: 1,
+        borderColor: 'rgba(0, 255, 0, 0.3)',
+			}
+		]
+  },
+  options: {
+  	scales: {
+    	yAxes: [{
+        ticks: {
+					reverse: false
+        }
+      }]
+    }
+  }
+}
+var ctx = document.getElementById('chromeImage').getContext('2d');
+new Chart(ctx, options);
+</script>
+
+Another sample of port scanning with Image tags on Chrome with `N=30` with a different service than `python -m http.server --bind localhost 8888`.
+
+<canvas id="chromeImage2" width="600" height="400"></canvas>
+<script>
+var options = {
+  type: 'line',
+  data: {
+    labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+    datasets: [
+	    {
+	      label: 'Open Port Timings',
+	      data: [5.75,4.705,4.6,4.905,4.23,4.155,4.13,8.07,6.185,5.46,4.095,4.695,4.01,7.535,3.745,4.27,4.305,4.43,4.475,4.185,4.035,4.14,3.85,4.11,3.985,4.035,4.02,3.885,4,3.895],
+      	borderWidth: 1,
+        borderColor: 'rgba(255, 0, 0, 0.3)',
+    	},	
+			{
+				label: 'Closed Port Timings',
+				data: [4.73,3.455,2.78,3.495,3.095,2.785,2.885,6.165,2.75,2.755,4.29,2.905,2.82,24.025,2.705,3.55,2.735,2.68,2.81,3.13,2.89,3.06,2.825,3.44,2.575,2.8,3.07,3.18,4.005,2.845],
+				borderWidth: 1,
+        borderColor: 'rgba(0, 255, 0, 0.3)',
+			}
+		]
+  },
+  options: {
+  	scales: {
+    	yAxes: [{
+        ticks: {
+					reverse: false
+        }
+      }]
+    }
+  }
+}
+var ctx = document.getElementById('chromeImage2').getContext('2d');
+new Chart(ctx, options);
+</script>
+
+Another a third example of port scanning with Image tags on Chrome with `N=30` with `nginx` running as a service on `localhost:3333`.
+
+<canvas id="chromeImageNginx" width="600" height="400"></canvas>
+<script>
+var options = {
+  type: 'line',
+  data: {
+    labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+    datasets: [
+	    {
+	      label: 'Open Port Timings',
+	      data: [9.69,5.635,6.295,5.76,6.235,6.49,13.84,6.815,7.58,5.13,7.47,6.135,5.83,7.015,10.5,12.74,7.24,4.795,4.47,7.07,4.075,4.285,17.995,4.865,5.075,4.48,4.52,4.68,4.585,6.03],
+      	borderWidth: 1,
+        borderColor: 'rgba(255, 0, 0, 0.3)',
+    	},
+			{
+				label: 'Closed Port Timings',
+				data: [5.785,5.445,3.725,4.795,3.69,11.235,4.315,3.59,7.745,3.31,2.89,3.83,3.345,3.625,5.955,3.91,4.68,2.91,2.805,4.545,3.145,7.875,3.905,4.4,2.83,2.965,3.125,2.89,17.82,3.68],
+				borderWidth: 1,
+        borderColor: 'rgba(0, 255, 0, 0.3)',
+			}
+		]
+  },
+  options: {
+  	scales: {
+    	yAxes: [{
+        ticks: {
+					reverse: false
+        }
+      }]
+    }
+  }
+}
+var ctx = document.getElementById('chromeImageNginx').getContext('2d');
+new Chart(ctx, options);
+</script>
+
+Port scanning with Image tags on Firefox with `N=30` with a different service than `python -m http.server --bind localhost 8888`.
+
+<canvas id="firefoxImage" width="600" height="400"></canvas>
+<script>
+var options = {
+  type: 'line',
+  data: {
+    labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+    datasets: [
+	    {
+	      label: 'Open Port Timings',
+	      data: [30,14,20,13,12,16,14,9,11,10,15,16,12,8,31,10,12,13,16,11,13,38,11,7,11,11,12,12,11,16],
+      	borderWidth: 1,
+        borderColor: 'rgba(255, 0, 0, 0.3)',
+    	},	
+			{
+				label: 'Closed Port Timings',
+				data: [14,31,13,9,34,18,14,31,14,9,34,17,8,9,10,12,12,27,13,10,11,10,9,10,29,8,12,8,41,16],
+				borderWidth: 1,
+        borderColor: 'rgba(0, 255, 0, 0.3)',
+			}
+		]
+  },
+  options: {
+  	scales: {
+    	yAxes: [{
+        ticks: {
+					reverse: false
+        }
+      }]
+    }
+  }
+}
+var ctx = document.getElementById('firefoxImage').getContext('2d');
+new Chart(ctx, options);
+</script>
+
+### Other Port Scanning Techniques
+
+The script below conducts port scanning with image tags and the `fetch()` API. 
+Another possibility would be to use `<iframe>` or `<script>` tags.
 
 ```JavaScript
 // start server with
