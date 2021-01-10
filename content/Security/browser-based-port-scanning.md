@@ -46,6 +46,8 @@ try {
   console.log('Error: ' + errorMessage)
 ```
 
+we get a meager output of `Error: null`. The error that is shown in the console, is not accessible via JavaScript!
+
 But since we are plenty smart, maybe try to get error details with `WebSocket.onerror` event handler:
 
 ```JavaScript
@@ -78,9 +80,11 @@ There is simply not much information in the `onerror` kind of event messages.
 
 What to do? 
 
-Yes, we will see if we can detect open ports by timing the responses ;)
+Yes you guessed correctly.
 
-### About Timing things with JavaScript
+We will check if we can detect open ports by measuring the response times ;)
+
+### About Timing things in JavaScript
 
 One problem is that `performance.now()` has reduced accuracy: [Hacker news article](https://news.ycombinator.com/item?id=16103270) about `performance.now()` accuracy.
 
@@ -101,7 +105,7 @@ console.log(results.join("\n"))
 
 Based on the script above, it seems that the accuracy is fine grained enough to test network timing.
 
-To measure network and socket timeouts, we need single digit millisecond accuracy. According to the hacker news link above, chrome has accuracy of *accurate to 100us*. This is more than enough.
+To measure network and socket timeouts, we need single digit millisecond accuracy. According to the hacker news link above, chrome has accuracy of **accurate to 100us**. This is more than enough for our use case.
 
 ### Port Scanning with Web Sockets
 
@@ -550,9 +554,13 @@ var ctx = document.getElementById('chromeImageNginx').getContext('2d');
 new Chart(ctx, options);
 </script>
 
-Port scanning with Image tags on Firefox with `N=30` with a different service than `python -m http.server --bind localhost 8888`.
 
-<canvas id="firefoxImage" width="600" height="400"></canvas>
+But what happens when the scanned service (open port) is not a HTTP server? What if it is, lets say a unrelated TCP service?
+This time, we will simply use `netcat` to simulate an arbitrary TCP service. There is no response from `netcat` on any incoming message.
+
+We use the command `ncat -l 4444 --keep-open --exec "/bin/cat"` to launch a simple echo server.
+
+<canvas id="netcatExample" width="600" height="400"></canvas>
 <script>
 var options = {
   type: 'line',
@@ -561,13 +569,13 @@ var options = {
     datasets: [
 	    {
 	      label: 'Open Port Timings',
-	      data: [30,14,20,13,12,16,14,9,11,10,15,16,12,8,31,10,12,13,16,11,13,38,11,7,11,11,12,12,11,16],
+	      data: [9.94,5.955,6.285,5.495,9.68,5.665,6.715,9.57,9.135,6.835,6.165,6.18,5.21,5.64,5.415,5.065,5.465,5.21,5.265,13.48,6.78,6.855,5.25,7.405,5.435,4.93,5.695,5.125,5.77,4.93],
       	borderWidth: 1,
         borderColor: 'rgba(255, 0, 0, 0.3)',
-    	},	
+    	},
 			{
 				label: 'Closed Port Timings',
-				data: [14,31,13,9,34,18,14,31,14,9,34,17,8,9,10,12,12,27,13,10,11,10,9,10,29,8,12,8,41,16],
+				data: [4.805,4.255,4.055,7.98,4.07,4.31,3.75,3.67,4.775,4.385,4.165,4.51,3.73,3.825,3.925,3.82,4,6.3,3.765,5.615,5.59,4.18,3.855,5.805,5.155,8.605,3.65,3.815,3.72,4.325],
 				borderWidth: 1,
         borderColor: 'rgba(0, 255, 0, 0.3)',
 			}
@@ -583,9 +591,13 @@ var options = {
     }
   }
 }
-var ctx = document.getElementById('firefoxImage').getContext('2d');
+var ctx = document.getElementById('netcatExample').getContext('2d');
 new Chart(ctx, options);
 </script>
+
+### Conclusion
+
+As the plots above demonstrate, it does not matter if the scanned service is a toy HTTP server, real HTTP server (nginx) or any TCP service (netcat), we will see that the measured timings are significantly longer on open services!
 
 ### Other Port Scanning Techniques
 
