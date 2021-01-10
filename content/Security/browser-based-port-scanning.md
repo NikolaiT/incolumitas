@@ -1,38 +1,130 @@
-Title: Browser based Port Scanning and a Dive into the Chromium Code Base
-Date: 2021-01-10 16:06
+Title: Browser based Port Scanning with JavaScript
+Date: 2021-01-10 22:06
 Category: Security
 Tags: browser, port scanning, JavaScript
 Slug: browser-based-port-scanning
 Author: Nikolai Tschacher
-Summary: In this article, a simple technique to conduct port scanning from within the browser is developed. Modern JavaScript is used. 
+Summary: In this article, various techniques to conduct port scanning from within the browser are developed. Modern JavaScript is used.
+
+## Demo
+
+The demo below will port scan any host and port from withing your local network.
+
+<div>
+  <input type="text" id="host" name="host" minlength="6" maxlength="50" value="localhost" style="padding: 3px">
+  <input type="text" id="port" name="port" minlength="2" maxlength="5" value="8888" style="padding: 3px">
+  <input type="portscan" id="portScan" onclick="startScan()" value="Start Portscan">
+  <span id="portScanMeta" style="marginTop: 20px"><span>
+</div>
+
+<script>
+// Author: Nikolai Tschacher
+// tested on Chrome v86 on Ubuntu 18.04
+var portIsOpen = function(hostToScan, portToScan) {
+  return new Promise((resolve, reject) => {
+    var portIsOpen = 'unknown';
+
+    var timePortImage = function(port) {
+      return new Promise((resolve, reject) => {
+        var t0 = performance.now()
+        // a random appendix to the URL to prevent caching
+        var random = Math.random().toString().replace('0.', '').slice(0, 7)
+        var img = new Image;
+        
+        img.onerror = function() {
+          var elapsed = (performance.now() - t0)
+          // close the socket before we return
+          resolve(parseFloat(elapsed.toFixed(3)))
+        }
+    
+        img.src = "http://" + hostToScan + ":" + port + '/' + random + '.png'
+      })
+    }
+    
+    const portClosed = 37857; // let's hope it's closed :D
+    const N = 30;
+    
+    (async () => {
+      var timingsOpen = [];
+      var timingsClosed = [];
+      for (var i = 0; i < N; i++) {
+        timingsOpen.push(await timePortImage(portToScan))
+        timingsClosed.push(await timePortImage(portClosed))
+      }
+
+      var sum = (arr) => arr.reduce((a, b) => a + b);
+      var sumOpen = sum(timingsOpen);
+      var sumClosed = sum(timingsClosed);
+      var test1 = sumOpen >= (sumClosed * 1.3);
+      var test2 = false;
+
+      var m = 0;
+      for (var i = 0; i <= N; i++) {
+        if (timingsOpen[i] > timingsClosed[i]) {
+          m++;
+        }
+      }
+      // 80% of timings of open port must be larger than closed ports
+      test2 = (m >= Math.floor(0.8 * N));
+
+      portIsOpen = test1 && test2;
+      resolve(portIsOpen, m, sumOpen, sumClosed);
+    })();
+  });
+}
+
+var startScan = () => {
+  var host = document.getElementById('host').value;
+  var port = document.getElementById('port').value;
+
+  portIsOpen(host, port).then((isOpen, m, sumOpen, sumClosed) => {
+    document.getElementById('portScanMeta').innerHTML = `m/N = ${m}/30, sumOpen=${sumOpen}, sumClosed=${sumClosed}`;
+    alert(host + ':' + port + ' is open: ' + isOpen);
+  })
+}
+</script>
 
 ### Goal
 
-The goal of this article is to conduct port scanning with JavaScript. The domain `localhost` should be scanned. It is assumed, that our origin is a `https` site, such as for example `https://incolumitas.com`.
+The goal of this article is to conduct port scanning with JavaScript. Various ports on the domain `localhost` should be scanned. It is assumed that our origin is a `https` site, such as for example `https://incolumitas.com`.
 
 A Ubuntu 18.04 Linux system with a recent chrome browser will be used (Chrome/86.0.4240.75).
 
-Port scanning from within the browser [recently caused quite some uproar](https://news.ycombinator.com/item?id=23246170), when a security researcher observed that Ebay is port scanning the local network. Here is another article that goes into [much more technical detail](https://blog.nem.ec/2020/05/24/ebay-port-scanning/) as the previous one and tries to debug and reverse engineer the port scanning source code from ThreatMatrix.
+Port scanning from within the browser [recently caused quite some uproar](https://news.ycombinator.com/item?id=23246170), when a security researcher observed that Ebay is port scanning his local network from within the browser. Here is another article that goes into [much more technical detail](https://blog.nem.ec/2020/05/24/ebay-port-scanning/) compared to the previous one and tries to debug and reverse engineer the port scanning source code from the responsible company ThreatMatrix.
+
+However, browser port scanning is known much longer than that. In fact, as long as you can use JavaScript and there is no strict same origin policy, it will likely be possible. 
 
 ### The Idea
 
-When creating a WebSocket object `var ws = new WebSocket("ws://127.0.0.1:8888/")` that points to local HTTP server started with the command `python -m http.server --bind 127.0.0.1 8888`, we get the JavaScript error message in the console:
+When creating a WebSocket object 
+
+```JavaScript
+var ws = new WebSocket("ws://127.0.0.1:8888/")
+```
+
+ that points to local HTTP server started with the command `python -m http.server --bind 127.0.0.1 8888`, we get the following JavaScript error in the developer console:
 
 ```text
 WebSocket connection to 'ws://127.0.0.1:8888/' failed: Error during WebSocket handshake: Unexpected response code: 404
 ```
 
-When creating a WebSocket object `var ws = new WebSocket("ws://127.0.0.1:8889/")` with a URL that points to non-existant service on port 8889 , we get the following error in the developer console
+On the other side, when creating a WebSocket object 
+
+```JavaScript
+var ws = new WebSocket("ws://127.0.0.1:8889/")
+```
+
+with a URL that points to non-existent service on port 8889, we get the following error in the developer console
 
 ```text
 WebSocket connection to 'ws://127.0.0.1:8889/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
 ```
 
-Boom. Problem solved. We can distinguish based on error message whether a port is open or not.
+Boom. Problem solved. We can distinguish solely based on error messages whether a port is open or not.
 
 Not so fast. 
 
-When trying to grab the error details with 
+When trying to grab the error information with 
 
 ```JavaScript
 // outputs: Error: null
@@ -43,12 +135,12 @@ try {
   // this code will never run
   errorMessage = err.toString();
 }
-  console.log('Error: ' + errorMessage)
+console.log('Error: ' + errorMessage)
 ```
 
-we get a meager output of `Error: null`. The error that is shown in the console, is not accessible via JavaScript!
+we get a meager output of `Error: null`. The error that is shown in the console, is not accessible to JavaScript!
 
-But since we are plenty smart, maybe try to get error details with `WebSocket.onerror` event handler:
+But since we are very smart, we try to get error details via the `WebSocket.onerror` event handler:
 
 ```JavaScript
 var ws = new WebSocket("ws://127.0.0.1:8889/")
@@ -58,7 +150,7 @@ ws.onerror = function(error) {
 };
 ```
 
-However, the `error` object does not differ depending on the two cases. Based on the `error` object, it is not possible to determine 
+However, the `error` object does not differ for the two cases. Based on the `error` object, it is not possible to determine 
 whether the port was open or not!
 
 The same applies to `<img>` tags.
@@ -76,19 +168,21 @@ img.onload = img.onerror;
 img.src = "http://127.0.0.1:8889/";
 ```
 
-There is simply not much information in the `onerror` kind of event messages.
+There is simply not much information in the `onerror` kind of event messages available in JavaScript.
 
 What to do? 
 
 Yes you guessed correctly.
 
-We will check if we can detect open ports by measuring the response times ;)
+We will attempt to check if we can detect open ports by measuring the response times ;)
 
-### About Timing things in JavaScript
+### About Timing Measurements in JavaScript
 
-One problem is that `performance.now()` has reduced accuracy: [Hacker news article](https://news.ycombinator.com/item?id=16103270) about `performance.now()` accuracy.
+The most precise time measurements can be obtained via [performance.now()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now).
 
-The following snippet tests `performance.now()` accuracy:
+One problem is that `performance.now()` has reduced accuracy as the following [Hacker News discussion](https://news.ycombinator.com/item?id=16103270) states. If I am not mistaken, accuracy was reduced to prevent Spectre and Meltdown kind of bugs.
+
+The following snippet showcases `performance.now()` accuracy:
 
 ```JavaScript
 const results = []
@@ -103,13 +197,13 @@ for(let i = 0; i < 500; i++) {
 console.log(results.join("\n"))
 ```
 
-Based on the script above, it seems that the accuracy is fine grained enough to test network timing.
+Based on the script above, it seems that the accuracy is fine grained enough for our use case.
 
 To measure network and socket timeouts, we need single digit millisecond accuracy. According to the hacker news link above, chrome has accuracy of **accurate to 100us**. This is more than enough for our use case.
 
 ### Port Scanning with Web Sockets
 
-My first try was to use [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) to conduct localhost port scanning. I came up with the following JavaScript that measures WebSocket connection timeouts:
+My first attempt was to use [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) to conduct localhost port scanning. I came up with the following JavaScript that measures WebSocket connection timeouts:
 
 ```JavaScript
 // start local server with
@@ -148,9 +242,7 @@ python -m http.server --bind 127.0.0.1 8888
 
 The I launched the browser, navigated to `incolumitas.com` and pasted the above script into the console.
 
-Unfortunately, we cannot access the Error message in a try/catch block. The browser does not give us error information :/
-
-After repeating this step 10 times (open browser, navigate to site, paste code, close browser), I got the following timeouts :
+After repeating this step 10 times (open browser, navigate to site, paste code and take time measurement, close browser), I got the following timeouts:
 
 ```
 onclose: 13.179999999920256
@@ -180,11 +272,11 @@ onclose: 8.420000000114669
 onclose: 5.494999999427819
 ```
 
-There is a slight difference in timings, but it's not really significant. Based on timing, you cannot really distinguish whether a port is open or not.
+There is a slight difference in timings, but it's not a vast difference. Based on timing, you cannot really distinguish whether a port is open or not.
 
 But why did I do this process manually?  Why did I restart the browser after each measurement taken?
 
-The reason is, that Chromium  makes it impossible to determine whether a port is open or closed, when trying to create WebSockets to intentionally invalid services.
+The reason is, that Chromium  makes it very hard to determine whether a port is open or closed by considering time measurements.
 
 Furthermore, once a socket is created for a `(host, port)` pair, this socket is shared among normal HTTP connections. The document ["WebSocket Throttling Design"]((https://docs.google.com/document/d/1a8sUFQsbN5uve7ziW61ATkrFr3o9A-Tiyw8ig6T3puA/edit#)) states:
 
@@ -234,7 +326,7 @@ A brief look into [/master/base/timer/timer.h](https://chromium.googlesource.com
 
 > As the names suggest, OneShotTimer calls you back once after a time delay expires.
 
-Therefore, this time is used to fire when a timeout occurs in the WebSocket connection.
+Therefore, this timer is used to fire when a timeout occurs in the WebSocket connection.
 
 
 Then, we have a look into [websocket_transport_client_socket_pool.cc](https://github.com/chromium/chromium/blob/master/net/socket/websocket_transport_client_socket_pool.cc) and we see the method 
@@ -254,11 +346,11 @@ void WebSocketTransportClientSocketPool::InvokeUserCallbackLater(
 }
 ```
 
-This method `InvokeUserCallbackLater()` is invoked in all the cases:
+The method `InvokeUserCallbackLater()` is invoked in all the cases:
 
 - When a WebSocket connection is successful
-- when a WebSocket connection is unsuccessful, because the port is closed,
-- when a WebSocket connection is unsuccessful, because the service does not speak the same protocol...
+- when a WebSocket connection failed because the port is closed
+- when a WebSocket connection failed because the service does not speak the same protocol...
 
 #### Top Down Approach
 
@@ -321,10 +413,10 @@ It does not look like the method `OnFailure()` is delayed or fired with a timer.
 
 Well, now we have learned the following two things:
 
-+ When we reuse sockets in chrome, we will get skewed results. It is mandatory to either restart the browser, or maybe it suffices to close the socket with `ws.close()`. 
++ When we reuse sockets in Chromium, we will get skewed results. It is mandatory to either restart the browser, or at least close the socket with `ws.close()`.
 + `OnFailure()` is not artificially delayed. Therefore, there should be slight differences in timing when making a WebSocket connection to a closed port compared to a open port.
 
-The following program attempts to connect 150 times to a open port and 150 times to a (likely) closed port.
+The following program attempts to connect `N = 30` times to a open port and 30 times to a (likely) closed port.
 
 After each attempt, the socket is closed, before a new connection is made.
 
@@ -358,7 +450,8 @@ const N = 30;
 })();
 ```
 
-The response times are plotted in a histogram, to visually show that there is a significant difference in response times. I used chartjs:
+The response times are plotted in a histogram, to visually show that there is a significant difference in response times. I used `chart.js`.
+The scale is logarithmic. It is very easy to spot that heavy throttling takes place.
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <canvas id="chartJSContainer" width="600" height="400"></canvas>
@@ -399,7 +492,7 @@ new Chart(ctx, options);
 
 This is very weird and inconsistent behavior. It seems like there is only a consistent pattern in the first 7 requests, then the open/closed property doesn't seem to correlate anymore.
 
-And then I did the same for the Firefox browser (but only with 12 measurements):
+And then I did the same for the Firefox browser (but only with 12 measurements, because throttling kicks in and the delays are becoming large):
 
 <canvas id="chartFirefox" width="600" height="400"></canvas>
 <script>
@@ -443,6 +536,42 @@ What we see here, is that closed ports seem to be taking more time than open por
 
 ### Statistics with Image Tags
 
+Port scanning can also be attempted by making requests with Image tags. This is the test that I used:
+
+```JavaScript
+var timePortImage = function(port) {
+  return new Promise((resolve, reject) => {
+    var t0 = performance.now()
+    // a random appendix to the URL to prevent caching
+    var random = Math.random().toString().replace('0.', '').slice(0, 7)
+    var img = new Image;
+    
+    img.onerror = function() {
+      var elapsed = (performance.now() - t0)
+      // close the socket before we return
+      resolve(parseFloat(elapsed.toFixed(3)))
+    }
+
+    img.src = "http://127.0.0.1:" + port + '/' + random + '.png'
+  })
+}
+
+const portOpen = 8888;
+const portClosed = 9657;
+const N = 30;
+
+(async () => {
+  var timingsOpen = [];
+  var timingsClosed = [];
+  for (var i = 0; i < N; i++) {
+    timingsOpen.push(await timePortImage(portOpen))
+    timingsClosed.push(await timePortImage(portClosed))
+  }
+  console.log(JSON.stringify(timingsOpen))
+  console.log(JSON.stringify(timingsClosed))
+})();
+```
+
 Port scanning with Image tags on Chrome with `N=20` and service `python -m http.server --bind localhost 8888`.
 
 <canvas id="chromeImage" width="600" height="400"></canvas>
@@ -480,7 +609,7 @@ var ctx = document.getElementById('chromeImage').getContext('2d');
 new Chart(ctx, options);
 </script>
 
-Another sample of port scanning with Image tags on Chrome with `N=30` with a different service than `python -m http.server --bind localhost 8888`.
+Another sample of port scanning with Image tags on Chrome with `N=30` with a different HTTP server.
 
 <canvas id="chromeImage2" width="600" height="400"></canvas>
 <script>
@@ -517,7 +646,7 @@ var ctx = document.getElementById('chromeImage2').getContext('2d');
 new Chart(ctx, options);
 </script>
 
-Another a third example of port scanning with Image tags on Chrome with `N=30` with `nginx` running as a service on `localhost:3333`.
+And a third example of port scanning with Image tags on Chrome with `N=30` with `nginx` running as a service on `localhost:3333`.
 
 <canvas id="chromeImageNginx" width="600" height="400"></canvas>
 <script>
@@ -558,7 +687,7 @@ new Chart(ctx, options);
 But what happens when the scanned service (open port) is not a HTTP server? What if it is, lets say a unrelated TCP service?
 This time, we will simply use `netcat` to simulate an arbitrary TCP service. There is no response from `netcat` on any incoming message.
 
-We use the command `ncat -l 4444 --keep-open --exec "/bin/cat"` to launch a simple echo server.
+We use the command `ncat -l 4444 --keep-open --exec "/bin/cat"` to launch a simple TCP echo server.
 
 <canvas id="netcatExample" width="600" height="400"></canvas>
 <script>
@@ -597,75 +726,87 @@ new Chart(ctx, options);
 
 ### Conclusion
 
-As the plots above demonstrate, it does not matter if the scanned service is a toy HTTP server, real HTTP server (nginx) or any TCP service (netcat), we will see that the measured timings are significantly longer on open services!
+As the plots above demonstrate, it does not matter if the scanned service is a toy HTTP server, real HTTP server (nginx) or any TCP service (netcat), we can see that the measured timings are significantly longer on open services!
 
-### Other Port Scanning Techniques
+### Full Algorithm to Determine if a Port is open or not
 
-The script below conducts port scanning with image tags and the `fetch()` API. 
-Another possibility would be to use `<iframe>` or `<script>` tags.
+Now we have enough information to design an algorithm that makes an very educated guess if a port is open or not.
+
+Our algorithm is very very simple:
+
+We want to determine if port `p` is open or not.
+
+We take `N=30` measurements of port `p` and `N=30` measurements of a port `q` that is very likely closed (lets say port `q = 37857`).
+
+If
+
+1. 80% of all measurements of `p` are larger than `q` measurements
+2. And if the sum of all measurements of `p` are at least **1.3** times larger than `q` measurements
+
+we consider the port `p` to be open.
+
+Of course our assumption is that `q` is closed ;)
+
+The full code is as follows:
 
 ```JavaScript
-// start server with
-// python -m http.server --bind localhost 8888
+// Author: Nikolai Tschacher
+// tested on Chrome v86 on Ubuntu 18.04
+var portIsOpen = function(hostToScan, portToScan) {
+  return new Promise((resolve, reject) => {
+    var portIsOpen = 'unknown';
 
-var sampleSize = 5;
-
-var checkPort = function (url, how) {
-  return new Promise((resolve) => {
-    // do not allow any form of caching
-    const randomUrl = url + '/' + Math.random().toString().replace('0.', '') + '.png';
-    if (!how) {
-      how = 'fetch';
-    }
-
-    if (how === 'image') {
-      var img = new Image();
-      var t0 = performance.now();
-      img.onerror = function () {
-        resolve((performance.now() - t0))
-      };
-      img.src = randomUrl;
-    } else if (how === 'fetch') {
-      var t0 = performance.now();
-      var myRequest = new Request(randomUrl, {
-        method: 'HEAD',
-        mode: 'no-cors',
-      });
-
-      fetch(myRequest).then((res) => {
-        // never reached
-        resolve((performance.now() - t0))
-      }).catch((err) => {
-        resolve((performance.now() - t0))
+    var timePortImage = function(port) {
+      return new Promise((resolve, reject) => {
+        var t0 = performance.now()
+        // a random appendix to the URL to prevent caching
+        var random = Math.random().toString().replace('0.', '').slice(0, 7)
+        var img = new Image;
+        
+        img.onerror = function() {
+          var elapsed = (performance.now() - t0)
+          // close the socket before we return
+          resolve(parseFloat(elapsed.toFixed(3)))
+        }
+    
+        img.src = "http://" + hostToScan + ":" + port + '/' + random + '.png'
       })
     }
-  })
-};
+    
+    const portClosed = 37857; // let's hope it's closed :D
+    const N = 30;
+    
+    (async () => {
+      var timingsOpen = [];
+      var timingsClosed = [];
+      for (var i = 0; i < N; i++) {
+        timingsOpen.push(await timePortImage(portToScan))
+        timingsClosed.push(await timePortImage(portClosed))
+      }
 
-// statistic significant sample
-async function runSample(url) {
-  let requests = [];
-  for (let i = 0; i < sampleSize; i++) {
-    requests.push(checkPort(url, 'fetch'))
-  }
-  var times = await Promise.all(requests);
-  return times.reduce((a, b) => a + b) / times.length
+      var sum = (arr) => arr.reduce((a, b) => a + b);
+      var sumOpen = sum(timingsOpen);
+      var sumClosed = sum(timingsClosed);
+      var test1 = sumOpen >= (sumClosed * 1.3);
+      var test2 = false;
+
+      var m = 0;
+      for (var i = 0; i <= N; i++) {
+        if (timingsOpen[i] > timingsClosed[i]) {
+          m++;
+        }
+      }
+      // 80% of timings of open port must be larger than closed ports
+      test2 = (m >= Math.floor(0.8 * N));
+
+      portIsOpen = test1 && test2;
+      resolve(portIsOpen, m, sumOpen, sumClosed);
+    })();
+  });
 }
 
-(async () => {
-  // this port is up
-  var averageTimeOpen = await runSample('http://localhost:9222')
-
-  // this port is down
-  var averageTimeClosed = await runSample('http://localhost:9873')
-
-  console.log('Average Time of Open Port: ' + averageTimeOpen)
-  console.log('Average Time of Closed Port: ' + averageTimeClosed)
-})();
+// how to use
+portIsOpen('localhost', 8888).then((portIsOpen, m, sumOpen, sumClosed) => {
+  console.log('Is localhost:8888 open? ' + portIsOpen);
+})
 ```
-
-### Analysis
-
-For some strange reason, the above script gives very confusing results in Chrome and Firefox.
-
-The timing results are not consistent, therefore we cannot make a statement whether the port is open or not. 
