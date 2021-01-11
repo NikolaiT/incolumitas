@@ -13,14 +13,14 @@ The demo below will port scan any host and port from withing your local network.
 <div>
   <input type="text" id="host" name="host" minlength="6" maxlength="50" value="localhost" style="padding: 3px">
   <input type="text" id="port" name="port" minlength="2" maxlength="5" value="8888" style="padding: 3px">
-  <input type="portscan" id="portScan" onclick="startScan()" value="Start Portscan">
-  <span id="portScanMeta" style="marginTop: 20px"><span>
+  <button id="portScan" onclick="startScan()" style="padding: 3px">Start Portscan</button>
+  <p id="portScanMeta" style="marginTop: 20px"><p>
 </div>
 
 <script>
 // Author: Nikolai Tschacher
 // tested on Chrome v86 on Ubuntu 18.04
-var portIsOpen = function(hostToScan, portToScan) {
+var portIsOpen = function(hostToScan, portToScan, N) {
   return new Promise((resolve, reject) => {
     var portIsOpen = 'unknown';
 
@@ -42,7 +42,6 @@ var portIsOpen = function(hostToScan, portToScan) {
     }
     
     const portClosed = 37857; // let's hope it's closed :D
-    const N = 30;
     
     (async () => {
       var timingsOpen = [];
@@ -68,17 +67,23 @@ var portIsOpen = function(hostToScan, portToScan) {
       test2 = (m >= Math.floor(0.8 * N));
 
       portIsOpen = test1 && test2;
-      resolve(portIsOpen, m, sumOpen, sumClosed);
+      resolve([portIsOpen, m, sumOpen, sumClosed]);
     })();
   });
 }
 
-var startScan = () => {
+var startScan = function (event) {
   var host = document.getElementById('host').value;
   var port = document.getElementById('port').value;
 
-  portIsOpen(host, port).then((isOpen, m, sumOpen, sumClosed) => {
-    document.getElementById('portScanMeta').innerHTML = `m/N = ${m}/30, sumOpen=${sumOpen}, sumClosed=${sumClosed}`;
+  var N = 30;
+  if (!['localhost', '127.0.0.1'].includes(host.trim())) {
+    N = 5;
+  }
+
+  portIsOpen(host, port, N).then((res) => {
+    let [isOpen, m, sumOpen, sumClosed] = res;
+    document.getElementById('portScanMeta').innerHTML = "m/N = " + m + "/" + N + ", sumOpen=" + sumOpen.toFixed(2) + ", sumClosed=" + sumClosed.toFixed(2) + " factor=" + (sumOpen/sumClosed).toFixed(2);
     alert(host + ':' + port + ' is open: ' + isOpen);
   })
 }
@@ -105,7 +110,8 @@ var ws = new WebSocket("ws://127.0.0.1:8888/")
  that points to local HTTP server started with the command `python -m http.server --bind 127.0.0.1 8888`, we get the following JavaScript error in the developer console:
 
 ```text
-WebSocket connection to 'ws://127.0.0.1:8888/' failed: Error during WebSocket handshake: Unexpected response code: 404
+WebSocket connection to 'ws://127.0.0.1:8888/' failed:
+Error during WebSocket handshake: Unexpected response code: 404
 ```
 
 On the other side, when creating a WebSocket object 
@@ -117,7 +123,8 @@ var ws = new WebSocket("ws://127.0.0.1:8889/")
 with a URL that points to non-existent service on port 8889, we get the following error in the developer console
 
 ```text
-WebSocket connection to 'ws://127.0.0.1:8889/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+WebSocket connection to 'ws://127.0.0.1:8889/' failed: 
+Error in connection establishment: net::ERR_CONNECTION_REFUSED
 ```
 
 Boom. Problem solved. We can distinguish solely based on error messages whether a port is open or not.
@@ -752,7 +759,7 @@ The full code is as follows:
 ```JavaScript
 // Author: Nikolai Tschacher
 // tested on Chrome v86 on Ubuntu 18.04
-var portIsOpen = function(hostToScan, portToScan) {
+var portIsOpen = function(hostToScan, portToScan, N) {
   return new Promise((resolve, reject) => {
     var portIsOpen = 'unknown';
 
@@ -774,7 +781,6 @@ var portIsOpen = function(hostToScan, portToScan) {
     }
     
     const portClosed = 37857; // let's hope it's closed :D
-    const N = 30;
     
     (async () => {
       var timingsOpen = [];
@@ -800,13 +806,14 @@ var portIsOpen = function(hostToScan, portToScan) {
       test2 = (m >= Math.floor(0.8 * N));
 
       portIsOpen = test1 && test2;
-      resolve(portIsOpen, m, sumOpen, sumClosed);
+      resolve([portIsOpen, m, sumOpen, sumClosed]);
     })();
   });
 }
 
 // how to use
-portIsOpen('localhost', 8888).then((portIsOpen, m, sumOpen, sumClosed) => {
-  console.log('Is localhost:8888 open? ' + portIsOpen);
+portIsOpen('localhost', 8888, 30).then((res) => {
+  let [isOpen, m, sumOpen, sumClosed] = res;
+  console.log('Is localhost:8888 open? ' + isOpen);
 })
 ```
