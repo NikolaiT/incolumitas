@@ -16,11 +16,11 @@ deliberately resist to specify a certain license, because my programs
 partially build on other third party software which in turn only allows
 usage of its components under conditions).
 
+To improve this website's performance and usability, analytics data is collected.
+
 ### Website Owner
 
 Nikolai Tschacher
-
-Sole Proprietor
 
 ### Contact
 
