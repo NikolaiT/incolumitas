@@ -104,9 +104,14 @@ As of 1th December 2020, it is possible to allocate [up to 10GB of RAM and 6 vCP
 
 ### Other Detection Methods
 
-Our goal is to detect that a browser is running from within a serverless cloud infrastructure. 
+Our goal is to detect that a browser is running from within a serverless cloud infrastructure.
 
-There are several other detection methods that come into mind:
+Several fingerprinting sites such as [pixelscan.net](https://pixelscan.net/) and [browserleaks.com](https://browserleaks.com) give rise to new promising ideas.
+
+There are several other detection methods that come to mind quickly:
+
++ See if the browser in the cloud [leaks DNS info](https://browserleaks.com/dns) that is not configured to run through the proxy 
++ Check if the browser leaks the real IP address via WebRTC
 
 ### Implementation Idea
 
