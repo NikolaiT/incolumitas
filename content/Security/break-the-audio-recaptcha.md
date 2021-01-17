@@ -5,7 +5,7 @@ Category: Security
 Tags: uncaptcha3, ReCaptcha, Google, Speech to Text API
 Slug: breaking-audio-recaptcha-with-googles-own-speech-to-text-api
 Author: Nikolai Tschacher
-Summary: In this project, I make use of a method from early 2019 that demonstrates how to solve the Audio reCAPTCHA with Googel's own Speech to Text API. This method still works, which is quite astonishing.
+Summary: In this project, I make use of a method from early 2019 that demonstrates how to solve the Audio reCAPTCHA with Google's own Speech to Text API. This method still works, which is quite astonishing.
 
 ### Video Demonstration and Explanation
 
