@@ -102,6 +102,12 @@ It appears that AWS Lambda [does not have good GPU support](https://towardsdatas
 
 As of 1th December 2020, it is possible to allocate [up to 10GB of RAM and 6 vCPU cores](https://aws.amazon.com/about-aws/whats-new/2020/12/aws-lambda-supports-10gb-memory-6-vcpu-cores-lambda-functions/) for Lambda Functions. vCPU cores are allocated proportionally to the amount of RAM (between 128 MB and 10,240 MB).
 
+### Other Detection Methods
+
+Our goal is to detect that a browser is running from within a serverless cloud infrastructure. 
+
+There are several other detection methods that come into mind:
+
 ### Implementation Idea
 
 This is the basic algorithm that will be used in this blog post:
