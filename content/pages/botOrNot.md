@@ -92,22 +92,33 @@ This is a technique that potentially leads to many false positives. Therefore, i
 
 **3. Automation Frameworks**
 
-Advanced bots are often based on [puppeteer](https://github.com/puppeteer/puppeteer) or [playwright](https://github.com/microsoft/playwright). Those automation frameworks make use of the [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/), which allows their users to automate and control browsers programmatically.
+Advanced bots are often based on [puppeteer](https://github.com/puppeteer/puppeteer) or [playwright](https://github.com/microsoft/playwright). Those automation frameworks make use of the [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/), which allows to automate and control browsers programmatically. This means that you can control the complete functionality of your browser with a [high level API](https://github.com/puppeteer/puppeteer/blob/main/docs/api.md).
 
-Out of the box, those web automation frameworks and their shipped browsers are configured slightly different then ordinary browsers. There are plugins, [that attempt to fix those artifacts](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth#readme).
+Out of the box, those web automation frameworks come shipped with pre-compiled headless browser binaries. Those binaries are often configured slightly different then ordinary browser binaries.
 
-However, a real human user controls browsers quite different compared to the actions that result from puppeteer scripts. For example, a real human user does not wait for certain events to fire, such as for example `networkidle2`.
+There are Node.js plugins, [that attempt to fix those artifacts](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth#readme).
+
+However, a real human user controls their browsers quite different compared to the behavior that result from using the puppeteer API. For example, a real human user does not wait for certain events to fire before he moves his mouse (such as for example the event `networkidle2`).
+
+Furthermore, because puppeteer programs usually communicate over the Web Socket protocol, there is a tiny delay in between the execution of commands (or larger delay when using the [DevTools Protocol remotely](https://www.browserless.io/)).
+
+Often, those automation framework [do not have good support](https://github.com/puppeteer/puppeteer/issues/4378) in creating realistic mouse movements or touch events.
 
 **4. Hosting Infrastructure**
 
-Advanced bots need to be hosted somewhere. Only small scale bot operations can be run from the personal computer of their programmers. Therefore, web based bots are usually hosted in cloud infrastructure.
+Advanced bots need to be hosted somewhere. Only small scale bot operations can be run from the personal computer of their programmers. Therefore, web based bots are usually hosted from within cloud infrastructure.
 
-However, real human beings browser the web from their personal computers and smartphone. With the help of JavaScript, it is often possible to determine the type of computing environment that executes the JavaScript. There are timing side channel attacks that leak information about the GPU and CPU of the host system.
+However, real human beings browser the web from their personal computers and smartphones. With the help of JavaScript, it is often possible to determine the type of computing environment where JavaScript code is executed.
 
-For example, some folks are running their puppeteer bots in AWS infrastructure (or other cloud infra). 
-AWS infrastructure often has certain ports open. A fingerprint of open ports can be obtained. 
-[Port scanning is possible with JavaScript in browsers](https://incolumitas.com/2021/01/10/browser-based-port-scanning/).
-Therefore, a website could port scan the local network of your bot and if it looks like an AWS host, ban you (of course only if you exhibit other bot heuristics...)
+Because bot programmers want to host their bots in a economic fashion, they **allocate as little CPU/Memory resources as necessary**. This is in stark contrast to the average human user who uses their laptops with 16GB of memory to visit simple websites. This would be another heuristic that can be used to make an educated guess if a user agent is a bot or not. If there are enough of such simple data points, the statement's quality grows polynomially.
+
+Because browsers are such insanely complex pieces of software, there exit a myriad of timing side channel attacks that leak information about the GPU and CPU of the host system.
+
+A simple test would be to measure the time required to [render a WebGL cube](https://bot.incolumitas.com/redpill/webgl.html).
+Other tests measure the latency between CPU and GPU. On cheap cloud infrastructure, there is often only virtual GPU support and thus the latency will be larger.
+
+Some cloud infrastructure often has certain default ports open. A fingerprint of open ports can be obtained, because
+[port scanning the local network is possible with JavaScript in browsers](https://incolumitas.com/2021/01/10/browser-based-port-scanning/). Therefore, a website could port scan the local network of your bot's operating system and if it looks like an AWS host, block you.
 
 **5. Behavioral Fingerprinting**
 
