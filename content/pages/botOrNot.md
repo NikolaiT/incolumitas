@@ -61,7 +61,7 @@ Another very common mistake I see in the wild: Bot programmers change their User
 
 **2. Networking Aspects**
 
-*- IP Address Reputation -*
+*— IP Address Reputation*
 
 Advanced bots need to route their traffic through a residential or mobile proxy network in order to change their IP address.
 
@@ -75,7 +75,7 @@ Explanation by the experts:
 
 > 4G/LTE mobile proxies are so powerful that they render traditional IP bans completely useless, this is thanks to a new technology used by mobile carriers called CGNAT. Carrier Grade Network Address Translation is a very simple concept that means your current IP is being shared by hundreds if not thousands of real people. Websites know this very well and they know if they ban a single IP they could ban hundreds of real users. (Source: [proxidize.com/full-guide/](https://proxidize.com/full-guide/))
 
-*- TCP/IP Fingerprinting -*
+*— TCP/IP Fingerprinting*
 
 Another less known aspect when it comes to bot detection is TCP/IP fingerprints. Because many operating systems have a unique TCP/IP fingerprint (for example, the `window size` and `MTU` differ among some operating systems), it is possible to make a very educated guess about the OS of the host that is communicating with a server based solely on the first incoming SYN packet. [p0f3](https://lcamtuf.coredump.cx/p0f3/) is probably the most used passive TCP/IP fingerprinting tool out there.
 
@@ -122,6 +122,14 @@ Some cloud infrastructure often has certain default ports open. A fingerprint of
 
 **5. Behavioral Fingerprinting**
 
-Then there is behavior based detection techniques. Humans behave like a chaotic system. Some humans more than others. But that is not the point I am trying to make here. Humans move their mouse, keyboard, and scrolling wheel like humans. Bots still have a hard time to simulate mouses and touchscreens as if humans were the source of those events. Some of the JavaScript events that are of interest: `mousedown`, `mousemove`, `touchstart`, `touchmove`, `keydown`, ...
+The best and hardest detection method comes last: behavior based detection techniques.
 
-We are approaching an age where (certain) [captchas can be solved](https://incolumitas.com/2021/01/02/breaking-audio-recaptcha-with-googles-own-speech-to-text-api/) better by AI than by real humans.
+Humans behave like a chaotic system. Some humans more than others. But that is not the point I am trying to make here.
+
+Humans move their mouse, keyboard, touch screen and scrolling wheel in an organic fashion. Bots still have a hard time to simulate mouses and touchscreens as if humans were the source of those events. Some of the JavaScript events that are of interest: `mousedown`, `mousemove`, `touchstart`, `touchmove`, `keydown`, ...
+
+A simple idea to distinguish bots from real humans based on behavioral data would be to extract certain features of a lot of behavioral data samples and classify the data set as either human or bot-like (this is the hard step). Then you could use a suitable neuronal network to train it to classify behavioral data.
+
+That is easier said than done. However, there are some companies such as [biocatch](https://www.biocatch.com/) and [perimeterx](https://www.perimeterx.com/) that are already using this approach since years.
+
+The established method to distinguish humans from bots is the good old captcha. However, we are approaching an age where [captchas can be solved](https://incolumitas.com/2021/01/02/breaking-audio-recaptcha-with-googles-own-speech-to-text-api/) better by AI than by real humans.
