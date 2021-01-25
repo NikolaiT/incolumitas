@@ -18,8 +18,8 @@ With *Web Based Bots*, I refer to bots that communicate mostly over the `HTTP` a
  Programmers create *Web Based Bots* for a myriad of economical reasons:
 
 + Automating mundane tasks in order to save human work effort 
-+ Scraping valuable information from websites that cannot be accessed by API
-+ Creating content on social media platforms (Twitter, TikTok, Instagram Bots)
++ Scraping valuable information from websites that cannot be accessed by APIs
++ Creating content on social media platforms (Twitter, TikTok, Instagram Bots) in order to influence
 
 Creating stealthy bots is a multidimensional problem. It follows that detection is also a complex problem.
 
