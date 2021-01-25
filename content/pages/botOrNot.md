@@ -128,8 +128,10 @@ Humans behave like a chaotic system. Some humans more than others. But that is n
 
 Humans move their mouse, keyboard, touch screen and scrolling wheel in an organic fashion. Bots still have a hard time to simulate mouses and touchscreens as if humans were the source of those events. Some of the JavaScript events that are of interest: `mousedown`, `mousemove`, `touchstart`, `touchmove`, `keydown`, ...
 
-A simple idea to distinguish bots from real humans based on behavioral data would be to extract certain features of a lot of behavioral data samples and classify the data set as either human or bot-like (this is the hard step). Then you could use a suitable neuronal network to train it to classify behavioral data.
+A simple process to distinguish bots from real humans based on behavioral data could look like the following:
 
-That is easier said than done. However, there are some companies such as [biocatch](https://www.biocatch.com/) and [perimeterx](https://www.perimeterx.com/) that are already using this approach since years.
+The first step is to collect and extract certain features from a huge set of behavioral data samples. The next (and way harder) step is to classify the data set as either human or bot-like. To finish, you could use a suitable neuronal network to train a system that is able to classify fresh behavioral data.
+
+That is way easier said than done. However, there are some companies such as [biocatch](https://www.biocatch.com/) and [perimeterx](https://www.perimeterx.com/) that are already using this approach since years.
 
 The established method to distinguish humans from bots is the good old captcha. However, we are approaching an age where [captchas can be solved](https://incolumitas.com/2021/01/02/breaking-audio-recaptcha-with-googles-own-speech-to-text-api/) better by AI than by real humans.
