@@ -5,47 +5,88 @@ Author: Nikolai Tschacher
 Slug: BotOrNot
 Status: published
 
-**Last Edit: 25th January 2021**
+**Last Edit: 26th January 2021**
 
-I am currently putting a lot of effort into researching how to distinguish web based bots from real human beings browsing the web.
+I am currently putting a lot of effort into researching how to distinguish web based bots from real human beings. Many researchers published a lot of papers investigating this interesting subject. On this page however, I will take a slightly more practical approach.
 
 <a class="btn" href="https://bot.incolumitas.com" style="padding: 8px; font-weight: 600;">Visit the BotOrNot detection page!</a>
 
 ### The Five Dimensions of Advanced Web Based Bots
 
-With *Web Based Bots* I refer to bots that communicate mostly over the `http` and `https` protocols and thus interact with the Internet that is visible and accessible to the normal human user. Programmers create *Web Based Bots* for a myriad of reasons:
+With *Web Based Bots*, I refer to bots that communicate mostly over the `HTTP` and `HTTPS` protocols and thus interact with the Internet that is visible and accessible to the normal human user. Furthermore, I will only consider bots that are [somewhat advanced](https://www.imperva.com/blog/bad-bot-report-2020-bad-bots-strike-back/). Put differently, advanced bots leverage real browsers by using some form of browser automation/testing framework such as Playwright, Puppeteer, Selenium, PhantomJS, ... 
 
-+ Automating mundane tasks
-+ Scraping valuable information from websites that cannot be accessed via API
-+ Influencing readers by automatically creating content (Twitter, Instagram Bots)
+ Programmers create *Web Based Bots* for a myriad of economical reasons:
 
-Creating advanced bots is a multidimensional problem. Therefore, detection is also a complex problem.
++ Automating mundane tasks in order to save human work effort 
++ Scraping valuable information from websites that cannot be accessed by API
++ Creating content on social media platforms (Twitter, TikTok, Instagram Bots)
 
-In order to not get detected and labeled as a bad bot, there are several areas where an advanced bot attempts to behave as closely as possible as real human.
+Creating stealthy bots is a multidimensional problem. It follows that detection is also a complex problem.
+
+In order to not get detected and labeled as a bad bot, there are several areas where an advanced bot programmer attempts to behave as closely as possible as real human being.
 
 **1. Browser Fingerprinting**
 
-Browser fingerprints is the set of technical configurations that allow to identify different user agents (such as Google Chrome browser).
+Browser fingerprints is the space of technical configurations of a browser that allow a website to identify and distinguish a visiting user.
 
 Browsers are insanely complex artifacts of software and thus exhibit a wealth of information to the websites they visit. For example, the `window.navigator` object has a lot of different pieces of information that allows to fingerprint the browser and to learn more about it's user.
 
-Each browser has also a unique networking behavior. Some browsers send different HTTP requests as other Browsers in the same situation. Different browsers load websites in a different sequence.
+There are widely used fingerprinting JavaScript libraries such as [fingerprintjs](https://github.com/fingerprintjs/fingerprintjs) whose sole purpose is to collect as many stable browser configuration variables as possible. Obtaining a stable browser fingerprint is a two-dimensional optimization problem.
 
-Bot creators attempt to forge a browsing fingerprint that is as generic as possible. Another important point for bot creators is **to not lie (convincingly)**: For example, setting a IPhone User-Agent but then not adapting the User-Agent in `navigator.userAgent` or `navigator.appVersion` would make it easy for websites that the browser is most likely a bot.
+1. On the one side, you want as many parameters as possible in order to increase the entropy of your fingerprint
+2. On the other side, the selected parameters need to be as stable as possible. Stable means: They are unlikely to change over time
+
+Now it becomes clear why it is so hard to create good fingerprints: The more unique your fingerprint gets (entropy increases), the higher the likelihood that some fingerprinting parameter will change with time.
+
+Stable browser fingerprinting parameters are for example:
+
++ The timezone (`"Europe/Berlin"`) your browser is configured in: `window.Intl.DateTimeFormat().resolvedOptions().timeZone`
++ The platform (`"Linux x86_64"`) on which your browser is running: `navigator.platform`
++ The hardware concurrency (`4`) of the browser: `navigator.hardwareConcurrency`
++ Your screens (`[1920, 1080]`) resolution: `[window.screen.width, window.screen.height]`
++ The amount of memory (`4`) your device has: `navigator.deviceMemory`
++ What audio/video codecs your browser supports
++ Whether the browser has a touch screen activated
++ And many more ...
+
+Each browser has also a unique networking behavior. The sequence of HTTP requests that a Browsers sends is unique to each Browser. Different browsers load websites in a different order. Different browsers name non-standard HTTP headers also in a unique ways.
+
+How is browser fingerprinting relevant to advanced bots?
+
+Bot creators attempt to forge a browsing fingerprint that is as generic as possible. Their main strategy is to dive under the radar and to camouflage as a visitor with a browsing fingerprint that is very common. 
+
+Another important point for bot creators is **to not lie when spoofing their fingerprint**: For example, setting a iPhone User-Agent but not adapting the User-Agent accordingly in `navigator.userAgent` or `navigator.appVersion` would make it straightforward for anti-bot companies to detect that the browser has likely been tampered with.
+
+Another very common mistake I see in the wild: Bot programmers change their User-Agent in the HTTP headers but forget to do so in the `navigator` property (Mostly `navigator.userAgent` and `navigator.appVersion`).
 
 **2. Networking Aspects**
 
+*IP Address Reputation*
+
 Advanced bots need to route their traffic through a residential or mobile proxy network in order to change their IP address.
 
-The reason is very simple: Most websites use IP based rate limiting. When your bot scrapes thousands of pages in a short amount of time, they can be quickly blocked based on the fact that each request originated from the same IP address. 
+The reason is very simple: Most websites use IP based rate limiting. Put differently: When your bot scrapes thousands of pages in a short amount of time, the bot can get blocked quickly based on the fact that each request originated from the identical IP address. 
 
-Different types of IP Addresses have different reputations in the Internet. For example, 
-
-Datacenter IP addresses such as the ones from Amazon AWS or Google Cloud Functions have a rater low reputation
+Furthermore, different types of IP Addresses have different reputations in the Internet. For example, datacenter IP addresses such as the ones from [Amazon AWS](https://aws.amazon.com/) or [Google Cloud Functions](https://cloud.google.com/functions) have a rater low reputation when it comes to web traffic. The reason is very obvious: Webmasters do not like traffic that originates from datacenters because the likelihood is large that it is automated traffic. *What normal human user routes their traffic through the cloud?*
 
 Mobile IP addresses have the highest reputation. It is almost impossible to block traffic originating from mobile IP addresses, since many different users in the same mobile cell area share the same IP address in 4G networks.
 
+Explanation by the experts:
+
 > 4G/LTE mobile proxies are so powerful that they render traditional IP bans completely useless, this is thanks to a new technology used by mobile carriers called CGNAT. Carrier Grade Network Address Translation is a very simple concept that means your current IP is being shared by hundreds if not thousands of real people. Websites know this very well and they know if they ban a single IP they could ban hundreds of real users. (Source: [proxidize.com/full-guide/](https://proxidize.com/full-guide/))
+
+*TCP/IP Fingerprinting*
+
+Another less known aspect when it comes to bot detection is TCP/IP fingerprints. Because many operating systems have a unique TCP/IP fingerprint (for example, the `window size` and `MTU` differ among some operating systems), it is possible to make a very educated guess about the OS of the host that is communicating with a server based solely on the first incoming SYN packet. [p0f3](https://lcamtuf.coredump.cx/p0f3/) is probably the most used passive TCP/IP fingerprinting tool out there.
+
+Why is this relevant for bot detection?
+
+The reason is obvious: Many bot programmers are using proxy services to switch and hide their real IP address. However, when you configure your browser fingerprint to look like an iPhone, but the TCP SYN packet signature looks like it belongs to a Linux operating system, then there are only two explanations for that:
+
+1. Traffic comes from an legitimate iPhone user that uses a VPN/Proxy 
+2. A malicious bot programmer forgot to spoof their TCP/IP fingerprint (or more accurate: the proxy server in between)
+
+This is a technique that potentially leads to many false positives. Therefore, it may be used in a more heuristic way such as: *On a normal day, 5% of my visitors use a VPN/Proxy, but since two hours, there are 40% of all users suddenly using some new kind of TCP/IP fingerprint. Let's block that traffic and let's see if someone complains ;)*
 
 **3. Automation Frameworks**
 
