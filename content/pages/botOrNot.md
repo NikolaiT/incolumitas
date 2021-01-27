@@ -5,21 +5,31 @@ Author: Nikolai Tschacher
 Slug: BotOrNot
 Status: published
 
-**Last Edit: 26th January 2021**
-
-I currently put a lot of effort into researching the question how to distinguish web based bots from real human beings. Researchers published many papers investigating this intriguing area. On this page however, I try to take a slightly more practical approach to find answers.
-
 <a class="btn" href="https://bot.incolumitas.com" style="padding: 10px; font-weight: 600; font-size: 15px">Visit the BotOrNot detection page!</a>
+
+**Last Edit: 27th January 2021**
+
+I currently put a lot of effort into researching the question how to distinguish web based bots from real human beings. Researchers are publishing intriguing new papers constantly that try to answer this question for good. On this page however, I try to take a slightly more practical approach to find solutions. 
+
+*— Personal Stance*
+Compared to other actors active in this niche, I am convinced that advanced bots are not always bad. On the contrary, they often drive innovation and nurture creativity. After all, the Internet becomes a greater Oligopoly each passing day. Giving information back to smaller actors is a necessary and endorsed correction.
+
+There is an endless cat and mouse game between bot programmers and anti-bot companies. Let's take a deep dive!
 
 ### The Five Dimensions of Advanced Web Based Bots
 
-With *Web Based Bots*, I refer to bots that communicate mostly over the `HTTP` and `HTTPS` protocols and thus interact with the Internet that is visible and accessible to normal human users. Furthermore, I will only consider bots that are [somewhat advanced](https://www.imperva.com/blog/bad-bot-report-2020-bad-bots-strike-back/). Put differently, advanced bots leverage real browsers by using some form of browser automation/testing framework such as Playwright, Puppeteer, Selenium, PhantomJS and others.
+With *Web Based Bots*, I refer to bots that communicate mostly over the `HTTP` and `HTTPS` protocols and thus interact with the Internet that is visible and accessible to normal human users. Furthermore, I will only consider bots that are [somewhat advanced](https://www.imperva.com/blog/bad-bot-report-2020-bad-bots-strike-back/). Put differently, advanced bots leverage real browsers by using some form of browser automation/testing framework such as Playwright, Puppeteer, Selenium, PhantomJS and many others.
 
  Programmers create *Web Based Bots* for a myriad of different economical reasons:
 
 + Automating mundane tasks in order to save human labor effort
 + Scraping valuable information from websites (Search Engines, Amazon, eBay, YouTube, ...)
-+ Automatically creating content on social media platforms (Twitter, TikTok, Instagram Bots) in order to influence
+
+Or the more darker applications:
+
++ Automatically creating content on social media platforms (Twitter, TikTok, Instagram Bots) in order to influence unaware people
++ Committing Advertisement Fraud by clicking your own ads
++ Impersonating other Users and committing cyber crime
 
 Creating stealthy bots is a multidimensional problem. It follows that detection is a similarly complex problem.
 
@@ -135,5 +145,21 @@ A simple process to distinguish bots from real humans based on behavioral data c
 3. To conclude, you could pick a suitable neuronal network to train a system that is able to classify fresh behavioral data.
 
 That is way easier said than done. However, there are some companies such as [biocatch](https://www.biocatch.com/) and [perimeterx](https://www.perimeterx.com/) that are already using this approach since years.
+
+But what exactly makes mouse or touch event interaction in a browser *human*? What are features that are extremely hard to emulate mechanically? Some rough ideas (replace *mouse* with touch events in case of mobile devices):
+
+- The mouse is used as a reading aid (*observe yourself*)
+- The start and stop speed of the mouse between points of interest
+- The trajectory of mouse movements
+- The distribution of events between time. Humans look at the screen, process the information visually and react physically. This pattern repeats all the time. The latency in such reaction patterns is intrinsically human.
+- Time interval between mouse clicks
+- Mouse follows the eye focus point
+- Scrolling speed correlates with reading time
+- spikes in behavioral data when a website requires interaction
+- mouse moves to the top (tabs) when navigating away (not in mobile)
+- mobile only: sometimes screen dimensions plummets 180 degrees on auto-rotate
+- on disinterest, mouse races very fast to the "close tab" button
+- Areas of interest in text are highlighted
+- ...?
 
 The established method to distinguish humans from bots is the good old captcha. However, we are approaching an age where [captchas can be solved](https://incolumitas.com/2021/01/02/breaking-audio-recaptcha-with-googles-own-speech-to-text-api/) better by AI than by real humans.
