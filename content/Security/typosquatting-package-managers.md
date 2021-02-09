@@ -7,10 +7,9 @@ Tags: PyPi, Npmjs.com, rubygems.org, security, Typosquatting
 Slug: typosquatting-package-managers
 Status: published
 
-Edit: It seems that the blog post and the thesis caused quite some interest. Please contact me under the following mail address, since my mail server on this VPS is constantly down :/
-**tschachn [|[at]|] hu-berlin [[|dot|]] de**
+Edit: It seems that the blog post and the thesis caused quite some interest. Please contact me under the following mail address: **admin [|[at]|] incolumitas [[|dot|]] com**
 
-In this blog post I will show how to use the neat JavaScript library [chart.js](http://www.chartjs.org/) with the well-known Python web-framework [Django](https://www.djangoproject.com/). As a sample data set I will make use of my workout progress data between May 2016 and August 2016.
+In this blog post, it is demonstrated how
 
 + **17000 computers** were forced to execute arbitrary code by typosquatting programming language packages/libraries
 + **50%** of these installations were conducted with administrative rights
