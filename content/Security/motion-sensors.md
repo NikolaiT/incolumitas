@@ -9,11 +9,11 @@ Summary: Android mobile devices give to any website device orientation and devic
 
 Android smartphones grant websites access to the [deviceorientation](https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientation_event) and the [devicemotion](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event) events.
 
-Those events basically give information about the current smartphone motion data and rotation angels. This data comes from the built-in accelerometer, gyroscope, and compass in mobile devices.
+Those events basically give information about the current smartphone motion data and rotation angels. This data comes from the built-in accelerometer, gyroscope, and compass built into mobile devices.
 
 So if you are visiting this website from your Android mobile phone, you can see your device motion data in the box below.
 
-<div id="exmaple">
+<div id="example" style="border-color: 3px solid #aaa; padding: 12px">
 
 <strong>`deviceorientation` events</strong>
 <pre id="deviceorientationOutput">{}</pre>
@@ -27,7 +27,7 @@ So if you are visiting this website from your Android mobile phone, you can see 
 (function() {
   var isAndroid = /(android)/i.test(navigator.userAgent);
   if (!isAndroid) {
-    document.getElementById('exmaple').innerHTML = '<strong>You\'re not visiting from an Android device</strong>';
+    document.getElementById('example').innerHTML = '<strong>You\'re not visiting from an Android device</strong>';
     return;
   }
 
@@ -94,15 +94,17 @@ So if you are visiting this website from your Android mobile phone, you can see 
 
 ### Sensitive Nature of Motion and Orientation Data
 
-The nature motion and orientation data can possibly reveal a lot about your real live behavior. Some of the following information can be interpolated by interpreting motion and orientation data of your smartphone:
+The motion and orientation data can possibly reveal a lot about your real live behavior while browsing a website. Some of the following information can be interpolated by interpreting motion and orientation data of your smartphone:
 
 + In what position your are interacting with the website: Sitting, lying, standing, running, ...
 + Whether you are moving around while looking at the website
 + If your smartphone is falling down (excellent point to backup some data)
 
-For example, if you follow a video conference with your Android Smartphone or Tablet while lying in your bed, it would be possible to infer from the device orientation and motion data that you are lying in your bed, even though you disabled your camera and microphone preemptively...
+For example, if you follow a video conference with your Android smartphone or tablet while lying in your bed, it would be possible to infer from the device orientation and motion data that you are lying in your bed, even though you disabled your camera and microphone preemptively...
 
-Apple has a clear stance regarding the `deviceorientation` and `devicemotion` event on their iOS platform: They are [disabled by default](https://www.macrumors.com/2019/02/04/ios-12-2-safari-motion-orientation-access-toggle/) and a website needs to [ask for permission in order to use them](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2). Why is this not the case on the Android operating system?
+Furthermore, I am quite sure that it would also be possible to infer that you are visiting the toilet based on a time series of motion and device orientation data. The reason is the following: There is a unique pattern of motion and orientation data when making a visit to the toilet. First you are walking to a room, then you sit down and then you hold your phone in a certain angle.
+
+Apple has a clear stance regarding the `deviceorientation` and `devicemotion` event on their iOS platform: Those events are [disabled by default](https://www.macrumors.com/2019/02/04/ios-12-2-safari-motion-orientation-access-toggle/) and a website needs to [ask for permission in order to use them](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2). Why is this not the case on the Android operating system?
 
 ### The `deviceorientation` Event
 
@@ -115,7 +117,7 @@ This event yields a [DeviceOrientationEvent](https://developer.mozilla.org/en-US
 + `DeviceOrientationEvent.gamma` -  A number representing the motion of the device around the y axis, express in degrees with values ranging from -90 (inclusive) to 90 (exclusive). This represents a left to right motion of the device.
 
 <figure>
-    <img src="/images/deviceorientation.png" alt="deviceorientation" style="width:800px" />
+    <img src="/images/deviceorientation.png" alt="deviceorientation" style="width:700px" />
     <figcaption>Illustration of the device orientation (Dev Tools Simulator)</figcaption>
 </figure>
 
