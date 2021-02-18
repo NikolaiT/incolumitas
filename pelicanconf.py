@@ -81,7 +81,7 @@ DEFAULT_PAGINATION = 6
 
 # PIWIK_URL = 'piwik.incolumitas.com/'
 # PIWIK_SITE_ID = 1
-GOOGLE_ANALYTICS = "UA-127086932-3"
+# GOOGLE_ANALYTICS = "UA-127086932-3"
 
 # https://docs.getpelican.com/en/3.6.3/content.html#linking-to-internal-content
 STATIC_PATHS = ['uploads/', 'images/', 'data/']
@@ -103,7 +103,7 @@ MENUITEMS = (('Archives', '/archives.html'),
              ('Tags', '/tags.html'),)
 
 COPYRIGHT_NAME = 'Nikolai Tschacher - incolumitas.com'
-COPYRIGHT_YEAR = 2020
+COPYRIGHT_YEAR = 2021
 MAIN_MENU = True
 USE_FOLDER_AS_CATEGORY = True
 LOAD_CONTENT_CACHE = False
