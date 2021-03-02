@@ -1,18 +1,20 @@
-Title: Common Mistakes in Scraping
+Title: 7 Common Mistakes in Professional Scraping
 Date: 2021-03-01 23:13
 Category: Scraping
 Tags: web scraping, crawling, puppeteer, playwright
-Slug: common-mistakes-in-scraping
+Slug: 7-common-mistakes-in-professional-scraping
 Author: Nikolai Tschacher
-Summary: In this blog post I am talking about my year long experience with web scraping and some common mistakes. The more I dive into web scraping, the more I realize how easy it is to make mistakes in scraping.
-
+Summary: In this blog post I am talking about my year long experience with web scraping and some common mistakes. The more I dive into web scraping, the more I realize how easy it is to make mistakes in scraping. For that reason, I compiled a list of seven common mistakes when it comes to web scraping.
+ 
 ## Introduction
 
-I have been creating scrapers since years. Most of them were quite rubbish. But in the process you kinda learn from some common mistakes. In this blog post, I share some of the most frequent mistakes that I spot in the wild and that I made myself. Furthermore, I give general advice how to remain (somewhat) undetected when scraping.
+I have been creating scrapers since years. Most of them were quite rubbish. But in the painful process you learn from some common mistakes. In this blog post, I share some of the most frequent mistakes that I spot in the wild and that I made myself. Furthermore, I give general advice how to remain (somewhat) undetected when scraping.
 
-Note: Many large websites actually don't sanction scraping that much. I would count Google and Amazon to the sites that only moderately prevent scraping. The reason is obvious: Those sites actually massively profit when other people/companies are using their data in their products. Google and Amazon are heavy players when it comes to E-Commerce and Online Marketing. So they both have an incentive to allow third-party-tools to access their platforms to a certain degree.
+Mandatory note: Many large websites actually don't sanction scraping that much. I would count Google and Amazon to the sites that only moderately prevent scraping. The reason is obvious: Those platforms actually massively profit when other people/companies are using their data in their products. Google and Amazon are heavy players when it comes to E-Commerce and Online Marketing. So they both have an incentive to allow third-party-tools to access their platforms to a certain degree.
 
 Other sites such as Instagram and LinkedIn are much more aggressive when it comes to blocking scrapers. They'll ban ill behaving user agents on the first suspicious activity. Websites such as LinkedIn are practically impossible to use without having an account.
+
+Therefore, the advice in this blog post might be too strict or too lax for your specific use case. Keep that in mind.
 
 ## Common Mistakes in Scraping
 
@@ -106,16 +108,16 @@ Nowadays, I would suggest to use something like a proper Docker scraping image a
 
 There are many professional scraping services that you can research. They have learned over the years and you can see how they camouflage they scrapers. Sometimes even the professional services make mistakes though.
 
-[*ScrapingBee*](https://scrapingbee.com)
+#### [ScrapingBee](https://scrapingbee.com)
 
 For example they set the user agent to either 
 
 1. `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36`
 2. `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36`
 
-but they forget to spoof the `navigator.platform` property accordingly. It is still set to `"platform": "Linux x86_64"`. Obviously, that is very suspicious and would get flagged by many bot detection companies.
+but they forget to spoof the `navigator.platform` property accordingly. It is still set to `"platform": "Linux x86_64"`. Obviously, that is very suspicious and would get flagged by many bot detection software.
 
-[*ScraperApi*](https://www.scraperapi.com/)
+#### [scraperapi.com](https://www.scraperapi.com/)
 
 This is another commercial scraping service. Their scrapers also exhibit some weird behavior.
 
@@ -123,46 +125,210 @@ For example, their scraping browsers have the timezone set to `Etc/Unknown`. Thi
 
 You can obtain the timezone with the JavaScript snippet `(new window.Intl.DateTimeFormat).resolvedOptions().timeZone`. 
 
-Furthermore, the ScraperApi scrapers have no WebGL support. It is not possible to obtain the video card settings.
+Furthermore, the scraperapi.com scrapers have no WebGL support. It is not possible to obtain the video card settings.
 
 Usually, normal browsers have a video card such as:
  
-```
- "videoCard": [
-    "Intel Inc.",
-    "Intel Iris OpenGL Engine"
-  ],
+```json
+"videoCard": [
+  "Intel Inc.",
+  "Intel Iris OpenGL Engine"
+]
 ```
 
 You can obtain your video card brand names with the following script:
 
 ```JavaScript
 (function getVideoCardInfo() {
-    const gl = document.createElement('canvas').getContext('webgl');
+  const gl = document.createElement('canvas').getContext('webgl');
 
-    if (!gl) {
-        return {
-            error: "no webgl",
-        };
-    }
-    
-    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-
-    if(debugInfo){
-        return {
-            vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
-            renderer:  gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL),
-        };
-    }
-
+  if (!gl) {
     return {
-        error: "no WEBGL_debug_renderer_info",
+      error: "no webgl",
     };
+  }
+  
+  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+
+  if(debugInfo){
+    return {
+      vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+      renderer:  gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL),
+    };
+  }
+
+  return {
+    error: "no WEBGL_debug_renderer_info",
+  };
 })()
 ```
 
-### 5 - To be done.
+#### [scrapingrobot.com](https://scrapingrobot.com)
+
+Some issues with scrapingrobot.com are the following:
+
+The scrapers of scrapingrobot.com are using the following screen size properties:
+
+```json
+"dimensions": {
+  "window.outerWidth": 800,
+  "window.outerHeight": 600,
+  "window.innerWidth": 2470,
+  "window.innerHeight": 1340,
+  "window.screen.width": 2560,
+  "window.screen.height": 1440
+}
+```
+
+It should not be the case that the `window.outerWidth` and `window.outerHeight` properties are smaller than 
+the `window.innerWidth` and `window.innerWidth` screen dimensions. This is a very strong indication
+that the browser was messed with.
+
+Furthermore, their scrapers don't have any plugin information (`navigator.plugins`) associated with them. This is very uncommon for legit
+chrome browses. Usually, every chrome browser has standard plugin information such as 
+
+```json
+"plugins": [
+  {
+    "name": "Chrome PDF Plugin",
+    "description": "Portable Document Format",
+    "mimeType": {
+      "type": "application/x-google-chrome-pdf",
+      "suffixes": "pdf"
+    }
+  },
+  {
+    "name": "Chrome PDF Viewer",
+    "description": "",
+    "mimeType": {
+      "type": "application/pdf",
+      "suffixes": "pdf"
+    }
+  },
+  {
+    "name": "Native Client",
+    "description": "",
+    "mimeType": {
+      "type": "application/x-nacl",
+      "suffixes": ""
+    }
+  }
+]
+```
+
+With `scrapingrobot.com`, this information looks like this:
+
+```json
+"plugins": [
+  {
+    "mimeType": null
+  },
+  {
+    "mimeType": null
+  }
+]
+```
+
+Another issue with the scrapers of `scrapingrobot.com` is that they don't have any multimedia devices (`navigator.mediaDevices`) associated with the browser. Usually, a normal browser has at least one multimedia device associated (such as speakers, micros, webcams).
+
+Normal:
+
+```json
+"multimediaDevices": {
+  "speakers": 1,
+  "micros": 1,
+  "webcams": 1
+}
+```
+
+scrapingrobot.com:
+
+```json
+"multimediaDevices": {
+  "speakers": 0,
+  "micros": 0,
+  "webcams": 0
+}
+```
+
+### 5 - Don't disregard fingerprinting
+
+Scraping is so hard, because there are endless ways to fingerprint a device. You can fingerprint devices on the following levels:
+
+1. **TCP/IP fingerprinting** (for example with [p0f](https://lcamtuf.coredump.cx/p0f3/))
+2. **TLS fingerprinting** (for example with [ja3](https://github.com/salesforce/ja3))
+3. **Browser/JavaScript fingerprinting** (for example with [fingerprintjs2](https://github.com/fingerprintjs/fingerprintjs))
+4. HTTP header fingerprinting
+5. ... and probably many others stacks where fingerprinting is applicable
+
+But why is fingerprinting so relevant for scraping?
+
+Remember, when you want to create a scraper that is able to request a certain websites many 1000 times in a short time, your 
+overall goal for your scraping traffic is to appear to be organic, human like.
+
+Put differently, your goal is to make it as hard as possible to cluster and correlate your scraping user agents into groups.
+
+That is also the reason why you are using proxies. Each scraper instance changes it's IP address after a couple of requests (sometimes as low as 20).
+
+But what happens if you request a certain website 1.000.000 times and you change the IP address on every 500th request. Then the website cannot reasonably block you based on the IP address level, but they can infer that you are still the very same device, because most likely your browser fingerprint does not change when the IP address changes.
+
+See? 
+
+So what exactly constitutes a good fingerprint?
+
+**A good fingerprint needs to have as much entropy as possible, while at the same time aiming to be resilient against minor changes!** 
+
+Note that those two optimization goals contradict each other! You can't maximize both at the same time. It's a typical optimization problem.
+
+For example, a good browser fingerprint should not change when the browser is updated. Therefore, the User-Agent is not a good entropy source for a fingerprint. Furthermore, a good fingerprint should not change when the user is switching into incognito mode. Therefore, cookies and other server side set data are no good either!
+
+The much liked open source project [fingerprintjs2](https://github.com/fingerprintjs/fingerprintjs) uses the following entropy sources to build its fingerprint:
+
+```Typescript
+export const sources = {
+  osCpu: getOsCpu, // navigator.oscpu
+  languages: getLanguages, // navigator.language and navigator.languages
+  colorDepth: getColorDepth, // window.screen.colorDepth
+  deviceMemory: getDeviceMemory, // navigator.deviceMemory
+  screenResolution: getScreenResolution, // screen.width and screen.height
+  availableScreenResolution: getAvailableScreenResolution, // screen.availWidth and screen.availHeight
+  hardwareConcurrency: getHardwareConcurrency, // navigator.hardwareConcurrency
+  timezoneOffset: getTimezoneOffset, //
+  timezone: getTimezone, // (new window.Intl.DateTimeFormat).resolvedOptions().timeZone
+  sessionStorage: getSessionStorage, // !!window.sessionStorage
+  localStorage: getLocalStorage, // !!window.localStorage
+  indexedDB: getIndexedDB, // !!window.indexedDB
+  openDatabase: getOpenDatabase, // !!window.openDatabase
+  cpuClass: getCpuClass, // navigator.cpuClass
+  platform: getPlatform, // navigator.platform
+  plugins: getPlugins, // navigator.plugins
+  canvas: getCanvasFingerprint, // 
+  touchSupport: getTouchSupport,// navigator.maxTouchPoints
+  fonts: getFonts, //
+  audio: getAudioFingerprint, //
+  pluginsSupport: getPluginsSupport, // !!navigator.plugins
+  productSub: getProductSub, // navigator.productSub
+  emptyEvalLength: getEmptyEvalLength, // eval.toString().length
+  errorFF: getErrorFF, //
+  vendor: getVendor, // navigator.vendor
+  chrome: getChrome, // window.chrome !== undefined
+  cookiesEnabled: areCookiesEnabled, // check document.cookie writable
+}
+```
+
+As you can see from the entropy sources, they are more or less stable. But concatenated and hashed with SHA2, they have enough entropy to be very unique.
+
+### 6 - Be aware of behavioral UI analysis 
+
+To be done.
 
 
-### 6 - To be done.
+### 7 - Side channel attacks might reveal the truth
+
+To be done.
+
+
+## Conclusion
+
+To be done.
 
