@@ -7,7 +7,7 @@ Status: published
 
 <a class="btn" href="https://bot.incolumitas.com" style="padding: 10px; font-weight: 600; font-size: 15px">Visit the BotOrNot detection page!</a>
 
-**Last Edit: 27th January 2021**
+**Last Edit: 2nd March 2021**
 
 I currently put a lot of effort into researching the question how to distinguish web based bots from real human beings. Researchers are publishing intriguing new papers constantly that try to answer this question for good. On this page however, I try to take a slightly more practical approach to find solutions. 
 

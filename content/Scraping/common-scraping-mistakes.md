@@ -1,5 +1,6 @@
 Title: 7 Common Mistakes in Professional Scraping
 Date: 2021-03-01 23:13
+Modified: 2021-03-02 18:30
 Category: Scraping
 Tags: web scraping, crawling, puppeteer, playwright
 Slug: 7-common-mistakes-in-professional-scraping
@@ -10,15 +11,19 @@ Summary: In this blog post I am talking about my year long experience with web s
 
 I have been creating scrapers since years. Most of them were quite rubbish. But in the painful process you learn from some common mistakes. In this blog post, I share some of the most frequent mistakes that I spot in the wild and that I made myself. Furthermore, I give general advice how to remain (somewhat) undetected when scraping.
 
-Mandatory note: Many large websites actually don't sanction scraping that much. I would count Google and Amazon to the sites that only moderately prevent scraping. The reason is obvious: Those platforms actually massively profit when other people/companies are using their data in their products. Google and Amazon are heavy players when it comes to E-Commerce and Online Marketing. So they both have an incentive to allow third-party-tools to access their platforms to a certain degree.
+Mandatory note: Many large websites actually don't sanction scraping that much. I would count [Google](https://www.google.com/) and [Amazon](https://www.amazon.com/) to the sites that only moderately prevent scraping. The reason is obvious: Those platforms actually massively profit when other people/companies are using their data in their products. Google and Amazon are heavy players when it comes to E-Commerce and Online Marketing. So they both have an incentive to allow third-party-tools to access their platforms to a certain degree.
 
 Other sites such as Instagram and LinkedIn are much more aggressive when it comes to blocking scrapers. They'll ban ill behaving user agents on the first suspicious activity. Websites such as LinkedIn are practically impossible to use without having an account.
 
 Therefore, the advice in this blog post might be too strict or too lax for your specific use case. Keep that in mind.
 
-## Common Mistakes in Scraping
+Furthermore, this advice does not explicitly apply to scraping or crawling. Scraping often has a very negative connotation. 
 
-### 1 - Don't Lie on the User Agent
+But a increasingly large percentage of people using frameworks such as [puppeteer](https://github.com/puppeteer/puppeteer) or [playwright](https://github.com/microsoft/playwright) to automate otherwise mundane tasks. Therefore, there are many legit reasons why you want to train your software to navigate websites like a real human being.  
+
+## 7 Common Mistakes in Professional Scraping
+
+### 1. Don't Lie on the User Agent
 
 If you are scraping with puppeteer and headless chrome on an Amazon EC2 instance and you set your user agent to be an iPhone 
 
@@ -74,21 +79,79 @@ What to do instead?
 
 I'd suggest to not lie on the user agent that you *truly* are. If your automated browser is running on a Linux system in the cloud, don't alter your user agent. Although Linux systems are quite rare in the wild, they are still legit user agents that websites should not block.
 
-### 2 - Don't scrape too aggressively
+### 2. Don't scrape too aggressively
 
 This is another common mistakes I see people making. Don't scrape too aggressively. After all, you are interested in public data, you don't want to launch a Denial of Service attack against a website. So please be considerate. 
 
-Furthermore, if your scraping becomes a major pain for the websites administrators, they will be extra careful to block ALL illegitimate traffic.
+Furthermore, if your scraping becomes a major pain for the websites administrators, they will be extra careful to block all illegitimate traffic.
 
 So it's better to throttle your scraping and to stay below the radar.
 
-### 3 - Don't use AWS Lambda or any other serverless platform for scraping
+### 3. Don't use AWS Lambda or any other serverless infrastructure for scraping
 
-I am very guilty of this one. I used AWS Lambda for a long time. I could scrape millions of Google SERPs within days on AWS Lambda (even without any proxies and just the AWS Lambda public IP address pool). 
+I am very guilty of this one. I used üAWS Lambda](https://aws.amazon.com/lambda/) for a long time. I managed to scrape millions of Google SERPs within days on AWS Lambda (even without any proxies and just by using the AWS Lambda public IP address pool).
 
-There very [mature modules](https://github.com/alixaxel/chrome-aws-lambda) that ship binaries specifically compiled for the AWS Lambda runtime.
+There exist [mature Node.js modules](https://github.com/alixaxel/chrome-aws-lambda) that ship chromium binaries specifically compiled for the AWS Lambda runtime.
 
-However, there are just too many disadvantages when scraping with AWS Lambda:
+But in order to run the chrome browser on AWS Lambda, you need to launch the chrome browser with many special [command line arguments](https://github.com/alixaxel/chrome-aws-lambda/blob/master/source/index.js):
+
+```JavaScript
+/**
+  * Returns a list of recommended additional Chromium flags.
+  */
+static get args() {
+  const result = [
+    '--autoplay-policy=user-gesture-required',
+    '--disable-background-networking',
+    '--disable-background-timer-throttling',
+    '--disable-backgrounding-occluded-windows',
+    '--disable-breakpad',
+    '--disable-client-side-phishing-detection',
+    '--disable-component-update',
+    '--disable-default-apps',
+    '--disable-dev-shm-usage',
+    '--disable-domain-reliability',
+    '--disable-extensions',
+    '--disable-features=AudioServiceOutOfProcess',
+    '--disable-hang-monitor',
+    '--disable-ipc-flooding-protection',
+    '--disable-notifications',
+    '--disable-offer-store-unmasked-wallet-cards',
+    '--disable-popup-blocking',
+    '--disable-print-preview',
+    '--disable-prompt-on-repost',
+    '--disable-renderer-backgrounding',
+    '--disable-setuid-sandbox',
+    '--disable-speech-api',
+    '--disable-sync',
+    '--disk-cache-size=33554432',
+    '--hide-scrollbars',
+    '--ignore-gpu-blocklist',
+    '--metrics-recording-only',
+    '--mute-audio',
+    '--no-default-browser-check',
+    '--no-first-run',
+    '--no-pings',
+    '--no-sandbox',
+    '--no-zygote',
+    '--password-store=basic',
+    '--use-gl=swiftshader',
+    '--use-mock-keychain',
+  ];
+
+  if (Chromium.headless === true) {
+    result.push('--single-process');
+  } else {
+    result.push('--start-maximized');
+  }
+
+  return result;
+}
+```
+
+I am quite positive that normal chrome browser are not launched with those command line arguments and that it is possible to detect those settings for the websites being visited.
+
+Furthermore, there are just too many disadvantages when scraping with AWS Lambda:
 
 + The lambda runtime is very restrictive
 + You have to test every feature twice and double before it works AWS Lambda
@@ -104,7 +167,7 @@ In the long run, those disadvantages kill the two or three plus points that lamb
 
 Nowadays, I would suggest to use something like a proper Docker scraping image and a cluster management toolchain such as docker swarm or kubernetes instead and rent out VPS servers as scraping demand increases. 
 
-### 4 - Learn from mistakes from professional scraping services
+### 4. Learn from mistakes from professional scraping services
 
 There are many professional scraping services that you can research. They have learned over the years and you can see how they camouflage they scrapers. Sometimes even the professional services make mistakes though.
 
@@ -251,7 +314,7 @@ scrapingrobot.com:
 }
 ```
 
-### 5 - Don't disregard fingerprinting
+### 5. Don't disregard Fingerprinting
 
 Scraping is so hard, because there are endless ways to fingerprint a device. You can fingerprint devices on the following levels:
 
@@ -318,12 +381,13 @@ export const sources = {
 
 As you can see from the entropy sources, they are more or less stable. But concatenated and hashed with SHA2, they have enough entropy to be very unique.
 
-### 6 - Be aware of behavioral UI analysis 
+### 6. Be aware of Behavioral UI Analysis 
 
-To be done.
+Some anti bot companies such as [PerimeterX](https://www.perimeterx.com/) and [Shape Security](https://www.shapesecurity.com/) record mouse movements and other user generated UI data such as scroll events or key presses. 
 
 
-### 7 - Side channel attacks might reveal the truth
+
+### 7. Side channel attacks might reveal the truth
 
 To be done.
 
