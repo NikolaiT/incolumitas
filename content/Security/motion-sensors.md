@@ -9,7 +9,7 @@ Summary: Android mobile devices give to any website device orientation and devic
 
 Android smartphones grant websites access to the [deviceorientation](https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientation_event) and the [devicemotion](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event) events.
 
-Those events basically give information about the current smartphone motion data and rotation angels. This data comes from the built-in accelerometer, gyroscope, and compass built into mobile devices.
+Those events basically give information about real time smartphone motion data and rotation angels. This data comes from the built-in accelerometer, [gyroscope](https://en.wikipedia.org/wiki/Gyroscope) and compass from mobile devices.
 
 So if you are visiting this website from your Android mobile phone, you can see your device motion data in the box below.
 
@@ -94,40 +94,44 @@ So if you are visiting this website from your Android mobile phone, you can see 
 
 ### Sensitive Nature of Motion and Orientation Data
 
-The motion and orientation data can possibly reveal a lot about your real live behavior while browsing a website. Some of the following information can be interpolated by interpreting motion and orientation data of your smartphone:
+Smartphone motion and orientation data can possibly reveal a lot about your real live behavior while browsing a website. Some of the following information can be interpolated by interpreting motion and orientation data of your device:
 
 + In what position your are interacting with the website: Sitting, lying, standing, running, ...
 + Whether you are moving around while looking at the website
-+ If your smartphone is falling down (excellent point to backup some data)
++ If your smartphone is falling down (which would be an excellent point to backup data)
 
-For example, if you follow a video conference with your Android smartphone or tablet while lying in your bed, it would be possible to infer from the device orientation and motion data that you are lying in your bed, even though you disabled your camera and microphone preemptively...
+For example, if you follow a video conference with your Android smartphone or tablet while lying in your bed, it would be possible to infer from the device orientation and motion data that you are lying in your bed, even though you disabled your camera and microphone preemptively...Isn't that a bit creepy? Why is this website allowed to infer what I am currently doing in real life?
 
-Furthermore, I am quite sure that it would also be possible to infer that you are visiting the toilet based on a time series of motion and device orientation data. The reason is the following: There is a unique pattern of motion and orientation data when making a visit to the toilet. First you are walking to a room, then you sit down and then you hold your phone in a certain angle.
+Furthermore, I am quite sure that it would also be possible to infer that you are visiting the toilet based on a time series of motion and device orientation data. The reason is the following: There is a unique pattern of motion and orientation data when making a visit to the toilet. First you are walking to a room, then you sit down and then you hold your phone in a certain angle. It is very likely, that there is some unique pattern in device motion and orientation data that correlates with visits to the toilet...
 
 Apple has a clear stance regarding the `deviceorientation` and `devicemotion` event on their iOS platform: Those events are [disabled by default](https://www.macrumors.com/2019/02/04/ios-12-2-safari-motion-orientation-access-toggle/) and a website needs to [ask for permission in order to use them](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2). Why is this not the case on the Android operating system?
 
 ### The `deviceorientation` Event
 
-This event yields a [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent) every 10ms. This event includes the following information:
+`let evt = DeviceOrientationEvent`
 
-+ `DeviceOrientationEvent.absolute` - A boolean that indicates whether or not the device is providing orientation data absolutely.
-+ `DeviceOrientationEvent.alpha` -  A number representing the motion of the device around the z axis, express in degrees with values ranging from 0 (inclusive) to 360 (exclusive).
+This event yields a [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent) object every 10ms. This event includes the following information:
 
-+ `DeviceOrientationEvent.beta` -  A number representing the motion of the device around the x axis, express in degrees with values ranging from -180 (inclusive) to 180 (exclusive). This represents a front to back motion of the device.
-+ `DeviceOrientationEvent.gamma` -  A number representing the motion of the device around the y axis, express in degrees with values ranging from -90 (inclusive) to 90 (exclusive). This represents a left to right motion of the device.
++ `evt.absolute` - A boolean that indicates whether or not the device is providing orientation data absolutely.
++ `evt.alpha` -  A number representing the motion of the device around the z axis, express in degrees with values ranging from 0 (inclusive) to 360 (exclusive).
+
++ `evt.beta` -  A number representing the motion of the device around the x axis, express in degrees with values ranging from -180 (inclusive) to 180 (exclusive). This represents a front to back motion of the device.
++ `evt.gamma` -  A number representing the motion of the device around the y axis, express in degrees with values ranging from -90 (inclusive) to 90 (exclusive). This represents a left to right motion of the device.
 
 <figure>
     <img src="/images/deviceorientation.png" alt="deviceorientation" style="width:700px" />
-    <figcaption>Illustration of the device orientation (Dev Tools Simulator)</figcaption>
+    <figcaption>You can simulate device orientation data with Chrome Dev Tools</figcaption>
 </figure>
 
 ### The `devicemotion` Event
 
-This event yields a [`DeviceMotionEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent) every 10ms. This event includes the following information:
+`let evt = DeviceOrientationEvent`
 
-+ `DeviceMotionEvent.acceleration` - An object giving the acceleration of the device on the three axis X, Y and Z. Acceleration is expressed in m/s2.
-+ `DeviceMotionEvent.accelerationIncludingGravity` - An object giving the acceleration of the device on the three axis X, Y and Z with the effect of gravity. Acceleration is expressed in m/s2.
-+ `DeviceMotionEvent.rotationRate` - An object giving the rate of change of the device's orientation on the three orientation axis alpha, beta and gamma. Rotation rate is expressed in degrees per seconds.
-+ `DeviceMotionEvent.interval` - A number representing the interval of time, in milliseconds, at which data is obtained from the device.
+This event yields a [`DeviceMotionEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent) object every 10ms. This event includes the following information:
+
++ `evt.acceleration` - An object giving the acceleration of the device on the three axis X, Y and Z. Acceleration is expressed in m/s2.
++ `evt.accelerationIncludingGravity` - An object giving the acceleration of the device on the three axis X, Y and Z with the effect of gravity. Acceleration is expressed in m/s2.
++ `evt.rotationRate` - An object giving the rate of change of the device's orientation on the three orientation axis alpha, beta and gamma. Rotation rate is expressed in degrees per seconds.
++ `evt.interval` - A number representing the interval of time, in milliseconds, at which data is obtained from the device.
 
 
