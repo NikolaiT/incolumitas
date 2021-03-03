@@ -5,13 +5,13 @@ Category: Scraping
 Tags: web scraping, crawling, puppeteer, playwright
 Slug: 7-common-mistakes-in-professional-scraping
 Author: Nikolai Tschacher
-Summary: In this blog post I am talking about my year long experience with web scraping and some common mistakes I made along the road. The more I dive into web scraping, the more I realize how easy it is to make mistakes in scraping. For that reason, I compiled a list of seven common mistakes when it comes to web scraping.
+Summary: In this blog post, I am talking about my several year long experience with web scraping and common mistakes I made along the road. The more I dive into web scraping, the more I realize how easy it is to take wrong decisions when scraping a site. For that reason, I compiled a list of seven common mistakes in regard to web scraping.
 
 The seven scraping commandments <a style="font-size: 70%" href="https://www.youtube.com/watch?v=ZYb_8MM1tGQ">[1]</a>
 
 1. <a href="#lie">Don't Lie about your User Agent</a>
 2. <a href="#speed">Don't scrape too aggressively</a>
-3. <a href="#serverless">Don't use AWS Lambda or any other Serverless infrastructure for Scraping</a>
+3. <a href="#serverless">Pick the right choice of scraping/crawling architecture that matches your needs</a>
 4. <a href="#mistakes">Learn from Mistakes from Professional Scraping Services</a>
 5. <a href="#fingerprinting">Don't disregard Fingerprinting</a>
 6. <a href="#behavior">Be Aware of Behavioral UI Analysis</a>
@@ -98,9 +98,9 @@ Furthermore, if your scraping becomes a major pain for the websites administrato
 So it's better to throttle your scraping and to stay below the radar.
 
 
-<h3 id="serverless">3. Don't use AWS Lambda or any other Serverless infrastructure for Scraping</h3>
+<h3 id="serverless">3. Pick the right choice of scraping/crawling architecture that matches your needs</h3>
 
-I am very guilty of this one. I used [AWS Lambda](https://aws.amazon.com/lambda/) for a long time. I managed to scrape millions of Google SERPs within days on AWS Lambda (even without any proxies and just by using the AWS Lambda public IP address pool).
+In the past, I used [AWS Lambda](https://aws.amazon.com/lambda/) for many larger scraping projects. I managed to scrape millions of Google SERPs within days on AWS Lambda (Even without any external proxies. Just by using the AWS Lambda public IP address pool, I was good to go).
 
 There exist [mature Node.js modules](https://github.com/alixaxel/chrome-aws-lambda) that ship chromium binaries specifically compiled for the AWS Lambda runtime.
 
@@ -160,7 +160,7 @@ static get args() {
 }
 ```
 
-I am quite positive that normal Chrome browser are not launched with those command line arguments and that it is possible to detect those settings for the websites being visited.
+I am quite positive that normal Chrome browsers are not launched with those command line arguments and that it is possible to detect those settings for the websites being visited.
 
 Furthermore, there are just too many disadvantages when scraping with AWS Lambda:
 
@@ -176,10 +176,27 @@ In the long run, those disadvantages kill the two or three plus points that lamb
 + You only pay for what you use
 + You do not have to manage servers yourself
 
-Nowadays, I would suggest to use something like a proper Docker scraping image and a cluster management toolchain such as docker swarm or kubernetes instead and rent out VPS servers as scraping demand increases. 
+#### How should I setup my scraping/crawling infrastructure then? 
+
+It depends on how strong the anti bot defense of the site you are trying to scrape is.
+
+Nowadays, I would suggest to use something like a proper [Google Chrome Docker Image](https://github.com/browserless/chrome) and a cluster management toolchain such as [Docker Swarm](https://docs.docker.com/engine/swarm/) or [Kubernetes](https://kubernetes.io/) instead and rent out VPS servers as scraping demand increases. Maybe you can use [Rancher](https://rancher.com/) and its many VPS vendor integrations to speed up cluster deployments.
+
+Some propositions for possible scraping/crawling architectures in order of increasing anti scraping measures:
+
+1. **No Scraping Defenses** - Use `curl` and switch User-Agents and other HTTP Headers once in a while...
+
+2. **Easy Scraping Target** - If the website is relatively easy to scrape, use AWS Lambda + [chrome-aws-lambda](https://github.com/alixaxel/chrome-aws-lambda) (with the shipped chromium compiled for the AWS runtime) + [plugin-stealth](https://www.npmjs.com/package/puppeteer-extra-plugin-stealth) + some proxy provider
+
+3. **Some Anti Scraping Defense** - If you need a real Google Chrome browser [for more stealth](https://github.com/berstend/puppeteer-extra/wiki/Using-Google-Chrome-instead-of-Chromium), use a Docker Image such as the one from [browserless.io](https://github.com/browserless/chrome) and rent out VPS servers from a provider such as Digitalocean, AWS EC2 or Hetzner. You can use the raw [Chrome DevTools Protocol (CDP)](https://chromedevtools.github.io/devtools-protocol/) for automation.
+A good collection of tools that use the CDP [can be found here](https://github.com/ChromeDevTools/awesome-chrome-devtools). Furthermore, you can simulate mouse movements and keyboard events with a UI automation library such as [PyAutoGUI](https://pyautogui.readthedocs.io/en/latest/). Your Docker image should also launch a virtual frame buffer such as [Xvfb](https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to simulate a graphical user interface.
+
+4. **Advanced Anti Scraping Defense** - If the above setup is still not enough, you can rent out physical devices and conduct your scraping there. You can rent real devices for browser testing on sites such as [browserstack.com](https://www.browserstack.com/) or [AWS Device Farm](https://aws.amazon.com/device-farm/). It's best to also rent proxies, since the default IP addresses are probably already flagged.
+
+5. **Brutal Anti Scraping Defense** - As a final measure, if all of the above fails, you could of course buy your own collection of Android mobile devices and mount a cheap Internet data plan. Then there is nothing to block, because you are a real device after all without pretending to be something else ;) You can buy [cheap Android devices](https://www.amazon.com/RCA-Android-Unlocked-Smartphone-Black/dp/B086G9NF1P/) starting from 69USD and a simple 10GB data plan should not cost more than 10$ a month. You can then install a lightweight Android distribution such as [Android Go](https://www.android.com/versions/go-edition/) and then you are good to go.
+With a 4G connection, your IP address is automatically changed whenever you switch Airplane mode on/off. I currently do not have an exact idea how to automate the scraping there, but it looks like [appium.io](https://appium.io/) might be a solution. Anyhow, it is important to humanize all interactions with the browser/apps there as well.
 
 <h3 id="mistakes">4. Learn from Mistakes from Professional Scraping Services</h3>
-
 
 There are many professional scraping services that you can research. They have learned over the years and you can see how they camouflage they scrapers. Sometimes even the professional services make mistakes though.
 
