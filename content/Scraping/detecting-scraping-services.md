@@ -66,6 +66,25 @@ After scraping the [bot detection site](https://bot.incolumitas.com/) for a coup
 | 6 | 47.35.219.101  | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 | b631bc196165e8f5931b0388a20eb69f | 7f805430de1e7d98b1de033adb58cf46 / b32309a26951912be7dba376398abc3b | Linux 2.2.x-3.x [generic]   | 5D10FDE8           | 301740ff533ffb146abf0cce712f56cb8d06ba6bb399cd571c092b5519289cb8 |
 
 
+After a thorough analysis, I have to admit that Luminati is doing many things extremely well. 
+
+The WebGL fingerprint is inaccurate. It does not say much that it is always identical. I have the same WebGL fingerprint on my Android Phone. The same applies to the TLS fingerprint. There is not enough entropy.
+
+The canvas fingerprint and the browser fingerprint do change. Just as expected. 
+
+The only curious thing is the Linux OS that was detected by p0f. But I do not trust this OS detection feature from p0f enough.
+
+Maybe we have to dig a bit deeper regarding the OS fingerprinting with TCP/IP analysis. 
+
+[Satori](https://github.com/xnih/satori) looks like the perfect tool for it with an extensive and [up to date database](https://github.com/xnih/satori/blob/master/fingerprints/tcp.xml). It's written in easy to understand Python and this gives me enough freedom to hack my own logic into it if needed. p0f seems a bit more complicated.
+
+So the strategy looks like the following:
+
+1. We collect 20 Luminati.io TCP/IP network captures and check the RAW TCP/IP signature we obtain.
+
+2. Then we check if this signature is significantly different from the User Agent that Luminati claims to be.
+
+
 ## Detecting [ScrapingBee](https://scrapingbee.com)
 
 I collected several samples from scrapingbee. I used the following API call:
