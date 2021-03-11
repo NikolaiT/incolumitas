@@ -1,6 +1,6 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
-Modified: 2020-12-28 18:16
+Modified: 2021-03-08 22:31
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
@@ -11,7 +11,7 @@ There are several Adblock detection techniques discussed in this article. If you
 
 <script type="text/javascript">
   (function detectAdblock(callback) {
-    var flaggedURL = 'pagead/js/adsbygoogle.js';
+    var flaggedURL = 'https://adblockanalytics.com';
 
     if (window.fetch) {
       var request = new Request(flaggedURL, {
