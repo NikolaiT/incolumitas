@@ -1,5 +1,7 @@
 login.sh
 
+content/data/scraping-providers/*
+
 Flex-modified/*
 
 isso/isso.cfg
