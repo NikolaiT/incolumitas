@@ -1,12 +1,8 @@
-
-document.addEventListener('load', function() {
+window.addEventListener('load', function() {
     var imgs = document.querySelectorAll('.post-content img');
-
-    function fullwidth(event) {
-        window.location = event.target.src;
-    }
-
-    imgs.forEach((node) => {
-        node.addEventListener('click', fullwidth);
+    imgs.forEach(function (node) {
+        node.addEventListener('click', function(event) {
+            window.location = event.target.src;
+        });
     });
 });
