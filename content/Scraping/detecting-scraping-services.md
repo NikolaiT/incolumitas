@@ -149,6 +149,7 @@ collect({
     <figcaption>Luminati.io also supports webSockets<span style="font-size: 60%"></span></figcaption>
 </figure>
 
+### Detecting Luminati.io with the help of creepJS
 
 Now I decided to see what [creepJS](https://abrahamjuliot.github.io/creepjs/) would say about the Luminati.io data collectors:
 

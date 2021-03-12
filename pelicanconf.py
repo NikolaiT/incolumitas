@@ -92,7 +92,7 @@ STATIC_PATHS = ['uploads/', 'images/', 'data/']
 THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
 
 CUSTOM_CSS = 'stylesheet/custom.css'
-# CUSTOM_JS = 'javascript/custom.js'
+CUSTOM_JS = 'javascript/custom.js'
 
 BODY_JS = (
     'https://abs.incolumitas.com/lib.js',
