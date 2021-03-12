@@ -112,7 +112,7 @@ figure figcaption {
 }
 
 aside {
-    background: url(/theme/img/bg.webp) no-repeat #0a0d0f;
+    background: url(/theme/img/bg.webp) repeat #0a0d0f;
 }
 
 aside nav a:hover {
