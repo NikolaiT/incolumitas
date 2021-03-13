@@ -1,6 +1,6 @@
 Title: Detecting scraping services
 Date: 2021-03-11 22:00
-Modified: 2021-03-12 18:00
+Modified: 2021-03-13 18:00
 Category: Scraping
 Tags: detecting, scraping, security, fingerprint
 Slug: detecting-scraping-services
@@ -14,6 +14,20 @@ My intention with this blog post is not to diminish and look down on the work th
 In my opinion, **it is much harder to create a stealthy scraping service than to detect it**: For detection, you only need to find one single anomaly. To remain stealthy, you must be perfect. Therefore, a resilient and stealthy scraping service is very hard to find. I hope those services can make use of some of my resarch provdided for free here.
 
 **General Strategy**: The bot detection site [bot.incolumitas.com](https://bot.incolumitas.com) was used as a scraping target with all scraping services listed below. For [Luminati.io](https://luminati.io/) I had to [mount heavy machinery](https://github.com/abrahamjuliot/creepjs) to detect their [data collector](https://luminati.io/products/data-collector) as bot. I always used the JavaScript rendering option from the scraping services listed below (thus using real browsers).
+
+
+## TL;DR
+
+1. [Luminati.io](https://luminati.io/): `navigator.platform` is `Linux x86_64` in [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) and iframe contexts compared to `Win32` in the normal `window.navigator.platform` property. In some cases, the TCP/IP fingerprint doesn't look like a Windows NT 10.0 fingerprint, even though the User-Agent claims it.
+
+2. [ScrapingBee](https://scrapingbee.com): The [browser fingerprint](https://github.com/fingerprintjs/fingerprintjs) is identical for all their scraping instances. `navigator.platform` is still set to `Linux x86_64` although the User-Agent is either Intel Mac OS X or Windows NT.
+
+3. [scraperapi.com](https://www.scraperapi.com/): The same issue here, the [browser fingerprint](https://github.com/fingerprintjs/fingerprintjs) is identical for all their scrapers. Weird timezone browser settings of `Etc/Unknown`, strange default screen dimensions, no WebGL vendor renderer information.
+
+4. [scrapingrobot.com](https://scrapingrobot.com): Inconsistent screen dimensions. No plugin information in `navigator.plugins`. No multimedia devices in `navigator.mediaDevices`.
+
+5. [scrapfly.io](https://scrapfly.io): Inconsistent User-Agent in the HTTP header and in `navigator.userAgent`. All their scrapers use always the same video card of *ANGLE (NVIDIA GeForce GTX 660 Direct3D9Ex vs_3_0 ps_3_0)*. No plugin information in `navigator.plugins`. No multimedia devices in `navigator.mediaDevices`.
+
 
 ## Detecting [Luminati.io](https://luminati.io/)
 
