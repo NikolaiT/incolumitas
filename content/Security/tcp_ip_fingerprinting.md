@@ -122,18 +122,19 @@ But can we really correlate those values with operating systems? How accurate is
 
 I don't know :D 
 
-We could look into the implementations, but I am to lazy for that.
+I could investigate the concrete TCP/IP stack implementations or look up the default values, but I am to lazy for that.
 
+## How to correlate the TCP/IP Fingerprint with the Operating System?
 
-## How to correlate the TCP/IP Fingerprint with Operating Systems?
+Now that we have collected TCP/IP fingerprints, we correlate those values with the User-Agent and the `navigator.platform` property extracted from the HTTP headers and `windows.navigator` object.
 
-Now that we have collected the TCP/IP fingerprints, we correlate those values with the User-Agent and the `navigator.platform` property found in http requests. The obvious caveat is: *Shit in, Shit out*s.
+The obvious caveat here is: *Shit in, Shit out*.
 
-If an client spoofs any of the recorded values, we create a faux correlation which in turn hurts our classification system. But let's assume I have my ways to filter out spoofed data.
+If an client spoofs any of the recorded values, we create a faux correlation which in turn hurts our classification system. But let's assume I have my ways to filter out spoofed data on some other layer.
 
-This will result in a TCP/IP fingerprint [database](https://github.com/NikolaiT/zardaxt/blob/master/database.json).
+The above process will yield a TCP/IP - Operating System fingerprint [database](https://github.com/NikolaiT/zardaxt/blob/master/database.json).
 
-The current classification algorithm looks like this:
+The current classification algorithm ([click here](https://github.com/NikolaiT/zardaxt/blob/master/tcp_fingerprint.py) for the newest version) looks like this:
 
 ```Python
 def makeOsGuess(fp, n=4):
@@ -196,25 +197,29 @@ To improve upon this, I need to build equivalency classes and I need to define o
 
 Major and minor operating system classes:
 
-+ Mac OS X
+* **Mac OS X**
   1. Macintosh; Intel Mac OS X 11_x_y
   2. Macintosh; Intel Mac OS X 10_x_y
-+ iPhone
+* **iPhone**
   1. iPhone; CPU iPhone OS 14_x like Mac OS X
-+ Android
+* **Android**
   1. Linux; Android 10
   2. Linux; U; Android 8.1.0
   3. Linux; Android 8.0.0
   4. Linux; Android 9
-+ Windows NT
+* **Windows NT**
   0. Windows NT 6.1
   1. Windows NT 6.3
   2. Windows NT 10.0
-+ Linux x86_64
+* **Linux x86_64**
   1. X11; Ubuntu; Linux x86_64
   2. X11; Linux x86_64
 
-I don't think it is feasible to classify everything properly for every minor operating system version, but it should work for the five major operating system classes (Mac OS X, iPhone, Android, Windows NT, Linux).
+I don't think it is feasible to classify everything properly for every minor operating system version using User-Agent data alone.
+
+Nevertheless, the User-Agent should be accurate enough for the five major operating system classes: Mac OS X, iPhone, Android, Windows NT and Linux. Those five classes are fine grained enough for our purposes.
+
+After all, most proxy or VPN servers are running some kind of Linux system, but the clients claim to be a Mac OS X or Windows operating system. I just want to know that they are lying, not how badly they are lying.
 
 ## Detecting Proxy/VPN Usage with TCP/IP Fingerprinting
 
