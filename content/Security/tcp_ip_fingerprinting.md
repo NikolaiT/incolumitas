@@ -198,24 +198,29 @@ To improve upon this, I need to build equivalency classes and I need to define o
 Major and minor operating system classes:
 
 **Mac OS X**
+
 1. Macintosh; Intel Mac OS X 11_x_y
 2. Macintosh; Intel Mac OS X 10_x_y
 
 **iPhone**
+
 1. iPhone; CPU iPhone OS 14_x like Mac OS X
 
 **Android**
+
 1. Linux; Android 10
 2. Linux; U; Android 8.1.0
 3. Linux; Android 8.0.0
 4. Linux; Android 9
 
 **Windows NT**
+
 0. Windows NT 6.1
 1. Windows NT 6.3
 2. Windows NT 10.0
 
 **Linux x86_64**
+
 1. X11; Ubuntu; Linux x86_64
 2. X11; Linux x86_64
 
@@ -223,10 +228,14 @@ I don't think it is feasible to classify everything properly for every minor ope
 
 Nevertheless, the User-Agent should be accurate enough for the five major operating system classes: Mac OS X, iPhone, Android, Windows NT and Linux. Those five classes are fine grained enough for our purposes.
 
-After all, most proxy or VPN servers are running some kind of Linux system, but the clients claim to be a Mac OS X or Windows operating system. I just want to know that they are lying, not how badly they are lying.
+After all, most proxy or VPN servers are running some kind of Linux system, but often, the clients claim to be a Mac OS X or Windows operating system. I just want to know that they are lying, not how badly they are lying.
 
 ## Detecting Proxy/VPN Usage with TCP/IP Fingerprinting
 
-General idea: My goal is not to identify specific versions of proxy or VPN software. Rather, I want to recognize that there is a discrepancy in the advertised User-Agent and in the actual TCP/IP fingerprint. This is enough to flag the established connection as potentially suspicious.
+General idea: My goal is *not* to identify specific versions of proxy or VPN connections. Rather, I want to recognize that there is a discrepancy in the advertised User-Agent and in the actual TCP/IP fingerprint. This is enough to flag the established connection as potentially suspicious.
 
-And in order to be relatively sure that it is not a legit TCP/IP fingerprint, I need to collect as many samples as possible.
+And in order to be relatively sure that the observed TCP/IP fingerprint does not pertain to one of the above five listed operating system classes, I need to collect as many unique samples as possible for each operating system class.
+
+But can't the VPN or Proxy Servers just assume a different TCP/IP fingerprint? 
+
+Yes sure they can in theory. The question however is: How practical is that? Are those services really gonna alter the TCP/IP fingerprint for every connecting client based on Application Layer data? I don't think this is a realistic approach.
