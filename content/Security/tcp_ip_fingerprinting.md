@@ -197,23 +197,27 @@ To improve upon this, I need to build equivalency classes and I need to define o
 
 Major and minor operating system classes:
 
-* **Mac OS X**
-  1. Macintosh; Intel Mac OS X 11_x_y
-  2. Macintosh; Intel Mac OS X 10_x_y
-* **iPhone**
-  1. iPhone; CPU iPhone OS 14_x like Mac OS X
-* **Android**
-  1. Linux; Android 10
-  2. Linux; U; Android 8.1.0
-  3. Linux; Android 8.0.0
-  4. Linux; Android 9
-* **Windows NT**
-  0. Windows NT 6.1
-  1. Windows NT 6.3
-  2. Windows NT 10.0
-* **Linux x86_64**
-  1. X11; Ubuntu; Linux x86_64
-  2. X11; Linux x86_64
+**Mac OS X**
+1. Macintosh; Intel Mac OS X 11_x_y
+2. Macintosh; Intel Mac OS X 10_x_y
+
+**iPhone**
+1. iPhone; CPU iPhone OS 14_x like Mac OS X
+
+**Android**
+1. Linux; Android 10
+2. Linux; U; Android 8.1.0
+3. Linux; Android 8.0.0
+4. Linux; Android 9
+
+**Windows NT**
+0. Windows NT 6.1
+1. Windows NT 6.3
+2. Windows NT 10.0
+
+**Linux x86_64**
+1. X11; Ubuntu; Linux x86_64
+2. X11; Linux x86_64
 
 I don't think it is feasible to classify everything properly for every minor operating system version using User-Agent data alone.
 
