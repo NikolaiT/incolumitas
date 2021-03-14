@@ -6,7 +6,30 @@ Slug: tcp-ip-fingerprinting-for-vpn-and-proxy-detection
 Author: Nikolai Tschacher
 Summary: TCP/IP fingerprinting is as old as the Internet itself. But this technique seems to have lost it's relevancy in our modern times. However, with the rise of Proxy and VPN Providers, TCP/IP fingerprinting becomes interesting again from a security perspective.
 
-Link to the Python [TCP/IP fingerprinting tool](https://github.com/NikolaiT/zardaxt).
+<a class="btn" href="https://github.com/NikolaiT/zardaxt/" style="padding: 10px; font-weight: 600; font-size: 15px;">Visit the GitHub page of the TCP/IP fingerprinting tool</a>
+
+## Example
+
+Classifying a Windows NT 10.0 operating system with the TCP SYN packet only:
+
+```bash
+$ python tcp_fingerprint.py -i eth0 --classify
+
+Loaded 260 fingerprints from the database
+listening on interface eth0
+
+1615746475: 33.67.251.73:5098 -> 167.99.241.135:443 [SYN]
+{'avgScoreOsClass': {'Android': 'avg=3.72, N=16',
+                     'Linux': 'avg=4.27, N=35',
+                     'Windows': 'avg=6.39, N=146',
+                     'iOS': 'avg=3.44, N=8',
+                     'macOS': 'avg=3.02, N=51'},
+ 'bestGuess': [{'os': 'Windows', 'score': '10.0/10'},
+               {'os': 'Windows', 'score': '10.0/10'},
+               {'os': 'Windows', 'score': '10.0/10'}]}
+---------------------------------
+1615746475: 167.99.241.135:443 -> 33.67.251.73:5098 [SYN+ACK]
+```
 
 ## Introduction
 
@@ -130,22 +153,26 @@ Now that we have collected TCP/IP fingerprints, we correlate those values with t
 
 The obvious caveat here is: *Shit in, Shit out*.
 
-If an client spoofs any of the recorded values, we create a faux correlation which in turn hurts our classification system. But let's assume I have my ways to filter out spoofed data on some other layer.
+If an client spoofs any of the recorded values, we create an incorrect correlation which in turn hurts our classification system. But let's assume I have my ways to filter out spoofed data on some other layer (Hint: Behavioral analysis).
 
-The above process will yield a TCP/IP - Operating System fingerprint [database](https://github.com/NikolaiT/zardaxt/blob/master/database.json).
+The above correlation process will yield a TCP/IP fingerprint enriched with the corresponding operating system. This is how the [database](https://github.com/NikolaiT/zardaxt/tree/master/database) looks like.
 
 The current classification algorithm ([click here](https://github.com/NikolaiT/zardaxt/blob/master/tcp_fingerprint.py) for the newest version) looks like this:
 
 ```Python
-def makeOsGuess(fp, n=4):
+def makeOsGuess(fp, n=3):
   """
-  Return the n highest scoring TCP/IP fingerprinting matches from 
-  the database.
+  Return the highest scoring TCP/IP fingerprinting match from the database.
+  If there is more than one highest scoring match, return all the highest scoring matches.
+
+  As a second guess, output the operating system with the highest, normalized average score.
   """
-  perfectScore = 9.5
+  perfectScore = 10
   scores = []
   for i, entry in enumerate(dbList):
     score = 0
+    # @TODO: consider `ip_tll`
+    # @TODO: consider `tcp_window_scaling`
     # check IP DF bit
     if entry['ip_df'] == fp['ip_df']:
       score += 1
@@ -163,7 +190,7 @@ def makeOsGuess(fp, n=4):
       score += 1
     # check TCP MSS
     if entry['tcp_mss'] == fp['tcp_mss']:
-      score += 1
+      score += 1.5
     # check TCP options
     if entry['tcp_options'] == fp['tcp_options']:
       score += 3
@@ -174,68 +201,88 @@ def makeOsGuess(fp, n=4):
       if orderEntry == orderFp:
         score += 2
 
-    scores.append((i, score))
-
-  # sort the top n scores
-  scores.sort(key=lambda x: x[1], reverse=True)
-  guesses = []
-  for guess in scores[:n]:
-    os = None
-    try:
-      os = re.findall(r'\((.*?)\)', dbList[guess[0]]['navigatorUserAgent'])[0]
-    except Exception as e:
-      pass
-    guesses.append({
-      'score': '{}/{}'.format(guess[1], perfectScore),
-      'os': os
+    scores.append({
+      'i': i,
+      'score': score,
+      'os': entry.get('os', {}).get('name'),
     })
 
-  return guesses
+  # Return the highest scoring TCP/IP fingerprinting match
+  scores.sort(key=lambda x: x['score'], reverse=True)
+  guesses = []
+  highest_score = scores[0].get('score')
+  for guess in scores:
+    if guess['score'] != highest_score:
+      break
+    guesses.append({
+      'score': '{}/{}'.format(guess['score'], perfectScore),
+      'os': guess['os'],
+    })
+
+  # get the os with the highest, normalized average score
+  os_score = {}
+  for guess in scores:
+    if guess['os']:
+      if not os_score.get(guess['os']):
+        os_score[guess['os']] = []
+      os_score[guess['os']].append(guess['score'])
+
+  avg_os_score = {}
+  for key in os_score:
+    N = len(os_score[key])
+    # only consider OS classes with at least 8 elements
+    if N >= 8:
+      avg = sum(os_score[key]) / len(os_score[key])
+      avg_os_score[key] = 'avg={}, N={}'.format(round(avg, 2), N)
+
+  return {
+    'bestGuess': guesses[:n],
+    'avgScoreOsClass': avg_os_score,
+  }
 ```
 
 To improve upon this, I need to build equivalency classes and I need to define operating system classes.
 
 Major and minor operating system classes:
 
-**Mac OS X**
+1. **macOS** and minor versions such as Sierra, High Sierra, Mojave, Catalina
+2. **iOS**
+3. **Android** and minor versions such as Android 8, Android 9, Android 10
+4. **Windows** and minor versions such as Windows 7 (NT 6.1), Windows 8 (NT 6.3) and Windows 10 (NT 10.0)
+5. **Linux** and (maybe) distinct distributions such as Ubuntu, Suse, Linux Arch, ...
 
-1. Macintosh; Intel Mac OS X 11_x_y
-2. Macintosh; Intel Mac OS X 10_x_y
+I don't think it is feasible to classify everything properly for every minor operating system version using the User-Agent alone.
 
-**iPhone**
-
-1. iPhone; CPU iPhone OS 14_x like Mac OS X
-
-**Android**
-
-1. Linux; Android 10
-2. Linux; U; Android 8.1.0
-3. Linux; Android 8.0.0
-4. Linux; Android 9
-
-**Windows NT**
-
-0. Windows NT 6.1
-1. Windows NT 6.3
-2. Windows NT 10.0
-
-**Linux x86_64**
-
-1. X11; Ubuntu; Linux x86_64
-2. X11; Linux x86_64
-
-I don't think it is feasible to classify everything properly for every minor operating system version using User-Agent data alone.
-
-Nevertheless, the User-Agent should be accurate enough for the five major operating system classes: Mac OS X, iPhone, Android, Windows NT and Linux. Those five classes are fine grained enough for our purposes.
-
-After all, most proxy or VPN servers are running some kind of Linux system, but often, the clients claim to be a Mac OS X or Windows operating system. I just want to know that they are lying, not how badly they are lying.
+Nevertheless, the User-Agent should be accurate enough for the five major operating system classes. After all, most proxy or VPN servers are running some kind of Linux system, but often, the connecting clients claim to be a macOS or Windows operating system. I just want to detect that they are lying, not *how badly* they are lying.
 
 ## Detecting Proxy/VPN Usage with TCP/IP Fingerprinting
 
-General idea: My goal is *not* to identify specific versions of proxy or VPN connections. Rather, I want to recognize that there is a discrepancy in the advertised User-Agent and in the actual TCP/IP fingerprint. This is enough to flag the established connection as potentially suspicious.
+General idea: My goal is *not* to identify a specific version of a proxy or VPN software.
 
-And in order to be relatively sure that the observed TCP/IP fingerprint does not pertain to one of the above five listed operating system classes, I need to collect as many unique samples as possible for each operating system class.
+Rather, I want to recognize that there is a discrepancy in the operating system derived from the User-Agent and the operating system suspected behind the TCP/IP fingerprint. Such a mismatch is enough to flag the established connection as potentially malicious.
 
-But can't the VPN or Proxy Servers just assume a different TCP/IP fingerprint? 
+In order to be relatively sure that the observed TCP/IP fingerprint does not pertain to one of the above five listed operating system classes, I need to collect as many unique fingerprint samples as possible for each operating system class.
 
-Yes sure they can in theory. The question however is: How practical is that? Are those services really gonna alter the TCP/IP fingerprint for every connecting client based on Application Layer data? I don't think this is a realistic approach.
+But what happens if the VPN or proxy server dynamically changes its TCP/IP fingerprint?
+
+Indeed, it is very easy to alter the TCP/IP fingerprint on Linux systems. For example, you can change the MSS on a specific route on Linux with the following command:
+
+```bash
+ip route add 11.22.33.44/32 via 172.17.0.1 advmss 1340
+```
+
+ The question however is: How practical is that? Are those proxy/VPN services really gonna alter the TCP/IP fingerprint for every client for which they are routing the traffic based on application layer data? 
+ 
+The proxy/VPN service would have to detect the clients operating system by inspecting the HTTP headers and update the TCP/IP fingerprint accordingly. I don't think this approach is practical.
+
+
+### Detecting Proxy / VPN connections based on MTU/MSS ratio
+
+[This article](https://ipleak.com/articles/proxy-vpn-detection-passive-fingerprinting) suggest to detect proxy / VPN usage by comparing the MTU/MSS ratio of a connection to a standard table of MTU/MSS ratio. 
+
+Remember: 
+
++ MTU (Maximum Transmission Unit) is the upper size of an IP packet including the header.
++ MSS (Maximum Segment Size) is the upper size of the data unit being transmitted (excluding the header).
+
+Protocols such as PPTP, L2TP, or IPsec IKE lower the MTU setting at the network interface (For example to 1400 for IPsec). By comparing the packet size within an intercepted connection to standard MTU / MSS settings, the use of a proxy or VPN can be detected.

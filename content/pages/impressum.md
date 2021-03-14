@@ -16,7 +16,9 @@ deliberately resist to specify a certain license, because my programs
 partially build on other third party software which in turn only allows
 usage of its components under conditions).
 
-To improve this website's performance and usability, analytics data is collected.
+To improve this website's performance and usability, analytics data is collected on this website.
+
+If you do not want to share your analytics data, please disable JavaScript. You can read all articles on this blog without having to use JavaScript. It is a static blog.
 
 ### Website Owner
 
@@ -30,4 +32,4 @@ admin@incolumitas.com
 
 hire@incolumitas.com
 
-**Effective: January 2021**
+**Effective: March 2021**
