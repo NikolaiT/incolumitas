@@ -1,34 +1,85 @@
 Title: TCP/IP Fingerprinting for VPN and Proxy Detection
 Date: 2021-03-13 14:54
+Modified: 2021-03-19 21:23
 Category: Security
 Tags: TCP, IP, fingerprinting, Proxy, VPN
 Slug: tcp-ip-fingerprinting-for-vpn-and-proxy-detection
 Author: Nikolai Tschacher
 Summary: TCP/IP fingerprinting is as old as the Internet itself. But this technique seems to have lost it's relevancy in our modern times. However, with the rise of Proxy and VPN Providers, TCP/IP fingerprinting becomes interesting again from a security perspective.
 
-<a class="btn" href="https://github.com/NikolaiT/zardaxt/" style="padding: 10px; font-weight: 600; font-size: 15px;">Visit the GitHub page of the TCP/IP fingerprinting tool</a>
+<a class="btn" href="https://github.com/NikolaiT/zardaxt/" style="padding: 10px; font-weight: 600; font-size: 15px;">TCP/IP Fingerprinting Tool - GitHub</a>
 
-## Example
+## Live Detection
 
-Classifying a Windows NT 10.0 operating system with the TCP SYN packet only:
+Based on your initial TCP/IP SYN packet, your device most likely is:
+
+<pre id="tcpipFp">
+...loading
+</pre>
+
+<script>
+fetch('https://abs.incolumitas.com/tcpipFp')
+  .then(response => response.json())
+  .then(function(data) {
+    document.getElementById('tcpipFp').innerText = JSON.stringify(data, null, 2);
+  })
+</script>
+
+Your User-Agent (`navigator.userAgent`) says that you are 
+
+<pre id="userAgent">
+</pre>
+
+<script>
+document.getElementById('userAgent').innerText = navigator.userAgent;
+</script>
+
+## Examples
+
+**iPhone**: A iPhone (User-Agent: `iPhone; CPU iPhone OS 14_4_1 like Mac OS X`) visiting my web server. Based on the SYN fingerprint alone, it's not possible to discern whether it's an macOS device or an iOS device. But the classification is good enough to say that it is with high confidence an Apple device.
 
 ```bash
-$ python tcp_fingerprint.py -i eth0 --classify
+python tcp_fingerprint.py -i eth0 --classify
 
-Loaded 260 fingerprints from the database
+Loaded 716 fingerprints from the database
 listening on interface eth0
 
-1615746475: 33.67.251.73:5098 -> 167.99.241.135:443 [SYN]
-{'avgScoreOsClass': {'Android': 'avg=3.72, N=16',
-                     'Linux': 'avg=4.27, N=35',
-                     'Windows': 'avg=6.39, N=146',
-                     'iOS': 'avg=3.44, N=8',
-                     'macOS': 'avg=3.02, N=51'},
- 'bestGuess': [{'os': 'Windows', 'score': '10.0/10'},
-               {'os': 'Windows', 'score': '10.0/10'},
-               {'os': 'Windows', 'score': '10.0/10'}]}
 ---------------------------------
-1615746475: 167.99.241.135:443 -> 33.67.251.73:5098 [SYN+ACK]
+1616184541: 85.19.65.217:49988 -> 167.99.241.135:443 [SYN]
+{'avgScoreOsClass': {'Android': 'avg=4.18, N=36',
+                     'Linux': 'avg=3.31, N=99',
+                     'Windows': 'avg=3.36, N=365',
+                     'iOS': 'avg=6.95, N=20',
+                     'macOS': 'avg=7.26, N=189'},
+ 'bestNGuesses': [{'os': 'macOS', 'score': '10.0/10'},
+                  {'os': 'macOS', 'score': '10.0/10'},
+                  {'os': 'macOS', 'score': '10.0/10'}]}
+---------------------------------
+1616184541: 167.99.241.135:443 -> 85.19.65.217:49988 [SYN+ACK]
+---------------------------------
+```
+
+**Windows 10**: And a Windows 10 (`Windows NT 10.0; Win64; x64`) device visiting my server:
+
+```bash
+python tcp_fingerprint.py -i eth0 --classify
+
+Loaded 716 fingerprints from the database
+listening on interface eth0
+
+---------------------------------
+1616184750: 186.53.223.136:10047 -> 167.99.241.135:443 [SYN]
+{'avgScoreOsClass': {'Android': 'avg=3.88, N=36',
+                     'Linux': 'avg=4.85, N=99',
+                     'Windows': 'avg=7.47, N=365',
+                     'iOS': 'avg=4.03, N=20',
+                     'macOS': 'avg=3.81, N=189'},
+ 'bestNGuesses': [{'os': 'Windows', 'score': '10.0/10'},
+                  {'os': 'Windows', 'score': '10.0/10'},
+                  {'os': 'Windows', 'score': '10.0/10'}]}
+---------------------------------
+1616184750: 167.99.241.135:443 -> 186.53.223.136:10047 [SYN+ACK]
+---------------------------------
 ```
 
 ## Introduction
