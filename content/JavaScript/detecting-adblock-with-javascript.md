@@ -48,10 +48,10 @@ There are several Adblock detection techniques discussed in this article. If you
   })(function (detected) {
     var el = document.getElementById('ad_demo');
     if (detected) {
-      el.innerHTML = 'You are using Adblock!';
+      el.innerHTML = 'You are using Adblock! (' + detected + ')';
     } else {
       el.style.backgroundColor = '#63ff85';
-      el.innerHTML = 'You are not using Adblock';
+      el.innerHTML = 'You are not using Adblock (' + detected + ')';
     }
   })
 </script>
