@@ -1,7 +1,7 @@
 Title: Behavioral Analysis for Bot Detection
-Date: 2021-03-20 23:39
+Date: 2021-04-11 22:07
 Category: Security
-Tags: Behavioral Analysis, Bot Detection, 
+Tags: Behavioral Analysis, Bot Detection
 Slug: bot-detection-with-behavioral-analysis
 Author: Nikolai Tschacher
 Summary: Behavioral analysis is an interesting approach to detect bots. It surely is not the panacea for bot detection, but it certainly is an useful extension in your bot hunting tool belt.
@@ -12,14 +12,16 @@ Bots are programs created by humans to automate repetitive tasks in the Internet
 
 Some Examples of Bots:
 
-1. Sometimes bots only scrape Google or Amazon
+1. Sometimes bots only scrape Google or Amazon search engine results pages
 2. Some bots [buy highly sought after Nike sneakers](https://antoinevastel.com/javascript/2019/08/31/sneakers-supreme-bots.html) immediately after release
-3. Other bots purchase PlayStation 5 consoles from official vendor stores as soon as they are restocked. This happens before legitimate users have a change to buy a PS5 console (Scalping)
-4. Other bots automate banking transactions in order to disintermediate banks
+3. Other bots purchase PlayStation5 consoles from official vendor stores as soon as they are restocked. This happens before legitimate users have a change to buy a PS5 console (Scalping).
+4. Other bots automate banking transactions in order to disintermediate online banks
 
 My conjecture is: Automated programs behave not the same as real human beings.
 
 What to I mean with that from a technical perspective?
+
+Before we can classify behavioral data as either bot-like or human, we have to record and collect it.
 
 The idea is to record the following JavaScript events from every website user:
 
@@ -100,3 +102,10 @@ There are some limitations regarding bot detection with behavioral analysis:
 2. What happens when a bot injects behavioral data that was recorded somewhere else (for example on the attackers own website)? Without knowing the intent of the behavioral data, it is impossible to detect that the recorded behavior is human but from *somewhere else*.
 
 3. Sometimes there just is no behavioral data to analyze. Sometimes Internet users open a web page for later (for example with the middle pointer of the mouse) but never chose to interact with the website.
+
+
+## Resources
+
+- https://github.com/das-th-koeln/HOSIT
+- https://epb.bibl.th-koeln.de/frontdoor/deliver/index/docId/1369/file/Risk-based_Authentication_Study_Final.pdf
+- https://epb.bibl.th-koeln.de/frontdoor/deliver/index/docId/1422/file/Wiefling_HOSIT_NordSec2019.pdf

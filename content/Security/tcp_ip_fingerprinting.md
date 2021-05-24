@@ -18,7 +18,7 @@ Based on your initial TCP/IP SYN packet, your device most likely is:
 </pre>
 
 <script>
-fetch('https://abs.incolumitas.com/tcpipFp')
+fetch('https://tcpip.incolumitas.com/classify?by_ip=1')
   .then(response => response.json())
   .then(function(data) {
     document.getElementById('tcpipFp').innerText = JSON.stringify(data, null, 2);
