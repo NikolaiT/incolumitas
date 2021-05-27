@@ -7,20 +7,22 @@ Slug: detecting-proxies
 Author: Nikolai Tschacher
 Summary: Detecting proxys can't be that hard? Can it?
 
-In the following blog article, I assume that we are running a web server and our task is to detect with sufficient accuracy that a client is using a proxy to hide it's source IP address.
+In the following blog article, I assume that we are running a web server that hosts a web page and our task is to detect with sufficient accuracy that this site's visitor is using a proxy to hide it's *true* source IP address.
 
-Jesus Christ man, detecting proxies can't be that hard? Can it?
+Graphically:
 
-First we need to define what a proxy is for our use case?
+```
+[browser/client] ---> [http/socks proxy] ---> [target website]
+```
 
-A proxy is any kind of intermediate host to which you can send your network packets in order to camouflage your true source IP address.
+First I need to define what a proxy is: A proxy is any kind of intermediate host to which you can send your network packets in order to camouflage your true source IP address. Proxies are often used for web scraping, because when you request a website too frequently with the same IP address, you will get blocked based on your IP address access count. Therefore, switching IP addresses by using several different proxies is way to evade this kind of block.
 
 For stupid people (such as me), the Internet basically runs on top of two protocols: 
 
 1. The IP protocol - this is the protocol that handles packet routing on a hop to hop basis
 2. The TCP protocol - TCP assumes that some kind of connection exists. It takes for granted that there is a connection from host A to host B. It then handles things such as reliability, congestion control and transmission loss so that applications can communicate without worrying about such things...
 
-Put differently, IP handles all the little annoying details such as, how is my packet properly routed from my Laptop's network card to the home modem, how does the modem send the network packet to the ISP's infrastructure. How does the ISP route the IP packet to the next host?
+Put differently, IP handles all the little annoying details such as: How is my packet properly routed from my Laptop's network card to the my home modem/router, how does the modem send the network packet to the ISP's infrastructure. How does the ISP route the IP packet to the next host? And so on.
 
 For example, the routing path obtained with `tracepath` from my home in Germany to my webserver (also in Germany) looks like the following:
 
@@ -42,15 +44,13 @@ $ tracepath incolumitas.com
      Resume: pmtu 1452 hops 10 back 9 
 ```
 
-However, we cannot take for granted that the above routing information is correct. Path discovery is often done with ICMP and routers can silently drop those packages. Nobody can force them to reply (correctly).
+However, we cannot take for granted that the above routing information is correct. Path discovery is often done with ICMP and routers can silently drop ICMP packages. Nobody can force any host on the IP packets path to reply (correctly).
 
-The only thing that we are able to see is the source IP address of the incoming packet.
+The only thing that we are able to see is the external IP address of the incoming IP packet. We don't know if this is the host that is also the originator (in terms of *the process that sent the packet on it's way*) of the packet or if it is just a proxy.
 
-We don't know if this is the host that is also the creator of the packet or if it is just a proxy.
+The *real* source is the process the creates the socket and sends the TCP/IP packets on their merry way. The *real* source is the machine that orchestrates and handles the application level logic.
 
-I honestly don't care. The only thing that matters for me is that the source IP address is not the 'correct' one.
-
-The *real* source is the computer where all the traffic is generated. The *real* source is the machine that orchestrates and handles the application level logic.
+In the remainder of this blog post I will investigate several ideas how to reveal that a visitor requested my web site through a proxy.
 
 ## First Idea: Cross Ping
 
@@ -60,16 +60,12 @@ This is not my idea. After visiting [whatleaks.com/](https://whatleaks.com/), I 
 
 Put differently, the idea is the following:
 
-If there is no intermediate proxy server used, the ping time from computer (browser) to server should be the same as from server to external IP address. But if there is a proxy server in the middle, then the ping time from server to external IP address should be significantly faster than from computer (browser) to server. We can repeat the pings in order to cancel out statistical errors.
+If there is no intermediate proxy server used, the ping time from computer (browser) to server should be the same as from server to the external IP address. But if there is a proxy server in the middle, then the ping time from server to external IP address should be significantly faster than from computer (browser) to server. We can repeat the pings in order to cancel out statistical deviations.
 
 That sounds easy, but in reality we will face several issues:
 
 1. Ping uses the ICMP protocol. The ICMP packet is encapsulated in an IPv4 packet. The packet consists of header and data sections. ICMP is a thin protocol that builds on top of the IP protocol. We can easily use the `ping` command line utility on the server side, but not from the web browser where all we have is JavaScript. It's really not easy to implement something like ping with JavaScript.
 2. When we ping the external IP address (that is assumed to either be the proxy server or the source host), we sometimes don't get an answer. The proxy server can choose to not respond to ICMP packets. However, if it is a proxy server, then a port scan must reveal at least one open TCP/IP port.
-
-The first point is the main issue here. 
-
-But I think I have a solution.
 
 The ping on the server side is easy to implement:
 
@@ -86,7 +82,7 @@ app.get('/ping', async (req, res) => {
 });
 ```
 
-The ping on the JavaScript side looks like this:
+The ping on the JavaScript side is if course a bit tougher. We can't sent ICMP messages, so we have to make use of what is available. Of course it's also possible to computer the latency with DNS queries, WebSocket frames or even webRTC packets. But in the following solution, we will craft an invalid `<img>` element and use it to estimate the RTT to the webserver. Please keep in mind that while we have a one way latency with `ping`, with JavaScript there is at least a TCP handshake involved and we talk about RTTs. 
 
 ```JavaScript
 function ping(url) {
@@ -117,7 +113,7 @@ function ping(url) {
 ping("https://incolumitas.com")
 ```
 
-It's slightly pedantic to also use `performance.now()` to measure the latency, but I want to get extra sure that `new Date()` is not accurate enough. For our use case, the Same Origin Policy does not prevent us from measuring the latency from browser -> server, because we want to measure the latency to our own origin (our own server).
+It's slightly pedantic to also use `performance.now()` to measure the RTT, but I want to get extra sure that `new Date()` is not accurate enough. For our use case, the Same Origin Policy does not prevent us from measuring the latency from browser -> server, because we want to measure the latency to our own origin (our own server).
 
 The lines
 
@@ -146,7 +142,7 @@ On the other hand, when a browser hides behind a proxy server, you will obtain a
   <figcaption>Those latencies are clearly different! The route browser -> server takes much longer compared to server -> external IP address!<span style="font-size: 60%"></span></figcaption>
 </figure>
 
-And another example for a scraping service' bot that hides behind a proxy:
+And another example for a scraping service's bot that hides behind a proxy:
 
 <figure>
   <img src="{static}/images/crossping3.png" alt="Crossping with normal Browser without beign behind a proxy" />
@@ -158,4 +154,4 @@ We can make two key observations:
 1. Normal users have `browser -> server` JavaScript ping latencies in the range of roughly 100ms to 500ms. But when you hide behind a proxy, this number grows significantly to the range 1500ms - 6000ms.
 2. The ping latency from `server -> external IP address` can either not be obtained (because normal computers behind a NAT/CGNAT are not pingable), or the ping latencies are relatively low in case of proxy servers with a range 20ms - 200ms.
 
-From this follows that we need to make an estimate what latencies are considered *normal* and what latencies are high enough to be considered as the result of an intermediate proxy server. 
+From this follows that we need to make an estimate what latencies are considered *normal* and what latencies are high enough to be considered as the result of an intermediate proxy server.
