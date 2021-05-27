@@ -1,5 +1,6 @@
-Title: Detecting Datacenter/Residential Proxies Part Two
+Title: Detecting Datacenter/Residential Proxies
 Date: 2021-04-24 22:07
+Modified: 2021-05-26 22:07
 Category: Security
 Tags: Proxy Detection
 Slug: detecting-proxies
@@ -51,3 +52,37 @@ I honestly don't care. The only thing that matters for me is that the source IP 
 
 The *real* source is the computer where all the traffic is generated. The *real* source is the machine that orchestrates and handles the application level logic.
 
+## First Idea: Cross Ping
+
+This is not my idea. After visiting [whatleaks.com/](https://whatleaks.com/), I saw that they have a ping test that is capable of detecting whether a proxy/tunnel is used. The idea is straightforward:
+
+> We compare ping from your computer to our server and ping from our server to the host of your external IP. If the difference is too much then there is probably a tunnel and you are using a proxy.
+
+Put differently, the idea is the following:
+
+If there is no intermediate proxy server used, the ping time from computer to server should be the same as from server to external IP address. But if there is a proxy server in the middle, then the ping time from
+server to external IP address should be significantly lower than from computer to server. We can repeat the pings in order to cancel out statistical errors.
+
+That sounds easy, but in reality we will face several issues:
+
+1. Ping uses the ICMP protocol. The ICMP packet is encapsulated in an IPv4 packet. The packet consists of header and data sections. ICMP is a thin protocol that builds on top of the IP protocol. We can easily use the `ping` command line utility on the server side, but not from the web browser. There, all we have is JavaScript. It's really not easy to implement something like ping with JavaScript.
+2. When we ping the external IP address (that is assumed to either be the proxy server or the source host), we sometimes don't get an answer. The proxy server can choose to not respond to ICMP packets.
+
+1) is the main issue here. 
+
+But I think I have a solution.
+
+The ping on the server side is easy to implement:
+
+```JavaScript
+app.get('/ping', async (req, res) => {
+  // ping the external IP address
+  let ip = getIp(req);
+
+  let command = `timeout 0.75 ping -qc1 ${ip} 2>&1 | awk -F'/' 'END{ print (/^rtt/? "OK "$5" ms":"FAIL") }'`;
+  const { stdout, stderr } = await exec(command);
+
+  res.header("Content-Type",'application/json');
+  return res.send(JSON.stringify(stdout.trim(), null, 2));
+});
+```
