@@ -136,17 +136,17 @@ Keep in mind though: When you visit the [example page](https://bot.incolumitas.c
 
 <figure>
     <img src="{static}/images/crossping1.png" alt="Crossping with normal Browser without beign behind a proxy" />
-    <figcaption>Crossping with normal Browser without being behind a proxy. Note: I cannot ping your computers public IP address from my server, because the NAT drops all ICMP packets. That's the reason why the ping fails.<span style="font-size: 60%"></span></figcaption>
+    <figcaption>Crossping with normal browser without hiding behind a proxy. Note: I cannot ping a normal computers public IP address from my server, because usually a NAT drops all incoming ICMP packets. That's the reason why the ping fails.<span style="font-size: 60%"></span></figcaption>
 </figure>
 
-On the other hand, when your browser hides behind a proxy server, you will obtain such a result. As an example, I used a well known scraping service and tested their JavaScript capable bot with the [live testing site](https://bot.incolumitas.com/crossping.html).
+On the other hand, when a browser hides behind a proxy server, you will obtain a result as below. As an example, I used a well known scraping service and tested their JavaScript capable bot with the [live testing site](https://bot.incolumitas.com/crossping.html).
 
 <figure>
   <img src="{static}/images/crossping2.png" alt="Crossping with normal Browser without beign behind a proxy" />
-  <figcaption>Those latencies are clearly different! The route `browser -> server` takes much longer compared to `server -> external IP address`!<span style="font-size: 60%"></span></figcaption>
+  <figcaption>Those latencies are clearly different! The route browser -> server takes much longer compared to server -> external IP address!<span style="font-size: 60%"></span></figcaption>
 </figure>
 
-And another example for a bot that hides behind a proxy:
+And another example for a scraping service' bot that hides behind a proxy:
 
 <figure>
   <img src="{static}/images/crossping3.png" alt="Crossping with normal Browser without beign behind a proxy" />
@@ -155,5 +155,7 @@ And another example for a bot that hides behind a proxy:
 
 We can make two key observations:
 
-1. Normal users have `browser -> server` JavaScript ping latencies in the range 100ms to 500ms. But when you hide behind a proxy, this number grows significantly to the range 1500ms - 4000ms.
+1. Normal users have `browser -> server` JavaScript ping latencies in the range of roughly 100ms to 500ms. But when you hide behind a proxy, this number grows significantly to the range 1500ms - 6000ms.
 2. The ping latency from `server -> external IP address` can either not be obtained (because normal computers behind a NAT/CGNAT are not pingable), or the ping latencies are relatively low in case of proxy servers with a range 20ms - 200ms.
+
+From this follows that we need to make an estimate what latencies are considered *normal* and what latencies are high enough to be considered as the result of an intermediate proxy server. 
