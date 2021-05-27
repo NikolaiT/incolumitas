@@ -1,4 +1,4 @@
-Title: Detecting Datacenter/Residential Proxies
+Title: Detecting Datacenter and Residential Proxies
 Date: 2021-04-24 22:07
 Modified: 2021-05-26 22:07
 Category: Security
@@ -60,15 +60,14 @@ This is not my idea. After visiting [whatleaks.com/](https://whatleaks.com/), I 
 
 Put differently, the idea is the following:
 
-If there is no intermediate proxy server used, the ping time from computer to server should be the same as from server to external IP address. But if there is a proxy server in the middle, then the ping time from
-server to external IP address should be significantly lower than from computer to server. We can repeat the pings in order to cancel out statistical errors.
+If there is no intermediate proxy server used, the ping time from computer (browser) to server should be the same as from server to external IP address. But if there is a proxy server in the middle, then the ping time from server to external IP address should be significantly faster than from computer (browser) to server. We can repeat the pings in order to cancel out statistical errors.
 
 That sounds easy, but in reality we will face several issues:
 
-1. Ping uses the ICMP protocol. The ICMP packet is encapsulated in an IPv4 packet. The packet consists of header and data sections. ICMP is a thin protocol that builds on top of the IP protocol. We can easily use the `ping` command line utility on the server side, but not from the web browser. There, all we have is JavaScript. It's really not easy to implement something like ping with JavaScript.
-2. When we ping the external IP address (that is assumed to either be the proxy server or the source host), we sometimes don't get an answer. The proxy server can choose to not respond to ICMP packets.
+1. Ping uses the ICMP protocol. The ICMP packet is encapsulated in an IPv4 packet. The packet consists of header and data sections. ICMP is a thin protocol that builds on top of the IP protocol. We can easily use the `ping` command line utility on the server side, but not from the web browser where all we have is JavaScript. It's really not easy to implement something like ping with JavaScript.
+2. When we ping the external IP address (that is assumed to either be the proxy server or the source host), we sometimes don't get an answer. The proxy server can choose to not respond to ICMP packets. However, if it is a proxy server, then a port scan must reveal at least one open TCP/IP port.
 
-1) is the main issue here. 
+The first point is the main issue here. 
 
 But I think I have a solution.
 
@@ -85,4 +84,33 @@ app.get('/ping', async (req, res) => {
   res.header("Content-Type",'application/json');
   return res.send(JSON.stringify(stdout.trim(), null, 2));
 });
+```
+
+The ping on the JavaScript side looks like this:
+
+```JavaScript
+function ping(url) {
+  var started = new Date().getTime();
+  var http = new XMLHttpRequest();
+
+  var cacheBuster = '?bust=' + (new Date()).getTime()
+  url += cacheBuster;
+
+  http.open("GET", url, /*async*/true);
+  http.onreadystatechange = function() {
+    if (http.readyState == 4) {
+      var ended = new Date().getTime();
+
+      var milliseconds = ended - started;
+      console.log("Took ms: ", milliseconds);
+    }
+  };
+  try {
+    http.send(null);
+  } catch(exception) {
+    // this is expected
+  }
+}
+
+ping("https://incolumitas.com")
 ```
