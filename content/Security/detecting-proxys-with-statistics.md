@@ -1,6 +1,6 @@
 Title: Detecting Datacenter and Residential Proxies
 Date: 2021-04-24 22:07
-Modified: 2021-05-26 22:07
+Modified: 2021-05-27 22:07
 Category: Security
 Tags: Proxy Detection
 Slug: detecting-proxies
@@ -91,6 +91,7 @@ The ping on the JavaScript side looks like this:
 ```JavaScript
 function ping(url) {
   var started = new Date().getTime();
+  var started2 = performance.now();
   var http = new XMLHttpRequest();
 
   var cacheBuster = '?bust=' + (new Date()).getTime()
@@ -100,9 +101,10 @@ function ping(url) {
   http.onreadystatechange = function() {
     if (http.readyState == 4) {
       var ended = new Date().getTime();
+      var ended2 = performance.now();
 
       var milliseconds = ended - started;
-      console.log("Took ms: ", milliseconds);
+      console.log("Took ms: ", milliseconds, ended2 - started2);
     }
   };
   try {
@@ -114,3 +116,44 @@ function ping(url) {
 
 ping("https://incolumitas.com")
 ```
+
+It's slightly pedantic to also use `performance.now()` to measure the latency, but I want to get extra sure that `new Date()` is not accurate enough. For our use case, the Same Origin Policy does not prevent us from measuring the latency from browser -> server, because we want to measure the latency to our own origin (our own server).
+
+The lines
+
+```JavaScript
+var cacheBuster = '?bust=' + (new Date()).getTime()
+url += cacheBuster;
+```
+
+prevent the browser from caching the images and thus giving false results for latency measurements.
+
+### Live Example and Explanation of Results
+
+You can also visit the example page here: [https://bot.incolumitas.com/crossping.html](https://bot.incolumitas.com/crossping.html)
+
+Keep in mind though: When you visit the [example page](https://bot.incolumitas.com/crossping.html) with your normal browser that is not behind a proxy, your result will look something like this:
+
+<figure>
+    <img src="{static}/images/crossping1.png" alt="Crossping with normal Browser without beign behind a proxy" />
+    <figcaption>Crossping with normal Browser without being behind a proxy. Note: I cannot ping your computers public IP address from my server, because the NAT drops all ICMP packets. That's the reason why the ping fails.<span style="font-size: 60%"></span></figcaption>
+</figure>
+
+On the other hand, when your browser hides behind a proxy server, you will obtain such a result. As an example, I used a well known scraping service and tested their JavaScript capable bot with the [live testing site](https://bot.incolumitas.com/crossping.html).
+
+<figure>
+  <img src="{static}/images/crossping2.png" alt="Crossping with normal Browser without beign behind a proxy" />
+  <figcaption>Those latencies are clearly different! The route `browser -> server` takes much longer compared to `server -> external IP address`!<span style="font-size: 60%"></span></figcaption>
+</figure>
+
+And another example for a bot that hides behind a proxy:
+
+<figure>
+  <img src="{static}/images/crossping3.png" alt="Crossping with normal Browser without beign behind a proxy" />
+  <figcaption>Even higher latencies...<span style="font-size: 60%"></span></figcaption>
+</figure>
+
+We can make two key observations:
+
+1. Normal users have `browser -> server` JavaScript ping latencies in the range 100ms to 500ms. But when you hide behind a proxy, this number grows significantly to the range 1500ms - 4000ms.
+2. The ping latency from `server -> external IP address` can either not be obtained (because normal computers behind a NAT/CGNAT are not pingable), or the ping latencies are relatively low in case of proxy servers with a range 20ms - 200ms.
