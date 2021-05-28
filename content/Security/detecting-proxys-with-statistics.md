@@ -82,7 +82,11 @@ app.get('/ping', async (req, res) => {
 });
 ```
 
-The ping on the JavaScript side is if course a bit tougher. We can't sent ICMP messages, so we have to make use of what is available. Of course it's also possible to computer the latency with DNS queries, WebSocket frames or even webRTC packets. But in the following solution, we will craft an invalid `<img>` element and use it to estimate the RTT to the webserver. Please keep in mind that while we have a one way latency with `ping`, with JavaScript there is at least a TCP handshake involved and we talk about RTTs. 
+The ping on the JavaScript side is if course a bit tougher. We can't sent ICMP messages, so we have to make use of what is available. 
+
+Of course it's also thinkable to compute the latency with through other side channels such as DNS queries, WebSocket messages or even webRTC. 
+
+But in the following solution, we will create an `<img>` element with an invalid `src` attribute and use it to estimate the RTT to the webserver. Please keep in mind that while we have a one way latency with `ping`, with JavaScript there is at least a TCP handshake involved and we talk about RTTs. 
 
 ```JavaScript
 function ping(url) {
@@ -155,3 +159,92 @@ We can make two key observations:
 2. The ping latency from `server -> external IP address` can either not be obtained (because normal computers behind a NAT/CGNAT are not pingable), or the ping latencies are relatively low in case of proxy servers with a range 20ms - 200ms.
 
 From this follows that we need to make an estimate what latencies are considered *normal* and what latencies are high enough to be considered as the result of an intermediate proxy server.
+
+### Improving RTT measurement server -> external IP
+
+Instead of measuring the latency with `ping` from server -> external IP address, it is probably a better idea to take the RTT measurements from the initial [TCP handshake](https://blog.packet-foo.com/2014/07/determining-tcp-initial-round-trip-time/) of the incoming connection. There we can at least take an accurate measurement on the server. 
+
+Another advantage is that we don't have the problem of not pingable hosts. Also: The RTT is much easier to compare to the above JavaScript ping implementation than the `ping` one way latency.
+
+<figure>
+  <img src="{static}/images/InitialRTTServer.png" alt="Crossping with normal Browser without beign behind a proxy" />
+  <figcaption>Measuring the RTT on the server as the time between sending SYN/ACK and receiving the ACK<span style="font-size: 60%">Source: https://blog.packet-foo.com/2014/07/determining-tcp-initial-round-trip-time/</span> </figcaption>
+</figure>
+
+## Second Idea: WebRTC Leaks the true IP Address
+
+This is a older technique, but still very relevant.
+
+[WebRTC](https://en.wikipedia.org/wiki/WebRTC) (Web Real-Time Communication) is a technique that allows direct peer-to-peer communication in browseres. It is intended to make direct audio and video communication between peers possible. 
+
+Because direct peer to peer communication is possible, there must be a way to detect the public and internal IP addresses of the peers. This is made possible with a so called [STUN protocol](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols).
+
+> Session Traversal Utilities for NAT (STUN) (acronym within an acronym) is a protocol to discover your public address and determine any restrictions in your router that would prevent a direct connection with a peer. The client will send a request to a STUN server on the Internet who will reply with the client’s public address and whether or not the client is accessible behind the router’s NAT. ([Source](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols))
+
+However, the WebRTC protocol is unaffected by the proxy settings. If a browser is configured to use a proxy server, WebRTC does not communicate through this proxy.
+
+This allows us to detect the real IP address of a browser that uses otherwise a proxy.
+
+### WebRTC JavaScript Detection Implementation
+
+Visit the [demo site](https://bot.incolumitas.com/webRTCclean.html).
+
+The following JavaScript Source demonstrates the technique:
+
+```html
+<!DOCTYPE html><html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebRTC leak</title>
+</head>
+<body>
+  <script>
+    var ips = [];
+
+    function findIP() {
+      var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+      var pc = new myPeerConnection({iceServers: [{urls: "stun:stun.l.google.com:19302"}]}),
+        noop = function() {},
+        localIPs = {},
+        ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+        key;
+
+      function ipIterate(ip) {
+        if (!localIPs[ip]) {
+          ips.push(ip);
+          document.getElementById("webRTCResult").innerHTML = JSON.stringify(ips, null, 2);
+        }
+        localIPs[ip] = true;
+      }
+      
+      pc.createDataChannel("");
+      
+      pc.createOffer(function(sdp) {
+        sdp.sdp.split('\n').forEach(function(line) {
+          if (line.indexOf('candidate') < 0) return;
+          line.match(ipRegex).forEach(ipIterate);
+        });
+        pc.setLocalDescription(sdp, noop, noop);
+      }, noop);
+      
+      pc.onicecandidate = function(ice) {
+        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+        ice.candidate.candidate.match(ipRegex).forEach(ipIterate);
+      };
+    }
+
+    try {
+      findIP();
+    } catch(err) {
+      ips = 'WebRTC failed: ' + err.toString();
+      document.getElementById("webRTCResult").innerHTML = JSON.stringify(ips, null, 2);
+    }
+  </script>
+
+  <h4>WebRTC Detected IPs</h4>
+  <pre id="webRTCResult"></pre>
+</body>
+</html>
+```
+
