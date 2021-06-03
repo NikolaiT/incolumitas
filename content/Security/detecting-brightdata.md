@@ -154,6 +154,8 @@ However, I could obtain correct latencies for `serverToExternalIP` by measuring 
 
 #### Result: Open Ports
 
+Test site: https://abs.incolumitas.com/portscan
+
 ```
 RDP:
 open ports detected: 3389
@@ -165,7 +167,9 @@ AnyplaceControl:
 open ports detected: 5279
 ```
 
-#### Result: Open Ports
+#### Result: TCP/IP Fingerprint
+
+Test site: https://bot.incolumitas.com/tcpip.html
 
 ```
 Passive OS Fingerprint
