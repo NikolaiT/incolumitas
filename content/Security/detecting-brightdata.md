@@ -190,3 +190,8 @@ When testing three times [Brightdata's data collector](https://brightdata.com/pr
     <img src="{static}/images/tcpip-zxt2.png" alt="Brightdata data collector" />
     <figcaption></figcaption>
 </figure>
+
+<figure>
+    <img src="{static}/images/tcpip-zxt3.png" alt="Brightdata data collector" />
+    <figcaption></figcaption>
+</figure>
