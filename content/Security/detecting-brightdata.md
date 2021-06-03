@@ -2,42 +2,44 @@ Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector
 Status: published
 Date: 2021-06-03 21:21
 Category: Security
-Tags: bot detection, anti scraping
+Tags: proxy-provider, bot-detection, anti-scraping
 Slug: detecting-brightdata-data-collector
 Author: Nikolai Tschacher
 Summary: In this blog article I demonstrate several ways how to detect Brigthdata's scraping bot named data collector.
 
+Important: This blog article is under heavy editing for the next days (3th June 2021)
+
 ## Introduction
 
-[Brightdata](https://brightdata.com/) (formerly Luminati Networks) is probably the largest Proxy provider on the planet.
+[Brightdata](https://brightdata.com/) (formerly *Luminati Networks*) is probably the largest proxy provider on the planet.
 
-Their main product is a large proxy network. They offer datacenter, residential and mobile proxies. They can do so, because their sister company [hola.org](https://hola.org/) provides as browser extension that allows to share your network bandwith with other users of [hola.org](https://hola.org/). It's a peer-to-peer network and allows their users to change their IP address. 
+Their main product is a large proxy network. They offer datacenter, residential and mobile proxies. They can do so, because their sister company [hola.org](https://hola.org/) provides as browser extension that allows to share your network bandwith with other users of [hola.org](https://hola.org/). It's a peer-to-peer network and allows their often unaware clientele to change their IP address to circumvent geo-blocking. If you are not from Europe or the US, you very often have to endure ridiculous geo-blocking. 
 
-Put differently: [hola.org](https://hola.org/) installs a proxy server on each person that installs the browser extension and [Brightdata](https://brightdata.com/) resells this bandwith/proxies as residential and mobile proxies to large business customers.
+Put differently: [hola.org](https://hola.org/) installs a proxy server on each person's computer/mobile phone and [Brightdata](https://brightdata.com/) resells this bandwith/proxies as residential and mobile proxies to large business customers.
 
-But most recently, they also strongly push into the data collection niche by allowing their clients a full fledged browser with JavaScript capabilities that is hard to distinguish from a real human controlled browser.
+But most recently, [Brightdata](https://brightdata.com/) also strongly push into the data collection niche (data as a service) by allowing their clients access to a full fledged browser with JavaScript capabilities that is hard to distinguish from a real human controlled browser. This service is called [Brightdata Data Collector](https://brightdata.com/products/data-collector). 
 
 <figure>
     <img src="{static}/images/brightdata.png" alt="Brightdata data collector" />
     <figcaption>Brightdata data collector - Or: Best solution for sneaker bots?</figcaption>
 </figure>
 
-As their own image above suggests, the data collector can be used to scrape Google, scrape prices from E-Commerce websites, scrape the most recent published realtor ads on websites. If you have an advanced undetectable bot, you have an enormous advantage in the Internet. 
+As their own image above suggests, the data collector can be used to scrape search engines, prices from E-Commerce websites, scrape the most recent published real estate listings on realtor websites. If you have an advanced undetectable bot, you have an enormous advantage in the Internet, because speed and automatization is often a huge advantage.
 
 In this blog post, my goal is to find some reliable ways to detect the [Brightdata data collector](https://brightdata.com/products/data-collector).
 
 ## Approach
 
-We will use the following bot detection sites and visit them with [Brightdata's data collector](https://brightdata.com/products/data-collector):
+I will use the following bot detection sites and visit them with [Brightdata's data collector](https://brightdata.com/products/data-collector):
 
 1. [creepjs](https://abrahamjuliot.github.io/creepjs/)
 2. [pixelscan.net](https://pixelscan.net/)
 3. [whatleaks.com](https://whatleaks.com/)
 4. [f.vision](http://f.vision/)
 
-For each detected artifact, I will try to re-implement the test that triggered the detection. 
+For each detected listing, I will try to re-implement the test that triggered the detection. 
 
-Only when I am capable of re-implementing the test, I truly understand why a site claims to have detected the visitor as bot.
+Only when I am capable of re-implementing the test, I truly understand why a site claims to have detected the visitor as bot and I am able to craft my own judgement.
 
 For each bot detection site listed above, I will request the site five times.
 
@@ -59,7 +61,7 @@ collect({
 
 Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
 
-#### Result: IP found in Blacklist
+#### Result 1: Data Collector IP found in Spam Blacklist
 
 [whatleaks.com](https://whatleaks.com/) claims: 
 
@@ -84,19 +86,17 @@ I have to idea how accurate [dnsbl.info](https://www.dnsbl.info/dnsbl-database-c
 With the other IP addresses of the other four samples I got a similar result.
 
 
-#### Result: Ping - Proxies are detected in your connection.
+#### Result 2: Ping - Data Collector Proxy usage detected in connection
 
 When looking up the test description on [whatleaks.com](https://whatleaks.com/):
 
 > We compare ping from your computer to our server and ping from our server to the host of your external IP. If the difference is too much then there is probably a tunnel and you are using a proxy.
 
-I re-implemented this ping proxy detection test in [my last blog article](http://localhost:8000/2021/04/24/detecting-proxies/) where I also quickly programmed my own test.
+I re-implemented this ping proxy detection test in [my last blog article](http://localhost:8000/2021/04/24/detecting-proxies/) where I also quickly programmed my own test. Link to my own ping-based proxy detection test: [bot.incolumitas.com/crossping.html](https://bot.incolumitas.com/crossping.html)
 
-Link to my own ping-based proxy detection test: [bot.incolumitas.com/crossping.html](https://bot.incolumitas.com/crossping.html)
+For example, those are the results of the crossping test when visiting with [Brightdata's data collector](https://brightdata.com/products/data-collector) my [crossping test site](https://bot.incolumitas.com/crossping.html):
 
-For example, those are the results of the crossping test for [Brightdata's data collector](https://brightdata.com/products/data-collector):
-
-Test 1:
+Test Run 1:
 
 ```json
 {
@@ -113,7 +113,7 @@ Test 1:
 }
 ```
 
-Test 2:
+Test Run 2:
 
 ```json
 {
@@ -130,7 +130,7 @@ Test 2:
 }
 ```
 
-And this is me without any proxy visiting my detection site:
+And this is me with my own Laptop and Browser and without any proxy visiting my detection site:
 
 ```json
 {
@@ -149,13 +149,21 @@ And this is me without any proxy visiting my detection site:
 
 As you can see, the ping time for `browserToServer` is significantly higher for [Brightdata's data collector](https://brightdata.com/products/data-collector) compared to my own browser (without any bot). And of course I cannot ping my own IP address `84.152.212.142` from the Internet, because I am behind a NAT.
 
-However, I could obtain correct latencies for `serverToExternalIP` by measuring the TCP handshake.
+If I really need reliable `serverToExternalIP` measurements, I could obtain correct latencies for `serverToExternalIP` by measuring the TCP handshake RTT.
 
-#### Result: Open Ports
+So what can we say from the tests above? 
 
-Test site: https://abs.incolumitas.com/portscan
+In both cases when using [Brightdata's data collector](https://brightdata.com/products/data-collector), the latencies were quite high with around 1 second. This stands in contrast to very small latencies around 100ms when visiting the test with my own browser without any proxy.
 
-```
+In conclusion I can say that I am quite confident that it must be possible to apply some statistics and make a statement such as: The `browserToServer` latencies are significantly higher than the `serverToExternalIP` latencies and therefore we can conclude that there must be some intermediary in the connection!
+
+#### Result: Data Collector IP has Open Ports
+
+Test site: [portscan](https://abs.incolumitas.com/portscan)
+
+[whatleaks.com](https://whatleaks.com/) claims that [Brightdata's data collector](https://brightdata.com/products/data-collector) has open ports:
+
+```text
 RDP:
 open ports detected: 3389
 VNC:
@@ -166,32 +174,113 @@ AnyplaceControl:
 open ports detected: 5279
 ```
 
-#### Result: TCP/IP Fingerprint
+#### Result: Data Collector's TCP/IP Fingerprint different from claimed Browser User Agent
 
-Link to my own TCP/IP detection test: [bot.incolumitas.com/tcpip.html](https://bot.incolumitas.com/tcpip.html)
+I will use my own TCP/IP fingerprinting tool named [zardaxt.py](https://github.com/NikolaiT/zardaxt/) to conduct this test. 
 
+Link to the TCP/IP detection test site: [bot.incolumitas.com/tcpip.html](https://bot.incolumitas.com/tcpip.html)
 
-```
+When visiting the [whatleaks.com](https://whatleaks.com/) test site with [Brightdata's data collector](https://brightdata.com/products/data-collector), the site detects a passive OS fingerprint of `Linux` but a `Windows` OS according to the user agent.
+
+```text
 Passive OS Fingerprint
 OS:
 Passive OS Fingerprint: 	Linux
 Browser Useragent: 	Windows
 ```
 
-When testing three times [Brightdata's data collector](https://brightdata.com/products/data-collector) with my [TCP/IP fingerprinting tool](https://bot.incolumitas.com/tcpip.html):
+Replication: When testing [Brightdata's data collector](https://brightdata.com/products/data-collector) three times with my [own TCP/IP fingerprinting tool](https://bot.incolumitas.com/tcpip.html), I get the following results:
 
 
 <figure>
-    <img src="{static}/images/tcpip-zxt1.png" alt="Brightdata data collector" />
-    <figcaption></figcaption>
+    <img src="{static}/images/tcpip-zxt1.png" alt="TCP/IP fingerprint for Brightdata data collector" />
+    <figcaption>Here it is quite obvious that the User Agent OS is different compared to the TCP/IP fingerprint OS. The TCP/IP fingerprint is most likely Linux.</figcaption>
 </figure>
 
 <figure>
-    <img src="{static}/images/tcpip-zxt2.png" alt="Brightdata data collector" />
-    <figcaption></figcaption>
+    <img src="{static}/images/tcpip-zxt2.png" alt="TCP/IP fingerprint for Brightdata data collector" />
+    <figcaption>Here zardaxt.py fails to make a convincing statement. However, the score for Windows is the lowest, although the User Agent says it's a Windows device...</figcaption>
 </figure>
 
 <figure>
-    <img src="{static}/images/tcpip-zxt3.png" alt="Brightdata data collector" />
-    <figcaption></figcaption>
+    <img src="{static}/images/tcpip-zxt3.png" alt="TCP/IP fingerprint for Brightdata data collector" />
+    <figcaption>Here the User Agent OS matches the suggested TCP/IP fingerprint OS. This one looks legit.</figcaption>
 </figure>
+
+
+
+## Testing with creepjs
+
+I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
+
+```JavaScript
+navigate('https://abrahamjuliot.github.io/creepjs/');
+
+// just let the data collector time out because we wait for 
+// an #id that never appears
+wait_for_text('#doesNOtExit', 'blabla');
+
+collect({
+    url: location.href,
+});
+```
+
+Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
+
+
+## Testing with pixelscan.net
+
+I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
+
+```JavaScript
+navigate('https://pixelscan.net/');
+
+// just let the data collector time out because we wait for 
+// an #id that never appears
+wait_for_text('#doesNOtExit', 'blabla');
+
+collect({
+    url: location.href,
+});
+```
+
+Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
+
+
+## Testing with f.vision
+
+I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
+
+```JavaScript
+navigate('http://f.vision/');
+
+// just let the data collector time out because we wait for 
+// an #id that never appears
+wait_for_text('#doesNOtExit', 'blabla');
+
+collect({
+    url: location.href,
+});
+```
+
+Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
+
+
+#### Result: Various Browser Fingerprint are Static across Bot Samples
+
+
+| # | HSTS   | WEBGL            | CANVAS      | PLUGINS          | AUDIO            | CLIENT RECTS     | FONTS            |
+|---|--------|------------------|-------------|------------------|------------------|------------------|------------------|
+| 1 | N/A    | d0ae1aeb6476af3f | 2140246792  | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 8dc9258100071ba8 |
+| 2 | cc832e | d0ae1aeb6476af3f | 1470235470  | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
+| 3 | cc832e | d0ae1aeb6476af3f | 1470235470  | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
+| 4 | b8c752 | d0ae1aeb6476af3f | -2125110224 | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 023e4ca61828dfc7 |
+| 5 | 94832d | d0ae1aeb6476af3f | -198118648  | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 064d6b2722232577 |
+| 6 | 1c7937 | d0ae1aeb6476af3f | 1426403692  | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
+| 7 | dca0b6 | d0ae1aeb6476af3f | -579119140  | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
+| 8 | fd36e9 | d0ae1aeb6476af3f | 271321058   | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 2aaf3ba9b5696cec |
+| 9 | 69116b | d0ae1aeb6476af3f | -2097547378 | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
+
+As you can see from the 9 samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? 
+
+Is it possible to uniquely identify a [Brightdata data collector bot](https://brightdata.com/products/data-collector) with those fingerprints?
