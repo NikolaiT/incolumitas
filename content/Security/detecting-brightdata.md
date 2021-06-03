@@ -151,7 +151,6 @@ As you can see, the ping time for `browserToServer` is significantly higher for 
 
 However, I could obtain correct latencies for `serverToExternalIP` by measuring the TCP handshake.
 
-
 #### Result: Open Ports
 
 Test site: https://abs.incolumitas.com/portscan
@@ -169,7 +168,8 @@ open ports detected: 5279
 
 #### Result: TCP/IP Fingerprint
 
-Test site: https://bot.incolumitas.com/tcpip.html
+Link to my own TCP/IP detection test: [bot.incolumitas.com/tcpip.html](https://bot.incolumitas.com/tcpip.html)
+
 
 ```
 Passive OS Fingerprint
@@ -177,3 +177,16 @@ OS:
 Passive OS Fingerprint: 	Linux
 Browser Useragent: 	Windows
 ```
+
+When testing three times [Brightdata's data collector](https://brightdata.com/products/data-collector) with my [TCP/IP fingerprinting tool](https://bot.incolumitas.com/tcpip.html):
+
+
+<figure>
+    <img src="{static}/images/tcpip-zxt1.png" alt="Brightdata data collector" />
+    <figcaption></figcaption>
+</figure>
+
+<figure>
+    <img src="{static}/images/tcpip-zxt2.png" alt="Brightdata data collector" />
+    <figcaption></figcaption>
+</figure>
