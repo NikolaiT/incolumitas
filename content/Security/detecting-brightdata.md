@@ -266,7 +266,13 @@ collect({
 Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
 
 
-#### Result: Various Browser Fingerprint are Static across Bot Samples
+#### Result: Various Browser Fingerprints are Static across Bot Samples
+
+The bot detection site [f.vision](http://f.vision/) has quite nice fingerprinting techniques. For that reason I will test if it is possible to detect
+[Brightdata's bot](https://brightdata.com/products/data-collector) with those fingerprints. Detection is possible if the following two properties hold:
+
+1. The fingerprints stay the same among independent bot samples
+2. Those fingerprints together have enough entropy
 
 
 | # | HSTS   | WEBGL            | CANVAS      | PLUGINS          | AUDIO            | CLIENT RECTS     | FONTS            |
@@ -281,6 +287,16 @@ Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
 | 8 | fd36e9 | d0ae1aeb6476af3f | 271321058   | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 2aaf3ba9b5696cec |
 | 9 | 69116b | d0ae1aeb6476af3f | -2097547378 | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
 
-As you can see from the 9 samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? 
+As you can see from the 9 [Brightdata bot](https://brightdata.com/products/data-collector) samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? 
 
 Is it possible to uniquely identify a [Brightdata data collector bot](https://brightdata.com/products/data-collector) with those fingerprints?
+
+For example, when I visit [f.vision](http://f.vision/) with my laptop (1: Linux with Chrome) and my mobile phone (2: Android with Firefox) I get the following fingerprints:
+
+| # | HSTS   | WEBGL            | CANVAS      | PLUGINS          | AUDIO            | CLIENT RECTS     | FONTS            |
+|---|--------|------------------|-------------|------------------|------------------|------------------|------------------|
+| Linux with Chrome | 420525 | ab4364d46077693b | -31304244   | cb43bb325b87c16f | 19f2ec826da99435 | ee5b6ada17b403ef | af1e3afb793f6d87 |
+| Android with Firefox | b40acd | 19208e.......... | 1250865...  | N/A              | 41efd79......... | ddd7d........... | da39a3ee........ |
+
+In the second row, I didn't want to copy all the fingerprints from my mobile phone because I am lazy. I stopped when I saw that they are different to all samples before.
+
