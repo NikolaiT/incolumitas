@@ -1,15 +1,26 @@
-Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector
+Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector as a bot
 Status: published
 Date: 2021-06-03 21:21
 Category: Security
 Tags: proxy-provider, bot-detection, anti-scraping
-Slug: detecting-brightdata-data-collector
+Slug: detecting-brightdata-data-collector-as-bot
 Author: Nikolai Tschacher
-Summary: In this blog article I demonstrate several ways how to detect Brigthdata's scraping bot named data collector.
+Summary: In this blog article I demonstrate several bullet-proof ways how to detect [Brightdata Data Collector](https://brightdata.com/products/data-collector) as a bot without any doubt.
 
-Important: This blog article is under heavy editing for the next days (3th June 2021)
+*this article will likely be modified in the coming days (Edited on 5th June 21)*
 
-## Introduction
+# TL;DR
+
+It's very easy to detect [Brightdata Data Collector](https://brightdata.com/products/data-collector) as bot.
+
+The four largest findings:
+
+1. It's easy to demonstrate that the `navigator` object is heavily spoofed by comparing Web Worker `navigator` properties and Service Worker `navigator` properties to the DOM's `window.navigator` property. Furthermore, it's possible to see that `HeadlessChrome` as browser and `Linux x86_64` as a platform is used.
+2. By comparing the network latencies from browser to server and from server to external IP address, it's possible to interpolate that proxies are used. Furthermore, the external IP's of [Brightdata Data Collector](https://brightdata.com/products/data-collector) answer to ICMP ping packets. 
+3. The TCP/IP fingerprint recorded with my own tool [zardaxt.py](https://github.com/NikolaiT/zardaxt) indicates a different operating system (mostly Linux) than what is advertised in the HTTP User Agent header (Mostly Windows 10)
+4. It's possible to detect that the canvas `getImageData()` method was spoofed. There are several mechanisms and anti-canvas fingerprinting defenses that do not occur with real browsers. 
+
+# Introduction
 
 [Brightdata](https://brightdata.com/) (formerly *Luminati Networks*) is probably the largest proxy provider on the planet.
 
@@ -28,38 +39,39 @@ As their own image above suggests, the data collector can be used to scrape sear
 
 In this blog post, my goal is to find some reliable ways to detect the [Brightdata data collector](https://brightdata.com/products/data-collector).
 
-## Approach
+# Approach
 
-I will use the following bot detection sites and visit them with [Brightdata's data collector](https://brightdata.com/products/data-collector):
+I will use the following bot detection sites and visit them with [Brightdata's data collector](https://brightdata.com/products/data-collector). Put differently: Instead of scraping an arbitrary site such as Google, I will let the bot visit a bot detection site and see what I can find.
 
 1. [creepjs](https://abrahamjuliot.github.io/creepjs/)
 2. [pixelscan.net](https://pixelscan.net/)
 3. [whatleaks.com](https://whatleaks.com/)
 4. [f.vision](http://f.vision/)
 
-For each detected listing, I will try to re-implement the test that triggered the detection. 
-
-Only when I am capable of re-implementing the test, I truly understand why a site claims to have detected the visitor as bot and I am able to craft my own judgement.
+For each detected listing, I will try to re-implement the test that triggered the detection. Only when I am capable of re-implementing the test, I truly understand why a site claims to have detected the visitor as bot and I am able to craft my own judgement.
 
 For each bot detection site listed above, I will request the site five times.
 
-## Testing with whatleaks.com
+# Testing with whatleaks.com
+
+Here [is a link](https://github.com/NikolaiT/detecting-brightdata/tree/main/whatleaks) to the [whatleaks.com](https://whatleaks.com/) results.
 
 I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
 
 ```JavaScript
-navigate('https://whatleaks.com/');
+navigate('https://whatleaks.com');
 
-// just let the data collector time out because we wait for 
-// an #id that never appears
-wait_for_text('#doesNOtExit', 'blabla');
+wait('#doesNOtExit', {timeout: 230000})
 
 collect({
     url: location.href,
 });
 ```
 
-Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
+<figure>
+    <img src="{static}/images/whatLeaks.png" alt="Brightdata data collector" />
+    <figcaption>This is what the whatleaks.com results page look like.</figcaption>
+</figure>
 
 #### Result 1: Data Collector IP found in Spam Blacklist
 
@@ -208,46 +220,102 @@ Replication: When testing [Brightdata's data collector](https://brightdata.com/p
 </figure>
 
 
+# Testing with creepjs
 
-## Testing with creepjs
+Here [is a link](https://github.com/NikolaiT/detecting-brightdata/tree/main/creepjs) to the [creepjs](https://abrahamjuliot.github.io/creepjs/) results.
 
 I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
 
 ```JavaScript
-navigate('https://abrahamjuliot.github.io/creepjs/');
+navigate('https://abrahamjuliot.github.io/creepjs/', {timeout: 230000});
 
-// just let the data collector time out because we wait for 
-// an #id that never appears
-wait_for_text('#doesNOtExit', 'blabla');
+wait('#fingerprint-data > div:nth-child(3) > div:nth-child(2) a');
+
+click('#fingerprint-data > div:nth-child(3) > div:nth-child(2) a');
 
 collect({
     url: location.href,
 });
 ```
 
-Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
+<figure>
+    <img src="{static}/images/creepJS.png" alt="creepjs results page" />
+    <figcaption>This is what the creepjs results page look like. The data collector gets the worst trust score possible.</figcaption>
+</figure>
+
+The [creepjs](https://abrahamjuliot.github.io/creepjs/) bot detection site is a gold mine. Even better, the library is [open source](https://github.com/abrahamjuliot/creepjs).
+
+There are so many findings, it's hard to list them all. Let's get started:
 
 
-## Testing with pixelscan.net
+#### Result 1: Service Worker navigator differs from main navigator
+
+<figure>
+    <img src="{static}/images/creepSW.png" alt="creepjs results page" />
+    <figcaption>creepjs reports that Service Worker navigator properties show the un-spoofed values for the real navigator property</figcaption>
+</figure>
+
+To put it shortly, modern browsers have something called [Service Workers](https://developers.google.com/web/fundamentals/primers/service-workers). It's basically a proxy layer that sits between the web application and the server and adds offline-mode features (amongst others).
+
+In the context of [Service Workers](https://developers.google.com/web/fundamentals/primers/service-workers), there is also a `navigator` property.
+
+My claim (and of course creepjs's claim) is: The bot programmers forgot to spoof those values. 
+
+Therefore, I implemented a test that compares the `navigator` values from the DOM with the values from the Service Worker context. Link to test: [https://bot.incolumitas.com/sw.html](https://bot.incolumitas.com/sw.html)
+
+This is the result:
+
+<figure>
+    <img src="{static}/images/sw-mismatch.png" alt="creepjs results page" />
+    <figcaption>boom - detected</figcaption>
+</figure>
+
+Do you see what I see?
+
++ The bot claims `"navigatorPlatform": "Win32",` but is `"navigatorPlatform": "Linux x86_64",`
++ The bot claims `"navigatorUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36",` but is `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/90.0.4430.93 Safari/537.36`
++ ...
+
+totally busted.
+
+
+#### Result 2: Web Worker navigator differs from main navigator
+
+Same logic here, expect that [Brightdata data collector ](https://brightdata.com/products/data-collector) spoof's a bit more with [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API), so it's less fatal, but still enough to detect them as bot.
+
+Link to test: [https://bot.incolumitas.com/ww.html](https://bot.incolumitas.com/ww.html)
+
+<figure>
+    <img src="{static}/images/ww-mismatch.png" alt="creepjs results page" />
+    <figcaption>boom - detected</figcaption>
+</figure>
+
++ The bot claims `"navigatorPlatform": "Win32",` but is `"navigatorPlatform": "Linux x86_64",`
++ The User Agent is correctly spoofed
++ But `"navigatorLanguages": ["en-US"]` is different to `"navigatorLanguages": ["en-US","en"]`
+
+It's enough to see that the browser *lies*.
+
+# Testing with pixelscan.net
+
+Here [is a link](https://github.com/NikolaiT/detecting-brightdata/tree/main/pixelscan) to the [pixelscan.net](https://pixelscan.net/) results.
 
 I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
 
 ```JavaScript
-navigate('https://pixelscan.net/');
+navigate('https://pixelscan.net/', {timeout: 230000});
 
-// just let the data collector time out because we wait for 
-// an #id that never appears
-wait_for_text('#doesNOtExit', 'blabla');
+wait('#doesNOtExit', {timeout: 230000})
 
 collect({
     url: location.href,
 });
 ```
 
-Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
 
+# Testing with f.vision
 
-## Testing with f.vision
+Here [is a link](https://github.com/NikolaiT/detecting-brightdata/tree/main/f.vision) to the [f.vision](http://f.vision/) results.
 
 I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
 
@@ -267,8 +335,6 @@ collect({
 });
 ```
 
-Here [is a link]() to the [f.vision](http://f.vision) results.
-
 #### Result 1: Fake Canvas detected in Data Collector bot
 
 [f.vision](http://f.vision) detection site claims to have detected fake canvas
@@ -285,14 +351,16 @@ When expanding the information for *fake canvas*, [f.vision](http://f.vision) te
     <figcaption>More Information on fake canvas</figcaption>
 </figure>
 
-It seems that those fake canvas detection tests originate from [here](https://github.com/kkapsner/CanvasBlocker/issues/287).
+It seems that those fake canvas detection tests originate from [here](https://github.com/kkapsner/CanvasBlocker/issues/287). The original test site is named [webGL-Test](https://canvasblocker.kkapsner.de/test/webGL-Test.html).
 
 The author states in this GitHub issue:
 
 > As you already found out the "fake input" mode prevents the detection of normal canvas. For WebGL I'm not aware of any (reasonable) way to prevent the detection there (actually I also have a detection page for webGL: https://canvasblocker.kkapsner.de/test/webGL-Test.html)
 
+**Conclusion:** 
 
-#### Result: Various Browser Fingerprints are Static across Bot Samples
+
+#### Result 2: Various Browser Fingerprints are Static across Bot Samples
 
 The bot detection site [f.vision](http://f.vision/) has quite nice fingerprinting techniques. For that reason I will test if it is possible to detect
 [Brightdata's bot](https://brightdata.com/products/data-collector) with those fingerprints. Detection is possible if the following two properties hold:
