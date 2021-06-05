@@ -252,18 +252,44 @@ Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
 I will use the following [Brightdata data collector ](https://brightdata.com/products/data-collector) script:
 
 ```JavaScript
-navigate('http://f.vision/');
+navigate('http://f.vision', {timeout: 60000});
 
-// just let the data collector time out because we wait for 
-// an #id that never appears
-wait_for_text('#doesNOtExit', 'blabla');
+wait('#start-button > span');
+
+click('#start-button > span');
+
+wait('#collapse-buttons > button.btn.btn-outline.btn-primary.expand-all', {timeout: 60000})
+
+click('#collapse-buttons > button.btn.btn-outline.btn-primary.expand-all');
 
 collect({
     url: location.href,
 });
 ```
 
-Here [is a link]() to the [whatleaks.com](https://whatleaks.com/) results.
+Here [is a link]() to the [f.vision](http://f.vision) results.
+
+#### Result 1: Fake Canvas detected in Data Collector bot
+
+[f.vision](http://f.vision) detection site claims to have detected fake canvas
+
+<figure>
+    <img src="{static}/images/fakeCanvas.png" alt="Detected fake canvas" />
+    <figcaption>Detected fake canvas</figcaption>
+</figure>
+
+When expanding the information for *fake canvas*, [f.vision](http://f.vision) tells me:
+
+<figure>
+    <img src="{static}/images/fakeCanvasInfo.png" alt="Detected fake canvas" />
+    <figcaption>More Information on fake canvas</figcaption>
+</figure>
+
+It seems that those fake canvas detection tests originate from [here](https://github.com/kkapsner/CanvasBlocker/issues/287).
+
+The author states in this GitHub issue:
+
+> As you already found out the "fake input" mode prevents the detection of normal canvas. For WebGL I'm not aware of any (reasonable) way to prevent the detection there (actually I also have a detection page for webGL: https://canvasblocker.kkapsner.de/test/webGL-Test.html)
 
 
 #### Result: Various Browser Fingerprints are Static across Bot Samples
@@ -287,16 +313,22 @@ The bot detection site [f.vision](http://f.vision/) has quite nice fingerprintin
 | 8 | fd36e9 | d0ae1aeb6476af3f | 271321058   | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 2aaf3ba9b5696cec |
 | 9 | 69116b | d0ae1aeb6476af3f | -2097547378 | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
 
-As you can see from the 9 [Brightdata bot](https://brightdata.com/products/data-collector) samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? 
+As you can see from the 9 [Brightdata bot](https://brightdata.com/products/data-collector) samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? Is it possible to uniquely identify a [Brightdata data collector bot](https://brightdata.com/products/data-collector) with those fingerprints?
 
-Is it possible to uniquely identify a [Brightdata data collector bot](https://brightdata.com/products/data-collector) with those fingerprints?
+We can quickly test the entropy of the fingerprint data above by collecting samples with real devices.
 
-For example, when I visit [f.vision](http://f.vision/) with my laptop (1: Linux with Chrome) and my mobile phone (2: Android with Firefox) I get the following fingerprints:
+The fingerprints below are taken with four different real devices when visiting [f.vision](http://f.vision/):
+
+1. With my laptop, Linux with Chrome
+2. With my Android mobile phone with Firefox
+3. With [browserstack.com real device](https://www.browserstack.com/) OSX Big Sur with Chrome 91
+4. With [browserstack.com real device](https://www.browserstack.com/) Win10 with Chrome 91
+
+ and my mobile phone (2: Android with Firefox) I get the following fingerprints:
 
 | # | HSTS   | WEBGL            | CANVAS      | PLUGINS          | AUDIO            | CLIENT RECTS     | FONTS            |
 |---|--------|------------------|-------------|------------------|------------------|------------------|------------------|
-| Linux with Chrome | 420525 | ab4364d46077693b | -31304244   | cb43bb325b87c16f | 19f2ec826da99435 | ee5b6ada17b403ef | af1e3afb793f6d87 |
-| Android with Firefox | b40acd | 19208e.......... | 1250865...  | N/A              | 41efd79......... | ddd7d........... | da39a3ee........ |
-
-In the second row, I didn't want to copy all the fingerprints from my mobile phone because I am lazy. I stopped when I saw that they are different to all samples before.
-
+| Linux with Chrome | 420525    | ab4364d46077693b | -31304244   | cb43bb325b87c16f | 19f2ec826da99435 | ee5b6ada17b403ef | af1e3afb793f6d87 |
+| Android with Firefox | 40b4f1 | 19208ef875544de3 | 1250865652  |  N/A | 41efd79c6069738c | 4612193a6e9f936b | da39a3ee5e6b4b0d |
+| OSX Big Sur with Chrome 91    | 1d26d5 | 2def3b550c3e950d | -434613739  | f98ba1457738b341 | d263e57872d8cbf0 | 09b8cf131bb1dacc | a5103579b5284324 |
+| Win10 with Chrome 91 | 356893 | d0ae1aeb6476af3f | -17f22f0632  | f98ba1457738b341 | 19f2ec826da99435 | 09b8cf131bb1dacc | a267018f11767e47 |
