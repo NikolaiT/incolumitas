@@ -1,7 +1,7 @@
 Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector as a bot
 Status: published
 Date: 2021-06-05 17:45
-Date: 2021-06-06 12:46
+Modified: 2021-06-06 12:46
 Category: Security
 Tags: proxy-provider, bot-detection, anti-scraping
 Slug: detecting-brightdata-data-collector-as-bot

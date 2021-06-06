@@ -21,11 +21,11 @@ For that reason, I am writing this blog.
 
 ## Education
 
-I am a 29 year old Computer Science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) (2019).
+I am a Computer Science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) in 2019.
 
-I visited highschool in Switzerland/Bern and spent the first twenty years of my life in beautiful Switzerland. I am currently living in Berlin, but I am interested in either going back to Switzerland or even changing the continent for a couple of years.
+I visited highschool in Switzerland/Bern and spent the first twenty years of my life in beautiful Switzerland. Then I moved to Germany and lived in Hamburg, Berlin and Cologne. 
 
- I like to work remotely and travel to far away countries, attempting to simultaneously explore while providing for myself. I like to connect to interesting people around the globe and I am open to collaborating on interesting startup ideas.
+I like to work remotely and travel to far away countries, attempting to simultaneously explore while working on interesting projects. I like to connect to smart people around the globe and I am open to collaborating on interesting ideas.
 
 ## Bachelors Thesis
 
@@ -40,14 +40,13 @@ Currently, I am interested in **web scraping / information extraction**, **large
 ## Expertise and skills
 
 - Pretty broad knowledge of applied IT security and cryptography
-- Fluent programming skills in **Python**
-- Intermediate programming knowledge of **Nodejs and Typescript** and latest ECMAScript
+- Fluent programming skills in **Python, JavaScript and Typescript**
 - Intermediate **Django** knowledge
 - Intermediate **Reactjs** knowledge with **ant.d**
 - WiFi programming and security knowledge about wireless networks
 - Asynchronous IO, select, poll, epoll
 - Chess on a 2000 rating level
-- Playing foosball on an amateur level
+- Playing foosball on a amateur level
 
 ## Freelance work and contracting
 
@@ -55,7 +54,7 @@ I am always looking for interesting freelance work. If you think that my project
 
 ## Background of this blog
 
-In the last several years I was interested in web
+In the last decade I was interested in web
 application security. I taught myself different techniques and gained
 interesting insight into the security scene, but I never really had the motivation
 to host my own projects and present myself to the abyss of the Internet.
@@ -64,7 +63,6 @@ By starting this blog in July 2012, my intention was to feed the community with 
 snippets and some of my ideas (There are many ideas – too many – but
 only a fraction that I really realize ).
 
-
 **Nikolai Tschacher**
 
-Last update: **May 2020**
+Last update: **June 2021**
