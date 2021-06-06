@@ -1,43 +1,42 @@
 Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector as a bot
 Status: published
-Date: 2021-06-03 21:21
+Date: 2021-06-05 17:45
+Date: 2021-06-06 12:46
 Category: Security
 Tags: proxy-provider, bot-detection, anti-scraping
 Slug: detecting-brightdata-data-collector-as-bot
 Author: Nikolai Tschacher
 Summary: In this blog article I demonstrate several bullet-proof ways how to detect [Brightdata Data Collector](https://brightdata.com/products/data-collector) as a bot without any doubt.
 
-*this article will likely be modified in the coming days (Edited on 5th June 21)*
-
 # TL;DR
 
-It's very easy to detect [Brightdata Data Collector](https://brightdata.com/products/data-collector) as bot.
+It's very easy to detect [Brightdata Data Collector](https://brightdata.com/products/data-collector) as bot. Brightdata former name was Luminati Networks.
 
-The four largest findings:
+The four largest findings to detect their data collector as bot:
 
-1. It's easy to demonstrate that the `navigator` object is heavily spoofed by comparing Web Worker `navigator` properties and Service Worker `navigator` properties to the DOM's `window.navigator` property. Furthermore, it's possible to see that `HeadlessChrome` as browser and `Linux x86_64` as a platform is used.
-2. By comparing the network latencies from browser to server and from server to external IP address, it's possible to interpolate that proxies are used. Furthermore, the external IP's of [Brightdata Data Collector](https://brightdata.com/products/data-collector) answer to ICMP ping packets. 
-3. The TCP/IP fingerprint recorded with my own tool [zardaxt.py](https://github.com/NikolaiT/zardaxt) indicates a different operating system (mostly Linux) than what is advertised in the HTTP User Agent header (Mostly Windows 10)
-4. It's possible to detect that the canvas `getImageData()` method was spoofed. There are several mechanisms and anti-canvas fingerprinting defenses that do not occur with real browsers. 
+1. It's easy to demonstrate that the `navigator` object is heavily spoofed by comparing certain [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) `navigator` properties and [Service Worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) `navigator` properties to the DOM's `window.navigator` properties (such as `navigator.userAgent` or `navigator.platform`). Furthermore, it's possible to see that `HeadlessChrome` as a browser and `Linux x86_64` as a platform is used.
+2. By comparing the network latencies from browser to server and from server to external IP address, it's possible to interpolate that proxies are used. Furthermore, the external IP's of [Brightdata Data Collector](https://brightdata.com/products/data-collector) answer to ICMP ping packets (sometimes).
+3. The TCP/IP fingerprint recorded with my own tool [zardaxt.py](https://github.com/NikolaiT/zardaxt) indicates a different operating system (mostly Linux) than what is advertised in the HTTP User Agent header (which is mostly Windows 10)
+4. It's possible to detect that the canvas `getImageData()` method was spoofed. There are several spoofing mechanisms and anti-canvas fingerprinting defenses that should not occur with real browsers.
 
 # Introduction
 
 [Brightdata](https://brightdata.com/) (formerly *Luminati Networks*) is probably the largest proxy provider on the planet.
 
-Their main product is a large proxy network. They offer datacenter, residential and mobile proxies. They can do so, because their sister company [hola.org](https://hola.org/) provides as browser extension that allows to share your network bandwith with other users of [hola.org](https://hola.org/). It's a peer-to-peer network and allows their often unaware clientele to change their IP address to circumvent geo-blocking. If you are not from Europe or the US, you very often have to endure ridiculous geo-blocking. 
+Their main product is a large proxy network. They offer datacenter, residential and mobile proxies. They can do so, because their sister company [hola.org](https://hola.org/) provides as browser extension that allows to share the network bandwith with other users of [hola.org](https://hola.org/). It's a peer-to-peer network and allows their often unaware clients to change their IP address to circumvent geo-blocking or remain anonymous. If you are not from Europe or the US, you very often have to endure ridiculous geo-blocking. That's why such services and VPN providers are in huge demand.
 
-Put differently: [hola.org](https://hola.org/) installs a proxy server on each person's computer/mobile phone and [Brightdata](https://brightdata.com/) resells this bandwith/proxies as residential and mobile proxies to large business customers.
+Put differently: [hola.org](https://hola.org/) installs a proxy server on each person's computer/mobile phone and [Brightdata](https://brightdata.com/) resells this bandwith/proxies as residential and mobile proxies to large business customers. There is no such thing as a free service. If it's free, then you are the product.
 
-But most recently, [Brightdata](https://brightdata.com/) also strongly push into the data collection niche (data as a service) by allowing their clients access to a full fledged browser with JavaScript capabilities that is hard to distinguish from a real human controlled browser. This service is called [Brightdata Data Collector](https://brightdata.com/products/data-collector). 
+But most recently, [Brightdata](https://brightdata.com/) also strongly pushed into the data collection niche (data as a service) by allowing their clients access to a full fledged browser with JavaScript capabilities that is hard to distinguish from a real human controlled browser. This service is called [Brightdata Data Collector](https://brightdata.com/products/data-collector) and is the center of attention in this blog article.
 
 <figure>
     <img src="{static}/images/brightdata.png" alt="Brightdata data collector" />
     <figcaption>Brightdata data collector - Or: Best solution for sneaker bots?</figcaption>
 </figure>
 
-As their own image above suggests, the data collector can be used to scrape search engines, prices from E-Commerce websites, scrape the most recent published real estate listings on realtor websites. If you have an advanced undetectable bot, you have an enormous advantage in the Internet, because speed and automatization is often a huge advantage.
+As Brightdata's product marketing image above suggests, the data collector can be used to scrape search engines, prices from E-Commerce websites, scrape the most recent published real estate listings on realtor websites. If you have an advanced undetectable bot, you have an enormous advantage in the Internet, because speed and automatization is often a huge advantage in transactions were demand is high and supply is low.
 
-In this blog post, my goal is to find some reliable ways to detect the [Brightdata data collector](https://brightdata.com/products/data-collector).
+In this blog post, my goal is to find some reliable ways to detect [Brightdata's data collector](https://brightdata.com/products/data-collector) as a bot.
 
 # Approach
 
