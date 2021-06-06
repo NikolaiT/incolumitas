@@ -40,14 +40,14 @@ In this blog post, my goal is to find some reliable ways to detect [Brightdata's
 
 # Approach
 
-I will use the following bot detection sites and visit them with [Brightdata's data collector](https://brightdata.com/products/data-collector). Put differently: Instead of scraping an arbitrary site such as Google, I will let the bot visit a bot detection site and see what I can find.
+I will use the following bot detection sites and visit them with [Brightdata's data collector](https://brightdata.com/products/data-collector). Put differently: Instead of scraping an arbitrary site such as Google, I will let the bot visit a bot detection site and investigate the results of the detection site.
 
 1. [creepjs](https://abrahamjuliot.github.io/creepjs/)
 2. [pixelscan.net](https://pixelscan.net/)
 3. [whatleaks.com](https://whatleaks.com/)
 4. [f.vision](http://f.vision/)
 
-For each detected listing, I will try to re-implement the test that triggered the detection. Only when I am capable of re-implementing the test, I truly understand why a site claims to have detected the visitor as bot and I am able to craft my own judgement.
+For each detected listing, I will try to re-implement the test that triggered the detection. Only when I am capable of re-implementing the detection test, I truly understand why a site claims to have detected the visitor as bot and I am able to craft my own judgement.
 
 For each bot detection site listed above, I will request the site five times.
 
@@ -69,7 +69,7 @@ collect({
 
 <figure>
     <img src="{static}/images/whatLeaks.png" alt="Brightdata data collector" />
-    <figcaption>This is what the whatleaks.com results page look like.</figcaption>
+    <figcaption>This is what the whatleaks.com results page looks like.</figcaption>
 </figure>
 
 #### Result 1: Data Collector IP found in Spam Blacklist
@@ -89,15 +89,14 @@ When looking up the IP address `184.91.1.148` on [dnsbl.info](https://www.dnsbl.
 
 <figure>
     <img src="{static}/images/dnsbl.png" alt="Brightdata data collector" />
-    <figcaption>Brightdata  IP address is listed on [dnsbl.info](https://www.dnsbl.info/dnsbl-database-check.php</figcaption>
+    <figcaption>Brightdata  IP address is listed on https://www.dnsbl.info/dnsbl-database-check.php</figcaption>
 </figure>
 
-I have to idea how accurate [dnsbl.info](https://www.dnsbl.info/dnsbl-database-check.php) is, but as a quick check, I inserted my own public IP address and there also one spam report on this IP (Detected on `b.barracudacentral.org`). So I would not consider those publicly accessible spam lookup databases as overly trustworthy. 
+I have to idea how accurate [dnsbl.info](https://www.dnsbl.info/dnsbl-database-check.php) is, but as a quick check, I looked up my own public IP address and there is also one spam report for my very own ISP IP (Detected on `b.barracudacentral.org`). So I would not consider those publicly accessible spam lookup databases as overly trustworthy.
 
 With the other IP addresses of the other four samples I got a similar result.
 
-
-#### Result 2: Ping - Data Collector Proxy usage detected in connection
+#### Result 2: Ping - Proxy usage detected in Connection
 
 When looking up the test description on [whatleaks.com](https://whatleaks.com/):
 
@@ -105,7 +104,7 @@ When looking up the test description on [whatleaks.com](https://whatleaks.com/):
 
 I re-implemented this ping proxy detection test in [my last blog article](http://localhost:8000/2021/04/24/detecting-proxies/) where I also quickly programmed my own test. Link to my own ping-based proxy detection test: [bot.incolumitas.com/crossping.html](https://bot.incolumitas.com/crossping.html)
 
-For example, those are the results of the crossping test when visiting with [Brightdata's data collector](https://brightdata.com/products/data-collector) my [crossping test site](https://bot.incolumitas.com/crossping.html):
+For example, those are the results of the crossping test when letting [Brightdata's data collector](https://brightdata.com/products/data-collector) visit my [crossping test site](https://bot.incolumitas.com/crossping.html):
 
 Test Run 1:
 
@@ -158,32 +157,50 @@ And this is me with my own Laptop and Browser and without any proxy visiting my 
 }
 ```
 
-As you can see, the ping time for `browserToServer` is significantly higher for [Brightdata's data collector](https://brightdata.com/products/data-collector) compared to my own browser (without any bot). And of course I cannot ping my own IP address `84.152.212.142` from the Internet, because I am behind a NAT.
+As you can see, the ping time for `browserToServer` is significantly higher for [Brightdata's data collector](https://brightdata.com/products/data-collector) compared to my own browser (without any bot). And of course I cannot ping my own IP address `84.152.212.142` from my webserver, because I am behind a NAT.
 
 If I really need reliable `serverToExternalIP` measurements, I could obtain correct latencies for `serverToExternalIP` by measuring the TCP handshake RTT.
 
 So what can we say from the tests above? 
 
-In both cases when using [Brightdata's data collector](https://brightdata.com/products/data-collector), the latencies were quite high with around 1 second. This stands in contrast to very small latencies around 100ms when visiting the test with my own browser without any proxy.
+In both cases when using [Brightdata's data collector](https://brightdata.com/products/data-collector), the latencies were quite high with around 1 second. This stands in contrast to very small latencies around 100ms when visiting the test with my own browser without any proxy. Of course geolocation latencies need to be kept in mind, but usually geolocation induced latencies don't add up to more than 200ms - 300ms.  
 
 In conclusion I can say that I am quite confident that it must be possible to apply some statistics and make a statement such as: The `browserToServer` latencies are significantly higher than the `serverToExternalIP` latencies and therefore we can conclude that there must be some intermediary in the connection!
 
 #### Result: Data Collector IP has Open Ports
 
+I implemented a simple portscan route on my Express web server:
+
+```JavaScript
+app.get('/portscan', async (req, res) => {
+  // ping the external IP address
+  let ip = getIp(req);
+
+  let command = `nmap -p3389,5900,5901,5938,5939,5279 ${ip} 2>&1`;
+  const { stdout, stderr } = await exec(command);
+
+  res.header("Content-Type",'application/json');
+  return res.send(ip + ' - ' + stdout.trim());
+});
+```
+
 Test site: [portscan](https://abs.incolumitas.com/portscan)
 
 [whatleaks.com](https://whatleaks.com/) claims that [Brightdata's data collector](https://brightdata.com/products/data-collector) has open ports:
 
-```text
-RDP:
-open ports detected: 3389
-VNC:
-open ports detected: 5900
-TeamViewer:
-no open ports detected
-AnyplaceControl:
-open ports detected: 5279
-```
+<figure>
+    <img src="{static}/images/whatLeaksPorts.png" alt="Several Open Ports detected by whatleaks.com" />
+    <figcaption>Several Open Ports detected by whatleaks.com</figcaption>
+</figure>
+
+I could reproduce those findings with my portscan method above. See the image below for proof:
+
+<figure>
+    <img src="{static}/images/portscanWL.png" alt="Several Open Ports detected by whatleaks.com" />
+    <figcaption>Several Open Ports detected by my port scanning function</figcaption>
+</figure>
+
+I assume that Brightdata defends against port scanning with restrictive `iptables` rules, that's why I only get `filtered` as result. But undoubtedly, those ports are open.
 
 #### Result: Data Collector's TCP/IP Fingerprint different from claimed Browser User Agent
 
@@ -191,17 +208,14 @@ I will use my own TCP/IP fingerprinting tool named [zardaxt.py](https://github.c
 
 Link to the TCP/IP detection test site: [bot.incolumitas.com/tcpip.html](https://bot.incolumitas.com/tcpip.html)
 
-When visiting the [whatleaks.com](https://whatleaks.com/) test site with [Brightdata's data collector](https://brightdata.com/products/data-collector), the site detects a passive OS fingerprint of `Linux` but a `Windows` OS according to the user agent.
+When visiting the [whatleaks.com](https://whatleaks.com/) test site with [Brightdata's data collector](https://brightdata.com/products/data-collector), the site detects a passive OS fingerprint of `Linux` but a `Windows` OS according to the User Agent.
 
-```text
-Passive OS Fingerprint
-OS:
-Passive OS Fingerprint: 	Linux
-Browser Useragent: 	Windows
-```
+<figure>
+    <img src="{static}/images/wlfp.png" alt="Several Open Ports detected by whatleaks.com" />
+    <figcaption>Linux as detected by the TCP/IP fingerprint, but User Agent says Windows</figcaption>
+</figure>
 
 Replication: When testing [Brightdata's data collector](https://brightdata.com/products/data-collector) three times with my [own TCP/IP fingerprinting tool](https://bot.incolumitas.com/tcpip.html), I get the following results:
-
 
 <figure>
     <img src="{static}/images/tcpip-zxt1.png" alt="TCP/IP fingerprint for Brightdata data collector" />
@@ -237,6 +251,8 @@ collect({
 });
 ```
 
+CreepJS is really devastating in it's opinion about [Brightdata data collector](https://brightdata.com/products/data-collector). It gives a trust score of **0%**, see the image below:
+
 <figure>
     <img src="{static}/images/creepJS.png" alt="creepjs results page" />
     <figcaption>This is what the creepjs results page look like. The data collector gets the worst trust score possible.</figcaption>
@@ -245,7 +261,6 @@ collect({
 The [creepjs](https://abrahamjuliot.github.io/creepjs/) bot detection site is a gold mine. Even better, the library is [open source](https://github.com/abrahamjuliot/creepjs).
 
 There are so many findings, it's hard to list them all. Let's get started:
-
 
 #### Result 1: Service Worker navigator differs from main navigator
 
@@ -258,7 +273,7 @@ To put it shortly, modern browsers have something called [Service Workers](https
 
 In the context of [Service Workers](https://developers.google.com/web/fundamentals/primers/service-workers), there is also a `navigator` property.
 
-My claim (and of course creepjs's claim) is: The bot programmers forgot to spoof those values. 
+My claim (and of course creepjs's claim) is: The bot programmers forgot to spoof those values like they did with main `navigator` property.
 
 Therefore, I implemented a test that compares the `navigator` values from the DOM with the values from the Service Worker context. Link to test: [https://bot.incolumitas.com/sw.html](https://bot.incolumitas.com/sw.html)
 
@@ -271,12 +286,11 @@ This is the result:
 
 Do you see what I see?
 
-+ The bot claims `"navigatorPlatform": "Win32",` but is `"navigatorPlatform": "Linux x86_64",`
-+ The bot claims `"navigatorUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36",` but is `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/90.0.4430.93 Safari/537.36`
-+ ...
+The bot claims to be `Win32` but is `Linux x86_64` when inspecting `navigator.platform`
 
-totally busted.
+The bot claims to be `Chrome/90.0.4430.72` but is `HeadlessChrome/90.0.4430.93` when inspecting `navigator.userAgent`.
 
+Totally busted.
 
 #### Result 2: Web Worker navigator differs from main navigator
 
@@ -289,11 +303,13 @@ Link to test: [https://bot.incolumitas.com/ww.html](https://bot.incolumitas.com/
     <figcaption>boom - detected</figcaption>
 </figure>
 
-+ The bot claims `"navigatorPlatform": "Win32",` but is `"navigatorPlatform": "Linux x86_64",`
-+ The User Agent is correctly spoofed
-+ But `"navigatorLanguages": ["en-US"]` is different to `"navigatorLanguages": ["en-US","en"]`
+Same as with Service Workers above, the bot claims to be `Win32` but is `Linux x86_64` when inspecting `navigator.platform`.
 
-It's enough to see that the browser *lies*.
+The User Agent is correctly spoofed, unlike with Service Workers above.
+
+But `["en-US"]` as taken from `navigator.languages` is different to `["en-US","en"]`.
+
+It's enough to see that the browser *lies*. The values are not consistent.
 
 # Testing with pixelscan.net
 
@@ -310,7 +326,6 @@ collect({
     url: location.href,
 });
 ```
-
 
 # Testing with f.vision
 
@@ -336,7 +351,7 @@ collect({
 
 #### Result 1: Fake Canvas detected in Data Collector bot
 
-[f.vision](http://f.vision) detection site claims to have detected fake canvas
+[f.vision](http://f.vision) detection site claims to have detected fake canvas in [Brightdata data collector ](https://brightdata.com/products/data-collector)
 
 <figure>
     <img src="{static}/images/fakeCanvas.png" alt="Detected fake canvas" />
@@ -356,16 +371,15 @@ The author states in this GitHub issue:
 
 > As you already found out the "fake input" mode prevents the detection of normal canvas. For WebGL I'm not aware of any (reasonable) way to prevent the detection there (actually I also have a detection page for webGL: https://canvasblocker.kkapsner.de/test/webGL-Test.html)
 
-**Conclusion:** 
-
+I won't reproduce the test here, but I am quite confident that this finding is correct and that the bot spoofs different values for WebGL functionality.
 
 #### Result 2: Various Browser Fingerprints are Static across Bot Samples
 
 The bot detection site [f.vision](http://f.vision/) has quite nice fingerprinting techniques. For that reason I will test if it is possible to detect
 [Brightdata's bot](https://brightdata.com/products/data-collector) with those fingerprints. Detection is possible if the following two properties hold:
 
-1. The fingerprints stay the same among independent bot samples
-2. Those fingerprints together have enough entropy
+1. The fingerprints stay the same among many independent bot samples
+2. Those fingerprints together have enough entropy so you can uniquely identify the bot among thousands of normal visitors
 
 
 | # | HSTS   | WEBGL            | CANVAS      | PLUGINS          | AUDIO            | CLIENT RECTS     | FONTS            |
@@ -380,7 +394,7 @@ The bot detection site [f.vision](http://f.vision/) has quite nice fingerprintin
 | 8 | fd36e9 | d0ae1aeb6476af3f | 271321058   | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | 2aaf3ba9b5696cec |
 | 9 | 69116b | d0ae1aeb6476af3f | -2097547378 | f98ba1457738b341 | 19f2ec826da99435 | c01b66fbb94df014 | da39a3ee5e6b4b0d |
 
-As you can see from the 9 [Brightdata bot](https://brightdata.com/products/data-collector) samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? Is it possible to uniquely identify a [Brightdata data collector bot](https://brightdata.com/products/data-collector) with those fingerprints?
+As you can see from the nine [Brightdata bot](https://brightdata.com/products/data-collector) samples collected, the fingerprints for WEBGL, PLUGINS, AUDIO and CLIENT RECTS stays consistent for each bot visit. The big question: How much entropy do those fingerprints have? Is it possible to uniquely identify a [Brightdata data collector bot](https://brightdata.com/products/data-collector) with those fingerprints?
 
 We can quickly test the entropy of the fingerprint data above by collecting samples with real devices.
 
@@ -391,7 +405,6 @@ The fingerprints below are taken with four different real devices when visiting 
 3. With [browserstack.com real device](https://www.browserstack.com/) OSX Big Sur with Chrome 91
 4. With [browserstack.com real device](https://www.browserstack.com/) Win10 with Chrome 91
 
- and my mobile phone (2: Android with Firefox) I get the following fingerprints:
 
 | # | HSTS   | WEBGL            | CANVAS      | PLUGINS          | AUDIO            | CLIENT RECTS     | FONTS            |
 |---|--------|------------------|-------------|------------------|------------------|------------------|------------------|
@@ -399,3 +412,17 @@ The fingerprints below are taken with four different real devices when visiting 
 | Android with Firefox | 40b4f1 | 19208ef875544de3 | 1250865652  |  N/A | 41efd79c6069738c | 4612193a6e9f936b | da39a3ee5e6b4b0d |
 | OSX Big Sur with Chrome 91    | 1d26d5 | 2def3b550c3e950d | -434613739  | f98ba1457738b341 | d263e57872d8cbf0 | 09b8cf131bb1dacc | a5103579b5284324 |
 | Win10 with Chrome 91 | 356893 | d0ae1aeb6476af3f | -17f22f0632  | f98ba1457738b341 | 19f2ec826da99435 | 09b8cf131bb1dacc | a267018f11767e47 |
+
+Now let's check if the fingerprints WEBGL, PLUGINS, AUDIO and CLIENT RECTS have enough entropy.
+
+I can disregard the WEBGL fingerprint as low entropy, because Win10 with Chrome has the same value as the bot (`d0ae1aeb6476af3f`).
+
+Same applies to the PLUGINS fingerprint, because `f98ba1457738b341` appears also in OSX Big Sur with Chrome 91 and Win10 with Chrome 91.
+
+Same story with AUDIO fingerprint. `19f2ec826da99435` occurs in Linux with Chrome and in Win10 with Chrome 91.
+
+And CLIENT RECTS has also low entropy, because both OSX Big Sur with Chrome 91 and Win10 with Chrome 91 have the value `09b8cf131bb1dacc`.
+
+**Conclusion:** Fingerprinting for [Brightdata's bot](https://brightdata.com/products/data-collector) will not be straighforward with [f.vision](http://f.vision/) fingerprints.
+
+
