@@ -425,4 +425,3 @@ And CLIENT RECTS has also low entropy, because both OSX Big Sur with Chrome 91 a
 
 **Conclusion:** Fingerprinting for [Brightdata's bot](https://brightdata.com/products/data-collector) will not be straighforward with [f.vision](http://f.vision/) fingerprints.
 
-
