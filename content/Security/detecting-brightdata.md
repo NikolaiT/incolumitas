@@ -167,7 +167,7 @@ In both cases when using [Brightdata's data collector](https://brightdata.com/pr
 
 In conclusion I can say that I am quite confident that it must be possible to apply some statistics and make a statement such as: The `browserToServer` latencies are significantly higher than the `serverToExternalIP` latencies and therefore we can conclude that there must be some intermediary in the connection!
 
-#### Result: Data Collector IP has Open Ports
+#### Result 3: Data Collector IP has Open Ports
 
 I implemented a simple portscan route on my Express web server:
 
@@ -202,7 +202,7 @@ I could reproduce those findings with my portscan method above. See the image be
 
 I assume that Brightdata defends against port scanning with restrictive `iptables` rules, that's why I only get `filtered` as result. But undoubtedly, those ports are open.
 
-#### Result: Data Collector's TCP/IP Fingerprint different from claimed Browser User Agent
+#### Result 4: Data Collector's TCP/IP Fingerprint different from claimed Browser User Agent
 
 I will use my own TCP/IP fingerprinting tool named [zardaxt.py](https://github.com/NikolaiT/zardaxt/) to conduct this test. 
 
