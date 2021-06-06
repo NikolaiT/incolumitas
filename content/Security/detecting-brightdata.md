@@ -1,4 +1,4 @@
-Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector as a bot
+Title: Detecting Brightdata's (formerly Luminati Networks) Data Collector as a Bot
 Status: published
 Date: 2021-06-05 17:45
 Modified: 2021-06-06 12:46
