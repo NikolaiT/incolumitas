@@ -1,6 +1,6 @@
 Title: Detecting Proxies and VPN's with Latency Measurements
 Status: published
-Date: 2021-06-06 20:00
+Date: 2021-06-07 20:00
 Category: Security
 Tags: proxy-detection, anti-scraping
 Slug: detecting-proxies-and-vpn-with-latencies
@@ -131,6 +131,8 @@ def tcpProcess(pkt, layer, ts):
   from src -> dst, SYN
   from dst -> src, SYN-ACK
   from src -> dst, ACK
+
+  I want the time between SYN-ACK and first ACK
   """
   ip4 = pkt.upper_layer
   tcp1 = pkt.upper_layer.upper_layer
@@ -140,18 +142,28 @@ def tcpProcess(pkt, layer, ts):
   # based on this flag, and some are only valid when it is set, and others when it is clear.
   if tcp1.flags:
     label = ''
+    key = '%s:%s' % (pkt[ip.IP].src_s, pkt[tcp.TCP].sport)
+    if key not in rtts:
+      rtts[key] = {}
     if (tcp1.flags & tcp.TH_SYN) and not (tcp1.flags & tcp.TH_ACK):
       label = 'SYN'
-      rtts['%s:%s-SYN' % (pkt[ip.IP].src_s, pkt[tcp.TCP].sport)] = time.time()
+      if not label in rtts[key]:
+        rtts[key][label] = time.time()
     if (tcp1.flags & tcp.TH_ACK) and not (tcp1.flags & tcp.TH_SYN):
       label = 'ACK'
-      rtts['%s:%s-ACK' % (pkt[ip.IP].src_s, pkt[tcp.TCP].sport)] = time.time()
+      if 'SYN+ACK' in rtts[key] and 'ACK' not in rtts[key]:
+        rtts[key][label] = time.time()
     if (tcp1.flags & tcp.TH_SYN) and (tcp1.flags & tcp.TH_ACK):
+      key = '%s:%s' % (pkt[ip.IP].dst_s, pkt[tcp.TCP].dport)
       label = 'SYN+ACK'
-      rtts['%s:%s-SYN+ACK' % (pkt[ip.IP].src_s, pkt[tcp.TCP].sport)] = time.time()
+      if not label in rtts[key]:
+        rtts[key][label] = time.time()
 
-    print("%d: %s:%s -> %s:%s [%s]" % (ts, pkt[ip.IP].src_s, pkt[tcp.TCP].sport,
-        pkt[ip.IP].dst_s, pkt[tcp.TCP].dport, label))
+    if "SYN+ACK" in rtts[key] and "ACK" in rtts[key] and not 'RTT' in rtts[key]:
+      rtts[key]['RTT'] = '%sms' % round(((rtts[key]["ACK"] - rtts[key]["SYN+ACK"]) * 1000), 2)
+      rtts[key]['RTT2'] = round(rtts[key]["ACK"] - rtts[key]["SYN+ACK"], 4)
+      print("%d: %s:%s -> %s:%s [%s], RTT=%s" % (ts, pkt[ip.IP].src_s, pkt[tcp.TCP].sport,
+          pkt[ip.IP].dst_s, pkt[tcp.TCP].dport, label, rtts[key]['RTT']))
 
 
 def usage():
@@ -162,8 +174,6 @@ def usage():
 
 
 def main():
-  #override some warning settings in pypacker.  May need to change this to .CRITICAL in the future, but for now we're trying .ERROR
-  #without this when parsing http for example we get "WARNINGS" when packets aren't quite right in the header.
   logger = pypacker.logging.getLogger("pypacker")
   pypacker.logger.setLevel(pypacker.logging.ERROR)
 
@@ -226,8 +236,6 @@ try:
       proceed = True
     if opt in ('-v', '--verbose'):
       verbose = True
-    if opt in ('-n', '--writeAfter'):
-      writeAfter = int(val)
 
   if (__name__ == '__main__') and proceed:
     main()
@@ -236,4 +244,26 @@ try:
     usage()
 except getopt.error:
   usage()
+```
+
+Save the above script on your server as `lat.py` and run it with:
+
+```bash
+python lat.py -i eth0
+```
+
+My RTT measurement tool will produce the following output. The sample was taken from someone from South America visiting my blog:
+
+```JavaScript
+1623092439: 192.123.255.204:65238 -> 167.99.241.135:443 [ACK], RTT=231.72ms
+1623092439: 192.123.255.204:65237 -> 167.99.241.135:443 [ACK], RTT=239.88ms
+1623092439: 192.123.255.204:65240 -> 167.99.241.135:443 [ACK], RTT=239.9ms
+1623092440: 192.123.255.204:65243 -> 167.99.241.135:443 [ACK], RTT=239.88ms
+1623092440: 192.123.255.204:65244 -> 167.99.241.135:443 [ACK], RTT=231.86ms
+1623092441: 192.123.255.204:65248 -> 167.99.241.135:443 [ACK], RTT=240.3ms
+1623092441: 192.123.255.204:65251 -> 167.99.241.135:443 [ACK], RTT=244.61ms
+1623092441: 192.123.255.204:65253 -> 167.99.241.135:443 [ACK], RTT=239.75ms
+1623092442: 192.123.255.204:65254 -> 167.99.241.135:443 [ACK], RTT=241.58ms
+1623092444: 192.123.255.204:65258 -> 167.99.241.135:443 [ACK], RTT=239.84ms
+1623092444: 192.123.255.204:65259 -> 167.99.241.135:443 [ACK], RTT=240.11ms
 ```
