@@ -10,7 +10,7 @@ Status: published
     <figcaption>Me reading the secret formula of life</figcaption>
 </figure>
 
-## Blog
+## Why?
 
 Whenever I have difficulties solving a particular problem, I try to put it into words. This process has two advantages:
 
@@ -19,40 +19,43 @@ Whenever I have difficulties solving a particular problem, I try to put it into 
 
 For that reason, I am writing this blog.
 
+--- 
+
+*Nothing in life is as powerful as the beautiful first hour in the morning, after a well rested night, where the strong coffee your are sipping is starting to kick in and you just found the correct house/techno set and your hands start to hammer down letters appearing on a screen.*
+
 ## Education
 
-I am a Computer Science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) in 2019.
+I am a computer science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) in 2019.
 
 I visited highschool in Switzerland/Bern and spent the first twenty years of my life in beautiful Switzerland. Then I moved to Germany and lived in Hamburg, Berlin and Cologne. 
 
-I like to work remotely and travel to far away countries, attempting to simultaneously explore while working on interesting projects. I like to connect to smart people around the globe and I am open to collaborating on interesting ideas.
-
 ## Bachelors Thesis
 
-My bachelors thesis about **typosquatting programming language package managers** in 2016 gained some popularity. There, I demonstrated how it is possible within weeks to intrude into more than 17.000 unique systems by typosquatting package names on [PyPi](https://pypi.org/) or [npmjs.com](https://www.npmjs.com/). As far as I know, this security vulnerability is still unfixed in late 2018.
+My bachelor thesis about **Typosquatting Programming Language Package Managers** in 2016 gained some popularity. There, I demonstrated how it is possible within weeks to intrude into more than 17.000 unique systems by typosquatting package names on [PyPi](https://pypi.org/) or [npmjs.com](https://www.npmjs.com/). As far as I know, this security vulnerability is still unfixed in late 2018.
 
 See my original [blog post here](https://incolumitas.com/2016/06/08/typosquatting-package-managers/). An [news article from Heise](https://www.heise.de/security/meldung/Student-verschreibt-sich-absichtlich-und-US-Regierung-fuehrt-potentiellen-Schadcode-aus-3246728.html) and an [article from ars technica](https://arstechnica.com/information-technology/2016/06/college-student-schools-govs-and-mils-on-perils-of-arbitrary-code-execution/). A year later the large IT portal [Golem wrote also about my thesis](https://www.golem.de/news/pypi-boesartige-python-pakete-entdeckt-1709-130098.html).
 
 ## Interests
 
-Currently, I am interested in **web scraping / information extraction**, **large scale crawling**, **machine learning** and always IT security.
+Currently, I am interested in **web scraping**, **large scale crawling**, **machine learning**, **bot detection** and always generic IT security.
 
-## Expertise and skills
+I like to work remotely and travel to far away countries, attempting to simultaneously explore while working on interesting projects. I like to connect to smart people around the globe and I am open to collaborating on interesting ideas.
+
+## Expertise and Skills
 
 - Pretty broad knowledge of applied IT security and cryptography
 - Fluent programming skills in **Python, JavaScript and Typescript**
 - Intermediate **Django** knowledge
 - Intermediate **Reactjs** knowledge with **ant.d**
 - WiFi programming and security knowledge about wireless networks
-- Asynchronous IO, select, poll, epoll
 - Chess on a 2000 rating level
-- Playing foosball on a amateur level
+- Playing foosball on a high amateur level
 
-## Freelance work and contracting
+## Freelance Work and Contracting
 
-I am always looking for interesting freelance work. If you think that my projects and work might be of use for your latest projects, do not hesitate to [contact me]({filename}/pages/contact.md "contact me").
+I am always looking for interesting freelance work. If you think that my work might be of use for your latest projects, do not hesitate to [contact me]({filename}/pages/contact.md "contact me").
 
-## Background of this blog
+## Background of this Blog
 
 In the last decade I was interested in web
 application security. I taught myself different techniques and gained
@@ -60,8 +63,8 @@ interesting insight into the security scene, but I never really had the motivati
 to host my own projects and present myself to the abyss of the Internet.
 
 By starting this blog in July 2012, my intention was to feed the community with code
-snippets and some of my ideas (There are many ideas – too many – but
-only a fraction that I really realize ).
+snippets and some of my ideas. There are many ideas – too many – but
+only a fraction that I really realize.
 
 **Nikolai Tschacher**
 
