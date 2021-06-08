@@ -89,12 +89,12 @@ median 126.5
 measurements [41.5, 91.5, 108.70000000298023, 121.19999999925494, 124.89999999850988, 126.5, 126.70000000298023, 130.09999999776483, 130.19999999925494, 145.10000000149012, 145.5]
 ```
 
-However, there is a big problem. The `XMLHttpRequest` technique of measuring latencies gives wrong results. A substantial part of the latency does not come from the RTT, but from things such as 
+However, there is a big problem. Using `XMLHttpRequest`to measure latencies gives wrong results. A substantial part of the latency does not come from the round trip time, but from browser networking internal things such as 
 
 + Resource Scheduling, Queueing
 + Connection start such as stalling, DNS lookup (negligible), initial connection, SSL
 
-What we really want is the `Waiting (TTFB)` part. See the image below for a example request that the above JavaScript produces:	
+What we really want is the `Waiting (TTFB)` part. See the image below taken from the Dev Console network tab:	
 
 <figure>
     <img src="{static}/images/requestTiming.png" alt="Waiting (TTFB)" />
