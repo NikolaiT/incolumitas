@@ -1,6 +1,7 @@
 Title: Detecting Proxies and VPN's with Latency Measurements
 Status: published
 Date: 2021-06-07 20:00
+Modified: 2021-06-08 20:00
 Category: Security
 Tags: proxy-detection, anti-scraping
 Slug: detecting-proxies-and-vpn-with-latencies
@@ -267,3 +268,115 @@ My RTT measurement tool will produce the following output. The sample was taken 
 1623092444: 192.123.255.204:65258 -> 167.99.241.135:443 [ACK], RTT=239.84ms
 1623092444: 192.123.255.204:65259 -> 167.99.241.135:443 [ACK], RTT=240.11ms
 ```
+
+## Examples
+
+I will visit the following detection test site: [https://bot.incolumitas.com/latency.html](https://bot.incolumitas.com/latency.html) twice:
+
+1. Once with my normal browser without any proxy
+2. The second time with a scraping service that uses a proxy
+
+And on the server side, I will let my TCP/IP latency measurement tool running.
+
+#### Visiting with my normal browser without Proxy
+
+Latencies recorded from the TCP/IP handshake:
+
+```JavaScript
+1623144210: 84.151.230.146:33724 -> 167.99.241.135:443 [ACK], RTT=15.79ms
+1623144211: 84.151.230.146:33726 -> 167.99.241.135:443 [ACK], RTT=23.87ms
+1623144211: 84.151.230.146:33728 -> 167.99.241.135:443 [ACK], RTT=15.82ms
+1623144211: 84.151.230.146:33732 -> 167.99.241.135:443 [ACK], RTT=15.53ms
+1623144211: 84.151.230.146:33736 -> 167.99.241.135:443 [ACK], RTT=16.08ms
+1623144211: 84.151.230.146:33730 -> 167.99.241.135:443 [ACK], RTT=23.66ms
+1623144211: 84.151.230.146:33734 -> 167.99.241.135:443 [ACK], RTT=23.66ms
+1623144211: 84.151.230.146:33738 -> 167.99.241.135:443 [ACK], RTT=23.18ms
+1623144211: 84.151.230.146:33740 -> 167.99.241.135:443 [ACK], RTT=15.92ms
+1623144211: 84.151.230.146:33742 -> 167.99.241.135:443 [ACK], RTT=15.32ms
+1623144211: 84.151.230.146:33746 -> 167.99.241.135:443 [ACK], RTT=23.64ms
+1623144211: 84.151.230.146:33744 -> 167.99.241.135:443 [ACK], RTT=24.43ms
+```
+
+Latencies recorded from the browser with JavaScript
+
+```JavaScript
+{
+  "median": 136.4,
+  "measurements": [
+    109.9,
+    116.2,
+    124.8,
+    134.4,
+    134.6,
+    136.4,
+    165,
+    175,
+    181.5,
+    190.5,
+    196
+  ]
+}
+```
+
+#### Visiting with a Scraping Service that uses a Proxy
+
+Latencies recorded from the TCP/IP handshake:
+
+```JavaScript
+1623144996: 24.125.86.142:56938 -> 167.99.241.135:443 [ACK], RTT=127.85ms
+1623144997: 24.125.86.142:55420 -> 167.99.241.135:443 [ACK], RTT=183.9ms
+1623144997: 24.125.86.142:37906 -> 167.99.241.135:443 [ACK], RTT=127.97ms
+1623144997: 24.125.86.142:52654 -> 167.99.241.135:443 [ACK], RTT=120.19ms
+1623144997: 24.125.86.142:41199 -> 167.99.241.135:443 [ACK], RTT=127.78ms
+1623144997: 24.125.86.142:42204 -> 167.99.241.135:443 [ACK], RTT=127.82ms
+1623144997: 24.125.86.142:47526 -> 167.99.241.135:443 [ACK], RTT=136.08ms
+```
+
+Latencies recorded from the browser with JavaScript
+
+```JavaScript
+{
+  "median": 1147.83,
+  "measurements": [
+    871.23,
+    977.15,
+    979.31,
+    1012.47,
+    1034.18,
+    1147.83,
+    1190.57,
+    1229.74,
+    1276.93,
+    1287.49,
+    1318.97
+  ]
+}
+```
+
+## Conclusion
+
+Browser -> Server with Proxy: `1100ms`
+Server -> External IP with Proxy: `120ms`
+
+
+Browser -> Server without Proxy: `136ms`
+Server -> External IP with Proxy: `20ms`
+
+
+Factor Proxy = `1100 / 120 = 9`
+Factor no Proxy = `136 / 20 = 6.8`
+
+
+Those are definitely not enough samples. I need to record real world samples with people all over the world
+visiting the above JavaScript. 
+
+My assumption is: JavaScript latencies in the area of `1000ms` are way to large for normal browsing setups without a proxy.
+I think the largest JavaScript latencies will be between `100ms` and `400ms`, but not larger.
+
+Reason: The JavaScript mesaurement takes 2 RTT's. One RTT for the TCP/IP handshake  and one to for the HTTP request and response.
+
+What we measure with JavaScript is `2 * RTT` plus some constant clutter time that a browser needs. So maybe another 60ms. JavaScript `XMLHttpRequest` objects are far away low low level sockets.
+
+For the measurement without proxy: `(2 * 20) + 60 = 100ms`
+
+For the one with proxy: `(2 * 120) + 60 = 300ms` is much lower than `1100ms`. Therefore there is a proxy in between.
