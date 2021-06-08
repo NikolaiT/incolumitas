@@ -27,6 +27,11 @@ Put differently, I want to take two latency measurements and compare them.
 
 ## Obtain Browser -> Web Server Latency with JavaScript
 
+Good resources regarding latency measurement with the DOM and JavaScript:
+
+1. [Analyzing Network Characteristics Using JavaScript And The DOM](https://www.smashingmagazine.com/2011/11/analyzing-network-characteristics-using-javascript-and-the-dom-part-1/)
+2. [Measure network latency (time to first byte) from the client with JavaScript](https://stackoverflow.com/questions/43821243/measure-network-latency-time-to-first-byte-from-the-client-with-javascript)
+
 Without much explanation, this is the JavaScript source code to obtain the latency from browser to web server. I make 10 measurements and I will use the median value.
 
 ```JavaScript
@@ -83,6 +88,18 @@ The above code gives me the following result on `incolumitas.com`:
 median 126.5
 measurements [41.5, 91.5, 108.70000000298023, 121.19999999925494, 124.89999999850988, 126.5, 126.70000000298023, 130.09999999776483, 130.19999999925494, 145.10000000149012, 145.5]
 ```
+
+However, there is a big problem. The `XMLHttpRequest` technique of measuring latencies gives wrong results. A substantial part of the latency does not come from the RTT, but from things such as 
+
++ Resource Scheduling, Queueing
++ Connection start such as stalling, DNS lookup (negligible), initial connection, SSL
+
+What we really want is the `Waiting (TTFB)` part. See the image below for a example request that the above JavaScript produces:	
+
+<figure>
+    <img src="{static}/images/requestTiming.png" alt="Waiting (TTFB)" />
+    <figcaption>I am only interested in the Waiting (TTFB) part.</figcaption>
+</figure>
 
 ## Obtain External IP -> Web Server Latency with TCP/IP handshake RTT
 
@@ -353,7 +370,7 @@ Latencies recorded from the browser with JavaScript
 }
 ```
 
-## Conclusion
+#### Conclusion
 
 Browser -> Server with Proxy: `1100ms`
 Server -> External IP with Proxy: `120ms`
@@ -380,3 +397,9 @@ What we measure with JavaScript is `2 * RTT` plus some constant clutter time tha
 For the measurement without proxy: `(2 * 20) + 60 = 100ms`
 
 For the one with proxy: `(2 * 120) + 60 = 300ms` is much lower than `1100ms`. Therefore there is a proxy in between.
+
+## Collect enough normal un-proxied Latency Data
+
+In the next step it's time to obtain at least 100 samples for normal latencies without a proxy.
+
+Only when I know what normal unproxied traffic looks like, I can filter out proxied traffic.
