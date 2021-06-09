@@ -1,7 +1,7 @@
 Title: Detecting Proxies and VPN's with Latency Measurements
 Status: published
 Date: 2021-06-07 20:00
-Modified: 2021-06-08 20:00
+Modified: 2021-06-09 20:00
 Category: Security
 Tags: proxy-detection, anti-scraping
 Slug: detecting-proxies-and-vpn-with-latencies
@@ -370,7 +370,7 @@ My RTT measurement tool will produce the following output. The sample was taken 
 1623092444: 192.123.255.204:65259 -> 167.99.241.135:443 [ACK], RTT=240.11ms
 ```
 
-## Examples
+## Testing the XMLHttpRequest Latency Technique
 
 I will visit the following detection test site: [https://bot.incolumitas.com/latency.html](https://bot.incolumitas.com/latency.html) twice:
 
@@ -459,31 +459,11 @@ Latencies recorded from the browser with JavaScript
 Browser -> Server with Proxy: `1100ms`
 Server -> External IP with Proxy: `120ms`
 
-
 Browser -> Server without Proxy: `136ms`
 Server -> External IP with Proxy: `20ms`
-
 
 Factor Proxy = `1100 / 120 = 9`
 Factor no Proxy = `136 / 20 = 6.8`
 
-
-Those are definitely not enough samples. I need to record real world samples with people all over the world
-visiting the above JavaScript. 
-
-My assumption is: JavaScript latencies in the area of `1000ms` are way to large for normal browsing setups without a proxy.
-I think the largest JavaScript latencies will be between `100ms` and `400ms`, but not larger.
-
-Reason: The JavaScript mesaurement takes 2 RTT's. One RTT for the TCP/IP handshake  and one to for the HTTP request and response.
-
-What we measure with JavaScript is `2 * RTT` plus some constant clutter time that a browser needs. So maybe another 60ms. JavaScript `XMLHttpRequest` objects are far away low low level sockets.
-
-For the measurement without proxy: `(2 * 20) + 60 = 100ms`
-
-For the one with proxy: `(2 * 120) + 60 = 300ms` is much lower than `1100ms`. Therefore there is a proxy in between.
-
-## Collect enough normal un-proxied Latency Data
-
-In the next step it's time to obtain at least 100 samples for normal latencies without a proxy.
-
-Only when I know what normal unproxied traffic looks like, I can filter out proxied traffic.
+Those are definitely not enough samples. I needed to record real world samples with people all over the world
+visiting the above JavaScript. After having collected enough samples, I can definitely say that the `XMLHttpRequest` technique to measure latencies is too inaccurate. Therefore, the test site [https://bot.incolumitas.com/latency.html](https://bot.incolumitas.com/latency.html) is not usable to detect tunnels such as Proxies or VPN's.
