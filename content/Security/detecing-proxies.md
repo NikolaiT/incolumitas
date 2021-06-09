@@ -101,6 +101,81 @@ What we really want is the `Waiting (TTFB)` part. See the image below taken from
     <figcaption>I am only interested in the Waiting (TTFB) part.</figcaption>
 </figure>
 
+
+## Obtain Browser -> Web Server Latency with WebSockets
+
+Seeing the latency measurements problems with the code above, it's time to try out WebSockets in order to get more accurate latency (RTT) measurements with JavaScript.
+
+This is the WebSocket latency measurement code:
+
+```html
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <title>WebSocket Latency Check</title>
+    <meta name ="description" content="fu">
+    <meta name ="author" content="NT">
+  </head>
+
+  <body>
+    <pre id="data"></pre>
+    <script>
+      function roundToTwo(num) {    
+        return +(Math.round(num + "e+2")  + "e-2");
+      }
+
+      // Create a Web Socket
+      const socket = new WebSocket('wss://abs.incolumitas.com:5555/');
+
+      socket.onerror = function (err) {
+        console.log(err.toString());
+      }
+
+      var messages = [];
+
+      socket.onopen = function () {
+        socket.send(JSON.stringify({
+          type: 'ws-latency',
+          ts: roundToTwo(performance.now()),
+        }));
+      }
+
+      socket.onmessage = function (event) {
+        messages.push(JSON.parse(event.data));
+        document.getElementById('data').innerHTML = JSON.stringify(messages, null, 2);
+        if (messages.length <= 2) {
+          socket.send(JSON.stringify({
+            type: 'ws-latency',
+            ts: roundToTwo(performance.now()),
+          }));
+        }
+      }
+    </script>
+  </body>
+</html>
+```
+
+Example value with my local browser:
+
+```JavaScript
+[
+  {
+    "type": "ws-latency",
+    "ts": 159.7
+  },
+  {
+    "type": "ws-latency",
+    "ts": 183.3
+  },
+  {
+    "type": "ws-latency",
+    "ts": 210.5
+  }
+]
+```
+
 ## Obtain External IP -> Web Server Latency with TCP/IP handshake RTT
 
 This is a bit more complex, because I have to hook into the raw TCP/IP handshake. Without much explanation, the Python script below does the job:
