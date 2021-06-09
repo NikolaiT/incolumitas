@@ -89,7 +89,7 @@ median 126.5
 measurements [41.5, 91.5, 108.70000000298023, 121.19999999925494, 124.89999999850988, 126.5, 126.70000000298023, 130.09999999776483, 130.19999999925494, 145.10000000149012, 145.5]
 ```
 
-However, there is a big problem. Using `XMLHttpRequest`to measure latencies gives wrong results. A substantial part of the latency does not come from the round trip time, but from browser networking internal things such as 
+However, there is a big problem. Using `XMLHttpRequest` to measure latencies gives wrong results. A substantial part of the latency does not come from the round trip time, but from browser networking internal things such as 
 
 + Resource Scheduling, Queueing
 + Connection start such as stalling, DNS lookup (negligible), initial connection, SSL
@@ -103,9 +103,13 @@ What we really want is the `Waiting (TTFB)` part. See the image below taken from
 
 ## Second Idea: Obtain the browser -> server Latency with WebSockets
 
-Seeing the latency measurements problems with the code above, it's time to try out WebSockets in order to get more accurate latency (RTT) measurements with JavaScript.
+Seeing the latency measurements problems with the `XMLHttpRequest` technique from above, it's time to try out WebSockets in order to get more accurate latency (RTT) measurements with JavaScript.
 
-This is the WebSocket latency measurement code:
+I am not interested in the WebSocket connection establishment latency, I only want the latency between `socket.send()` and `socket.recv()` functions. All my WebSocket server does it to send the message back. It's a simple echo server. On each `socket.send()`, I send the `performance.now()` relative timestamp with the message. That way, I can interpolate the latency.
+
+The good thing with WebSockets: There is zero incentive to delay or stall WebSocket messages once the connection is established. This gives us accurate samples.
+
+This is the WebSocket latency measurement code and here is a link to the live test site: [https://bot.incolumitas.com/ws-latency.html](https://bot.incolumitas.com/ws-latency.html).
 
 ```html
 <!doctype html>
