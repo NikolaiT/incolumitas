@@ -101,8 +101,7 @@ What we really want is the `Waiting (TTFB)` part. See the image below taken from
     <figcaption>I am only interested in the Waiting (TTFB) part.</figcaption>
 </figure>
 
-
-## Obtain Browser -> Web Server Latency with WebSockets
+## Second Idea: Obtain the browser -> server Latency with WebSockets
 
 Seeing the latency measurements problems with the code above, it's time to try out WebSockets in order to get more accurate latency (RTT) measurements with JavaScript.
 
@@ -175,6 +174,12 @@ Example value with my local browser:
   }
 ]
 ```
+
+Those are very promising results. WebSockets don't suffer from internal queuing and stalling issues such as the `XMLHttpRequest` object. This gives us much more accurate data to work with.
+
+Furthermore, we can also inspect the corresponding latencies for the incoming WebSocket messages on the server side.
+
+If the latencies don't match with a very low margin of error, then there is likely a tunnel or proxy in between.
 
 ## Obtain External IP -> Web Server Latency with TCP/IP handshake RTT
 
