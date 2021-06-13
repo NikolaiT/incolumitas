@@ -1,7 +1,7 @@
 Title: Detecting Proxies and VPN's with Latency Measurements
 Status: published
 Date: 2021-06-07 20:00
-Modified: 2021-06-09 20:00
+Modified: 2021-06-13 20:00
 Category: Security
 Tags: proxy-detection, anti-scraping
 Slug: detecting-proxies-and-vpn-with-latencies
@@ -10,9 +10,9 @@ Summary: VPN's and Proxy Servers can be detected by comparing latencies from Bro
 
 ## Task
 
-**Premise:** I am the owner of the website and I have full control of my web server (root rights). My web server is not behind a load balancer or some other mechanism that prevents me to hook into the incoming TCP/IP stream from the external IP address.
+**Premise:** I am the owner of a hosted website and I have full control of my server (root rights). My server is not behind a load balancer or some other mechanism that prevents me to hook into incoming TCP/IP streams.
 
-**Goal:** For each visitor of my site, I want to detect that this visitor is using some tunnel such as a Proxy Server (socks, https, ...) or a VPN provider or any other intermediate service.
+**Goal:** For each visitor of my site, I want to detect whether some tunneling protocol such as a proxy server (socks, https, ...) or a VPN service is being used. Why? Because a lot of spammers and fraudsters use proxies and VPN's to hide their true IP address.
 
 **Visually:** 
 
@@ -24,6 +24,8 @@ Put differently, I want to take two latency measurements and compare them.
 
 1. Latency from **browser -> web server**, measured with JavaScript from within the browser
 2. Latency from **external IP -> web server**, measured on incoming TCP/IP handshake
+
+The idea is very simple: A proxy server in between has the effect that the TCP/IP connection is split in half and two TCP/IP streams are created as a result. Only the latter TCP/IP stream (and it's source IP address) is then directly visible to my server.
 
 ## Obtain Browser -> Web Server Latency with JavaScript
 
@@ -451,7 +453,7 @@ The data collection method was as follows: I let the TCP/IP handshake python scr
 | 64ms              | 62ms          | 3.2%            | No           |
 | 207.9ms           | 236.7ms       | 13.8%           | No           |
 
-As you can see, the difference between WebSocket latency and TCP/IP handshake is mostly very small. I assume that these visitors didn't use any proxy. I cannot say for sure obviously, because after all, I want to find a way to detect proxy usage. But I am quite confident that they don't use proxies.
+As you can see, the difference between WebSocket latency and TCP/IP handshake is mostly very small. I assume that these visitors didn't use any proxy. I cannot say for sure obviously, because after all, I want to find a way to detect proxy usage. But I am quite confident that they don't use proxies, because their browsing behavior appears to be organic and most my visitors don't use proxies (except on [bot.incolumitas.com](https://bot.incolumitas.com/)).
 
 Now it's time to collect samples from some scraping providers (such as [Brightdata](https://brightdata.com/) or [ScrapingBee](https://www.scrapingbee.com/)) and see how the latencies differ there. With those providers, I am very confident that they use proxies, so my hypothesis is the following: The latancies from the WebSocket messages should be significantly larger then the ones from the TCP Handshake.
 
