@@ -129,32 +129,56 @@ This is the WebSocket latency measurement code and here is a link to the live te
         return +(Math.round(num + "e+2")  + "e-2");
       }
 
-      // Create a Web Socket
-      const socket = new WebSocket('wss://abs.incolumitas.com:5555/');
+      function getLatencyWebSocket() {
+        return new Promise(function (resolve, reject) {
+          function median(values){
+            if (values.length ===0) return 0;
+            values.sort(function(a,b){
+              return a-b;
+            });
+            var half = Math.floor(values.length / 2);
+            if (values.length % 2)
+              return values[half];
+            return (values[half - 1] + values[half]) / 2.0;
+          }
 
-      socket.onerror = function (err) {
-        console.log(err.toString());
-      }
+          // Create a Web Socket
+          const socket = new WebSocket('wss://abs.incolumitas.com:5555/');
 
-      var messages = [];
+          socket.onerror = function (err) {
+            reject(err.toString());
+          }
 
-      socket.onopen = function () {
-        socket.send(JSON.stringify({
-          type: 'ws-latency',
-          ts: roundToTwo(performance.now()),
-        }));
-      }
+          var messages = [];
+          const latencies = [];
 
-      socket.onmessage = function (event) {
-        messages.push(JSON.parse(event.data));
-        document.getElementById('data').innerHTML = JSON.stringify(messages, null, 2);
-        if (messages.length <= 2) {
-          socket.send(JSON.stringify({
-            type: 'ws-latency',
-            ts: roundToTwo(performance.now()),
-          }));
-        }
-      }
+          socket.onopen = function () {
+            socket.send(JSON.stringify({
+              type: 'ws-latency',
+              ts: roundToTwo(performance.now()),
+            }));
+          }
+
+          socket.onmessage = function (event) {
+            messages.push(JSON.parse(event.data));
+            if (messages.length <= 5) {
+              socket.send(JSON.stringify({
+                type: 'ws-latency',
+                ts: roundToTwo(performance.now()),
+              }));
+            } else {
+              for (let i = 0; i < messages.length - 1; i++) {
+                latencies.push(roundToTwo(messages[i+1].ts - messages[i].ts));
+              }
+              resolve(median(latencies));
+            }
+          }
+        });
+	    }
+
+      getLatencyWebSocket().then((median) => {
+        document.getElementById('data').innerHTML = median;
+      });
     </script>
   </body>
 </html>
@@ -194,9 +218,8 @@ from pypacker import ppcap
 from pypacker.layer12 import ethernet
 from pypacker.layer12 import linuxcc
 from pypacker.layer3 import ip
-from pypacker.layer3 import icmp
 from pypacker.layer4 import tcp
-from pypacker.layer4 import udp
+from pypacker.layer4 import ssl
 from pypacker import pypacker
 import pcapy
 import getopt
@@ -211,10 +234,9 @@ interface = None
 verbose = False
 rtts = {}
 
-
 def updateFile():
   print('writing RTTs.json with {} objects...'.format(len(rtts)))
-  with open('RTTs.json', 'w') as fp:
+  with open('RTTs2.json', 'w') as fp:
     json.dump(rtts, fp, indent=2, sort_keys=False)
 
 
@@ -235,6 +257,8 @@ def tcpProcess(pkt, layer, ts):
   from src -> dst, ACK
 
   I want the time between SYN-ACK and first ACK
+
+  And then I want to record the 
   """
   ip4 = pkt.upper_layer
   tcp1 = pkt.upper_layer.upper_layer
@@ -245,6 +269,7 @@ def tcpProcess(pkt, layer, ts):
   if tcp1.flags:
     label = ''
     key = '%s:%s' % (pkt[ip.IP].src_s, pkt[tcp.TCP].sport)
+
     if key not in rtts:
       rtts[key] = {}
     if (tcp1.flags & tcp.TH_SYN) and not (tcp1.flags & tcp.TH_ACK):
@@ -258,14 +283,17 @@ def tcpProcess(pkt, layer, ts):
     if (tcp1.flags & tcp.TH_SYN) and (tcp1.flags & tcp.TH_ACK):
       key = '%s:%s' % (pkt[ip.IP].dst_s, pkt[tcp.TCP].dport)
       label = 'SYN+ACK'
-      if not label in rtts[key]:
+      if key in rtts and not label in rtts[key]:
         rtts[key][label] = time.time()
 
-    if "SYN+ACK" in rtts[key] and "ACK" in rtts[key] and not 'RTT' in rtts[key]:
+    if key in rtts and "SYN+ACK" in rtts[key] and "ACK" in rtts[key] and not 'RTT' in rtts[key]:
       rtts[key]['RTT'] = '%sms' % round(((rtts[key]["ACK"] - rtts[key]["SYN+ACK"]) * 1000), 2)
       rtts[key]['RTT2'] = round(rtts[key]["ACK"] - rtts[key]["SYN+ACK"], 4)
-      print("%d: %s:%s -> %s:%s [%s], RTT=%s" % (ts, pkt[ip.IP].src_s, pkt[tcp.TCP].sport,
+      print("TCP Handshake - %s:%s -> %s:%s [%s], RTT=%s" % (pkt[ip.IP].src_s, pkt[tcp.TCP].sport,
           pkt[ip.IP].dst_s, pkt[tcp.TCP].dport, label, rtts[key]['RTT']))
+
+      if len(rtts) > 0 and len(rtts) % 13 == 0:
+        updateFile()
 
 
 def usage():
@@ -278,10 +306,7 @@ def usage():
 def main():
   logger = pypacker.logging.getLogger("pypacker")
   pypacker.logger.setLevel(pypacker.logging.ERROR)
-
   counter = 0
-  startTime = time.time()
-
   print('listening on interface {}'.format(interface))
 
   try:
@@ -354,20 +379,13 @@ Save the above script on your server as `lat.py` and run it with:
 python lat.py -i eth0
 ```
 
-My RTT measurement tool will produce the following output. The sample was taken from someone from South America visiting my blog:
+My RTT measurement tool will produce output as listed below. The sample was taken from someone from South America visiting my blog:
 
 ```JavaScript
 1623092439: 192.123.255.204:65238 -> 167.99.241.135:443 [ACK], RTT=231.72ms
 1623092439: 192.123.255.204:65237 -> 167.99.241.135:443 [ACK], RTT=239.88ms
 1623092439: 192.123.255.204:65240 -> 167.99.241.135:443 [ACK], RTT=239.9ms
-1623092440: 192.123.255.204:65243 -> 167.99.241.135:443 [ACK], RTT=239.88ms
-1623092440: 192.123.255.204:65244 -> 167.99.241.135:443 [ACK], RTT=231.86ms
-1623092441: 192.123.255.204:65248 -> 167.99.241.135:443 [ACK], RTT=240.3ms
-1623092441: 192.123.255.204:65251 -> 167.99.241.135:443 [ACK], RTT=244.61ms
-1623092441: 192.123.255.204:65253 -> 167.99.241.135:443 [ACK], RTT=239.75ms
-1623092442: 192.123.255.204:65254 -> 167.99.241.135:443 [ACK], RTT=241.58ms
-1623092444: 192.123.255.204:65258 -> 167.99.241.135:443 [ACK], RTT=239.84ms
-1623092444: 192.123.255.204:65259 -> 167.99.241.135:443 [ACK], RTT=240.11ms
+...
 ```
 
 ## Testing the XMLHttpRequest Latency Technique
@@ -379,7 +397,7 @@ I will visit the following detection test site: [https://bot.incolumitas.com/lat
 
 And on the server side, I will let my TCP/IP latency measurement tool running.
 
-#### Visiting with my normal browser without Proxy
+First I will test latencies with my own browser without using any proxy.
 
 Latencies recorded from the TCP/IP handshake:
 
@@ -388,14 +406,7 @@ Latencies recorded from the TCP/IP handshake:
 1623144211: 84.151.230.146:33726 -> 167.99.241.135:443 [ACK], RTT=23.87ms
 1623144211: 84.151.230.146:33728 -> 167.99.241.135:443 [ACK], RTT=15.82ms
 1623144211: 84.151.230.146:33732 -> 167.99.241.135:443 [ACK], RTT=15.53ms
-1623144211: 84.151.230.146:33736 -> 167.99.241.135:443 [ACK], RTT=16.08ms
-1623144211: 84.151.230.146:33730 -> 167.99.241.135:443 [ACK], RTT=23.66ms
-1623144211: 84.151.230.146:33734 -> 167.99.241.135:443 [ACK], RTT=23.66ms
-1623144211: 84.151.230.146:33738 -> 167.99.241.135:443 [ACK], RTT=23.18ms
-1623144211: 84.151.230.146:33740 -> 167.99.241.135:443 [ACK], RTT=15.92ms
-1623144211: 84.151.230.146:33742 -> 167.99.241.135:443 [ACK], RTT=15.32ms
-1623144211: 84.151.230.146:33746 -> 167.99.241.135:443 [ACK], RTT=23.64ms
-1623144211: 84.151.230.146:33744 -> 167.99.241.135:443 [ACK], RTT=24.43ms
+...
 ```
 
 Latencies recorded from the browser with JavaScript
@@ -403,34 +414,19 @@ Latencies recorded from the browser with JavaScript
 ```JavaScript
 {
   "median": 136.4,
-  "measurements": [
-    109.9,
-    116.2,
-    124.8,
-    134.4,
-    134.6,
-    136.4,
-    165,
-    175,
-    181.5,
-    190.5,
-    196
-  ]
+  "measurements": [109.9, 116.2, 124.8, 134.4, 134.6, 136.4, 165, 175, 181.5, 190.5, 196]
 }
 ```
 
-#### Visiting with a Scraping Service that uses a Proxy
+And now I will visit my [test site](https://bot.incolumitas.com/latency.html) with a scraping service.
 
 Latencies recorded from the TCP/IP handshake:
 
 ```JavaScript
 1623144996: 24.125.86.142:56938 -> 167.99.241.135:443 [ACK], RTT=127.85ms
 1623144997: 24.125.86.142:55420 -> 167.99.241.135:443 [ACK], RTT=183.9ms
-1623144997: 24.125.86.142:37906 -> 167.99.241.135:443 [ACK], RTT=127.97ms
-1623144997: 24.125.86.142:52654 -> 167.99.241.135:443 [ACK], RTT=120.19ms
-1623144997: 24.125.86.142:41199 -> 167.99.241.135:443 [ACK], RTT=127.78ms
-1623144997: 24.125.86.142:42204 -> 167.99.241.135:443 [ACK], RTT=127.82ms
 1623144997: 24.125.86.142:47526 -> 167.99.241.135:443 [ACK], RTT=136.08ms
+...
 ```
 
 Latencies recorded from the browser with JavaScript
@@ -438,32 +434,43 @@ Latencies recorded from the browser with JavaScript
 ```JavaScript
 {
   "median": 1147.83,
-  "measurements": [
-    871.23,
-    977.15,
-    979.31,
-    1012.47,
-    1034.18,
-    1147.83,
-    1190.57,
-    1229.74,
-    1276.93,
-    1287.49,
-    1318.97
-  ]
+  "measurements": [871.23, 977.15, 979.31, 1012.47, 1034.18, 1147.83, 1190.57, 1229.74, 1276.93, 1287.49, 1318.97]
 }
 ```
 
-#### Conclusion
+Those are the results:
 
-Browser -> Server with Proxy: `1100ms`
-Server -> External IP with Proxy: `120ms`
-
-Browser -> Server without Proxy: `136ms`
-Server -> External IP with Proxy: `20ms`
-
-Factor Proxy = `1100 / 120 = 9`
-Factor no Proxy = `136 / 20 = 6.8`
+| RTT TCP Handshake | RTT XMLHttpRequest | Uses a Proxy |
+|-------------------|--------------------|--------------|
+| 23                | 136                | No           |
+| 125               | 1034               | Yes          |
 
 Those are definitely not enough samples. I needed to record real world samples with people all over the world
-visiting the above JavaScript. After having collected enough samples, I can definitely say that the `XMLHttpRequest` technique to measure latencies is too inaccurate. Therefore, the test site [https://bot.incolumitas.com/latency.html](https://bot.incolumitas.com/latency.html) is not usable to detect tunnels such as Proxies or VPN's.
+running the `XMLHttpRequest` technique script.
+
+After having collected enough samples from real world users visiting my website, I can definitely say that the `XMLHttpRequest` technique to measure latencies is way too inaccurate. Therefore, the test site [https://bot.incolumitas.com/latency.html](https://bot.incolumitas.com/latency.html) is not usable to detect tunnels such as Proxies or VPN's.
+
+Reason: Modern browsers simply add too much unpredictable stalling and delays to `XMLHttpRequest` requests, therefore it's impossible to compare those samples to RTT's measured in the TCP/IP handshake.
+
+## Testing the WebSocket Latency Technique
+
+The data collection method was as follows: I let the TCP/IP handshake python script from above run on my server. At the same time I am recording the latency of 5 WebSocket messages with the `WebSocket` technique from above. Then I consider the median values from the 5 WebSocket latency measurements and the median value from the TCP/IP handshake latency. Those are the results from 11 (probably) real persons visiting my website on a Sunday afternoon:
+
+| RTT TCP Handshake | RTT WebSocket | Difference in % | Uses a Proxy |
+|-------------------|---------------|-----------------|--------------|
+| 79.83ms           | 86ms          | 7.7%            | No           |
+| 191ms             | 189ms         | 1.05%           | No           |
+| 175.8ms           | 178ms         | 1.2%            | No           |
+| 239.7ms           | 237ms         | 1.1%            | No           |
+| 40.1ms            | 41ms          | 2.2%            | No           |
+| 135.9ms           | 134.9ms       | 0.7%            | No           |
+| 116.0ms           | 104ms         | 11.5%           | No           |
+| 47ms              | 48ms          | 2.1%            | No           |
+| 135.9ms           | 133ms         | 2.1%            | No           |
+| 64ms              | 62ms          | 3.2%            | No           |
+| 207.9ms           | 236.7ms       | 13.8%           | No           |
+
+As you can see, the difference between WebSocket latency and TCP/IP handshake is mostly very small. I assume that these visitors didn't use any proxy.
+
+Now it's time to collect samples from some scraping providers (such as [Brightdata](https://brightdata.com/) or [ScrapingBee](https://www.scrapingbee.com/)) and see how the latencies differ there. With those providers, I am very confident that they use proxies.
+
