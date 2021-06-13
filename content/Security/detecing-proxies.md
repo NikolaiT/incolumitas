@@ -184,30 +184,11 @@ This is the WebSocket latency measurement code and here is a link to the live te
 </html>
 ```
 
-Example value with my local browser:
+For example, when I access the above code with my own browser, I will get a latency of `23.6ms`.
 
-```JavaScript
-[
-  {
-    "type": "ws-latency",
-    "ts": 159.7
-  },
-  {
-    "type": "ws-latency",
-    "ts": 183.3
-  },
-  {
-    "type": "ws-latency",
-    "ts": 210.5
-  }
-]
-```
+Those are very promising results. WebSockets don't suffer from internal queuing and stalling issues such as the `XMLHttpRequest` object. This gives us much more accurate data to work with. WebSockets are designed to support real-time networking applications, so the latency should be similar to the latency that we can measure on an incoming TCP/IP handshake.
 
-Those are very promising results. WebSockets don't suffer from internal queuing and stalling issues such as the `XMLHttpRequest` object. This gives us much more accurate data to work with.
-
-Furthermore, we can also inspect the corresponding latencies for the incoming WebSocket messages on the server side.
-
-If the latencies don't match with a very low margin of error, then there is likely a tunnel or proxy in between.
+If the latencies between the TCP/IP handshake and the WebSocket messages don't match with a very low margin of error, then there is likely a tunnel or proxy in between.
 
 ## Obtain External IP -> Web Server Latency with TCP/IP handshake RTT
 
@@ -470,7 +451,7 @@ The data collection method was as follows: I let the TCP/IP handshake python scr
 | 64ms              | 62ms          | 3.2%            | No           |
 | 207.9ms           | 236.7ms       | 13.8%           | No           |
 
-As you can see, the difference between WebSocket latency and TCP/IP handshake is mostly very small. I assume that these visitors didn't use any proxy.
+As you can see, the difference between WebSocket latency and TCP/IP handshake is mostly very small. I assume that these visitors didn't use any proxy. I cannot say for sure obviously, because after all, I want to find a way to detect proxy usage. But I am quite confident that they don't use proxies.
 
-Now it's time to collect samples from some scraping providers (such as [Brightdata](https://brightdata.com/) or [ScrapingBee](https://www.scrapingbee.com/)) and see how the latencies differ there. With those providers, I am very confident that they use proxies.
+Now it's time to collect samples from some scraping providers (such as [Brightdata](https://brightdata.com/) or [ScrapingBee](https://www.scrapingbee.com/)) and see how the latencies differ there. With those providers, I am very confident that they use proxies, so my hypothesis is the following: The latancies from the WebSocket messages should be significantly larger then the ones from the TCP Handshake.
 
