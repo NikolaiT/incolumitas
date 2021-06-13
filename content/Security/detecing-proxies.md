@@ -457,3 +457,21 @@ As you can see, the difference between WebSocket latency and TCP/IP handshake is
 
 Now it's time to collect samples from some scraping providers (such as [Brightdata](https://brightdata.com/) or [ScrapingBee](https://www.scrapingbee.com/)) and see how the latencies differ there. With those providers, I am very confident that they use proxies, so my hypothesis is the following: The latancies from the WebSocket messages should be significantly larger then the ones from the TCP Handshake.
 
+
+| Proxy Provider | RTT TCP Handshake | RTT WebSocket | Difference in % | Uses a Proxy |
+|----------------|-------------------|---------------|-----------------|--------------|
+| Brightdata     | 135.8ms           | 231ms         | 70%             | Yes          |
+| Brightdata     | 122.3ms           | 228ms         | 86%             | Yes          |
+| Brightdata     | 103.9ms           | 210ms         | 102%            | Yes          |
+| Brightdata     | 151.1ms           | 224ms         | 48%             | Yes          |
+| Brightdata     | 128ms             | 198ms         | 54%             | Yes          |
+| Brightdata     | 121.85ms          | 240ms         | 96%             | Yes          |
+| ScrapingBee    | 191.9ms           | 278.7ms       | 45%             | Yes          |
+| ScrapingBee    | 143.7ms           | 291ms         | 103%            | Yes          |
+| ScrapingBee    | 149.9ms           | 354.4ms       | 136%            | Yes          |
+| ScrapingBee    | 95.7ms            | 174.3ms       | 83%             | Yes          |
+| ScrapingBee    | 147.9ms           | 293.3ms       | 98%             | Yes          |
+| ScrapingBee    | 95.7ms            | 177.3ms       | 86%             | Yes          |
+
+
+The samples above confirm my hypothesis. Indeed, the WebSocket latencies are at between 45% to 136% larger then their corresponding TCP handshake latencies. That is a significant difference compared to the largest difference when not using proxies (13.6%). Statistically speaking, we can determine with high probablity if the visiting user is using a proxy or not. Mission accomplished!
