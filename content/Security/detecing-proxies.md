@@ -6,35 +6,36 @@ Category: Security
 Tags: proxy-detection, anti-scraping
 Slug: detecting-proxies-and-vpn-with-latencies
 Author: Nikolai Tschacher
-Summary: VPN's and Proxy Servers can be detected by comparing latencies from Browser -> Server with the latency of the TCP/IP handshake RTT on the webserver.
+Summary: VPN's and Proxy Servers can be detected by comparing latencies measured with JavaScript in the browser with the corresponding latency of the TCP/IP handshake on the server.
 
-## Task
+## Introduction
 
-**Premise:** I am the owner of a hosted website and I have full control of my server (root rights). My server is not behind a load balancer or some other mechanism that prevents me to hook into incoming TCP/IP streams.
+**Premise:** I am the owner of a hosted website and I have full control of my server (root rights). My server is not behind a load balancer or some other mechanism that prevents me from hooking into the incoming TCP/IP stream.
 
-**Goal:** For each visitor of my site, I want to detect whether some tunneling protocol such as a proxy server (socks, https, ...) or a VPN service is being used. Why? Because a lot of spammers and fraudsters use proxies and VPN's to hide their true IP address.
+**Goal:** For each visitor of my site, I want to detect whether some tunneling protocol such as a proxy server (socks, https, ...) or a VPN service is being used. Why? Because a lot of spammers and scrapers use proxies and VPN's to hide their true IP address from websites.
 
 **Visually:** 
 
 <figure>
     <img src="{static}/images/proxy-latency.png" alt="Proxy Latency" />
+    <figcaption>Instead of using a img tag, I ended up using WebSockets to measure the latency from the browser.</figcaption>
 </figure>
 
 Put differently, I want to take two latency measurements and compare them.
 
-1. Latency from **browser -> web server**, measured with JavaScript from within the browser
+1. Latency from **browser -> web server**, measured with JavaScript from the browser
 2. Latency from **external IP -> web server**, measured on incoming TCP/IP handshake
 
-The idea is very simple: A proxy server in between has the effect that the TCP/IP connection is split in half and two TCP/IP streams are created as a result. Only the latter TCP/IP stream (and it's source IP address) is then directly visible to my server.
+The idea is very simple: A proxy server between browser and web server has the effect that the TCP/IP connection is split in half and two TCP/IP streams are created as a result. Only the latter TCP/IP stream (and it's source IP address) is then directly communicating to my server. My conjecture is: It's possible to measure significant timing differences between **browser -> web server** and **external IP -> web server**.
 
-## Obtain Browser -> Web Server Latency with JavaScript
+## First Idea: Browser Latency with XMLHttpRequest
 
 Good resources regarding latency measurement with the DOM and JavaScript:
 
 1. [Analyzing Network Characteristics Using JavaScript And The DOM](https://www.smashingmagazine.com/2011/11/analyzing-network-characteristics-using-javascript-and-the-dom-part-1/)
 2. [Measure network latency (time to first byte) from the client with JavaScript](https://stackoverflow.com/questions/43821243/measure-network-latency-time-to-first-byte-from-the-client-with-javascript)
 
-Without much explanation, this is the JavaScript source code to obtain the latency from browser to web server. I make 10 measurements and I will use the median value.
+Without much explanation, this is the JavaScript source code to obtain the latency from browser to web server I created in a first attempt. I collect 10 measurements and I use the median value.
 
 ```JavaScript
 let N = 10;
@@ -91,9 +92,10 @@ median 126.5
 measurements [41.5, 91.5, 108.70000000298023, 121.19999999925494, 124.89999999850988, 126.5, 126.70000000298023, 130.09999999776483, 130.19999999925494, 145.10000000149012, 145.5]
 ```
 
-However, there is a big problem. Using `XMLHttpRequest` to measure latencies gives wrong results. A substantial part of the latency does not come from the round trip time, but from browser networking internal things such as 
+However, there is a big problem. Using the `XMLHttpRequest` API to measure latencies gives wrong results. A substantial part of the latency does not come from the round trip time, but from browser networking internal things such as 
 
-+ Resource Scheduling, Queueing
++ Resource Scheduling
++ Queueing
 + Connection start such as stalling, DNS lookup (negligible), initial connection, SSL
 
 What we really want is the `Waiting (TTFB)` part. See the image below taken from the Dev Console network tab:	
@@ -103,13 +105,15 @@ What we really want is the `Waiting (TTFB)` part. See the image below taken from
     <figcaption>I am only interested in the Waiting (TTFB) part.</figcaption>
 </figure>
 
-## Second Idea: Obtain the browser -> server Latency with WebSockets
+For that reason, the `XMLHttpRequest` technique is not very promising and I need to look  for a more accurate technique to measure latencies in the browser.
 
-Seeing the latency measurements problems with the `XMLHttpRequest` technique from above, it's time to try out WebSockets in order to get more accurate latency (RTT) measurements with JavaScript.
+## Second Idea: Browser Latency with WebSockets
 
-I am not interested in the WebSocket connection establishment latency, I only want the latency between `socket.send()` and `socket.recv()` functions. All my WebSocket server does it to send the message back. It's a simple echo server. On each `socket.send()`, I send the `performance.now()` relative timestamp with the message. That way, I can interpolate the latency.
+Upon realizing the latency measurements problems with the `XMLHttpRequest` technique from above, it's time to try out WebSockets in order to get more accurate latency (RTT) measurements with JavaScript.
 
-The good thing with WebSockets: There is zero incentive to delay or stall WebSocket messages once the connection is established. This gives us accurate samples.
+I am not interested in the WebSocket connection establishment latency, I only want the latency between `socket.send()` and `socket.onmessage()` functions. All my WebSocket server does, is to send the message back. It's a simple echo server. On each `socket.send()`, I send the `performance.now()` relative timestamp to the server. That way, I can interpolate the latency when the server replies with a copy of the message.
+
+The good thing with WebSockets: There is zero incentive to delay or stall WebSocket messages once the connection is established. This gives me accurate latency measurements.
 
 This is the WebSocket latency measurement code and here is a link to the live test site: [https://bot.incolumitas.com/ws-latency.html](https://bot.incolumitas.com/ws-latency.html).
 
@@ -190,7 +194,7 @@ For example, when I access the above code with my own browser, I will get a late
 
 Those are very promising results. WebSockets don't suffer from internal queuing and stalling issues such as the `XMLHttpRequest` object. This gives us much more accurate data to work with. WebSockets are designed to support real-time networking applications, so the latency should be similar to the latency that we can measure on an incoming TCP/IP handshake.
 
-If the latencies between the TCP/IP handshake and the WebSocket messages don't match with a very low margin of error, then there is likely a tunnel or proxy in between.
+**Idea:** If the latencies between the TCP/IP handshake and the WebSocket messages don't match with a very low margin of error, then there is likely a tunnel or proxy in between.
 
 ## Obtain External IP -> Web Server Latency with TCP/IP handshake RTT
 
@@ -380,7 +384,7 @@ I will visit the following detection test site: [https://bot.incolumitas.com/lat
 
 And on the server side, I will let my TCP/IP latency measurement tool running.
 
-First I will test latencies with my own browser without using any proxy.
+First, I will test latencies with my own browser without using any proxy.
 
 Latencies recorded from the TCP/IP handshake:
 
@@ -421,7 +425,7 @@ Latencies recorded from the browser with JavaScript
 }
 ```
 
-Those are the results:
+Those are the results when considering the median values:
 
 | RTT TCP Handshake | RTT XMLHttpRequest | Uses a Proxy |
 |-------------------|--------------------|--------------|
@@ -437,7 +441,9 @@ Reason: Modern browsers simply add too much unpredictable stalling and delays to
 
 ## Testing the WebSocket Latency Technique
 
-The data collection method was as follows: I let the TCP/IP handshake python script from above run on my server. At the same time I am recording the latency of 5 WebSocket messages with the `WebSocket` technique from above. Then I consider the median values from the 5 WebSocket latency measurements and the median value from the TCP/IP handshake latency. Those are the results from 11 (probably) real persons visiting my website on a Sunday afternoon:
+The data collection method was as follows: I let the TCP/IP handshake python script from above run on my server. At the same time, I am recording the latency of five WebSocket messages with the `WebSocket` technique from above. Then I consider the median values from the five WebSocket latency measurements and the median value from the TCP/IP handshake latency. 
+
+Below are the latency samples from 11 (probably) real persons visiting my website on a Sunday afternoon:
 
 | RTT TCP Handshake | RTT WebSocket | Difference in % | Uses a Proxy |
 |-------------------|---------------|-----------------|--------------|
@@ -453,7 +459,9 @@ The data collection method was as follows: I let the TCP/IP handshake python scr
 | 64ms              | 62ms          | 3.2%            | No           |
 | 207.9ms           | 236.7ms       | 13.8%           | No           |
 
-As you can see, the difference between WebSocket latency and TCP/IP handshake is mostly very small. I assume that these visitors didn't use any proxy. I cannot say for sure obviously, because after all, I want to find a way to detect proxy usage. But I am quite confident that they don't use proxies, because their browsing behavior appears to be organic and most my visitors don't use proxies (except on [bot.incolumitas.com](https://bot.incolumitas.com/)).
+As you can see, the difference between WebSocket latency and TCP/IP handshake is in most cases marginal. I assume that those visitors didn't use any proxy.
+
+Obviously, I cannot say for sure, because after all, I want to find a way to detect proxy usage. But I am quite confident that they don't use proxies, because their browsing behavior appears to be organic and most my visitors don't use proxies (except on [bot.incolumitas.com](https://bot.incolumitas.com/)).
 
 Now it's time to collect samples from some scraping providers (such as [Brightdata](https://brightdata.com/) or [ScrapingBee](https://www.scrapingbee.com/)) and see how the latencies differ there. With those providers, I am very confident that they use proxies, so my hypothesis is the following: The latancies from the WebSocket messages should be significantly larger then the ones from the TCP Handshake.
 
@@ -474,4 +482,12 @@ Now it's time to collect samples from some scraping providers (such as [Brightda
 | ScrapingBee    | 95.7ms            | 177.3ms       | 86%             | Yes          |
 
 
-The samples above confirm my hypothesis. Indeed, the WebSocket latencies are at between 45% to 136% larger then their corresponding TCP handshake latencies. That is a significant difference compared to the largest difference when not using proxies (13.6%). Statistically speaking, we can determine with high probablity if the visiting user is using a proxy or not. Mission accomplished!
+The samples above confirm my hypothesis.
+
+Indeed, the WebSocket latencies are at between 45% to 136% larger then their corresponding TCP handshake latencies. That is a significant difference compared to the largest difference of the *No Proxy* measurements from above (13.6%). Statistically speaking, we can determine with high probablity if the visiting user is using a proxy or not. Mission accomplished!
+
+Some things to keep in mind:
+
++ Sometimes, the latencies obtained from WebSockets have outliers. I assume that this is due to packet loss and re-transmission (WebSockets is a reliable protocol).
++ The downside with TCP/IP handshake RTTs is that there may also occur packet loss and thus skewed latency measurements. But because there are usually a couple of TCP/IP handshakes made when a browser visits my website, I can take the median value as well.
+
