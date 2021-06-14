@@ -8,6 +8,15 @@ Slug: detecting-proxies-and-vpn-with-latencies
 Author: Nikolai Tschacher
 Summary: VPN's and Proxy Servers can be detected by comparing latencies measured with JavaScript in the browser with the corresponding latency of the TCP/IP handshake on the server.
 
+## TL;DR
+
+When collecting enough samples from latency measurements taken 
+
+1. From within the browser with WebSockets by using JavaScript
+2. And on the server side by measuring the RTT on the incoming TCP/IP handshake
+
+it is possible for a website to infer that the visitor is using a proxy/VPN if those two latency measurements differ significantly.
+
 ## Introduction
 
 **Premise:** I am the owner of a hosted website and I have full control of my server (root rights). My server is not behind a load balancer or some other mechanism that prevents me from hooking into the incoming TCP/IP stream.
