@@ -23,7 +23,7 @@ There are several Adblock detection techniques discussed in this article. If you
           if (response.status === 404) {
             callback(false);
           } else {
-            callback('unknown');
+            callback('unknown (' + response.status + ')');
           }
         })
         .catch(function(error) {
@@ -42,7 +42,7 @@ There are several Adblock detection techniques discussed in this article. If you
       if (http.status === 404) {
         callback(false);
       } else {
-        callback('unknown');
+        callback('unknown (' + http.status + ')');
       }
     }
   })(function (detected) {

@@ -19,10 +19,6 @@ Whenever I have difficulties solving a particular problem, I try to put it into 
 
 For that reason, I am writing this blog.
 
---- 
-
-*Nothing in life is as powerful as the beautiful first hour in the morning, after a well rested night, where the strong coffee your are sipping is starting to kick in and you just found the correct house/techno set and your hands start to hammer down letters appearing on a screen.*
-
 ## Education
 
 I am a computer science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) in 2019.
@@ -66,6 +62,8 @@ By starting this blog in July 2012, my intention was to feed the community with 
 snippets and some of my ideas. There are many ideas – too many – but
 only a fraction that I really realize.
 
-**Nikolai Tschacher**
+**Nikolai Tschacher** - Last update: **June 2021**
 
-Last update: **June 2021**
+--- 
+
+*Nothing in life is as powerful as the beautiful first hour in the morning, after a well rested night, where the strong coffee your are sipping is starting to kick in and you just found the correct house/techno set and your hands start to hammer down letters appearing on a screen.*
