@@ -40,6 +40,17 @@ If you pass the IP address `3.5.140.2` to the API by calling [https://abs.incolu
 }
 ```
 
+Alternatively, you can also lookup IPv6 addresses. Try the url [https://abs.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef](https://abs.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef), which yields:
+
+```json
+{
+  "ip": "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef",
+  "region": "ap-east-1",
+  "service": "AMAZON",
+  "network_border_group": "ap-east-1"
+}
+```
+
 If you don't specify any IP address with the `ip=` query parameter and you invoke [https://abs.incolumitas.com/datacenter](https://abs.incolumitas.com/datacenter) directly, the client's own IP address will be used for lookup. In my case, I get the following output:
 
 ```json
@@ -97,6 +108,17 @@ Looking up an GCP IP address: [https://abs.incolumitas.com/datacenter?ip=23.236.
 {
   "ip": "23.236.48.55",
   "service": "GCP"
+}
+```
+
+And looking up a AWS IPv6 address: [https://abs.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000](https://abs.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000):
+
+```json
+{
+  "ip": "2600:1F18:7FFF:F800:0000:ffff:0000:0000",
+  "region": "us-east-1",
+  "service": "AMAZON",
+  "network_border_group": "us-east-1"
 }
 ```
 

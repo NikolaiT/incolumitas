@@ -4,11 +4,32 @@ Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
 
-I maintain a public API to lookup whether an IP address belongs to a data center IP address range such as from Azure, AWS, Digitalocean and many more cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more details.
+I maintain a public API to check whether an IP address belongs to a data center IP address range such as from Azure, AWS, Digitalocean and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 
-| API Version | API Endpoint                               | Supported Datacenters                                                                                                            |
-|-------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| v0.1        | [https://abs.incolumitas.com/datacenter?ip=](https://abs.incolumitas.com/datacenter?ip=) | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network  |
+| API Version | API Endpoint                               | Supported Datacenters                                                                                                            | IPv6 Support |
+|-------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------|
+| v0.1        | **https://abs.incolumitas.com/datacenter?ip=1.2.3.4** | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network  | Yes      |
+
+
+## Live API
+
+<div class="ipAPIDemo">
+  <label style="font-weight: 600; font-size: 15px" for="ip">IP Address:</label>
+  <input style="padding: 10px;" type="text" id="ip" name="ip" value="13.34.52.117"><br><br>
+  <input style="padding: 10px;" type="submit" value="Make API Request">
+  <pre id="data"></pre>
+</div>
+
+<script>
+document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('click', function(evt) {
+  var ip = document.getElementById('ip').value;
+  fetch('https://abs.incolumitas.com/datacenter?ip=' + ip) 
+  .then(response => response.json())
+  .then(function(data) {
+    document.getElementById('data').innerText = JSON.stringify(data, null, 2);
+  })
+})
+</script>
 
 ## API Usage
 
@@ -22,6 +43,17 @@ If you pass the IP address `3.5.140.2` to the API by calling [https://abs.incolu
   "region": "ap-northeast-2",
   "service": "AMAZON",
   "network_border_group": "ap-northeast-2"
+}
+```
+
+Alternatively, you can also lookup IPv6 addresses. Try the url [https://abs.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef](https://abs.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef), which yields:
+
+```json
+{
+  "ip": "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef",
+  "region": "ap-east-1",
+  "service": "AMAZON",
+  "network_border_group": "ap-east-1"
 }
 ```
 
@@ -82,6 +114,17 @@ Looking up an GCP IP address: [https://abs.incolumitas.com/datacenter?ip=23.236.
 {
   "ip": "23.236.48.55",
   "service": "GCP"
+}
+```
+
+And looking up a AWS IPv6 address: [https://abs.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000](https://abs.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000):
+
+```json
+{
+  "ip": "2600:1F18:7FFF:F800:0000:ffff:0000:0000",
+  "region": "us-east-1",
+  "service": "AMAZON",
+  "network_border_group": "us-east-1"
 }
 ```
 
