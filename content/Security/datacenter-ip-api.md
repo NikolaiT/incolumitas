@@ -7,6 +7,8 @@ Slug: check-if-an-IP-Address-belongs-to-a-datacenter
 Author: Nikolai Tschacher
 Summary: For security reasons, it's often helpful to check if an IP Address belongs to a datacenter or cloud computing provider such as Amazon AWS or Microsoft Azure. Therefore, I have developed a simple public API that helps you to check if an IP address belongs to a datacenter / cloud provider.
 
+<a class="orange_button" href="https://incolumitas.com/pages/Datacenter-IP-API/">Visit the dedicated page for the API</a>
+
 ## Introduction
 
 The emergence of cloud providers enabled bot programmers and spammers to make use of cheap and scalable cloud computing infrastructure for their bots. As a business and website owner, it's in your best interest that your visitors are organic human beings and not automated programs that leverage the functionality of your website.

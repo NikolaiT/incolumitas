@@ -1,22 +1,23 @@
 Title: Datacenter IP Address API
 Date: 2021-06-20 00:13
 Author: Nikolai Tschacher
-Slug: IP-API
+Slug: Datacenter-IP-API
 Status: published
 
 I maintain a public API to check whether an IP address belongs to a data center IP address range such as from Azure, AWS, Digitalocean and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 
-| API Version | API Endpoint                               | Supported Datacenters                                                                                                            | IPv6 Support |
-|-------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------|
-| v0.1        | **https://abs.incolumitas.com/datacenter?ip=1.2.3.4** | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network  | Yes      |
++ API Version: v0.1
++ API Endpoint: **https://abs.incolumitas.com/datacenter?ip=1.2.3.4**
++ Supported Datacenters: Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network
++ IPv6 Support: Yes
 
 
 ## Live API
 
 <div class="ipAPIDemo">
   <label style="font-weight: 600; font-size: 15px" for="ip">IP Address:</label>
-  <input style="padding: 10px;" type="text" id="ip" name="ip" value="13.34.52.117"><br><br>
-  <input style="padding: 10px;" type="submit" value="Make API Request">
+  <input style="padding: 6px;" type="text" id="ip" name="ip" value="13.34.52.117"><br><br>
+  <input class="orange_button" type="submit" value="Make API Request">
   <pre id="data">{
   "message": "Please make an API request",
 }</pre>
