@@ -17,7 +17,9 @@ I maintain a public API to check whether an IP address belongs to a data center 
   <label style="font-weight: 600; font-size: 15px" for="ip">IP Address:</label>
   <input style="padding: 10px;" type="text" id="ip" name="ip" value="13.34.52.117"><br><br>
   <input style="padding: 10px;" type="submit" value="Make API Request">
-  <pre id="data"></pre>
+  <pre id="data">{
+  "message": "Please make an API request",
+}</pre>
 </div>
 
 <script>
