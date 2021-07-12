@@ -126,7 +126,7 @@ And looking up a AWS IPv6 address: [https://abs.incolumitas.com/datacenter?ip=26
 
 As you can see from the example lookups above, sometimes the API gives additional meta data information for a specific IP address such as regional and data center information.
 
-## What cloud providers are supported?
+## What cloud providers are supported by the API?
 
 Currently, the API supports IP address ranges from the following [cloud providers](https://udger.com/resources/datacenter-list):
 

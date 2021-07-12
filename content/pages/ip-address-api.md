@@ -132,3 +132,27 @@ And looking up a AWS IPv6 address: [https://abs.incolumitas.com/datacenter?ip=26
 ```
 
 As you can see from the example lookups above, sometimes the API gives additional meta data information for a specific IP address such as regional and data center information.
+
+## What cloud providers are supported by the API?
+
+Currently, the API supports IP address ranges from the following [cloud providers](https://udger.com/resources/datacenter-list):
+
+| Cloud Provider                     | Number of IP Addresses | API support |
+|------------------------------------|------------------------|-------------|
+| Amazon AWS                         | 124,353,848            | ✓           |
+| Microsoft Azure                    | 12,175,189             | ✓           |
+| Google Cloud                       | 13,257,728             | ✓           |
+| Alibaba Cloud                      | 7,303,168              | ✗           |
+| SoftLayer Technologies / IBM Cloud | 4,841,056              | ✓           |
+| Tencent Cloud                      | 4,704,256              | ✗           |
+| OVH                                | 4,200,608              | ✓           |
+| Digital Ocean, Inc                 | 2,643,216              | ✓           |
+| Rackspace, Inc.                    | 2,178,902              | ✗           |
+| Hetzner Online                     | 2,022,193              | ✓           |
+| CloudFlare Inc                     | 1,801,984              | ✓           |
+| Aptum Technologies                 | 1,786,472              | ✗           |
+| Ubiquity Hosting                   | 1,443,840              | ✗           |
+| Oracle Cloud                       | 1,183,744              | ✓           |
+| Tor Network                        | ?                      | ✓           |
+
+The API database is updated every 4 hours with the official source of the IP address ranges of the cloud provides listed above (with a ✓). For some cloud providers such as OVH or Hetzner there is no official IP address range source, so I have to rely on [third party sources](https://bgp.he.net/search?search%5Bsearch%5D=OVH&commit=Search).
