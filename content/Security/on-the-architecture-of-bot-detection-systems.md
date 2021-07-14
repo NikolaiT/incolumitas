@@ -69,13 +69,18 @@ On the other hand, all the data that is collected via JavaScript can be spoofed 
 
 Let's think about how Bot Detection Services are implemented by following a typical browsing session of a website. As discussed above, those systems collect data from both the client side and the server side.
 
+The very first event relevant for bot detection is the DNS lookup of the hostname that a browser establishes a connection with. The browser uses the operating systems local DNS resolver to lookup the A and AAAA DNS resource record for the hostname. Worded differently, it asks for the IPv4 or IPv6 address that corresponds to the hostname used in the URL that was entered in the browser's address bar.
+
+Upon such a lookup, the DNS server can check that the resolvers client's IP address is the same or belongs to the same ISP as the IP address that communicates with the web server. Put differently, it can be checked on the DNS server that no [DNS leak](https://en.wikipedia.org/wiki/DNS_leak) occurs.
+
+After the IP address of the domain name has been obtained, the browser is ready to establish a connection with the web server.
+
 Before a browser is able to display anything, a TCP and TLS handshake has to occur to establish a TCP connection to the web server (In case we are using https, which almost always is the case nowadays).
 
 <figure>
   <img src="{static}/images/tslHandshake.svg" alt="TCP and TLS handshake" />
   <figcaption>Before index.html is downloaded, a TCP and TLS handshake has to happen.<span style="font-size: 60%">(Source: https://hpbn.co/building-blocks-of-tcp/)</span></figcaption>
 </figure>
-
 
 As soon as the first incoming SYN packet arrives on the server, an anti bot system is capable of performing the following lookups on the server side:
 
