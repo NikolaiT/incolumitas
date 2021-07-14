@@ -94,7 +94,7 @@ After the initial TCP/IP handshake passed, the TLS handshake comes next. After t
 
 I am not a specialist regarding TLS fingerprinting, but my guess is that a TLS fingerprint has slightly more entropy to it and allows to differentiate between different TLS implementations and maybe operating systems. If that is the case, then at this point it would be already possible to see if there is a mismatch in TCP/IP fingerprint OS and TLS fingerprint OS. However, TLS fingerprints can easily be forged on the client side.
 
-After the TLS handshake has been established, the client sends an initial HTTP GET request to fetch the requested URL. Based on this very first GET request, we can do a couple of things:
+After the TLS handshake has been established, the client sends an initial HTTP GET request to fetch the requested URL. Let's assume the client requests the `index.html` document. Based on this very first GET request, we can do a couple of things:
 
 1. Compute a HTTP fingerprint. What headers are sent with the client? In what order are they sent? Are the headers case sensitive? 
 2. Does the HTTP headers contain typical proxy headers such as 
@@ -104,8 +104,14 @@ var proxy_headers = ['Forwarded', 'Proxy-Authorization',
   'X-Requested-With', 'From',
   'X-Real-Ip', 'Via', 'True-Client-Ip', 'Proxy_Connection'];
 ```
+3. Does the HTTP Referer look suspicious?
+4. Is the HTTP version not from a modern browser but from a non-browser library such as `curl` or Python `requests`?
 
-Usually, the browser first fetches the `index.html` document, then the browser parses the page and loads images, CSS and JavaScript files and the executed JavaScript in turn dynamically fetches more content. 
+If all checks pass until this point, the web server is going to serve the contents of the `index.html` document.
+
+After the `index.html` document has been downloaded, the browser parses the page and loads linked images, CSS and JavaScript files.
+
+The executed JavaScript in turn dynamically fetches more content which results in more HTTP requests, WebSocket streams and other forms of networking requests.
 
 
 
