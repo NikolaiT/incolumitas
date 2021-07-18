@@ -218,7 +218,7 @@ Having said that, let's look at some techniques to detect bots on the client sid
 5. Recording behavioral data by listening to DOM events such as `onmousemove`, `onscroll`, `onkeydown`.
 6. Then there exist a wide range of techniques to detect automation frameworks such as puppeteer or playwright or mismatches in the browser JavaScript environment which indicate that the browser was messed with. [creep.js](https://abrahamjuliot.github.io/creepjs/) is probably one of the best tools out there for that purpose.
 7. Lastly, the technique that is still most used is the good old CAPTCHA. Google's [reCAPTCHA](https://www.google.com/recaptcha/about/) or the newer [hCAPTCHA](https://www.hcaptcha.com/) are well known solutions.
-8. In general, JavaScript allows bot detection services to collect and ENORMOUS amount of data from browser. JavaScript leaks so much information, it's unfathomable. Just to throw some words into the mix: Browser red pills, WebRTC leaks, scanning the internal network...
+8. In general, JavaScript allows bot detection services to collect and ENORMOUS amount of data from browsers. JavaScript leaks so much information, it's unfathomable. Just to throw some words into the mix: Browser red pills, WebRTC leaks, scanning the internal network...
 
 The **Proof of Work** kind of challenges cannot be bypassed by clients. They have to be solved somewhere. However, the solving of the proof of work challenge does not have to be on the browser/client that receives the challenge.
 
@@ -241,12 +241,13 @@ There are two fundamental approaches how to defeat bot detection:
 
 Only one thing is for sure: All what bot detection companies are doing is **rising the transaction costs for automation in the Internet**. But we live in times were platforms are becoming more monopolized and powerful each passing day.
 
-At the same time, mobile phones become cheaper and cheaper. In our modern times, a mobile phone basically constitutes a digital identity. But all what you need to acquire such an identity is 100$ to buy a cheap phone and a cheap data plan for 7.99$ a month. If bot detection companies do their job to good, spammers will simply create mobile device farms and conduct their botting/spamming/attacks with those device farms.
+At the same time, mobile phones become cheaper and cheaper. In our modern times, a mobile phone basically constitutes a digital identity. But all what you need to acquire such an identity is 100USD to buy a cheap phone and a cheap data plan for 7.99USD a month. If bot detection companies do their job too good, spammers will simply create mobile device farms and conduct their botting/spamming/attacks with those device farms.
 
 Detecting real automated mobile devices is much much harder then to detect Headless Chrome on AWS...As of now, I would only know two ways to detect such a mobile device farm:
 
 + Portscan for an open `adb` port with JavaScript
-+ Check the Javascript [Accelerometer API](https://developer.mozilla.org/en-US/docs/Web/API/Accelerometer) and [Gyroscope](https://developer.mozilla.org/en-US/docs/Web/API/Gyroscope). If there is zero-movement velocity and rotation data, it's very unlikely for a mobile device.
++ Check the Javascript [Accelerometer API](https://developer.mozilla.org/en-US/docs/Web/API/Accelerometer) and [Gyroscope](https://developer.mozilla.org/en-US/docs/Web/API/Gyroscope). Zero-movement velocity and rotation data is quite suspicious for mobile phones.
++ Maybe some statistical analysis that a website suddenly has a surge in traffic from cheap or old Android smartphones from the same CGNAT which might indicate a mobile device farm as source of the traffic...
 
 
 
