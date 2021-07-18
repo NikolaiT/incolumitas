@@ -18,9 +18,9 @@ I deliberately keep my definition very broadly.
 
 
 1. An **automated program** is software not controlled by an human user. Some examples:
-    + The Google Chrome browser automated with a framework such as [playwright](https://github.com/microsoft/playwright) or [puppeteer](https://github.com/puppeteer/puppeteer)
-    + Simple `curl` commands automated with shell scripts
-    + Real physical mobile phones running Android automated over `adb` (Android Debug Bridge) and (optionally) automated with frameworks such as [appium.io](https://appium.io/) or [DeviceFarmer's stf](https://github.com/DeviceFarmer/stf)
+    + A Google Chrome browser automated with a framework such as [playwright](https://github.com/microsoft/playwright) or [puppeteer](https://github.com/puppeteer/puppeteer)
+    + Simple `curl` commands orchestrated with shell scripts
+    + Real physical mobile phones running Android automated over `adb` (Android Debug Bridge) and (optionally) controlled with frameworks such as [appium.io](https://appium.io/) or [stf (DeviceFarmer)](https://github.com/DeviceFarmer/stf)
 2. Likewise, **detecting passively** means: Without actively interrupting the user's (or bot's) browser session by asking to solve a challenge task such as Google's [reCAPTCHA](https://www.google.com/recaptcha/about/) or the newer [hCAPTCHA](https://www.hcaptcha.com/).
 Put differently: The decision whether a website visitor is a human or a bot has to be made by passively observing signals such as TCP/IP streams and other data sent from the browser via JavaScript.
 3. And what means **website visitor**?
@@ -127,9 +127,9 @@ At this point, the anti bot detection system is ready to serve it's JavaScript c
 
 ## Bot Detection Techniques on the Client Side with JavaScript
 
-As soon as JavaScript is executed on the browser, there are a lot of different techniques to harvest data that helps to make a decision whether the client is a bot or not.
+As soon as JavaScript is executed on the browser, there are a lot of different techniques to harvest data that help to make a decision whether the client is a bot or not.
 
-Keep in mind that the JavaScript engine is controlled by the client! Thus also the data that is sent back to the web server!
+Keep in mind that the JavaScript execution environment is controlled by the client! So is the data that is sent back to the web server!
 
 Bot detection companies use many different techniques to camouflage their JavaScript signals collection libraries:
 
@@ -145,18 +145,48 @@ There are some reasons for that:
 - Obfuscated JavaScript must conform to the ECMAScript specification
 - Obfuscated JavaScript will at some point also be in AST (Abstract Syntax Tree) representation 
 
-A well known JavaScript obfuscator is [https://github.com/javascript-obfuscator/javascript-obfuscator](javascript-obfuscator). A good JavaScript de-obfuscation tool is [de4js](https://github.com/lelinhtinh/de4js).
+A well known JavaScript obfuscation tool is [javascript-obfuscator](https://github.com/javascript-obfuscator/javascript-obfuscator). A good JavaScript de-obfuscation tool is [de4js](https://github.com/lelinhtinh/de4js).
 
+#### Quick Interlude
 
-Before I dive into some of the JavaScript bot detection techniques, I want to explain why collecting signals with JavaScript and stopping bots is so difficult. Assuming the bot detection execution time for the script is 200ms and then the data is transmitted in 50ms to the web server, which in turn has to make an API request to the central bot detection API (again 50ms), 300ms already passed before the client is banned.
+For example, when I look for apartments on the German real estate search engine [immobilienscout24.de](https://www.immobilienscout24.de/), I am sometimes presented a bot detection challenge that performs a check passively in the background.
+
+This is the [heavily obfuscated JavaScript file]({filename}/data/imperva.js) that does the work in the background. I spent around 30 minutes trying to understand what it does, but honestly I could not figure out much without spending more time. I only know that the script performs some checks and sends the following payload back to the server, where `p` is a 30KB long base64 encoded binary blob:
+
+```json
+{
+   "solution":{
+      "interrogation":{
+         "p":"h6R2UwMDY2NnRfZ18oNUBwVTJKVWtNZnFqc2ZndX5NaHZyOGpf...[truncated]",
+         "st":1626613924,
+         "sr":113884550,
+         "cr":994722218
+      },
+      "version":"stable"
+   },
+   "old_token":null,
+   "error":null,
+   "performance":{
+      "interrogation":1006
+   }
+}
+```
+
+The next steps in reverse engineering would be to find out what exactly `p` contains. Look at the place in the obfuscated JavaScript where `p` becomes encrypted/encoded and dump the clear text contents. Then I know what data is sent and I can therefore spoof it.
+
+I am heavily assuming that the [above JavaScript]({filename}/data/imperva.js) is Imperva's bot detection client side solution.
+
+---
+
+Before I dive deeper into some of the JavaScript bot detection techniques, I want to explain why collecting signals with JavaScript and stopping bots is so difficult. Assuming the bot detection execution time for the script is 200ms and then the data is transmitted in 50ms to the web server, which in turn has to make an API request to the central bot detection API (again 50ms), 300ms already passed before the client can be banned.
 
 This means that all signals recorded by JavaScript that are sent to the bot detection API incur a large delay before a decision can be made on the server side.
 
-What if our goal is to only scrape a specific page? Then we can simply abort the execution of said script. Maybe the server then remembers: Hey, this specific client with IP XYZ never actually sent a JavaScript payload back home. Looks unusual: One of the following cases had to happen:
+What if our goal is to only scrape a single page? Then an attacker can simply abort the execution of said script. Maybe the server then remembers: Hey, this specific client with IP XYZ never actually sent a JavaScript payload back home. Looks unusual: One of the following cases had to happen:
 
 1. There was a network outage
 2. The user navigated away before the JavaScript payload could be sent home
-3. The OS or browser crashed
+3. The system / browser crashed
 4. The user blocked the execution of the script deliberately to evade bot detection
 
 Only the last point indicates malicious behavior of the client. Therefore, every bot detection system needs to give each client some free attempts, let's say the IP address get blocked if a threshold of `N=20` has surpassed.
@@ -167,21 +197,38 @@ You can't just block a whole mobile address range because you feel like it. Wiki
 
 > In cases of banning traffic based on IP addresses, the system might block the traffic of a spamming user by banning the user's IP address. If that user happens to be behind carrier-grade NAT, other users sharing the same public address with the spammer will be mistakenly blocked. This can create serious problems for forum and wiki administrators attempting to address disruptive actions from a single user sharing an IP address with legitimate users.
 
-What I describe above is something very fundamental about bot detection systems: They must work without relying on JavaScript signals reported back home. Not only because every network message originating from the client is potentially spoofed, but also because some browsers simply cannot execute JavaScript or fail in the process of doing so! Some users don't have JavaScript enabled. Banning the IP address because they disabled JavaScript is too aggressive.
+What I describe above is something **very fundamental** about bot detection systems: **They must work without relying on JavaScript signals**. Not only because every network message originating from the client is potentially spoofed, but also because some browsers simply cannot execute JavaScript or fail in the process of doing so! Some users don't have JavaScript enabled. Banning the IP address because they disabled JavaScript is too aggressive.
+
+And there is another very important point here: **Bot detection systems can only reliably ban clients by IP address!** This is so important to understand. Every other signal from the client can be spoofed (if the client understands what he executes on his machine)! 
+
+If a bot detection system bans based on other ways of identification (Browser fingerprint, WebGL fingerprint, font fingerprint, TLS Fingerprint, TCP/IP fingerprint, ...), a client can change those fingerprints and evade a ban!
 
 Having said that, let's look at some techniques to detect bots on the client side:
 
 1. Browser Fingerprinting with JavaScript is a very popular method. The idea is to collect as much browser entropy such as `navigator.languages` or `navigator.platform` as possible, while simultaneously trying to look for attributes that are static and don't change on browser/OS updates.
-2. Proof of work challenges such as solving cryptographic puzzles in the browser as [friendlycaptcha.com](https://friendlycaptcha.com/) is doing.
+2. Proof of work challenges such as solving cryptographic puzzles in the browser as [friendlycaptcha.com](https://friendlycaptcha.com/) is doing. The rough idea is: Make the browser find the input for a hash function until the first `K` bits are all zeroes. This takes some time.
 3. Another common bot detection method is to produce unique fingerprints with the browser built in webGL rendering system that accesses the client's graphic hardware. For example, [Google Picasso](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45581.pdf) detects the client's operating system class by leveraging the unique outputs of the webGL renderer.
-4. JavaScript can be used to [port scan](https://incolumitas.com/2021/01/10/browser-based-port-scanning/) the client's internal network. This allows to find out if certain suspicious well known ports are open, such as the one for the remote debugging protocol (9222) or the one for adb (too lazy to look up).
+4. JavaScript can be used to [port scan](https://incolumitas.com/2021/01/10/browser-based-port-scanning/) the client's internal network. This allows to find out if certain suspicious well known ports are open, such as the one for the remote debugging protocol (9222) or the one for `adb` (5037).
+5. Recording behavioral data by listening to DOM events such as `onmousemove`, `onscroll`, `onkeydown`.
+6. Then there exist a wide range of techniques to detect automation frameworks such as puppeteer or playwright or mismatches in the browser JavaScript environment which indicate that the browser was messed with. [creep.js](https://abrahamjuliot.github.io/creepjs/) is probably one of the best tools out there for that purpose.
+7. Lastly, the technique that is still most used is the good old CAPTCHA. Google's [reCAPTCHA](https://www.google.com/recaptcha/about/) or the newer [hCAPTCHA](https://www.hcaptcha.com/) are well known solutions.
 
+The **Proof of Work** kind of challenges cannot be spoofed by the client. They have to be solved somewhere. However, the solving of the proof of work challenge does not have to be on the browser/client that receives the challenge.
 
+Crypto proof of work challenges can be solved by dedicated hardware for cryptography, it does not need to be solved by the browser. This speeds up things considerably. I would guess that solving crypto hashing challenges on dedicated hardware is between 20 to 200 times faster than with JavaScript.
 
+Solving captchas such as Google's [reCAPTCHA](https://www.google.com/recaptcha/about/) can be outsourced to captcha solving services, such as for example [deathbycaptcha.com](https://www.deathbycaptcha.com/) or [2captcha.com](https://2captcha.com/).
 
+Even solving more complex challenges such as [Google Picasso](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45581.pdf) can be pre-computed. All what you need is a network of different devices and access to a browser with JavaScript enabled. If you have a website with 10k unique visitors per month, you probably will be fine.
 
+## Conclusion
 
+Bot detection systems consists of IP reputation techniques and client side data gathering scripts. They need to reliably work even if their client side JavaScript libraries send spoofed data. Because of that potential spoofing, those bot detection [client side JavaScript's]({filename}/data/imperva.js) are heavily obfuscated to make it harder for attackers to understand what is expected from them to send back to the server in order to appear `legit`. Proof of work challenges do not have to be solved by the client that received the challenge - they can be outsourced.
 
+There are two fundamental approaches how to defeat bot detection:
+
+1. Don't fight bot detection companies and use real devices with legit IP addresses (such as mobile device farms) to conduct their attacks
+2. Use cheap AWS cloud infrastructure and high reputation proxies and then spoof the payload from the bot detection JavaScript in order to appear legit. This requires a very high understanding of JavaScript and reverse engineering.  
 
 
 
