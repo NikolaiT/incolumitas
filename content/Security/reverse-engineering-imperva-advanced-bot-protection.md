@@ -141,9 +141,9 @@ function _0x4367d8(_0x273cd6, _0x5d9b80, _0x1662f3, _0x10df38) {
 }
 ```
 
-The variable `_0x3f2e6a` contains a large `p`  value along some other stuff:
+The variable `_0x3f2e6a` contains a large `p` value along some other stuff:
 
-```json
+```JavaScript
 "{"solution":{"interrogation":{"p":"qeQsQGYRDuY+QSnzobwvDumrlyM1yU9PjDxgTG6KWG7mr/8OIyu472f5w6vM6J1m/zPRRZ…"
 ```
 
