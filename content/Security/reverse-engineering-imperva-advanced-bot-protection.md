@@ -86,7 +86,21 @@ Object.defineProperty(window, 'btoa', {
 
 ## Debugging by breaking on XHR or fetch
 
-After adding a generic breakpoint on XHR or fetch, this is the obfuscated code that sends the bot detection message to the server:
+After adding a generic breakpoint on XHR or fetch (see image below),
+
+<figure>
+  <img src="{static}/images/breakpoint.png" alt="XHR or fetch breakpoint" />
+  <figcaption>XHR or fetch breakpoint</figcaption>
+</figure>
+
+And then navigating to the url https://www.immobilienscout24.de/Suche/de/nordrhein-westfalen/koeln/wohnung-mieten? and continuing a lot of uninteresting XHR fetch breakpoints we finally arrive at the site that performs the bot check with me
+
+<figure>
+  <img src="{static}/images/botcheck.png" alt="botcheck" />
+  <figcaption>botcheck - the page where we want to intercept XHR or fetch calls</figcaption>
+</figure>
+
+On this page we pause on the breakpoint and inspect the contents of the debugger. This is the obfuscated code that sends the bot detection message to the server:
 
 ```JavaScript
 function _0x4367d8(_0x273cd6, _0x5d9b80, _0x1662f3, _0x10df38) {
