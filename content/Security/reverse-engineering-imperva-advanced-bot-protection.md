@@ -337,7 +337,7 @@ _0x4815b1["prototype"]["getToken"] = function() {
 }
 ```
 
-But this all is not so interesting. What I know as of know:
+But this all is not so interesting. What I know as of now:
 
 The obfuscated code consists of two parts:
 
@@ -349,4 +349,6 @@ The question however remains? What the heck is the purpose of the `reese84interr
 How does it prove that the client is not automated and not a bot?
 
 Is it some kind of crypto challenge?
+
+The next steps could be: Measure the execution time of the challenge. How long does it take? The sole purpose of proof-of-work challenges is to consume some computing time, but in my opinion the challenge is too large to be a a simple crypto challenge.
 
