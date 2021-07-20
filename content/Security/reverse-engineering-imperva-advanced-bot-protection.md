@@ -220,7 +220,7 @@ Now I understand the structure of the obfuscated script a bit better.
 It consists of two parts
 
 1. [A challenge script]({filename}/data/imperva-challenge-script.js) which probably does some cryptographic proof of work operations 
-2. [And a part]({filename}/data/imperva-second-part.js) that submits the challenge solution to the server and performs some browser checks (with already improved readability having replaced `a0_0x1f86()` with strings)
+2. [And the second part]({filename}/data/imperva-second-part.js) that submits the challenge solution to the server and performs some browser checks (with already improved readability having replaced `a0_0x1f86()` with strings)
 
 The challenge script looks quite weird and does a lot of strange operations. An excerpt:
 
@@ -249,3 +249,104 @@ DP[AR.substr(1661, 12)] = q_[AR.substr(1209, 12)](q_[KJ.substr(1264, 12)]);
 DP[FN.substr(1887, 6)] = q_[AR.substr(1209, 12)](q_[FN.substr(1734, 6)]);
 DP[AR.substr(865, 7)] = q_[AR.substr(1209, 12)](q_[nA.substr(79, 7)]);
 ```
+
+But having replaced the `a0_0x1f86('0xd6')` like calls with string literals helps already tremendously.
+
+When I open a blank page and execute the [challenge script]({filename}/data/imperva-challenge-script.js) only, I see that the window object has a `window.reese84interrogator` function emerging.
+
+<figure>
+  <img src="{static}/images/reese84interrogator.png" alt="reese84interrogator" />
+  <figcaption>Running the challenge script prepares the `reese84interrogator` function</figcaption>
+</figure>
+
+But where is this challenge functionality made use of?
+
+In the second part I can see that a factory function creates a new `reese84interrogator` object with two parameters:
+
+```JavaScript
+_0xd1c0ad["interrogatorFactory"] = function(_0x39fb82) {
+  return new window[("reese84interrogator")](_0x36099f,_0x39fb82);
+}
+```
+
+whereas `_0x39fb82` seems to be a timer object that the interrogator needs.
+
+I can't make sense of the other variable `var _0x36099f = _0x2482a0(0x6);`.
+
+`interrogatorFactory` in turn is used in the `solve` function.
+
+```JavaScript
+_0x4815b1['prototype']["solve"] = function() {
+  return _0x216cea(this, void 0x0, void 0x0, function() {
+      var _0x2df399, _0x135bf1;
+      return _0x17068c(this, function(_0xfa7469) {
+          switch (_0xfa7469["label"]) {
+          case 0x0:
+              return _0x2df399 = _0x50eceb["interrogatorFactory"](this["timer"]),
+              [0x4, new Promise(_0x2df399["interrogate"])];
+          case 0x1:
+              return _0x135bf1 = _0xfa7469["sent"](),
+              [0x2, new _0x4631eb(_0x135bf1,'stable')];
+          }
+      });
+  });
+}
+```
+
+The `interrogate` property of the instantiated `reese84interrogator` object is passed to a promise:
+
+```JavaScript
+new Promise(_0x2df399["interrogate"])
+```
+
+The time `this["timer"]` is instantiated earlier as 
+
+```JavaScript
+this['timer'] = _0x1e36b0["timerFactory"]();
+```
+
+`solve` again is called in the function `getToken` without any parameters:
+
+```JavaScript
+_0x4815b1["prototype"]["getToken"] = function() {
+  return _0x216cea(this, void 0x0, void 0x0, function() {
+    var _0x82dbd5, _0x552e1b, _0x473a9f, _0x38410d;
+    return _0x17068c(this, function(_0x335c46) {
+        switch (_0x335c46["label"]) {
+        case 0x0:
+            _0x82dbd5 = _0x599402(),
+            _0x335c46['label'] = 0x1;
+        case 0x1:
+            return _0x335c46['trys']["push"]([0x1, 0x3, , 0x4]),
+            [0x4, this['solve']()];
+        case 0x2:
+            return _0x473a9f = _0x335c46["sent"](),
+            _0x552e1b = new _0x421603(_0x473a9f,_0x82dbd5 ? _0x82dbd5["token"] : null,null,this['timer']["summary"]()),
+            [0x3, 0x4];
+        case 0x3:
+            return _0x38410d = _0x335c46['sent'](),
+            _0x552e1b = new _0x421603(null,_0x82dbd5 ? _0x82dbd5["token"] : null,"stable error: " + _0x38410d['st'] + '\x20' + _0x38410d['sr'] + '\x20' + _0x38410d['toString']() + '\x0a' + _0x38410d["stack"],null),
+            [0x3, 0x4];
+        case 0x4:
+            return [0x4, this['bon']['validate'](_0x552e1b)];
+        case 0x5:
+            return [0x2, _0x335c46["sent"]()];
+        }
+    });
+  });
+}
+```
+
+But this all is not so interesting. What I know as of know:
+
+The obfuscated code consists of two parts:
+
+1. A challenge part that adds the `reese84interrogator` function to the `window` object. `reese84interrogator` points to the function `function M9(lr, on) {` which again starts all the [challenge madness]({filename}/data/imperva-challenge-script.js).
+
+2. I know that the second part of the obfuscated code makes use of this `reese84interrogator` object and sends the challenge result to the server.
+
+The question however remains? What the heck is the purpose of the `reese84interrogator` challenge?
+How does it prove that the client is not automated and not a bot?
+
+Is it some kind of crypto challenge?
+
