@@ -1,13 +1,13 @@
 Title: Datacenter IP Address API
-Date: 2021-06-20 00:13
+Date: 2021-09-29 00:13
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
 
 I maintain a public API to check whether an IP address belongs to a data center IP address range such as from Azure, AWS, Digitalocean and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 
-+ API Version: v0.1
-+ API Endpoint: **https://abs.incolumitas.com/datacenter?ip=1.2.3.4**
++ API Version: v0.2 (29th September 2021)
++ API Endpoint: **https://api.incolumitas.com/datacenter?ip=3.5.140.2**
 + Supported Datacenters: Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network
 + IPv6 Support: Yes
 
@@ -26,7 +26,7 @@ I maintain a public API to check whether an IP address belongs to a data center 
 <script>
 document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('click', function(evt) {
   var ip = document.getElementById('ip').value;
-  fetch('https://abs.incolumitas.com/datacenter?ip=' + ip) 
+  fetch('https://api.incolumitas.com/datacenter?ip=' + ip) 
   .then(response => response.json())
   .then(function(data) {
     document.getElementById('data').innerText = JSON.stringify(data, null, 2);
@@ -34,11 +34,24 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 })
 </script>
 
+## ChangeLog
+
+```
+29th September 2021
+
+Updated all IP address ranges, added dedicated API endpoint: https://api.incolumitas.com/datacenter?ip=3.5.140.2
+
+Old API Endpoint: https://abs.incolumitas.com/datacenter?ip=1.2.3.4
+
+---------
+
+```
+
 ## API Usage
 
-You can reach the API endpoint with this URL: **https://abs.incolumitas.com/datacenter?ip=**
+You can reach the API endpoint with this URL: **https://api.incolumitas.com/datacenter?ip=**
 
-If you pass the IP address `3.5.140.2` to the API by calling [https://abs.incolumitas.com/datacenter?ip=3.5.140.2](https://abs.incolumitas.com/datacenter?ip=3.5.140.2), you'll obtain the result:
+If you pass the IP address `3.5.140.2` to the API by calling [https://api.incolumitas.com/datacenter?ip=3.5.140.2](https://api.incolumitas.com/datacenter?ip=3.5.140.2), you'll obtain the result:
 
 ```json
 {
@@ -49,7 +62,7 @@ If you pass the IP address `3.5.140.2` to the API by calling [https://abs.incolu
 }
 ```
 
-Alternatively, you can also lookup IPv6 addresses. Try the url [https://abs.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef](https://abs.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef), which yields:
+Alternatively, you can also lookup IPv6 addresses. Try the url [https://api.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef](https://api.incolumitas.com/datacenter?ip=2406:dafe:e0ff:ffff:ffff:ffff:dead:beef), which yields:
 
 ```json
 {
@@ -60,7 +73,7 @@ Alternatively, you can also lookup IPv6 addresses. Try the url [https://abs.inco
 }
 ```
 
-If you don't specify any IP address with the `ip=` query parameter and you invoke [https://abs.incolumitas.com/datacenter](https://abs.incolumitas.com/datacenter) directly, the client's own IP address will be used for lookup. In my case, I get the following output:
+If you don't specify any IP address with the `ip=` query parameter and you invoke [https://api.incolumitas.com/datacenter](https://api.incolumitas.com/datacenter) directly, the client's own IP address will be used for lookup. In my case, I get the following output:
 
 ```json
 {
@@ -74,7 +87,7 @@ because my private ISP IP address obviously doesn't belong to a datacenter.
 Usage with JavaScript:
 
 ```JavaScript
-fetch('https://abs.incolumitas.com/datacenter') 
+fetch('https://api.incolumitas.com/datacenter') 
 .then(response => response.json())
 .then(function(data) {
   console.log(data)
@@ -87,7 +100,7 @@ The IP address ranges for the cloud providers are kept up to date and the IP ran
 
 In the following section, I will show examples for looking up IP addresses belonging to the three biggest cloud providers AWS, Azure and GCP:
 
-Looking up an Azure IP address: [https://abs.incolumitas.com/datacenter?ip=20.41.193.225](https://abs.incolumitas.com/datacenter?ip=20.41.193.225)
+Looking up an Azure IP address: [https://api.incolumitas.com/datacenter?ip=20.41.193.225](https://api.incolumitas.com/datacenter?ip=20.41.193.225)
 
 ```json
 {
@@ -100,7 +113,7 @@ Looking up an Azure IP address: [https://abs.incolumitas.com/datacenter?ip=20.41
 }
 ```
 
-Looking up an AWS IP address: [https://abs.incolumitas.com/datacenter?ip=3.5.140.2](https://abs.incolumitas.com/datacenter?ip=3.5.140.2)
+Looking up an AWS IP address: [https://api.incolumitas.com/datacenter?ip=3.5.140.2](https://api.incolumitas.com/datacenter?ip=3.5.140.2)
 
 ```json
 {
@@ -111,7 +124,7 @@ Looking up an AWS IP address: [https://abs.incolumitas.com/datacenter?ip=3.5.140
 }
 ```
 
-Looking up an GCP IP address: [https://abs.incolumitas.com/datacenter?ip=23.236.48.55](https://abs.incolumitas.com/datacenter?ip=23.236.48.55)
+Looking up an GCP IP address: [https://api.incolumitas.com/datacenter?ip=23.236.48.55](https://api.incolumitas.com/datacenter?ip=23.236.48.55)
 
 ```json
 {
@@ -120,7 +133,7 @@ Looking up an GCP IP address: [https://abs.incolumitas.com/datacenter?ip=23.236.
 }
 ```
 
-And looking up a AWS IPv6 address: [https://abs.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000](https://abs.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000):
+And looking up a AWS IPv6 address: [https://api.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000](https://api.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000):
 
 ```json
 {
