@@ -36,7 +36,7 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## ChangeLog
 
-```
+<pre>
 29th September 2021
 
 Updated all IP address ranges, added dedicated API endpoint: https://api.incolumitas.com/datacenter?ip=3.5.140.2
@@ -44,8 +44,7 @@ Updated all IP address ranges, added dedicated API endpoint: https://api.incolum
 Old API Endpoint: https://abs.incolumitas.com/datacenter?ip=1.2.3.4
 
 ---------
-
-```
+</pre>
 
 ## API Usage
 
