@@ -4,7 +4,7 @@ Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
 
-I maintain a public API to check whether an IP address belongs to a data center IP address range such as from Azure, AWS, Digitalocean and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
+I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 
 + API Version: v0.2 (29th September 2021)
 + API Endpoint: **https://api.incolumitas.com/datacenter?ip=3.5.140.2**
@@ -36,15 +36,12 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## ChangeLog
 
-<pre>
-29th September 2021
+#### 29th September 2021
 
-Updated all IP address ranges, added dedicated API endpoint: https://api.incolumitas.com/datacenter?ip=3.5.140.2
++ Updated all IP address ranges
++ Added dedicated API endpoint: https://api.incolumitas.com/datacenter?ip=3.5.140.2
++ Old API Endpoint: https://abs.incolumitas.com/datacenter?ip=1.2.3.4
 
-Old API Endpoint: https://abs.incolumitas.com/datacenter?ip=1.2.3.4
-
----------
-</pre>
 
 ## API Usage
 
@@ -81,7 +78,7 @@ If you don't specify any IP address with the `ip=` query parameter and you invok
 }
 ```
 
-because my private ISP IP address obviously doesn't belong to a datacenter.
+because my private ISP IP address obviously doesn't belong to any datacenter.
 
 Usage with JavaScript:
 
