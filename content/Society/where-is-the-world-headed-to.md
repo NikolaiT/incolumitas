@@ -1,4 +1,4 @@
-Title: Where is the World headed to? A future prognosis
+Title: Where is the World headed to?
 Date: 2021-10-03 14:51
 Category: Society
 Tags: Collapse, Society, Economy, Second-Machine-Age, Work
@@ -6,13 +6,13 @@ Slug: where-is-the-world-headed-to
 Author: Nikolai Tschacher
 Status: Draft
 
-Important: I am a computer scientist, not a economist or sociologist. So please take everything written here with a grain of salt, as always. Some of the information I publish here are educated guesses, others are wild guesses. 
+*Important:* I am a computer scientist, not a economist or sociologist. So please take everything written here with a grain of salt - as always. Some of the information is based on educated guesses, other statements are wild guesses. 
 
 ## Introduction
 
-While I am writing this blog post, I look out of an airplane window (Yes, I am fully aware of the irony). Right after the plane started, I saw many spots of rotten trees inside the forest close to the airport of Cologne/Bonn. Then a bit later, while the plane is cruising around 10.000 metres above the ground, it's impossible for me to see a place where humans have not left their mark.
+While I am writing this blog post, I look out of an airplane window. Right after the plane took off, I saw many spots of rotten trees inside the forest close to the airport of Cologne/Bonn. Then a couple of minutes later, while the plane is cruising around 10.000 metres above the ground, it's impossible for me to see a place where humans have not left their mark, where nature has been left untouched.
 
-Rivers are straightened, forests are cut down, huge cities everywhere and there does not exist a single spot without a tiny settlement. Granted, I am flying above Western Europe and the sight might be completely different over the vast wilderness of Sibiria  (For example, I'd see endless [forest fires](https://www.greenpeace.org/international/story/49171/russia-record-breaking-fires-siberia/).
+Rivers are straightened, forests are cut down, huge cities are everywhere and there does not exist a single spot without a human intervention. Granted, I am flying above Western Europe and the sight might be completely different over the vast wilderness of Sibiria  (Namely, I'd see endless [forest fires](https://www.greenpeace.org/international/story/49171/russia-record-breaking-fires-siberia/)).
 
 The point I try to make is that human progress and the advance of societies on this earth pose a huge amount of stress on the natural environment. 
 
@@ -74,11 +74,13 @@ You can have a decent live in a gated community in the Democratic Repulic of Con
 
 So how does the future economy and work force look like?
 
-I am convinced that inequality will become even greater in the future. If you come from nothing, It's extremely hard to find a good and high-income job that allows you to build basic wealth. And by basic wealth I mean a decent house and a decent car and the ability to support your family. On the other hand, if you are already wealthy, it's hard to become poor again. Working will not make you rich. Working prevents you from immediate death by starvation, but not anything else. If you want to become wealthy in the 21st century, you have to do one of the following:
+I am convinced that inequality will become even greater in the future. If you come from nothing, It's extremely hard to find a good and high-income job that allows you to build basic wealth. And by basic wealth I mean a decent house and a decent car and the ability to support your family. On the other hand, if you are already wealthy, it's hard to become poor again. 
+
+Working will not make you rich. Working prevents you from immediate death by starvation, but not anything else. If you want to become wealthy in the 21st century, you have to do one of the following:
 
 1. Be already wealthy
 2. Inherit wealth
-3. Be extremely smart/talented and become rich by yourself with startups, art, sports, fashion, ...
+3. Be extremely smart/talented AND lucky and become rich by yourself with startup ideas, art, sports, fashion, ...
 
 If you own real estate and stocks, your assets have more than doubled in the past couple of years. For Millenials such as me, even though I have a relatively good job, it's utterly impossible to buy a normal house. A normal house costs 700.000 EUR where I live (Cologne / Germany). Those exact houses did cost 200.000 EUR 10 years ago. How are you supposed to compete with those rising prices? All you can do as a person in that situation, is to hope for an economic crash like in 2009.
 
@@ -109,7 +111,7 @@ US and NATO interventions are a thing of the past. The US won the cold war and i
 
 China did not even try to hide that their were talking with the Taliban days after the US retreat. China will take over business in extremely many countries that were depended on the western world until most recently. The western world was not only feared because their military capabilities, but mostly because of the necessity to cooperate economically with the EU & North America. China poses an alternative to that. The promise that China is giving to countries such as Iran, Afghanistan or many African countries is the following:
 
-**China does not care about your political issues and how you rule your country. We respect your internal affairs. All that we want is to create a win-win situation by trading with you and investing in your nation. China want's to interact economically, they don't have an interest to export their ideology.**
+China does not care about your political issues and how you rule your country. We respect your internal affairs. All that we want is to create a win-win situation by trading with you and investing in your nation. China want's to interact economically, they don't have an interest to export their ideology.
 
 ## Advance of Medicine & Technology
 
@@ -131,6 +133,6 @@ Sure, there are some cool things that are happening and will most likely happen 
 
 1. Hepatitis B and Hepatitis C are almost [completely curable](https://www.medicinenet.com/can_hep_c_be_cured_completely/article.htm). We developed anti retroviral medication that can eradicate Hepatitis C: *The "direct-acting" antiviral medications are given over 12 weeks. These are combination medications and will cure early acute hepatitis C in more than 90 percent of people. They are Harvoni (combination of ledipasvir and sofosbuvir) and Viekira Pak (a mix of ombitasvir, paritaprevir, ritonavir and dasabuvir)*
 
-2. HIV might become curable in the next 10 years. Biontech and Moderna launched several [phase 1 trials](https://clinicaltrials.gov/ct2/show/NCT05001373) for mRNA vaccines against HIV. But it has to be said that phase 1 vaccination trials only means: * Phase 1, Randomized, First-in-human, Open-label Study to Evaluate the Safety and Immunogenicity of eOD-GT8 60mer mRNA Vaccine (mRNA-1644) and Core-g28v2 60mer mRNA Vaccine (mRNA-1644v2-Core) in HIV-1 Uninfected Adults in Good General Health.* Put differently: They first want to see if the vaccine doesn't harm HIV **uninfected** individuals and generates the desired immune response, before they look if the vaccine effectively prevents HIV infection in the future.
+2. HIV might become curable in the next 10 years. Biontech and Moderna launched several [phase 1 trials](https://clinicaltrials.gov/ct2/show/NCT05001373) for mRNA vaccines against HIV. But it has to be said that phase 1 vaccination trials only means: *Phase 1, Randomized, First-in-human, Open-label Study to Evaluate the Safety and Immunogenicity of eOD-GT8 60mer mRNA Vaccine (mRNA-1644) and Core-g28v2 60mer mRNA Vaccine (mRNA-1644v2-Core) in HIV-1 Uninfected Adults in Good General Health.* Put differently: They first want to see if the vaccine doesn't harm HIV **uninfected** individuals and generates the desired immune response, before they look if the vaccine effectively prevents HIV infection in the future.
 
 3. mRNA vaccines against Cancer. For example, stage 3 and stage 4 Melanoma, a highly lethal skin cancer in very late stages had a [survival rate of 6 to 7 months in the year 2000](https://www.nature.com/articles/d41586-020-01038-9). Nowadays, in the year 2021, with the the help of immunotherapy and targeted therapy such as checkpoint inhibitors, the same late stage malicious cancer has a 5-year survival rate between [22.5% (stage 3) - 63% (stage 4)](https://www.curemelanoma.org/about-melanoma/melanoma-staging/melanoma-survival-rates/). That is a fucking huge leap in a quick time :)
