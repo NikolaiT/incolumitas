@@ -105,27 +105,50 @@ But there seems to be a general trend in the world:
 
 Everything that has tangible value, such as real estate and stocks, increases in price. There is a massive fight for resources. Nobody wants to save money, because inflation burns money in an alarming pace.
 
+Another major shift that we are going to see in the next 50 years is the massive aging of our planet. For example, Europe is already an extremely old continent age-wise. The median age in Western Europe is 44 years in 2020, the median age in Africa is 19.7 years! Germany is the second oldest country in the world with a median age of 47.1 years right behind Japan with 47.3 years.
+
+<figure>
+    <img src="{static}/images/Europe_population_over_65.png" alt="housePrice" />
+    <figcaption>Old, old Europe</figcaption>
+</figure>
+
+This unstoppable aging of Europe will require massive immigration from young people from other parts of the world to uphold the economic growth and prosperity. And this will inevitably lead to conflicts within the respective societies. 
+
+For example in Germany, there was 
+
++ 6 labourers per retiree in the year 1962
++ 2.7 labourers per retiree in the year 1992
++ 2.1 labourers per retiree in the year 2019
+
+And this will become much less in the years to come, because the baby boomer generation will completely retire until 2030.
+
 ## Geopolitics & War
 
-Probably the most remarkable event in the past months was the chaotic retreat of the Western World from Afghanistan. NATO forces were 20 years in this extremely poor country and spend billions of Dollars to arm the Afghan army for nothing. The Afghan army succumbed in a matter of days to the Taliban. 
+Probably the most remarkable event in the past months was the chaotic retreat of the Western alliance from Afghanistan. NATO forces were 20 years in this extremely poor country and spend billions of Dollars to arm the Afghan army for nothing. The Afghan army succumbed in a matter of days to the Taliban.
 
-I am not so interested in the specific case of Afghanistan, I want to discuss what can be concluded by this milestone event.
+I am not so interested in the specific case of Afghanistan (Rule: Never invade Afghanistan, ask the Englishmen), I want to discuss what can be concluded in general by this milestone event.
 
-US and NATO interventions are a thing of the past. The US won the cold war and intervened with boots on the ground in many countries during that time (Somalia, Iraq, Afghanistan, Kuwait, ...), but the war in Afghanistan was probably the last such extensive operation. The US will still defend it's allies such as Taiwan, but pro-active wars like that in Afghanistan are very unlikely to happen in the next 10 years.
+US and NATO interventions are a thing of the past. The US won the cold war and intervened with boots on the ground in many countries during that time (Somalia, Iraq, Afghanistan, Kuwait, Haiti, ...), but the war in Afghanistan was probably the last such extensive ground operation. The US will still defend it's allies such as Taiwan, but pro-active wars like that in Afghanistan are very unlikely to happen in the next 10 years and beyond that.
 
-China did not even try to hide that their were [talking with the Taliban even before the US retreat](https://www.nytimes.com/2021/07/28/world/asia/china-taliban-afghanistan.html). China will gradually take over business in many countries that were depended on the western world until most recently. For the most part, the western world was not feared because of their military capabilities, but mostly because of the necessity to cooperate economically with the EU & North America. China & Russia poses an alternative economical hemisphere to the Western World. The promise that China gives to countries such as Iran, Afghanistan or many African countries is the following:
+China did not even try to hide that their were [talking with the Taliban even before the US retreat](https://www.nytimes.com/2021/07/28/world/asia/china-taliban-afghanistan.html). China will gradually take over the majority of economic relations in many countries that were depended on the western world until most recently. For the most part, the western world was not feared because of their military capabilities, but because of the necessity to cooperate economically with Europe & North America. China & Russia poses an alternative economical hemisphere to the Western World. The promise that China gives to countries such as Iran, Afghanistan or many African countries is the following:
 
-China does not care about your political issues and how you rule your country. We respect your internal affairs. All that we want is to create a win-win situation by trading with you and investing in your nation. China want's to interact economically, they don't have an interest to export their ideology.
+We do not care about your political issues and how you rule your country. We respect your internal affairs. All we want is to create a win-win situation by trading with you and investing in your country. China want's to interact economically, they don't have an interest to export their ideology.
 
-If this promise holds true, needs to be confirmed in the future.
+If this promise turns out to be true, needs to be seen in the future.
+
+My assumption is that the world becomes more multi-polar. Whereas it could seem like the world is divided between Europe/US/Oceania/Japan on the one side and between China/Russia on the other side, that classification is way too simple. On the long run, Europe and the United States will lose influence compared to the rest of the world. But not because of a sudden collapse, simply because other nations are picking up in economic prosperity.
+
+In 2050, the US and Europe will stay play an important role in the globe, but there will be several more or less equal counterparts, such as China, India, Indonesia and some parts of Africa.
+
+I don't think that we will see huge geopolitical shifts in the future. China and India simply want to prosper economically, there is no need to risk it all by invading Taiwan for example. The US will be gradually pushed back in the Pacific Ocean (Especially in the East and South China Sea), but this just seems to be the natural corrective. 
 
 ## Advance of Medicine & Technology
 
-I am a computer scientist and thus my viewpoint might be skewed, buy I don't really think that we will see major technological leaps in the next 10 - 20 years. With major technological leaps I mean things such as:
+I am a computer scientist and thus my viewpoint might be skewed, buy I don't think that we will see major technological milestones in the next 10 - 20 years. With major technological leaps, I mean things such as:
 
-Technological Breakthroughs
+Technological breakthroughs
 
-1. General Artificial Intelligence and Singularity as a result
+1. General Artificial Intelligence and [Singularity](https://en.wikipedia.org/wiki/Technological_singularity) as a result
 2. Fusion reactors that are economical and don't produce radioactive waste
 3. Quantum computers that can reduce the time complexity for real world algorithmic problems such as integer factorization used in the asymmetric cryptosystem RSA (Shor's algorithm). Another application is unstructured search where the task is to find a marked item out of a list of `n` items in a database (Grover's algorithm).
 
@@ -134,11 +157,12 @@ Medical discoveries / breakthroughs
 1. Vastly reducing or entirely stopping the natural aging process
 2. Curing chronic diseases such as cancer, cardiovascular diseases and diabetes (of which the prior discovery is a superset)
 3. Curing and reversing neurological damage after incidents such as strokes, accidents or traumata to the head
+4. Making effective use of genetic engineering technology such as CRISPR gene editing
 
-Sure, there are some cool things that are happening and will most likely happen in the soon future such as 
+Sure, there are some cool things that are happening recently in medicine or will most likely happen in the soon future such as 
 
 1. Hepatitis B and Hepatitis C are almost [completely curable](https://www.medicinenet.com/can_hep_c_be_cured_completely/article.htm). We developed anti retroviral medication that can eradicate Hepatitis C: *The "direct-acting" antiviral medications are given over 12 weeks. These are combination medications and will cure early acute hepatitis C in more than 90 percent of people. They are Harvoni (combination of ledipasvir and sofosbuvir) and Viekira Pak (a mix of ombitasvir, paritaprevir, ritonavir and dasabuvir)*
 
-2. HIV might become curable in the next 10 years. Biontech and Moderna launched several [phase 1 trials](https://clinicaltrials.gov/ct2/show/NCT05001373) for mRNA vaccines against HIV. But it has to be said that phase 1 vaccination trials only means: *Phase 1, Randomized, First-in-human, Open-label Study to Evaluate the Safety and Immunogenicity of eOD-GT8 60mer mRNA Vaccine (mRNA-1644) and Core-g28v2 60mer mRNA Vaccine (mRNA-1644v2-Core) in HIV-1 Uninfected Adults in Good General Health.* Put differently: They first want to see if the vaccine doesn't harm HIV **uninfected** individuals and generates the desired immune response, before they look if the vaccine effectively prevents HIV infection in the future.
+2. HIV might become curable in the next 10 years. Biontech and Moderna launched several [phase 1 trials](https://clinicaltrials.gov/ct2/show/NCT05001373) for mRNA vaccines against HIV. But it has to be said that phase 1 vaccination trials merely means: *Phase 1, Randomized, First-in-human, Open-label Study to Evaluate the Safety and Immunogenicity of eOD-GT8 60mer mRNA Vaccine (mRNA-1644) and Core-g28v2 60mer mRNA Vaccine (mRNA-1644v2-Core) in HIV-1 Uninfected Adults in Good General Health.* Put differently: They first want to see if the vaccine doesn't harm HIV **uninfected** individuals and generates the desired immune response, before they look if the vaccine effectively prevents HIV infection in the future.
 
-3. mRNA vaccines against Cancer. For example, stage 3 and stage 4 Melanoma, a highly lethal skin cancer in very late stages had a [survival rate of 6 to 7 months in the year 2000](https://www.nature.com/articles/d41586-020-01038-9). Nowadays, in the year 2021, with the the help of immunotherapy and targeted therapy such as checkpoint inhibitors, the same late stage malicious cancer has a 5-year survival rate between [22.5% (stage 3) - 63% (stage 4)](https://www.curemelanoma.org/about-melanoma/melanoma-staging/melanoma-survival-rates/). That is a fucking huge leap in a quick time :)
+3. mRNA vaccines against Cancer. For example, stage 3 and stage 4 Melanoma, a highly lethal skin cancer in very late stages had a [survival rate of 6 to 7 months in the year 2000](https://www.nature.com/articles/d41586-020-01038-9). Nowadays, in the year 2021, with the the help of immunotherapy and targeted therapy such as checkpoint inhibitors, the same late stage malicious cancer has a 5-year survival rate between [22.5% (stage 3) - 63% (stage 4)](https://www.curemelanoma.org/about-melanoma/melanoma-staging/melanoma-survival-rates/). That is a huge leap in a quick time :)
