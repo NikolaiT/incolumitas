@@ -6,7 +6,7 @@ Slug: where-is-the-world-headed-to
 Author: Nikolai Tschacher
 Status: Draft
 
-*Important:* I am a computer scientist, not a economist or sociologist. So please take everything written here with a grain of salt - as always. Some of the information is based on educated guesses, other statements are wild guesses. 
+*Important:* I am a computer scientist, not a economist or sociologist. So please take everything written here with a grain of salt - as always. Some of the information is based on educated guesses, other statements are wild guesses. I am sharing my thoughts about society and economy because I assume that some of my readers might find it interesting how I think.
 
 ## Introduction
 
