@@ -1,8 +1,10 @@
 Title: Where is the World headed to?
 Date: 2021-10-03 14:51
+Date: 2021-10-05 11:51
 Category: Society
 Tags: Collapse, Society, Economy, Second-Machine-Age, Work
 Slug: where-is-the-world-headed-to
+Summmary: My personal opinion on economical and sociological topics in the near (2030) and mid-term (2050)  future. This essay is divided into the domains Climate Crisis, Globalisation & Economy, Geopolitics & War, Advance of Medicine & Technology.
 Author: Nikolai Tschacher
 Status: Published
 
@@ -37,7 +39,7 @@ It's relatively easy to proof that there is more CO2 in the atmosphere due to hu
 The question whether this increase in carbon-dioxide and methane emissions also causes the climate crisis, is harder to answer. But even if the climate change theory is just a theory and we give the deniers the benefit of doubt (after all, it's hard to prove that the climate crisis is fully man-made), it's an undeniable fact that the earth is heating up at an alarming pace.
 
 <figure>
-    <img class="smallimg" src="{static}/images/agreement_gis_2019.gif" alt="climateChangeTemp" />
+    <img src="{static}/images/agreement_gis_2019.gif" alt="climateChangeTemp" />
     <figcaption>The Earth is heating up <span style="font-size: 60%">(Source: https://earthobservatory.nasa.gov/world-of-change/global-temperatures)</span></figcaption>
 </figure>
 
@@ -72,49 +74,59 @@ But it poses no risk to the extremely rich Gulf nations that only export crude o
 
 ## Globalisation & Economy
 
-We are close to the year 2022 and it's safe to say that our world is thoroughly globalized. Maybe the Covid19 pandemic reduced the acceleration of the Globalisation, but in the big picture, you can barely see the Covid19 pandemic dent in the trend.
+We are close to the year 2022 and it's safe to say that our world is thoroughly globalized. Maybe the COVID-19 pandemic reduced the acceleration of the Globalisation, but in the big picture, you can barely see the COVID-19 pandemic dent in the upwards trend.
 
-I think it's fair to say that it doesn't really matter where your live on this planet if you earn enough money (maybe enough money is an income > 50.000 EUR). You surely need to exclude both tails of the world's countries - the poorest and richest - because that amount of money will get you nowhere in New York and you most likely don't want to live in Somalia either. But everywhere else, in totally average countries such as Bulgaria, Malaysia, Argentina or Germany, you will be set with that income.
+I think it's fair to say that it doesn't really matter where your live on this planet if you earn enough money (maybe enough money constitutes an income > 50.000 EUR). You surely need to exclude both tails of the world's countries - the poorest and richest - because that amount of money will get you nowhere in New York and you most likely don't want to live in Somalia either. But everywhere else, in totally average countries such as Bulgaria, Malaysia, Argentina or Germany, you will be set with that income.
 
-You can have a decent life in a gated community in the Democratic Repulic of Congo if you earn 50.000 EUR/year and you can have a shitty life in Germany if you earn 20.000 EUR/year. Of course, Germany might save you from starvation and being homeless and the Democratic Repulic of Congo won't (I am guessing), but my general point still stands: It mostly doesn't matter where you live on this planet, it only matters how much money you make.
+You can have a decent life in a gated community in the Democratic Republic of Congo if you earn 50.000 EUR/year and you can have a shitty life in Germany if you earn 20.000 EUR/year. Of course, Germany might save you from starvation and becoming homeless and the Democratic Republic of Congo won't (I am guessing), but my general point still stands: It mostly doesn't matter where you live on this planet, it only matters how much money you make.
 
 So how does the future economy and work force look like?
 
-I am convinced that inequality will become even greater in the future. If you come from nothing, It's extremely hard to find a good and high-income job that allows you to build basic wealth. And by basic wealth, I mean to own a decent house and a decent car and the ability to support your family. On the other hand, if you are already wealthy, it's easy to maintain your wealth. 
+I am convinced that inequality will become even greater in the future. If you come from nothing, It's extremely hard to find a good and high-income job that allows you to build basic wealth. And by basic wealth, I mean the ability to own a decent house and a decent car and the ability to support your family. On the other hand, if you are already wealthy, it's easy to maintain your wealth.
 
-Work won't make you rich. Working merely prevents you from immediate death by starvation, but not anything else. If you want to become wealthy in the 21st century, you have to do one of the following:
+Work won't make you rich. Working merely prevents you from immediate death by starvation and exposure to the elements, but not anything else. In many parts of the Western World, a 40 hour minimum wage job doesn't even give you enough money to rent a one bed room apartment. So those jobs are designed to be done by people that don't have to pay rent, or if they have to, then will need to work 3 of those minimum-wage jobs just to have a roof over the head. It's utter madness.
+
+If you want to become wealthy in the 21st century, you have to do one of the following:
 
 1. Be already wealthy
 2. Inherit wealth
 3. Be extremely smart/talented AND lucky and become rich by yourself with start-up ideas, art, music, sports, fashion, ...
 
-For example, If you own real estate and stocks, your assets have more than doubled in the past couple of years. For Millenials such as me, even though I have a relatively good job, it's utterly impossible to buy a normal house. A normal house costs 700.000 EUR where I live (Cologne / Germany). Those exact houses did cost 200.000 EUR ten years ago. How are you supposed to compete with those rising prices? All you can do as a person in that situation, is to hope for an economic crash like the one from 2009.
+For example, If you own real estate and stocks, your assets have more than doubled in the past couple of years. For Millenials such as me, even though I have a relatively good job, it's utterly impossible to buy a normal house. A normal house costs 700.000 EUR where I live (Cologne / Germany). Those exact houses did cost 200.000 EUR ten years ago. How are you supposed to compete with those rising prices? All you can do as a person in that situation is to hope for an economic crash like the one from 2009.
 
-For example, I am currently 30 years old and if I want to buy a normal house for 700.000 EUR, I will need to work for 60 years as of now. I will have cleared my debt at the ripe age of 90 years old. And that's not going to happen :D
+[I_love_boobs86](https://old.reddit.com/r/wallstreetbets/comments/q0omot/mortgage_payments_havent_been_this_unaffordable/hfa6mxy/) writes on [r/wallstreetbets](https://old.reddit.com/r/wallstreetbets/comments/q0omot/mortgage_payments_havent_been_this_unaffordable/hfa6mxy/):
 
-Sure, some people did risk it and bought those houses with a little down-payment and a huge mortgage and ended up with a houses that doubled in price in the past 3-5 years, but for me, it does not make sense to get massively into debt for a house that increased massively in price. Of course, the interest rates are extremely low right now and the inflation relatively high, so future debt is worthless. But I am still hesitant. 
+> 35 year old Los Angeles resident here, I just barely squeaked in on a $790k house in 2019 and I was only able to get it because I was the first one there and put in an offer quickly (the seller’s agent and seller had a falling out so no other buyers were considered). I’m still renovating it, house is and was a complete disaster. I’ve had to redo the entire house from the roof all the way down to the plumbing and everything in between. $100k+ deep now and still going. My mortgage payment is $3,600/month all in but I have a tenant that gives me $1,500 rent so that helps. Even in these two years, I can sell this house for $1.3m easy. It’s fucking madness out there.
+
+For example, I am currently 30 years old and if I want to buy a normal house for 700.000 EUR, I will need to work for 60 years as of now. I will have cleared my debt at the ripe age of 90 years old. And that's not going to happen.
+
+Sure, some people did risk it and bought those houses with a little down-payment and a huge mortgage and ended up with a houses that doubled in price in the past 3-5 years, but for me, it does not make sense to get massively into debt for a house that increased massively in price. Of course, the interest rates are extremely low right now and the inflation relatively high, so future debt is worth much less. But I am still hesitant. 
 
 I mean just have a look on the house price index in Germany:
 
 <figure>
-    <img class="smallimg" src="{static}/images/germany-housing-index.png" alt="housePrice" />
+    <img src="{static}/images/germany-housing-index.png" alt="housePrice" />
     <figcaption>Housing Prices <span style="font-size: 60%">(Source: https://tradingeconomics.com/germany/housing-index)</span></figcaption>
 </figure>
 
 Does this look normal to you? The prices are increasing more and more.
 
+As of now, my only strategy that I came up with is to move away from Germany and move to a place with cheaper rent and lower taxes such as Eastern Europe / Turkey / South America / South East Asia. I can always come back to Germany (or other parts of the Western World) when the baby-boomers start to die off (which will start to accelerate in the late 2020s and early 2030s).
+
+Of course, when I move to more affordable regions in the world and I keep working remotely for companies in the rich West & North, I will be responsible for prices going up for locals. So instead of me getting fucked over in Germany, I will be the one that fucks over the local people. But in this capitalistic hell hole of an planet, that's all you can do anyhow.
+
 But there seems to be a general trend in the world: 
 
-Everything that has tangible value, such as real estate and stocks, increases in price. There is a massive fight for resources. Nobody wants to save money, because inflation burns money in an alarming pace.
+Everything that has tangible value, such as real estate and stocks, will increase in price. There is a massive fight for resources. Nobody wants to save money, because inflation burns money in an alarming pace.
 
 Another major shift that we are going to see in the next 50 years is the massive aging of our planet. For example, Europe is already an extremely old continent age-wise. The median age in Western Europe is 44 years in 2020, the median age in Africa is 19.7 years! Germany is the second oldest country in the world with a median age of 47.1 years right behind Japan with 47.3 years.
 
 <figure>
-    <img class="smallimg" src="{static}/images/Europe_population_over_65.png" alt="housePrice" />
+    <img src="{static}/images/Europe_population_over_65.png" alt="housePrice" />
     <figcaption>Old, old Europe</figcaption>
 </figure>
 
-This unstoppable aging of Europe will require massive immigration from young people from other parts of the world to uphold the economic growth and prosperity. And this will inevitably lead to conflicts within the respective societies. 
+This unstoppable aging of Europe will require massive immigration from young people from other parts of the world to uphold the economic growth and prosperity. And this will likely lead to conflicts within the respective societies. 
 
 For example in Germany, there was 
 
@@ -124,21 +136,25 @@ For example in Germany, there was
 
 And this will become much less in the years to come, because the baby boomer generation will completely retire until 2030.
 
-Everyone talks about this, but it has to be said again: We will have immense troubles obtaining skilled workers. In the next 5 - 20 years, educated workers will be demanded massively in Western Europe. We have no more children, the next work-force generation, Gen Alpha, is tiny compared to the Millenials. And Millenials are already the smaller cohort compared to Baby Boomers.
+On the other hand, in a [most recent prognosis by the German federal institute of housing & room planning](https://www.bbsr.bund.de/BBSR/DE/startseite/topmeldungen/bevoelkerungsprognose-bbsr-2040.html), Germany will not lose any population until 2040 and will remain stagnant at around 82 million people until 2040. This is only possible with [massive immigration](https://www.spiegel.de/panorama/gesellschaft/deutschland-bevoelkerung-schrumpft-in-den-naechsten-jahren-aber-nicht-ueberall-a-4f5a7009-9c23-4a0b-9671-48e82defe0b0). In Germany, between the years 2018 and 2040, Germany is predicted to have 17.4 million births and 23.5 millionen deaths on the other side. So there will come at least 6 million people to Germany in the next 20 years. And those migrants won't come from Europe, because every West European country has the same structural aging issues as Germany, so the migrants will most likely come from Africa, the Middle East and to a lesser extent from the Far East.
 
-Europe is a sick society: There is only work, nothing else. And when you are young and you are not blessed with wealthy parents, it's impossible to buy a fucking house and raise a family. And at the same time, the politicians complain that there are not enough workers. So they want to import young workers from elsewhere. But it's a flawed logic. The economy is supposed to grow, but endless growth is insane. The falling birth rates in the whole world is already a sign of the massive scarcity of resources that we have on this planet. It would be a fucking blessing if Germany would lose 20 million people until the year 2050, as it was predicted based on the birth rate. But no, the Government had to lure in more workers so the holy economy does not tank. The logic is: Work, work, work, don't have children, import workers from the outside.
+Replacing *native* people with migrants is a massively flawed logic in my opinion. The question that needs to be asked is: Why does the German population not have kids anymore? But the federal Government just doesn't care and proceeds to blindly import new people into this misery. The economy is supposed to grow, but endless growth is utterly insane. The falling birth rates in the whole world is already a sign of the massive scarcity of resources that we have on this planet. It would be a blessing if Germany would lose those 6 million people until the year 2040, as it was predicted based on birth rates alone. But no, the Government had to lure in more workers so the blessed economy does not tank. The logic is: Work, work, work, don't have children, import young workers from outside of Europe that are working hard for no pay. 
+
+Personal anecdote and maybe slightly one-sided: During my time in Bonn, I met many hard working students from India that were studying at the excellent University of Bonn. Those folks were 23 years old and already starting their PhD in machine learning. But not a single person from that calibre planned to stay in Germany, they exclusively wanted to get the cheap and relatively good German education and then relocate to the UK, Australia or USA to work hard for 3 to 5 years in order to go back to India and found a family and build a home. Smart and hardworking people do not go to Germany. The wages are relatively low, and if you manage to earn 10.000 EUR a month, taxes and health insurance will reduce your net salary to 5000 EUR.
+
+Everyone talks about this, but it has to be said again: We will have immense troubles obtaining skilled and smart workers from overseas. Or let me rephrase that: We will have massive problems obtaining skilled workers that want to work for low pay.
 
 ## Geopolitics & War
 
-Probably the most remarkable event in the past months was the chaotic retreat of the Western alliance from Afghanistan. NATO forces were 20 years in this extremely poor country and spend billions of Dollars to arm the Afghan army for nothing. The Afghan army succumbed in a matter of days to the Taliban.
+Probably the most remarkable event in the past months was the chaotic retreat of the Western alliance from Afghanistan. NATO forces were 20 years in this extremely poor country and spend billions of Dollars to arm the Afghan army for nothing. The Afghan army succumbed in a matter of days to the Taliban. There was nothing but corruption in the Afghan army.
 
-I am not so interested in the specific case of Afghanistan (Rule: Never invade Afghanistan, ask the Englishmen), I want to discuss what can be concluded in general by this milestone event.
+I am not so interested in the specific case of Afghanistan (Rule: Never invade Afghanistan, [ask the Englishmen]()https://en.wikipedia.org/wiki/First_Anglo-Afghan_War), I want to discuss what can be concluded in general by this milestone event.
 
 US and NATO interventions are a thing of the past. The US won the cold war and intervened with boots on the ground in many countries during that time (Somalia, Iraq, Afghanistan, Kuwait, Haiti, ...), but the war in Afghanistan was probably the last such extensive ground operation. The US will still defend it's allies such as Taiwan, but pro-active wars like that in Afghanistan are very unlikely to happen in the next 10 years and beyond that.
 
-China did not even try to hide that their were [talking with the Taliban even before the US retreat](https://www.nytimes.com/2021/07/28/world/asia/china-taliban-afghanistan.html). China will gradually take over the majority of economic relations in many countries that were depended on the western world until most recently. For the most part, the western world was not feared because of their military capabilities, but because of the necessity to cooperate economically with Europe & North America. China & Russia poses an alternative economical hemisphere to the Western World. The promise that China gives to countries such as Iran, Afghanistan or many African countries is the following:
+China did not even try to hide that they were [talking with the Taliban even before the US retreat](https://www.nytimes.com/2021/07/28/world/asia/china-taliban-afghanistan.html). China will gradually take over the majority of economic relations in many countries that were depended on the western world until most recently. For the most part, the western world was not feared because of their military capabilities, but because of the necessity to cooperate economically with Europe & North America. China & Russia constitutes an alternative economical hemisphere to the Western World. The promise that China gives to countries such as Iran, Afghanistan or many African countries is the following:
 
-We do not care about your political issues and how you rule your country. We respect your internal affairs. All we want is to create a win-win situation by trading with you and investing in your country. China want's to interact economically, they don't have an interest to export their ideology.
+We do not care about your political issues and how you rule your country. We respect your internal affairs. All we want is to create a win-win situation by trading with you and investing in your country. China want's to interact economically with you, we don't have an interest to export our ideology and try to change your ethno-cultural system.
 
 If this promise turns out to be true, needs to be seen in the future.
 
@@ -146,11 +162,13 @@ My assumption is that the world becomes more multi-polar. Whereas it could seem 
 
 In 2050, the US and Europe will stay play an important role in the globe, but there will be several more or less equal counterparts, such as China, India, Indonesia and some parts of Africa.
 
-I don't think that we will see huge geopolitical shifts in the future. China and India simply want to prosper economically, there is no need to risk it all by invading Taiwan for example. The US will be gradually pushed back in the Pacific Ocean (Especially in the East and South China Sea), but this just seems to be the natural corrective. 
+I don't think that we will see huge geopolitical shifts in the future. China and India simply want to prosper economically, there is no need to risk it all by invading Taiwan for example. The US will be gradually pushed back in the Pacific Ocean (Especially in the East and South China Sea), but this just seems to be the natural corrective.
+
+Europe continues to lose influence and the internal weakness of Europe will continue to manifest itself as it did when the second largest economy of Europe, the United Kingdom, left the alliance. There is a possibility that p[Poland](https://www.france24.com/en/europe/20210715-on-the-road-to-polexit-poland-pushes-back-in-battle-against-eu-rule) and [Hungary](https://www.dw.com/en/hungary-vs-eu-is-orban-striving-for-huxit/a-58934527) will leave next. Turkey will never enter the European Union in the first place.
 
 ## Advance of Medicine & Technology
 
-I am a computer scientist and thus my viewpoint might be skewed, buy I don't think that we will see major technological milestones in the next 10 - 20 years. With major technological leaps, I mean things such as:
+I am a computer scientist and thus my viewpoint might be a bit uneducated, buy I don't think that we will see major technological milestones in the next 10-20 years. With major technological leaps, I mean things such as:
 
 Technological breakthroughs
 
