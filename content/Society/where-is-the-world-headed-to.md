@@ -4,7 +4,7 @@ Date: 2021-10-05 11:51
 Category: Society
 Tags: Collapse, Society, Economy, Second-Machine-Age, Work
 Slug: where-is-the-world-headed-to
-Summmary: My personal opinion on economical and sociological topics in the near (2030) and mid-term (2050)  future. This essay is divided into the domains Climate Crisis, Globalisation & Economy, Geopolitics & War, Advance of Medicine & Technology.
+Summary: My personal opinion on economical and sociological topics in the near (2030) and mid-term (2050)  future. This essay is divided into the following topics: Climate Crisis, Globalisation & Economy, Geopolitics & War, Advance of Medicine & Technology.
 Author: Nikolai Tschacher
 Status: Published
 
@@ -15,15 +15,15 @@ Important: I am a computer scientist, not an economist or sociologist. So please
 
 ## Introduction
 
-While I am writing this blog post, I look out of an airplane window. Right after the plane took off, I overlooked a forest close to the airport of Cologne/Bonn with many spots of rotten and dead trees. Then a couple of minutes later, while the plane is cruising at around 10.000 metres above the ground, it's impossible for me to see a place where humans have not left their mark, where nature has not been touched.
+While I am writing this blog post, I look out of an airplane window. Right after the plane took off, I overlooked a forest close to the airport of Cologne/Bonn with many spots of rotten and dead trees. A couple of minutes later, while the plane is cruising at around 10.000 metres above the ground, it's impossible for me to see a place where humans have not left their mark, where nature has not been touched.
 
 What I observe: Rivers are straightened, forests are cut down, huge cities are everywhere and there does not exist a single spot without human intervention. Granted, I am flying above Western Europe and the sight might be completely different compared to the vast wilderness of Siberia  (Namely, I'd see endless [forest fires](https://www.greenpeace.org/international/story/49171/russia-record-breaking-fires-siberia/)).
 
 The point I try to make is that human progress and the advance of civilization on our planet imposes a huge amount of stress on the natural environment.
 
-Resources such as living space, food, water and energy are scarce, meanwhile the human population is growing. Of course, the growth rate has decreased and projections assume the human population to be ceiling at the end of the 21st century at around [10.9 billion people](https://www.pewresearch.org/fact-tank/2019/06/17/worlds-population-is-projected-to-nearly-stop-growing-by-the-end-of-the-century/). Nevertheless, the human greed to own more and more material goods is not going to stop anytime soon. On the contrary, every damn person on this planet wants a car, a house and three vacations by airplane every year. There are roughly 1 billion people from the rich First World that is used to this lifestyle. But at the same time, the First World is deeply afraid of what happens when the other 7 billion catch up (Ignoring the fact that this race is already in full progress).
+Resources such as living space, food, water and energy are scarce, meanwhile the human population is growing. Of course, the growth rate has decreased and projections assume the human population to be ceiling at the end of the 21st century at around [10.9 billion people](https://www.pewresearch.org/fact-tank/2019/06/17/worlds-population-is-projected-to-nearly-stop-growing-by-the-end-of-the-century/). Nevertheless, the human greed to own more and more material goods is not going to stop anytime soon. On the contrary, every damn person on this planet wants a car, a house and three vacations by airplane every year. There are roughly 1 billion people from the rich first world that are used to this lifestyle. But at the same time, the first world is deeply afraid of what happens when the other 7 billion catch up (Ignoring the fact, that this race is already in full progress).
 
-In this blog post, I try to sketch what problems the earth has to overcome in the next 30, 50 and 100 years. While I am fully aware that it is notoriously difficult to make long term projections, I try to give it a go here.
+In this blog post, I try to sketch what problems the earth has to overcome in the next 30, 50 and 100 years. While I am fully aware that it is notoriously difficult to make long term projections, I try to give it a naive go here.
 
 In order to have some structure, I divide my essay into the following four sections:
 
@@ -45,7 +45,7 @@ The question whether this increase in carbon-dioxide and methane emissions also 
 
 This increase in temperature causes a myriad of primary problems:
 
-1. Heat Waves and the suffering of humans under heat domes and subsequent wild fires
+1. Heat waves and the suffering of humans under heat domes and subsequent wild fires
 2. The melting of glaciers and the ice on the north pole and Antarctic
 3. Huge wildfires such as the ones [from 2021 in Russia/Siberia](https://en.wikipedia.org/wiki/2021_Russia_wildfires) which in turn increase the emission of CO2
 4. Other extreme weather events such as floods, hurricanes, storms, ...
@@ -53,11 +53,11 @@ This increase in temperature causes a myriad of primary problems:
 
 The past has shown that many countries on the planet have very little means to protect their population from climate disasters. Most recently, tropical storms and earthquakes (Earthquakes are no consequence of climate-change of course) in Haiti caused [many thousand climate refugees](https://www.theguardian.com/global-development/2021/sep/18/haiti-migrants-us-texas-violence) that are headed to the US border, even though the US under the Biden administration is reluctant to allow any refugee to enter the country.
 
-Projections show that we have to expect millions of climate refugees from the southern hemisphere pushing into northern countries. On Sept. 13, 2021, the [updated Groundswell report from the Worldbank](https://www.worldbank.org/en/news/press-release/2021/09/13/climate-change-could-force-216-million-people-to-migrate-within-their-own-countries-by-2050) predicts that up to 216 million people across six world regions are forced to move due to climate change within their countries. The report states that *By 2050, Sub-Saharan Africa could see as many as 86 million internal climate migrants; East Asia and the Pacific, 49 million; South Asia, 40 million; North Africa, 19 million; Latin America, 17 million; and Eastern Europe and Central Asia, 5 million.* 
+Projections show that we have to expect millions of climate refugees from the southern hemisphere pushing into northern countries. On Sept. 13, 2021, the [updated Groundswell report from the Worldbank](https://www.worldbank.org/en/news/press-release/2021/09/13/climate-change-could-force-216-million-people-to-migrate-within-their-own-countries-by-2050) predicts that up to 216 million people across six world regions are forced to move due to climate change within their countries. The report states that *by 2050, Sub-Saharan Africa could see as many as 86 million internal climate migrants; East Asia and the Pacific, 49 million; South Asia, 40 million; North Africa, 19 million; Latin America, 17 million; and Eastern Europe and Central Asia, 5 million.* 
 
-As a German, I can say that the Syrian Civil war (Surely not caused by climate change) and migration streams caused by socio-economic or military conflicts in other regions which caused [1.5 million](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) refugees in Germany almost tore the German society apart. As a result, the far right political party AFD emerged and to this day has widespread support in the German society. (12.5% and 10% of all Germans voted for them in 2017 and 2021). It's relatively safe to say that Germany will not overcome another major refugee movement (major = More than 2 million refugees) without civil-war-like violent outbursts.
+As a German, I can say that the Syrian Civil war (Surely not caused by climate change) and migration streams caused by socio-economic or military conflicts in other regions that caused [1.5 million](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) refugees in Germany almost tore the German society apart. As a result, the far right political party AFD emerged and to this day has widespread support in the German society. (12.5% and 10% of all Germans voted for them in 2017 and 2021). It's relatively safe to say that Germany will not overcome another major refugee movement (major = More than 2 million refugees) without civil-war-like violent outbursts.
 
-The same applies to many other *rich* European countries. Most European societies are very fragile and the relatively high prosperity is standing on thin legs. We can already see a fortification of the European coastlines and refugee streams are already used politically by countries such as Turkey (To be fair, Turkey took with [4 million refugees](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) the majority of Syrian migrants and the political pressure against Europe is somewhat understandable in this context).
+The same applies to many other *rich* European countries. Most European societies are very fragile and the relatively high prosperity is standing on thin legs. We can already see a fortification of the European coastlines and refugee streams are already used politically by countries such as Turkey. To be fair, Turkey took with [4 million refugees](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) the majority of Syrian migrants and the political pressure against Europe is somewhat understandable in this context.
   
 The question begs to be answered: If the collapse of a relatively small nation such as Syria causes so much trouble in the refugee-absorbing nations such as Turkey and Germany, what will happen if entire geographical regions become gradually more inhabitable? Of course this will be a slow and continuous process over the next 50 years, but we can already observe it in certain parts of the world:
 
@@ -69,7 +69,7 @@ The question begs to be answered: If the collapse of a relatively small nation s
 
 It has to be mentioned that it's scientifically not accurate to state that people flee only because of climate change reasons. It's often a complicated mix of socio-economic factors. Natural disasters might be only the icing of the cake. For example, the natural environment of the Gulf nations would be an impossible living environment for a economically weaker civilisation that depend on agriculture and low-level manufacturing.
 
-But it poses no risk to the extremely rich Gulf nations that only export crude oil and oil products and import everything else, including the work-force. But still, it's utter ecological [madness to create cities such as Dubai](https://www.youtube.com/watch?v=tJuqe6sre2I) in such inhospitable regions.
+But it poses no risk to the extremely rich Gulf nations that only export crude oil and oil products and import everything else, including their work-force. But still, it's utter ecological [madness to create cities such as Dubai](https://www.youtube.com/watch?v=tJuqe6sre2I) in such inhospitable regions.
 
 
 ## Globalisation & Economy
@@ -96,7 +96,9 @@ For example, If you own real estate and stocks, your assets have more than doubl
 
 [I_love_boobs86](https://old.reddit.com/r/wallstreetbets/comments/q0omot/mortgage_payments_havent_been_this_unaffordable/hfa6mxy/) writes on [r/wallstreetbets](https://old.reddit.com/r/wallstreetbets/comments/q0omot/mortgage_payments_havent_been_this_unaffordable/hfa6mxy/):
 
-> 35 year old Los Angeles resident here, I just barely squeaked in on a $790k house in 2019 and I was only able to get it because I was the first one there and put in an offer quickly (the seller’s agent and seller had a falling out so no other buyers were considered). I’m still renovating it, house is and was a complete disaster. I’ve had to redo the entire house from the roof all the way down to the plumbing and everything in between. $100k+ deep now and still going. My mortgage payment is $3,600/month all in but I have a tenant that gives me $1,500 rent so that helps. Even in these two years, I can sell this house for $1.3m easy. It’s fucking madness out there.
+> 35 year old Los Angeles resident here, I just barely squeaked in on a $790k house in 2019 and I was only able to get it because I was the first one there and put in an offer quickly (the seller’s agent and seller had a falling out so no other buyers were considered). 
+
+> I’m still renovating it, house is and was a complete disaster. I’ve had to redo the entire house from the roof all the way down to the plumbing and everything in between. $100k+ deep now and still going. My mortgage payment is $3,600/month all in but I have a tenant that gives me $1,500 rent so that helps. Even in these two years, I can sell this house for $1.3m easy. It’s fucking madness out there.
 
 For example, I am currently 30 years old and if I want to buy a normal house for 700.000 EUR, I will need to work for 60 years as of now. I will have cleared my debt at the ripe age of 90 years old. And that's not going to happen.
 
@@ -115,7 +117,7 @@ As of now, my only strategy that I came up with is to move away from Germany and
 
 Of course, when I move to more affordable regions in the world and I keep working remotely for companies in the rich West & North, I will be responsible for prices going up for locals. So instead of me getting fucked over in Germany, I will be the one that fucks over the local people. But in this capitalistic hell hole of an planet, that's all you can do anyhow.
 
-But there seems to be a general trend in the world: 
+There seems to be a general trend in the world: 
 
 Everything that has tangible value, such as real estate and stocks, will increase in price. There is a massive fight for resources. Nobody wants to save money, because inflation burns money in an alarming pace.
 
@@ -136,9 +138,16 @@ For example in Germany, there was
 
 And this will become much less in the years to come, because the baby boomer generation will completely retire until 2030.
 
+<figure>
+    <img src="{static}/images/alterspyramide.png" alt="altersPyramide" />
+    <figcaption>Germany is a old country</figcaption>
+</figure>
+
 On the other hand, in a [most recent prognosis by the German federal institute of housing & room planning](https://www.bbsr.bund.de/BBSR/DE/startseite/topmeldungen/bevoelkerungsprognose-bbsr-2040.html), Germany will not lose any population until 2040 and will remain stagnant at around 82 million people until 2040. This is only possible with [massive immigration](https://www.spiegel.de/panorama/gesellschaft/deutschland-bevoelkerung-schrumpft-in-den-naechsten-jahren-aber-nicht-ueberall-a-4f5a7009-9c23-4a0b-9671-48e82defe0b0). In Germany, between the years 2018 and 2040, Germany is predicted to have 17.4 million births and 23.5 millionen deaths on the other side. So there will come at least 6 million people to Germany in the next 20 years. And those migrants won't come from Europe, because every West European country has the same structural aging issues as Germany, so the migrants will most likely come from Africa, the Middle East and to a lesser extent from the Far East.
 
-Replacing *native* people with migrants is a massively flawed logic in my opinion. The question that needs to be asked is: Why does the German population not have kids anymore? But the federal Government just doesn't care and proceeds to blindly import new people into this misery. The economy is supposed to grow, but endless growth is utterly insane. The falling birth rates in the whole world is already a sign of the massive scarcity of resources that we have on this planet. It would be a blessing if Germany would lose those 6 million people until the year 2040, as it was predicted based on birth rates alone. But no, the Government had to lure in more workers so the blessed economy does not tank. The logic is: Work, work, work, don't have children, import young workers from outside of Europe that are working hard for no pay. 
+Replacing *native* people with migrants is a massively flawed logic in my opinion. The question that needs to be asked is: Why does the German population not have kids anymore? But the federal Government just doesn't care and proceeds to blindly import new people into this misery. The economy is supposed to grow, but endless growth is utterly insane. The falling birth rates in the whole world is already a sign of the massive scarcity of resources that we have on this planet. It would be a blessing if Germany would lose those 6 million people until the year 2040, as it was predicted based on birth rates alone.
+
+But no, the Government had to lure in more workers so the blessed economy does not tank. The logic is: Work, work, work, don't have children, import young workers from outside of Europe that are working hard for no pay. 
 
 Personal anecdote and maybe slightly one-sided: During my time in Bonn, I met many hard working students from India that were studying at the excellent University of Bonn. Those folks were 23 years old and already starting their PhD in machine learning. But not a single person from that calibre planned to stay in Germany, they exclusively wanted to get the cheap and relatively good German education and then relocate to the UK, Australia or USA to work hard for 3 to 5 years in order to go back to India and found a family and build a home. Smart and hardworking people do not go to Germany. The wages are relatively low, and if you manage to earn 10.000 EUR a month, taxes and health insurance will reduce your net salary to 5000 EUR.
 
