@@ -15,13 +15,15 @@ Important: I am a computer scientist, not an economist or sociologist. So please
 
 ## Introduction
 
-While I am writing this blog post, I look out of an airplane window. Right after the plane took off, I overlooked a forest close to the airport of Cologne/Bonn with many spots of rotten and dead trees. A couple of minutes later, while the plane is cruising at around 10.000 metres above the ground, it's impossible for me to see a place where humans have not left their mark, where nature has not been touched.
+While I am writing this blog post, I look out of an airplane window. Right after the plane took off, I overlooked a forest close to the airport of Cologne/Bonn with many spots of [rotten and dead trees](https://ethz.ch/de/news-und-veranstaltungen/eth-news/news/2015/08/borkenkaefer-im-klimawandel.html). A couple of minutes later, while the plane is cruising at around 10.000 metres above the ground, it's impossible for me to see a place where humans have not left their mark, where nature has not been touched.
 
-What I observe: Rivers are straightened, forests are cut down, huge cities are everywhere and there does not exist a single spot without human intervention. Granted, I am flying above Western Europe and the sight might be completely different compared to the vast wilderness of Siberia  (Namely, I'd see endless [forest fires](https://www.greenpeace.org/international/story/49171/russia-record-breaking-fires-siberia/)).
+What I observe: Rivers are straightened, forests are cut down, huge cities are everywhere and there is not a single spot without human intervention. Granted, I am flying above Western Europe and the sight might be completely different compared to the vast wilderness of Siberia  (Namely, I'd see endless [forest fires](https://www.greenpeace.org/international/story/49171/russia-record-breaking-fires-siberia/)).
 
 The point I try to make is that human progress and the advance of civilization on our planet imposes a huge amount of stress on the natural environment.
 
-Resources such as living space, food, water and energy are scarce, meanwhile the human population is growing. Of course, the growth rate has decreased and projections assume the human population to be ceiling at the end of the 21st century at around [10.9 billion people](https://www.pewresearch.org/fact-tank/2019/06/17/worlds-population-is-projected-to-nearly-stop-growing-by-the-end-of-the-century/). Nevertheless, the human greed to own more and more material goods is not going to stop anytime soon. On the contrary, every damn person on this planet wants a car, a house and three vacations by airplane every year. There are roughly 1 billion people from the rich first world that are used to this lifestyle. But at the same time, the first world is deeply afraid of what happens when the other 7 billion catch up (Ignoring the fact, that this race is already in full progress).
+Resources such as living space, food, water and energy are scarce, meanwhile the human population is growing. Of course, the growth rate has decreased and projections assume the human population to be ceiling at the end of the 21st century at around [10.9 billion people](https://www.pewresearch.org/fact-tank/2019/06/17/worlds-population-is-projected-to-nearly-stop-growing-by-the-end-of-the-century/).
+
+Nevertheless, the human greed to own more and more material goods is not going to stop anytime soon. On the contrary, every damn person on this planet wants a car, a house and three vacations by airplane every year. There are roughly 1 billion people from the rich first world that are used to this lifestyle. But at the same time, the first world is deeply afraid of what happens when the other 7 billion catch up (Ignoring the fact, that this race is already in full progress).
 
 In this blog post, I try to sketch what problems the earth has to overcome in the next 30, 50 and 100 years. While I am fully aware that it is notoriously difficult to make long term projections, I try to give it a naive go here.
 
@@ -40,7 +42,9 @@ The question whether this increase in carbon-dioxide and methane emissions also 
 
 <figure>
     <img src="{static}/images/agreement_gis_2019.gif" alt="climateChangeTemp" />
-    <figcaption>The Earth is heating up <span style="font-size: 60%">(Source: https://earthobservatory.nasa.gov/world-of-change/global-temperatures)</span></figcaption>
+    <figcaption>The Earth is heating up 
+    <span style="font-size: 60%">(Source: <a href="https://earthobservatory.nasa.gov/world-of-change/global-temperatures">https://earthobservatory.nasa.gov/world-of-change/global-temperatures</a>)</span>
+    </figcaption>
 </figure>
 
 This increase in temperature causes a myriad of primary problems:
@@ -55,7 +59,7 @@ The past has shown that many countries on the planet have very little means to p
 
 Projections show that we have to expect millions of climate refugees from the southern hemisphere pushing into northern countries. On Sept. 13, 2021, the [updated Groundswell report from the Worldbank](https://www.worldbank.org/en/news/press-release/2021/09/13/climate-change-could-force-216-million-people-to-migrate-within-their-own-countries-by-2050) predicts that up to 216 million people across six world regions are forced to move due to climate change within their countries. The report states that *by 2050, Sub-Saharan Africa could see as many as 86 million internal climate migrants; East Asia and the Pacific, 49 million; South Asia, 40 million; North Africa, 19 million; Latin America, 17 million; and Eastern Europe and Central Asia, 5 million.* 
 
-As a German, I can say that the Syrian Civil war (Surely not caused by climate change) and migration streams caused by socio-economic or military conflicts in other regions that caused [1.5 million](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) refugees in Germany almost tore the German society apart. As a result, the far right political party AFD emerged and to this day has widespread support in the German society. (12.5% and 10% of all Germans voted for them in 2017 and 2021). It's relatively safe to say that Germany will not overcome another major refugee movement (major = More than 2 million refugees) without civil-war-like violent outbursts.
+As a German, I can say that the Syrian Civil war (Surely not caused by climate change) and migration due to other reasons that lead to the arrival of [1.5 million](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) refugees in Germany almost tore the German society apart. As a result, the far right political party AFD emerged and to this day has widespread support in the German society. (12.5% and 10% of all Germans voted for them in 2017 and 2021). It's relatively safe to say that Germany will not overcome another major refugee movement (major = More than 2 million refugees) without civil-war-like violent outbursts.
 
 The same applies to many other *rich* European countries. Most European societies are very fragile and the relatively high prosperity is standing on thin legs. We can already see a fortification of the European coastlines and refugee streams are already used politically by countries such as Turkey. To be fair, Turkey took with [4 million refugees](https://de.wikipedia.org/wiki/Liste_der_L%C3%A4nder_nach_gefl%C3%BCchteter_Bev%C3%B6lkerung#L%C3%A4nder_nach_Bestand_an_internationalen_Fl%C3%BCchtlingen) the majority of Syrian migrants and the political pressure against Europe is somewhat understandable in this context.
   
@@ -67,7 +71,7 @@ The question begs to be answered: If the collapse of a relatively small nation s
 
 3. Climate change in the Caribbean poses a major threat to the islands in the Caribbean. The largest environmental changes are the rise in sea level, stronger hurricanes, longer dry seasons and shorter wet seasons. [Studies said](https://www.cbsnews.com/news/climate-change-may-make-extreme-hurricane-rainfall-five-times-more-likely-study-says/) that climate change may make extreme hurricane rainfall 5 times more likely.
 
-It has to be mentioned that it's scientifically not accurate to state that people flee only because of climate change reasons. It's often a complicated mix of socio-economic factors. Natural disasters might be only the icing of the cake. For example, the natural environment of the Gulf nations would be an impossible living environment for a economically weaker civilisation that depend on agriculture and low-level manufacturing.
+It has to be mentioned that it's scientifically not accurate to state that people flee only because of climate change reasons. It's often a complicated mix of socio-economic factors. Natural disasters might be only the icing of the cake. For example, the natural environment of the Gulf nations would be an impossible living environment for a economically weaker civilisation that depends on agriculture and low-level manufacturing.
 
 But it poses no risk to the extremely rich Gulf nations that only export crude oil and oil products and import everything else, including their work-force. But still, it's utter ecological [madness to create cities such as Dubai](https://www.youtube.com/watch?v=tJuqe6sre2I) in such inhospitable regions.
 
@@ -84,7 +88,7 @@ So how does the future economy and work force look like?
 
 I am convinced that inequality will become even greater in the future. If you come from nothing, It's extremely hard to find a good and high-income job that allows you to build basic wealth. And by basic wealth, I mean the ability to own a decent house and a decent car and the ability to support your family. On the other hand, if you are already wealthy, it's easy to maintain your wealth.
 
-Work won't make you rich. Working merely prevents you from immediate death by starvation and exposure to the elements, but not anything else. In many parts of the Western World, a 40 hour minimum wage job doesn't even give you enough money to rent a one bed room apartment. So those jobs are designed to be done by people that don't have to pay rent, or if they have to, then will need to work 3 of those minimum-wage jobs just to have a roof over the head. It's utter madness.
+Work won't make you rich. Working merely prevents you from immediate death by starvation and exposure to the elements, but not anything else. In many parts of the Western World, a 40 hour minimum wage job doesn't even give you enough money to rent a one bed room apartment. So those jobs are designed to be done by people that don't have to pay rent, or if they have to, they will need to work 3 of those minimum-wage jobs just to have a roof over the head. It's utter madness.
 
 If you want to become wealthy in the 21st century, you have to do one of the following:
 
@@ -108,27 +112,31 @@ I mean just have a look on the house price index in Germany:
 
 <figure>
     <img src="{static}/images/germany-housing-index.png" alt="housePrice" />
-    <figcaption>Housing Prices <span style="font-size: 60%">(Source: https://tradingeconomics.com/germany/housing-index)</span></figcaption>
+    <figcaption>Housing Prices <span style="font-size: 60%">(Source: <a href="https://tradingeconomics.com/germany/housing-index">https://tradingeconomics.com/germany/housing-index</a>)</span></figcaption>
 </figure>
 
 Does this look normal to you? The prices are increasing more and more.
 
-As of now, my only strategy that I came up with is to move away from Germany and move to a place with cheaper rent and lower taxes such as Eastern Europe / Turkey / South America / South East Asia. I can always come back to Germany (or other parts of the Western World) when the baby-boomers start to die off (which will start to accelerate in the late 2020s and early 2030s).
+As of now, my only strategy that I came up with is to move away from Germany and move to a place with cheaper rent and lower taxes such as Eastern Europe / Turkey / South America / South East Asia. I can always come back to Germany (or other parts of the Western World) when the baby-boomers start to die off (which will start to accelerate in the late 2020s and early 2030s). 
+
+Of course I could also relocate to a more affordable region in the German East or countryside in order to save rent costs. But honestly, the German countryside does feel more alien to me than a city such as Bangkok or Buenos Aires.
 
 Of course, when I move to more affordable regions in the world and I keep working remotely for companies in the rich West & North, I will be responsible for prices going up for locals. So instead of me getting fucked over in Germany, I will be the one that fucks over the local people. But in this capitalistic hell hole of an planet, that's all you can do anyhow.
 
 There seems to be a general trend in the world: 
 
-Everything that has tangible value, such as real estate and stocks, will increase in price. There is a massive fight for resources. Nobody wants to save money, because inflation burns money in an alarming pace.
+Everything that has tangible value, such as real estate and stocks, will increase in price. There is a massive fight for resources. Nobody wants to save money, because inflation burns money at an alarming pace.
 
 Another major shift that we are going to see in the next 50 years is the massive aging of our planet. For example, Europe is already an extremely old continent age-wise. The median age in Western Europe is 44 years in 2020, the median age in Africa is 19.7 years! Germany is the second oldest country in the world with a median age of 47.1 years right behind Japan with 47.3 years.
 
 <figure>
-    <img src="{static}/images/Europe_population_over_65.png" alt="housePrice" />
-    <figcaption>Old, old Europe</figcaption>
+  <img src="{static}/images/Europe_population_over_65.png" alt="housePrice" />
+  <figcaption>Percentage of the European Population above 65 years of age. 
+    <span style="font-size: 60%">(Source: <a href="https://commons.wikimedia.org/wiki/File:Europe_population_over_65.png">https://commons.wikimedia.org/wiki/File:Europe_population_over_65.png</a>)</span>
+  </figcaption>
 </figure>
 
-This unstoppable aging of Europe will require massive immigration from young people from other parts of the world to uphold the economic growth and prosperity. And this will likely lead to conflicts within the respective societies. 
+This unstoppable aging of Europe will require massive immigration from young people from other parts of the world to uphold the economic growth and prosperity. And this will likely lead to conflicts within the respective societies.
 
 For example in Germany, there was 
 
@@ -140,12 +148,14 @@ And this will become much less in the years to come, because the baby boomer gen
 
 <figure>
     <img src="{static}/images/alterspyramide.png" alt="altersPyramide" />
-    <figcaption>Germany is a old country</figcaption>
+    <figcaption>Germany is an old country. 
+      <span style="font-size: 60%">(Source: <a href="https://service.destatis.de/bevoelkerungspyramide/index.html#!y=2021">https://service.destatis.de/bevoelkerungspyramide/index.html#!y=2021</a>)</span> 
+    </figcaption>
 </figure>
 
 On the other hand, in a [most recent prognosis by the German federal institute of housing & room planning](https://www.bbsr.bund.de/BBSR/DE/startseite/topmeldungen/bevoelkerungsprognose-bbsr-2040.html), Germany will not lose any population until 2040 and will remain stagnant at around 82 million people until 2040. This is only possible with [massive immigration](https://www.spiegel.de/panorama/gesellschaft/deutschland-bevoelkerung-schrumpft-in-den-naechsten-jahren-aber-nicht-ueberall-a-4f5a7009-9c23-4a0b-9671-48e82defe0b0). In Germany, between the years 2018 and 2040, Germany is predicted to have 17.4 million births and 23.5 millionen deaths on the other side. So there will come at least 6 million people to Germany in the next 20 years. And those migrants won't come from Europe, because every West European country has the same structural aging issues as Germany, so the migrants will most likely come from Africa, the Middle East and to a lesser extent from the Far East.
 
-Replacing *native* people with migrants is a massively flawed logic in my opinion. The question that needs to be asked is: Why does the German population not have kids anymore? But the federal Government just doesn't care and proceeds to blindly import new people into this misery. The economy is supposed to grow, but endless growth is utterly insane. The falling birth rates in the whole world is already a sign of the massive scarcity of resources that we have on this planet. It would be a blessing if Germany would lose those 6 million people until the year 2040, as it was predicted based on birth rates alone.
+Replacing *native* people with migrants is a massively flawed logic in my opinion. The question that needs to be asked is: Why does the German population not have kids anymore? But the federal Government just doesn't care and proceeds to blindly import new people into this misery. The economy is supposed to grow, but endless growth is utterly insane. The falling birth rates in the whole world are already a sign of the massive scarcity of resources that we have on this planet. It would be a blessing if Germany would lose those 6 million people until the year 2040, as it was predicted based on birth rates alone.
 
 But no, the Government had to lure in more workers so the blessed economy does not tank. The logic is: Work, work, work, don't have children, import young workers from outside of Europe that are working hard for no pay. 
 
@@ -157,23 +167,23 @@ Everyone talks about this, but it has to be said again: We will have immense tro
 
 Probably the most remarkable event in the past months was the chaotic retreat of the Western alliance from Afghanistan. NATO forces were 20 years in this extremely poor country and spend billions of Dollars to arm the Afghan army for nothing. The Afghan army succumbed in a matter of days to the Taliban. There was nothing but corruption in the Afghan army.
 
-I am not so interested in the specific case of Afghanistan (Rule: Never invade Afghanistan, [ask the Englishmen]()https://en.wikipedia.org/wiki/First_Anglo-Afghan_War), I want to discuss what can be concluded in general by this milestone event.
+I am not so interested in the specific case of Afghanistan (Rule: Never invade Afghanistan, [ask the Englishmen](https://en.wikipedia.org/wiki/First_Anglo-Afghan_War)), I want to discuss what can be concluded in general by this milestone event.
 
 US and NATO interventions are a thing of the past. The US won the cold war and intervened with boots on the ground in many countries during that time (Somalia, Iraq, Afghanistan, Kuwait, Haiti, ...), but the war in Afghanistan was probably the last such extensive ground operation. The US will still defend it's allies such as Taiwan, but pro-active wars like that in Afghanistan are very unlikely to happen in the next 10 years and beyond that.
 
-China did not even try to hide that they were [talking with the Taliban even before the US retreat](https://www.nytimes.com/2021/07/28/world/asia/china-taliban-afghanistan.html). China will gradually take over the majority of economic relations in many countries that were depended on the western world until most recently. For the most part, the western world was not feared because of their military capabilities, but because of the necessity to cooperate economically with Europe & North America. China & Russia constitutes an alternative economical hemisphere to the Western World. The promise that China gives to countries such as Iran, Afghanistan or many African countries is the following:
+China did not even try to hide that they were [talking with the Taliban even before the US retreat](https://www.nytimes.com/2021/07/28/world/asia/china-taliban-afghanistan.html). China will gradually take over the majority of economic relations in many countries that were depended on the western world until most recently. For the most part, the western world was not feared because of their military capabilities, but because of the necessity to cooperate economically with Europe & North America. China & Russia constitutes an alternative economical hemisphere to the western world. The promise that China gives to countries such as Iran, Afghanistan or many African countries is the following:
 
-We do not care about your political issues and how you rule your country. We respect your internal affairs. All we want is to create a win-win situation by trading with you and investing in your country. China want's to interact economically with you, we don't have an interest to export our ideology and try to change your ethno-cultural system.
+> "We do not care about your political issues and how you rule your country. We respect your internal affairs. All we want is to create a win-win situation by trading with you and investing in your country. China want's to interact economically with you, we don't have an interest to export our ideology and try to change your ethno-cultural system."
 
 If this promise turns out to be true, needs to be seen in the future.
 
 My assumption is that the world becomes more multi-polar. Whereas it could seem like the world is divided between Europe/US/Oceania/Japan on the one side and between China/Russia on the other side, that classification is way too simple. On the long run, Europe and the United States will lose influence compared to the rest of the world. But not because of a sudden collapse, simply because other nations are picking up in economic prosperity.
 
-In 2050, the US and Europe will stay play an important role in the globe, but there will be several more or less equal counterparts, such as China, India, Indonesia and some parts of Africa.
+In 2050, the US and Europe will stay play an important role in the globe, but there will be several more or less equal counterparts, such as China, India, Indonesia, Brazil and some parts of Africa.
 
 I don't think that we will see huge geopolitical shifts in the future. China and India simply want to prosper economically, there is no need to risk it all by invading Taiwan for example. The US will be gradually pushed back in the Pacific Ocean (Especially in the East and South China Sea), but this just seems to be the natural corrective.
 
-Europe continues to lose influence and the internal weakness of Europe will continue to manifest itself as it did when the second largest economy of Europe, the United Kingdom, left the alliance. There is a possibility that p[Poland](https://www.france24.com/en/europe/20210715-on-the-road-to-polexit-poland-pushes-back-in-battle-against-eu-rule) and [Hungary](https://www.dw.com/en/hungary-vs-eu-is-orban-striving-for-huxit/a-58934527) will leave next. Turkey will never enter the European Union in the first place.
+Europe continues to lose influence and the internal weakness of Europe will continue to manifest itself as it did when the second largest economy of Europe, the United Kingdom, left the alliance. There is a possibility that [Poland](https://www.france24.com/en/europe/20210715-on-the-road-to-polexit-poland-pushes-back-in-battle-against-eu-rule) and [Hungary](https://www.dw.com/en/hungary-vs-eu-is-orban-striving-for-huxit/a-58934527) will leave next. Turkey will never enter the European Union in the first place.
 
 ## Advance of Medicine & Technology
 
@@ -198,4 +208,4 @@ Sure, there are some cool things that are happening recently in medicine or will
 
 2. HIV might become curable in the next 10 years. Biontech and Moderna launched several [phase 1 trials](https://clinicaltrials.gov/ct2/show/NCT05001373) for mRNA vaccines against HIV. But it has to be said that phase 1 vaccination trials merely means: *Phase 1, Randomized, First-in-human, Open-label Study to Evaluate the Safety and Immunogenicity of eOD-GT8 60mer mRNA Vaccine (mRNA-1644) and Core-g28v2 60mer mRNA Vaccine (mRNA-1644v2-Core) in HIV-1 Uninfected Adults in Good General Health.* Put differently: They first want to see if the vaccine doesn't harm HIV **uninfected** individuals and generates the desired immune response, before they look if the vaccine effectively prevents HIV infection in the future.
 
-3. mRNA vaccines against Cancer. For example, stage 3 and stage 4 Melanoma, a highly lethal skin cancer in very late stages had a [survival rate of 6 to 7 months in the year 2000](https://www.nature.com/articles/d41586-020-01038-9). Nowadays, in the year 2021, with the the help of immunotherapy and targeted therapy such as checkpoint inhibitors, the same late stage malicious cancer has a 5-year survival rate between [22.5% (stage 3) - 63% (stage 4)](https://www.curemelanoma.org/about-melanoma/melanoma-staging/melanoma-survival-rates/). That is a huge leap in a quick time :)
+3. mRNA vaccines against Cancer. For example, stage 3 and stage 4 Melanoma, a highly lethal skin cancer in very late stages had a [survival rate of 6 to 7 months in the year 2000](https://www.nature.com/articles/d41586-020-01038-9). Nowadays, in the year 2021, with the the help of immunotherapy and targeted therapy such as checkpoint inhibitors, the same late stage malicious cancer has a 5-year survival rate between [22.5% (stage 3) - 63% (stage 4)](https://www.curemelanoma.org/about-melanoma/melanoma-staging/melanoma-survival-rates/). That is a huge leap in a quick time.
