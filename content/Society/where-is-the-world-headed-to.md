@@ -1,10 +1,10 @@
 Title: Where is the World headed to?
 Date: 2021-10-03 14:51
-Date: 2021-10-06 15:51
+Modified: 2021-10-06 23:51
 Category: Society
 Tags: Collapse, Society, Economy, Second-Machine-Age, Work
 Slug: where-is-the-world-headed-to
-Summary: My personal opinion on economical and sociological topics in the near (2030) and mid-term (2050)  future. This essay is divided into the following topics: Climate Crisis, Globalisation & Economy, Geopolitics & War, Advance of Medicine & Technology.
+Summary: My personal opinion on economical and sociological topics in the near (2030) and mid-term (2050)  future. This essay is divided into the following categories: Climate Crisis, Globalisation & Economy, Geopolitics & War, Advance of Medicine & Technology.
 Author: Nikolai Tschacher
 Status: Published
 
@@ -185,6 +185,13 @@ I don't think that we will see huge geopolitical shifts in the future. China and
 
 Europe continues to lose influence and the internal weakness of Europe will continue to manifest itself as it did when the second largest economy of Europe, the United Kingdom, left the alliance. There is a possibility that [Poland](https://www.france24.com/en/europe/20210715-on-the-road-to-polexit-poland-pushes-back-in-battle-against-eu-rule) and [Hungary](https://www.dw.com/en/hungary-vs-eu-is-orban-striving-for-huxit/a-58934527) will leave next. Turkey will never enter the European Union in the first place.
 
+But do I see any possibility that our current world in 2021 is headed into a major war, such as a third world war?
+
+No, not really. Not at all actually. The only possibility I see is a major conflict between China and the USA, but China will not risk too much, since their only goal is to increase their wealth and living standard even more. 
+
+What about North Korea? I don't think either. North Korea has the bomb since 10 years, nothing has happened so far. In 2019, US President Trump managed to step foot on North-Korean territory and shook hands with Kim Jong-un, the pinnacle of a series of [favourable diplomatic events](https://en.wikipedia.org/wiki/Kim_Jong-un#Diplomacy_2018%E2%80%932019) between South Korea, North Korea and the US. To be honest, I wouldn't be surprised to see Korea united again until the year 2050.
+
+
 ## Advance of Medicine & Technology
 
 I am a computer scientist and thus my viewpoint might be a bit uneducated, buy I don't think that we will see major technological milestones in the next 10-20 years. With major technological leaps, I mean things such as:
@@ -209,3 +216,14 @@ Sure, there are some cool things that are happening recently in medicine or will
 2. HIV might become curable in the next 10 years. Biontech and Moderna launched several [phase 1 trials](https://clinicaltrials.gov/ct2/show/NCT05001373) for mRNA vaccines against HIV. But it has to be said that phase 1 vaccination trials merely means: *Phase 1, Randomized, First-in-human, Open-label Study to Evaluate the Safety and Immunogenicity of eOD-GT8 60mer mRNA Vaccine (mRNA-1644) and Core-g28v2 60mer mRNA Vaccine (mRNA-1644v2-Core) in HIV-1 Uninfected Adults in Good General Health.* Put differently: They first want to see if the vaccine doesn't harm HIV **uninfected** individuals and generates the desired immune response, before they look if the vaccine effectively prevents HIV infection in the future.
 
 3. mRNA vaccines against Cancer. For example, stage 3 and stage 4 Melanoma, a highly lethal skin cancer in very late stages had a [survival rate of 6 to 7 months in the year 2000](https://www.nature.com/articles/d41586-020-01038-9). Nowadays, in the year 2021, with the the help of immunotherapy and targeted therapy such as checkpoint inhibitors, the same late stage malicious cancer has a 5-year survival rate between [22.5% (stage 3) - 63% (stage 4)](https://www.curemelanoma.org/about-melanoma/melanoma-staging/melanoma-survival-rates/). That is a huge leap in a quick time.
+
+So yes, we will definitely see improvements in treatments for cancer and cardiovascular diseases. However, the very best thing that you can do is to eat healthy, sleep healthy and go to medical checkups once every year.
+
+A human life spans roughly 70 to 80 years and your best years will be between the age of 20 to 60, the future isn't going to change much there.
+
+Regarding consumer technological advancement, I think we reached the peak. In 2007, the iPhone was invented and thus a huge revolution happened that lead to almost every human owning a small personal computer with all of their information in their pocket. What else is there to come?
+
+I reasonably cannot see any further major technological development that would reach that kind of adoption. Sure, smartphones will get smaller and more powerful, but in the year 2050 we will still have smartphones that we carry in our pocket. They will be lighter, foldable and maybe have some kind of technology to display information in a different format than a screen. But we still need to carry some kind of device with us with CPU, RAM and a networking card.
+
+Cars might become entirely electric, maybe even airplanes. Self driving cars might become a reality on certain roads such as standardized highways, where the traffic can be controlled effectively.
+
