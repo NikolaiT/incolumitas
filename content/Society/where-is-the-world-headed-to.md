@@ -1,6 +1,6 @@
 Title: Where is the World headed to?
 Date: 2021-10-03 14:51
-Date: 2021-10-05 11:51
+Date: 2021-10-06 15:51
 Category: Society
 Tags: Collapse, Society, Economy, Second-Machine-Age, Work
 Slug: where-is-the-world-headed-to
