@@ -182,7 +182,7 @@ If your IP address obtained with WebRTC differs from the IP address that the bro
 
 I created a python module named [zardaxt.py](https://github.com/NikolaiT/zardaxt) that uses `tcpdump` in order to detect the operating system from an incoming SYN packet belonging to a three-way TCP/IP handshake. 
 
-Please consult the GitHub page if you want to know exactly how this technique works, but to put things shortly: The TCP and IP header fields have different default values on the major operating systems (Linux, Windows, iOS), thus it's possible to infer the operating system by looking at those header fields alone.
+Please consult the [GitHub page](https://github.com/NikolaiT/zardaxt) if you want to know exactly how this technique works, but to put things shortly: The TCP and IP header fields have different default values on the major operating systems (Linux, Windows, iOS), thus it's possible to infer the operating system by looking at those header fields alone.
 
 This test compares the operating system inferred from the TCP/IP fingerprint with the operating system displayed in the User-Agent or `navigator.userAgent` property from the browser. If there is a mismatch, there might be a proxy used!
 
@@ -197,6 +197,15 @@ I have to admit that this test is not 100% accurate, I look at it more as *one b
 | *Spoofable?*           | Somewhat. Either the client is pingable from the Internet or not.  A properly configured iptables can drop any packet that reaches a host that does not belong to a outbound connection. |
 | *Results Availability* | After the `nmap` portscan or `ping` probe completed. Maybe 500ms after first SYN packet.                                                                                                 |
 | *Accuracy*             | High                                                                                                                                                                                     |
+
+
+This test is maybe a bit invasive, but it's relatively easy to explain how it works: If I have sufficient grounds to assume that an incoming connection belongs to a proxy, I make an port scan with `nmap`. Alternatively I can `ping` the host. If the host is up and reachable from the Internet, it usually is already a sign that it could be a proxy. Most normal Internet users are behind a ISP or carrier grade NAT, thus not allowing incoming connections from the Internet.
+
+If the host has well-known proxy ports open such as `3128` or `1080`, it is a hard sign that the host has a proxy server running. 
+
+Of course, smart proxy providers will disallow any incoming connections from arbitrary IP ranges, but maybe some magic can be done with [nmap firewall and intrusion detection system detection](https://nmap.org/book/firewalls.html).
+
+I consider this test to be only necessary when there is some evidence that the host might be a proxy but I am not entirely sure.
 
 ## 5. Datacenter IP Test
 
