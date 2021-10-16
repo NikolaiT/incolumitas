@@ -233,3 +233,18 @@ main article blockquote {
   background-color: #c1391a;
   color: #fff;
 }
+
+main article blockquote, main article pre {
+  background-color: hsla(0,0%,50%,.065);
+  border-left-color: hsla(0,0%,50%,0.155);
+}
+
+aside div p {
+  line-height: 135%;
+}
+
+@media only screen and (min-width: 1025px) {
+  aside div p {
+    margin: 0 40px 15px;
+  }
+}
