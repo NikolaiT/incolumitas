@@ -53,8 +53,7 @@ All proxy detection tests can be found on the following dedicated web site:
 <a 
   class="orange_button" 
   href="https://bot.incolumitas.com/proxy_detect.html"
-  style="margin: 20px 0"
->
+  style="margin: 20px 0">
 Visit the proxy detection page
 </a>
 
@@ -87,7 +86,7 @@ The application level delay is non-negligible: On it's normal routing path, an I
 
 Large proxy providers may optimize the geo-latency and they probably have super fast proxy servers, but they still need to glue the two TCP/IP connections together in order to appear to the web server that it's talking directly to the proxy server. This will always cost some time.
 
-There are a lot of things that can dilute the timing measurements: Network congestion, unexpected networking issues on the client side and many other reasons. On the plus side, it's possible to detect those issues with JavaScript.  
+There are a lot of things that can dilute the timing measurements: Network congestion, unexpected networking issues on the client side and many other reasons. On the plus side, it's possible to detect those issues with JavaScript.
 
 
 ## 2. WebRTC Test
@@ -98,7 +97,78 @@ There are a lot of things that can dilute the timing measurements: Network conge
 | *Description*          | Check if WebRTC leaks the real IP address                         |
 | *Spoofable?*           | Yes, obtaining the real IP address via WebRTC requires JavaScript |
 | *Results Availability* | ~200 ms after `DOMContentLoaded`                                  |
-| *Accuracy*             | 100% if not spoofed                                               |                                                   |
+| *Accuracy*             | 100%                                               |                                                   |
+
+
+[WebRTC for proxy detection](https://webrtchacks.com/so-your-vpn-is-leaking-because-of-webrtc/) is an older technique, but still very relevant. [WebRTC](https://en.wikipedia.org/wiki/WebRTC) (Web Real-Time Communication) is a technique that allows direct peer-to-peer communication in browsers over UDP. It is intended to enable direct audio and video communication between peers. 
+
+Because direct peer to peer communication is possible, there must be a way to detect the public and internal IP addresses of the peers. This is made possible with a so called [STUN protocol](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols).
+
+> Session Traversal Utilities for NAT (STUN) (acronym within an acronym) is a protocol to discover your public address and determine any restrictions in your router that would prevent a direct connection with a peer. The client will send a request to a STUN server on the Internet who will reply with the client’s public address and whether or not the client is accessible behind the router’s NAT. ([Source](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols))
+
+However, WebRTC in Chrome is unaffected by any proxy configuration. If a browser is configured to use a proxy server (`google-chrome --proxy-server="socks5://localhost:1080"`), WebRTC does not communicate through this proxy, because WebRTC uses UDP by default and most http/s or socks proxies only support TCP. This standard behavior by Chrome [can be fixed](https://webrtchacks.com/so-your-vpn-is-leaking-because-of-webrtc/).
+
+Without further ado, the html source below will display your IP address as seen by WebRTC:
+
+
+```html
+<!DOCTYPE html><html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebRTC leak</title>
+</head>
+  <body>
+    <script>
+      var ips = [];
+
+      function findIP() {
+        var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        var pc = new myPeerConnection({iceServers: [{urls: "stun:stun.l.google.com:19302"}]}),
+          noop = function() {},
+          localIPs = {},
+          ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+          key;
+
+        function ipIterate(ip) {
+          if (!localIPs[ip]) {
+            ips.push(ip);
+            document.getElementById("webRTCResult").innerHTML = JSON.stringify(ips, null, 2);
+          }
+          localIPs[ip] = true;
+        }
+        
+        pc.createDataChannel("");
+        
+        pc.createOffer(function(sdp) {
+          sdp.sdp.split('\n').forEach(function(line) {
+            if (line.indexOf('candidate') < 0) return;
+            line.match(ipRegex).forEach(ipIterate);
+          });
+          pc.setLocalDescription(sdp, noop, noop);
+        }, noop);
+        
+        pc.onicecandidate = function(ice) {
+          if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+          ice.candidate.candidate.match(ipRegex).forEach(ipIterate);
+        };
+      }
+
+      try {
+        findIP();
+      } catch(err) {
+        ips = 'WebRTC failed: ' + err.toString();
+        document.getElementById("webRTCResult").innerHTML = JSON.stringify(ips, null, 2);
+      }
+    </script>
+
+    <h4>WebRTC Detected IPs</h4>
+    <pre id="webRTCResult"></pre>
+  </body>
+</html>
+```
+
+If your IP address obtained with WebRTC differs from the IP address that the browser uses otherwise, it's almost always a sure signal that a proxy server is used. Therefore, this test is very helpful in order to detect (misconfigured) proxy-browser sessions. 
 
 
 ## 3. TCP/IP Fingerprint Test
@@ -109,6 +179,15 @@ There are a lot of things that can dilute the timing measurements: Network conge
 | *Spoofable?*           | Somewhat. The client will need to alter their TCP/IP stack configuration to change their TCP/IP fingerprint.  In case of a proxy server, the proxy server needs to dynamically match the TCP/IP stack configuration of the User-Agent it routes the traffic for.   |
 | *Results Availability* | Right after the User-Agent header of the first incoming HTTP request reached the server.                                                                                                                                                                           |
 | *Accuracy*             | 100%                                                                                                                                                                                                                                                               |
+
+I created a python module named [zardaxt.py](https://github.com/NikolaiT/zardaxt) that uses `tcpdump` in order to detect the operating system from an incoming SYN packet belonging to a three-way TCP/IP handshake. 
+
+Please consult the GitHub page if you want to know exactly how this technique works, but to put things shortly: The TCP and IP header fields have different default values on the major operating systems (Linux, Windows, iOS), thus it's possible to infer the operating system by looking at those header fields alone.
+
+This test compares the operating system inferred from the TCP/IP fingerprint with the operating system displayed in the User-Agent or `navigator.userAgent` property from the browser. If there is a mismatch, there might be a proxy used!
+
+I have to admit that this test is not 100% accurate, I look at it more as *one bit* of additional information to make an educated guess.
+
 
 ## 4. Open Ports Test
 
