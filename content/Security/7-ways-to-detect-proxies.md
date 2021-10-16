@@ -1,7 +1,7 @@
 Title: 7 different Ways to Detect Proxies
 Date: 2021-10-16 12:46
 Category: Security
-Tags: proxy, proxy-detection, bot-detection
+Tags: proxy, proxy-detection, bot-detection, proxy-provider, bot-detection, anti-scraping
 Slug: 7-different-ways-to-detect-proxies
 Summary: In this blog post I demonstrate 7 unique ways how you can detect proxy usage from the server side when the client is visiting your web sever either with `curl` or the most recent Chrome browser.
 Author: Nikolai Tschacher
@@ -40,9 +40,9 @@ The attacker model is as follows: The attacker has full control over a web serve
 
 Some of the tests rely upon JavaScript execution and transferring information back to the attacker's website by means such as the WebSocket or [Navigator.sendBeacon()](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon) JavaScript API's. 
 
-Of course, the client is able to alter and spoof any JavaScript logic, so if a proxy detection relies exclusively on JavaScript / client side logic, it will be marked as such. This client side spoofing is often made harder by [obfuscating and compressing JavaScript](https://github.com/javascript-obfuscator/javascript-obfuscator).
+Of course, the client is able to alter and spoof any JavaScript logic, so if a proxy detection test relies exclusively on JavaScript / client side logic, it will be marked as such. This client side spoofing is often made harder by [obfuscating and compressing JavaScript](https://github.com/javascript-obfuscator/javascript-obfuscator).
 
-Furthermore, time plays also a crucial role. If an detection test gives a result immediately, before even serving the `index.html` file, it's easier to put an stop to scraping. But some tests rely on complicated JavaScript logic, long after the web page has been served (and thus giving the scraper all he wants).
+Furthermore, time plays also a crucial role. If a detection test gives a result immediately, before even serving the `index.html` file, it's easier to put an stop to scraping. But some tests rely on complicated JavaScript logic, long after the web page has been served, which means that the scraper can be blocked only on subsequent requests to the website.
 
 ## 1. Latency Test
 
