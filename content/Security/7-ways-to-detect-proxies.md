@@ -1,4 +1,4 @@
-Title: 7 different Ways to Detect Proxies
+Title: 7 different ways to detect Proxies
 Date: 2021-10-16 12:46
 Category: Security
 Tags: proxy, proxy-detection, bot-detection, proxy-provider, bot-detection, anti-scraping
@@ -46,11 +46,17 @@ Furthermore, time plays also a crucial role. If a detection test gives a result 
 
 ## General Notes for all Detection Tests
 
-I will not show source code for the proxy detection tests in this blog article. Rather, I will link to my older blog articles in which I talk about the implementation. Where applicable, I will to GitHub projects with source code. 
+I will not show source code for the proxy detection tests in this blog article. Rather, I will link to my older blog articles in which I often provide implementation. Where applicable, I will provide a link to GitHub projects with source code.
 
 All proxy detection tests can be found on the following dedicated web site: 
 
-<a class="orange_button" href="https://bot.incolumitas.com/proxy_detect.html">Visit the proxy detection page</a>
+<a 
+  class="orange_button" 
+  href="https://bot.incolumitas.com/proxy_detect.html"
+  style="margin: 20px 0"
+>
+Visit the proxy detection page
+</a>
 
 You can look at the source code of the client side proxy detection test when inspecting the page source code. 
 
@@ -65,10 +71,23 @@ You can look at the source code of the client side proxy detection test when ins
 
 I created an in-depth description of the basic idea of this bot detection test in [an earlier blog article]({filename}/Security/detecting-proxies.md). The idea is to take two latency measurements:
 
-1. **Browser to Server Latency:** Send `N=10` WebSocket messages from the browser to the web server. The web server immediately replies on each message with the same message (echo-server). The browser stores the time delta as latency measurement.
+1. **Browser to Server Latency:** Send `N=10` WebSocket messages from the browser to the web server. The web server immediately replies to each message with the same message (basic echo server). The browser stores the time delta as latency measurement.
 2. **Server to Browser Latency:** On the server, when the browser establishes a http connection, we measure the time delta in the initial three-way TCP/IP handshake.
 
-If both latency measurements differ significantly (namely the **Browser to Server Latency** is significantly higher than the **Server to Browser Latency**), it is possible to conjecture that there is an intermediate host between the browser and the web server. 
+If both latency measurements differ significantly (namely the **Browser to Server Latency** is significantly higher than the **Server to Browser Latency**), it is possible to conjecture that there is an intermediate host between the browser and the web server.
+
+The intermediate proxy server has only one purpose: It splits the TCP/IP connection between client and web-server into two separate TCP/IP connections, so that the web server only sees the source IP address of the proxy server!
+
+1. TCP/IP connection 1, from browser to proxy server
+2. TCP/IP connection 2, from proxy server to web server
+
+Because this detour over the proxy server often incurs a geographical and application level delay, we are able to observe a difference in latencies! 
+
+The application level delay is non-negligible: On it's normal routing path, an IP packet only has to pass several extremely high-speed IP-level industrial routers that are built on top of dedicated purpose hardware for routing. A proxy server such as [3proxy](https://github.com/3proxy/3proxy) however usually runs on a off the shelf Linux server and the IP packet has to be passed through the Linux TCP/IP stack all the way up to the user land where the proxy server establishes a new TCP/IP connection with the web server. This takes some milliseconds.
+
+Large proxy providers may optimize the geo-latency and they probably have super fast proxy servers, but they still need to glue the two TCP/IP connections together in order to appear to the web server that it's talking directly to the proxy server. This will always cost some time.
+
+There are a lot of things that can dilute the timing measurements: Network congestion, unexpected networking issues on the client side and many other reasons. On the plus side, it's possible to detect those issues with JavaScript.  
 
 
 ## 2. WebRTC Test
