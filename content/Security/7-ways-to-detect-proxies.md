@@ -5,7 +5,7 @@ Tags: proxy, proxy-detection, bot-detection, proxy-provider, bot-detection, anti
 Slug: 7-different-ways-to-detect-proxies
 Summary: In this blog post I demonstrate 7 unique ways how you can detect proxy usage from the server side when the client is visiting your web sever either with `curl` or the most recent Chrome browser.
 Author: Nikolai Tschacher
-Status: Draft
+Status: Published
 
 ## Introduction
 
@@ -52,8 +52,7 @@ All proxy detection tests can be found on the following dedicated web site:
 
 <a 
   class="orange_button" 
-  href="https://bot.incolumitas.com/proxy_detect.html"
-  style="margin: 20px 0">
+  href="https://bot.incolumitas.com/proxy_detect.html">
 Visit the proxy detection page
 </a>
 
@@ -203,7 +202,7 @@ This test is maybe a bit invasive, but it's relatively easy to explain how it wo
 
 If the host has well-known proxy ports open such as `3128` or `1080`, it is a hard sign that the host has a proxy server running. 
 
-Of course, smart proxy providers will disallow any incoming connections from arbitrary IP ranges, but maybe some magic can be done with [nmap firewall and intrusion detection system detection](https://nmap.org/book/firewalls.html).
+Of course, smart proxy providers will disallow any incoming connections from arbitrary IP ranges, but maybe some magic can be done with [nmap firewall and intrusion detection system bypassing](https://nmap.org/book/firewalls.html).
 
 I consider this test to be only necessary when there is some evidence that the host might be a proxy but I am not entirely sure.
 
@@ -216,6 +215,14 @@ I consider this test to be only necessary when there is some evidence that the h
 | *Results Availability* | Immediately after first incoming SYN packet.                                                                                                                                                                                                                       |
 | *Accuracy*             | 100%                                                                                                                                                                                                                                                               |
 
+
+Recently, I [published an API](https://incolumitas.com/pages/Datacenter-IP-API/) that allows to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. 
+
+Those cloud services periodically publish their public IP ranges and if I encounter a connection from such a datacenter IP address, I almost immediately know that this IP address does not belong to a normal Internet user. If the IP address behaves badly, I throttle it fast.
+
+By using services such as [ipinfo.io](https://ipinfo.io/), I can assign a quality ranking to each IP address. An IP address from an ISP such as Deutsche Telekom or Comcast surely is more trustworthy than a IP address belonging to Digitalocean.
+
+
 ## 6. DNS Leak Test
 
 | Test Property          | Test Property Value                                                                                                                                                                     |
@@ -224,6 +231,15 @@ I consider this test to be only necessary when there is some evidence that the h
 | *Spoofable?*           | Yes, just use a generic DNS resolver such as the one from Google (8.8.8.8) or Cloudflare                                                                                                |
 | *Results Availability* | As soon as the SYN packet arrives on the server and the DNS query reached the DNS server.                                                                                               |
 | *Accuracy*             | 100%                                                                                                                                                                                    |
+
+[Wikipedia defines](https://en.wikipedia.org/wiki/DNS_leak) a DNS leak as follows:
+
+> A DNS leak refers to a security flaw that allows DNS requests to be revealed to ISP DNS servers, despite the use of a VPN service to attempt to conceal them. Although primarily of concern to VPN users, it is also possible to prevent it for proxy and direct internet users.
+
+But my test and use case is a bit different: I am not interested in what websites the users are visiting (after all they visit my proxy detection test site), I only want to see if the IP addresses of the DNS servers actually belong to an entity that could reasonably be related to the IP address of the client!
+
+Put differently: If the proxy IP address belongs to a ISP from South Vietnam, but the IP addresses from the DNS servers belong to Comcast in North America, it might be an indication that a bot programmer forgot to send their DNS queries through public and generic DNS resolvers such as the public DNS server from Google (8.8.8.8).  
+
 
 ## 7. HTTP Proxy Headers Test
 
@@ -234,9 +250,22 @@ I consider this test to be only necessary when there is some evidence that the h
 | *Results Availability* | Right after the headers of the first incoming HTTP request reached the server. |
 | *Accuracy*             | 100%                                                                           |
 
+
+Many http proxy servers add additional http headers to each http request. The presence of those headers indicate that a proxy server is used. I consider the following http headers to be evidence that the connection is proxied over an http proxy:
+
+```JavaScript
+var proxy_headers = ['Forwarded', 'Proxy-Authorization',
+'X-Forwarded-For', 'Proxy-Authenticate',
+  'X-Requested-With', 'From',
+  'X-Real-Ip', 'Via', 'True-Client-Ip', 'Proxy_Connection'];
+```
+
+Of course, those headers can be dropped, but many providers forget even that.
+
+
 ## Even More Juice
 
 And there are even more viable tests:
 
-1. IP Timezone vs Browser Timezone Test: Compare the IP geolocation timezone with the browser timezone
-2. Browser Based Port Scanning of the internal network: With browser based port scanning techniques, it is possible to find out if there is a proxy server listening for connections.
+1. IP Timezone vs Browser Timezone Test: You can compare the IP geolocation timezone with the browser timezone. If there is a mismatch, it might be because a proxy is used.
+2. Browser Based Port Scanning of the internal network: With [browser based port scanning techniques](https://incolumitas.com/2021/01/10/browser-based-port-scanning/), it is possible to find out if there is a proxy server listening for connections.
