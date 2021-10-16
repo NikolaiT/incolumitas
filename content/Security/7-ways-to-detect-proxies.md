@@ -13,13 +13,13 @@ In the past months, I have been writing a lot about bot detection and proxy dete
 
 For example, I wrote a blog article about [proxy detection using latency measurements]({filename}/Security/detecting-proxies.md) that leverages two different latency measurements, one taken with WebSocket messages from the browser, the other looking at the latencies of the incoming three-way TCP/IP handshake on the server side. The rough idea is: If the statistical median of the two measurements differ significantly, there could be a proxy sitting between the browser and the web server.
 
-But why is proxy detection important in IT security and bot detection? In order to understand that, it's important to understand why your IP address bears so much weight in IT security:
+But why is proxy detection important in IT security and bot detection? In order to understand that, it's important to see why your IP address bears so much weight in bot detection:
 
-1. The IP address is the unique piece of entropy that tells your communication partners where they have to send their packets in order to communicate with you.
-2. Usually, your ISP assigns you an IP address. It doesn't matter if you are using a home modem/router or your mobile phone with a SIM card granting you access to mobile carriers network, in the end your ISP connects you to the Internet and your host will be identified by your IP address. Your ISP knows all the time which customer (with your name, address, passport copy) is associated to which IP address.
-3. The basic assumption web services can make about a private customers IP address is that a relatively small group of end users use the same IP address. However, this is not the case anymore with mobile 3G or 4G [Carrier-grade NATs](https://en.wikipedia.org/wiki/Carrier-grade_NAT).
-4. A very important security property of IP addresses is that they are [hard to spoof](https://en.wikipedia.org/wiki/IP_address_spoofing): While there is no technical limitation that prevents you from changing the source address of your IP packets, *smart* routers and Intrusion Detection Systems (IDS) on the routing path between you and your communication partner will drop spoofed packets by using methods such as [ingress](https://en.wikipedia.org/wiki/Ingress_filtering) or [egress](https://en.wikipedia.org/wiki/Egress_filtering) filtering. Furthermore, the TCP three-way handshake won't event work with hosts that spoof source IP addresses.
-5. All those above properties combined give web service providers some confidence that IP addresses are usually shared by a relatively small group of people and that real human beings will not exceed a certain threshold of network packets. Put differently: You can stop bots by counting how many requests per time period you receive from a certain IP address. If an IP address exceeds that threshold, you rate limit them or serve an CAPTCHA.
+1. The IP address is the unique piece of entropy that tells your communication partners where they have to send their packets in order to speak to you.
+2. Usually, your ISP assigns an IP address to you. It doesn't matter if you are using a home modem/router or a mobile phone with a SIM card that grants you access to a mobile carrier network, in the end your ISP connects you to the Internet and your host will be identified uniquely by your IP address. Your ISP knows at any moment in time which customer (with your name, address and passport copy that you provided upon registration) is associated to which IP address.
+3. The basic assumption web services can make about a private customers IP address is that a relatively small group of end users use the same IP address. However, this is not necessarily the case with mobile 3G or 4G [Carrier-grade NATs](https://en.wikipedia.org/wiki/Carrier-grade_NAT).
+4. A very important security property of IP addresses is that they are [hard to spoof](https://en.wikipedia.org/wiki/IP_address_spoofing): While there is no technical limitation that prevents you from changing the source address of your IP packets, *smart* routers and Intrusion Detection Systems (IDS) on the routing path will drop spoofed packets by using methods such as [ingress](https://en.wikipedia.org/wiki/Ingress_filtering) or [egress](https://en.wikipedia.org/wiki/Egress_filtering) filtering. Furthermore, the TCP three-way handshake won't event work with hosts that spoof source IP addresses.
+5. All the above properties give web service providers some confidence that IP addresses are usually shared by a relatively small group of people and that real human beings will not send more than a certain threshold of network packets. Put differently: You can stop bots by counting how many requests per time period you received from a certain IP address. If an IP address exceeds that threshold, you rate limit them or serve them a CAPTCHA.
 
 <figure>
     <img src="{static}/images/IPv4_Packet-en.svg.png" alt="IPv4_Packet" />
@@ -30,11 +30,11 @@ But why is proxy detection important in IT security and bot detection? In order 
 
 ## The Attacker Model
 
-The basic scenario is a scraper that programmed a bot and tries to scrape many pages of a huge website. Because the website is programmed in Reactjs, the scraper decided to use a real browser for his scraping endeavours.  
+The basic scenario is as follows: A scraper developed a bot and tries to scrape many pages of a huge website. Because the website is programmed in React, the scraper decided to use a real browser for his scraping endeavours instead of relying on `curl`.
 
 All proxy detection tests in this blog article assume that the client is using the most recent Chrome browser with a http/s or socks proxy configured. You can achieve that by starting Chrome with the following shell command: `google-chrome --proxy-server="socks5://localhost:1080"`
 
-Furthermore, it is assumed that the Chrome browser comes configured as is, without any plugins or extensions active. JavaScript is enabled as it should be by default.
+Furthermore, it is assumed that the Chrome browser comes configured as is, without any plugins or extensions active. JavaScript is enabled by default, as it should be.
 
 The attacker model is as follows: The attacker has full control over a web server and lures the client into visiting the attacker's website (the proxy detection site), which will run the tests specified in this blog article.
 
@@ -44,6 +44,16 @@ Of course, the client is able to alter and spoof any JavaScript logic, so if a p
 
 Furthermore, time plays also a crucial role. If a detection test gives a result immediately, before even serving the `index.html` file, it's easier to put an stop to scraping. But some tests rely on complicated JavaScript logic, long after the web page has been served, which means that the scraper can be blocked only on subsequent requests to the website.
 
+## General Notes for all Detection Tests
+
+I will not show source code for the proxy detection tests in this blog article. Rather, I will link to my older blog articles in which I talk about the implementation. Where applicable, I will to GitHub projects with source code. 
+
+All proxy detection tests can be found on the following dedicated web site: 
+
+<a class="orange_button" href="https://bot.incolumitas.com/proxy_detect.html">Visit the proxy detection page</a>
+
+You can look at the source code of the client side proxy detection test when inspecting the page source code. 
+
 ## 1. Latency Test
 
 | Test Property               | Test Property Value                                                                                                     |
@@ -52,6 +62,13 @@ Furthermore, time plays also a crucial role. If a detection test gives a result 
 | *Spoofable?*           | Yes, the latency measurements from browser to server are obtained with JavaScript and can be manipulated by the client. |
 | *Results Availability* | ~500 ms after `DOMContentLoaded`                                                                                        |
 | *Accuracy*             | Depends on the geographical location of the proxy and it's latency.                                                     |                                                    |                                                   |
+
+I created an in-depth description of the basic idea of this bot detection test in [an earlier blog article]({filename}/Security/detecting-proxies.md). The idea is to take two latency measurements:
+
+1. **Browser to Server Latency:** Send `N=10` WebSocket messages from the browser to the web server. The web server immediately replies on each message with the same message (echo-server). The browser stores the time delta as latency measurement.
+2. **Server to Browser Latency:** On the server, when the browser establishes a http connection, we measure the time delta in the initial three-way TCP/IP handshake.
+
+If both latency measurements differ significantly (namely the **Browser to Server Latency** is significantly higher than the **Server to Browser Latency**), it is possible to conjecture that there is an intermediate host between the browser and the web server. 
 
 
 ## 2. WebRTC Test
@@ -115,3 +132,4 @@ Furthermore, time plays also a crucial role. If a detection test gives a result 
 And there are even more viable tests:
 
 1. IP Timezone vs Browser Timezone Test: Compare the IP geolocation timezone with the browser timezone
+2. Browser Based Port Scanning of the internal network: With browser based port scanning techniques, it is possible to find out if there is a proxy server listening for connections.
