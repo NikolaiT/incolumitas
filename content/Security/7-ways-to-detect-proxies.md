@@ -3,23 +3,23 @@ Date: 2021-10-16 12:46
 Category: Security
 Tags: proxy, proxy-detection, bot-detection, proxy-provider, bot-detection, anti-scraping
 Slug: 7-different-ways-to-detect-proxies
-Summary: In this blog post I demonstrate 7 unique ways how you can detect proxy usage from the server side when the client is visiting your web sever either with `curl` or the most recent Chrome browser.
+Summary: In this blog post, I demonstrate 7 different efficient ways how to detect a proxy server when the client is visiting a web server with a browser that has a proxy / VPN configured.
 Author: Nikolai Tschacher
 Status: Published
 
 ## Introduction
 
-In the past months, I have been writing a lot about bot detection and proxy detection.
+In the past couple of months, I have been writing a lot about bot detection and proxy detection.
 
 For example, I wrote a blog article about [proxy detection using latency measurements]({filename}/Security/detecing-proxies.md) that leverages two different latency measurements, one taken with WebSocket messages from the browser, the other looking at the latencies of the incoming three-way TCP/IP handshake on the server side. The rough idea is: If the statistical median of the two measurements differ significantly, there could be a proxy sitting between the browser and the web server.
 
 But why is proxy detection important in IT security and bot detection? In order to understand that, it's important to see why your IP address bears so much weight in bot detection:
 
 1. The IP address is the unique piece of entropy that tells your communication partners where they have to send their packets in order to speak to you.
-2. Usually, your ISP assigns an IP address to you. It doesn't matter if you are using a home modem/router or a mobile phone with a SIM card that grants you access to a mobile carrier network, in the end your ISP connects you to the Internet and your host will be identified uniquely by your IP address. Your ISP knows at any moment in time which customer (with your name, address and passport copy that you provided upon registration) is associated to which IP address.
+2. Usually, your ISP assigns an IP address to you. It doesn't matter if you are using a home modem/router or a mobile phone with a SIM card that grants you access to a mobile carrier network. In the end, your ISP connects you to the Internet and your host will be identified uniquely by your IP address. Your ISP knows at any moment in time which customer (by your name, address and passport copy that you provided upon registration) is associated to which IP address.
 3. The basic assumption web services can make about a private customers IP address is that a relatively small group of end users use the same IP address. However, this is not necessarily the case with mobile 3G or 4G [Carrier-grade NATs](https://en.wikipedia.org/wiki/Carrier-grade_NAT).
 4. A very important security property of IP addresses is that they are [hard to spoof](https://en.wikipedia.org/wiki/IP_address_spoofing): While there is no technical limitation that prevents you from changing the source address of your IP packets, *smart* routers and Intrusion Detection Systems (IDS) on the routing path will drop spoofed packets by using methods such as [ingress](https://en.wikipedia.org/wiki/Ingress_filtering) or [egress](https://en.wikipedia.org/wiki/Egress_filtering) filtering. Furthermore, the TCP three-way handshake won't event work with hosts that spoof source IP addresses.
-5. All the above properties give web service providers some confidence that IP addresses are usually shared by a relatively small group of people and that real human beings will not send more than a certain threshold of network packets. Put differently: You can stop bots by counting how many requests per time period you received from a certain IP address. If an IP address exceeds that threshold, you rate limit them or serve them a CAPTCHA.
+5. All the above properties give web service providers some confidence that IP addresses are usually shared by a relatively small group of people and that real human beings will not send more network packets than a certain threshold. Put differently: You can stop bots by counting how many requests per time period you received from a certain IP address. If an IP address exceeds that threshold, you rate limit them or serve them a CAPTCHA.
 
 <figure>
     <img src="{static}/images/IPv4_Packet-en.svg.png" alt="IPv4_Packet" />
@@ -32,7 +32,7 @@ But why is proxy detection important in IT security and bot detection? In order 
 
 The basic scenario is as follows: A scraper developed a bot and tries to scrape many pages of a huge website. Because the website is programmed in React, the scraper decided to use a real browser for his scraping endeavours instead of relying on `curl`.
 
-All proxy detection tests in this blog article assume that the client is using the most recent Chrome browser with a http/s or socks proxy configured. You can achieve that by starting Chrome with the following shell command: `google-chrome --proxy-server="socks5://localhost:1080"`
+All proxy detection tests in this blog article assume that the client is using the most recent Chrome browser with a http/s or socks proxy configured. You can achieve that by starting Chrome with the following shell command: `google-chrome --proxy-server="socks5://localhost:1080"` whereby `socks5://localhost:1080` could be any proxy server.
 
 Furthermore, it is assumed that the Chrome browser comes configured as is, without any plugins or extensions active. JavaScript is enabled by default, as it should be.
 
@@ -46,7 +46,7 @@ Furthermore, time plays also a crucial role. If a detection test gives a result 
 
 ## General Notes for all Detection Tests
 
-I will not show source code for the proxy detection tests in this blog article. Rather, I will link to my older blog articles in which I often provide implementation. Where applicable, I will provide a link to GitHub projects with source code.
+I will not show source code for all the proxy detection tests in this blog article. Rather, I will link to my older blog articles in which I often provide the implementation. Where applicable, I will provide a link to GitHub projects with source code.
 
 All proxy detection tests can be found on the following dedicated web site: 
 
@@ -67,10 +67,10 @@ You can look at the source code of the client side proxy detection test when ins
 | *Results Availability* | ~500 ms after `DOMContentLoaded`                                                                                        |
 | *Accuracy*             | Depends on the geographical location of the proxy and it's latency.                                                     |                                                    |                                                   |
 
-I created an in-depth description of the basic idea of this bot detection test in [an earlier blog article]({filename}/Security/detecing-proxies.md). The idea is to take two latency measurements:
+I created an in-depth description of the basic idea of this bot detection test in [an earlier blog article]({filename}/Security/detecing-proxies.md). The idea is to take two independent latency measurements:
 
 1. **Browser to Server Latency:** Send `N=10` WebSocket messages from the browser to the web server. The web server immediately replies to each message with the same message (basic echo server). The browser stores the time delta as latency measurement.
-2. **Server to Browser Latency:** On the server, when the browser establishes a http connection, we measure the time delta in the initial three-way TCP/IP handshake.
+2. **Server to Browser Latency:** On the server, when the browser establishes a http connection, we measure the time delta in the initial three-way TCP/IP handshake between SYN, SYN+ACK and ACK packets.
 
 If both latency measurements differ significantly (namely the **Browser to Server Latency** is significantly higher than the **Server to Browser Latency**), it is possible to conjecture that there is an intermediate host between the browser and the web server.
 
@@ -79,13 +79,13 @@ The intermediate proxy server has only one purpose: It splits the TCP/IP connect
 1. TCP/IP connection 1, from browser to proxy server
 2. TCP/IP connection 2, from proxy server to web server
 
-Because this detour over the proxy server often incurs a geographical and application level delay, we are able to observe a difference in latencies! 
+Because this detour over the proxy server often incurs a geographical and application level delay, we are able to observe a difference in latencies!
 
-The application level delay is non-negligible: On it's normal routing path, an IP packet only has to pass several extremely high-speed IP-level industrial routers that are built on top of dedicated purpose hardware for routing. A proxy server such as [3proxy](https://github.com/3proxy/3proxy) however usually runs on a off the shelf Linux server and the IP packet has to be passed through the Linux TCP/IP stack all the way up to the user land where the proxy server establishes a new TCP/IP connection with the web server. This takes some milliseconds.
+The application level delay is non-negligible: On it's normal routing path, an IP packet only has to pass several extremely high-speed IP-layer industrial routers that are built on top of dedicated purpose hardware for routing. A proxy server such as [3proxy](https://github.com/3proxy/3proxy) however usually runs on a off the shelf Linux server and the IP packet has to be passed through the Linux TCP/IP stack all the way up to the user land where the proxy server establishes a new TCP/IP connection with the web server. This takes some milliseconds, at least two RTT's for a new three-way TCP/IP handshake.
 
 Large proxy providers may optimize the geo-latency and they probably have super fast proxy servers, but they still need to glue the two TCP/IP connections together in order to appear to the web server that it's talking directly to the proxy server. This will always cost some time.
 
-There are a lot of things that can dilute the timing measurements: Network congestion, unexpected networking issues on the client side and many other reasons. On the plus side, it's possible to detect those issues with JavaScript.
+There are a lot of things that can dilute the timing measurements: Network congestion, unexpected networking issues on the client side and many other reasons. On the plus side, it's possible to detect those issues with JavaScript as well.
 
 
 ## 2. WebRTC Test
@@ -220,7 +220,7 @@ Recently, I [published an API](https://incolumitas.com/pages/Datacenter-IP-API/)
 
 Those cloud services periodically publish their public IP ranges and if I encounter a connection from such a datacenter IP address, I almost immediately know that this IP address does not belong to a normal Internet user. If the IP address behaves badly, I throttle it fast.
 
-By using services such as [ipinfo.io](https://ipinfo.io/), I can assign a quality ranking to each IP address. An IP address from an ISP such as Deutsche Telekom or Comcast surely is more trustworthy than a IP address belonging to Digitalocean.
+By using services such as [ipinfo.io](https://ipinfo.io/), I can assign a quality ranking to each IP address. An IP address from an ISP such as Deutsche Telekom or Comcast surely is more trustworthy than a IP address belonging to the cloud provider Digitalocean.
 
 
 ## 6. DNS Leak Test
@@ -238,7 +238,7 @@ By using services such as [ipinfo.io](https://ipinfo.io/), I can assign a qualit
 
 But my test and use case is a bit different: I am not interested in what websites the users are visiting (after all they visit my proxy detection test site), I only want to see if the IP addresses of the DNS servers actually belong to an entity that could reasonably be related to the IP address of the client!
 
-Put differently: If the proxy IP address belongs to a ISP from South Vietnam, but the IP addresses from the DNS servers belong to Comcast in North America, it might be an indication that a bot programmer forgot to send their DNS queries through public and generic DNS resolvers such as the public DNS server from Google (8.8.8.8).  
+Put differently: If the proxy IP address belongs to a ISP from Vietnam, but the IP addresses from the DNS servers belong to Comcast in North America, it might be an indication that a bot programmer forgot to send their DNS queries through public and generic DNS resolvers such as the public DNS server from Google (8.8.8.8).  
 
 
 ## 7. HTTP Proxy Headers Test
@@ -260,7 +260,7 @@ var proxy_headers = ['Forwarded', 'Proxy-Authorization',
   'X-Real-Ip', 'Via', 'True-Client-Ip', 'Proxy_Connection'];
 ```
 
-Of course, those headers can be dropped, but many providers forget even that.
+Of course, those headers can be dropped by *anonymous* proxy servers, but many providers forget even that.
 
 
 ## Even More Juice
@@ -268,4 +268,4 @@ Of course, those headers can be dropped, but many providers forget even that.
 And there are even more viable tests:
 
 1. IP Timezone vs Browser Timezone Test: You can compare the IP geolocation timezone with the browser timezone. If there is a mismatch, it might be because a proxy is used.
-2. Browser Based Port Scanning of the internal network: With [browser based port scanning techniques](https://incolumitas.com/2021/01/10/browser-based-port-scanning/), it is possible to find out if there is a proxy server listening for connections.
+2. Browser Based Port Scanning of the internal network: With [browser based port scanning techniques](https://incolumitas.com/2021/01/10/browser-based-port-scanning/), it is possible to find out if there is a proxy server listening for connections. TOR for example uses always the port 9050 or 9150, so browser based port scanning might detect TOR usage.
