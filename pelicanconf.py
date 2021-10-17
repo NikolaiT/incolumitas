@@ -95,7 +95,7 @@ CUSTOM_CSS = 'stylesheet/custom.css'
 CUSTOM_JS = 'javascript/custom.js'
 
 BODY_JS = (
-    # 'https://abs.incolumitas.com/lib.js',
+  'https://abs.incolumitas.com/lib.js',
 )
 
 MENUITEMS = (('Archives', '/archives.html'),

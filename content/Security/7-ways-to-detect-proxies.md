@@ -11,7 +11,7 @@ Status: Published
 
 In the past months, I have been writing a lot about bot detection and proxy detection.
 
-For example, I wrote a blog article about [proxy detection using latency measurements]({filename}/Security/detecting-proxies.md) that leverages two different latency measurements, one taken with WebSocket messages from the browser, the other looking at the latencies of the incoming three-way TCP/IP handshake on the server side. The rough idea is: If the statistical median of the two measurements differ significantly, there could be a proxy sitting between the browser and the web server.
+For example, I wrote a blog article about [proxy detection using latency measurements]({filename}/Security/detecing-proxies.md) that leverages two different latency measurements, one taken with WebSocket messages from the browser, the other looking at the latencies of the incoming three-way TCP/IP handshake on the server side. The rough idea is: If the statistical median of the two measurements differ significantly, there could be a proxy sitting between the browser and the web server.
 
 But why is proxy detection important in IT security and bot detection? In order to understand that, it's important to see why your IP address bears so much weight in bot detection:
 
@@ -67,7 +67,7 @@ You can look at the source code of the client side proxy detection test when ins
 | *Results Availability* | ~500 ms after `DOMContentLoaded`                                                                                        |
 | *Accuracy*             | Depends on the geographical location of the proxy and it's latency.                                                     |                                                    |                                                   |
 
-I created an in-depth description of the basic idea of this bot detection test in [an earlier blog article]({filename}/Security/detecting-proxies.md). The idea is to take two latency measurements:
+I created an in-depth description of the basic idea of this bot detection test in [an earlier blog article]({filename}/Security/detecing-proxies.md). The idea is to take two latency measurements:
 
 1. **Browser to Server Latency:** Send `N=10` WebSocket messages from the browser to the web server. The web server immediately replies to each message with the same message (basic echo server). The browser stores the time delta as latency measurement.
 2. **Server to Browser Latency:** On the server, when the browser establishes a http connection, we measure the time delta in the initial three-way TCP/IP handshake.
