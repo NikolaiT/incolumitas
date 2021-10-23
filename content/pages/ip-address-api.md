@@ -36,6 +36,8 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## ChangeLog
 
++ Add cloud provider `m247 Ltd`, `servers.com Inc.`, `Leaseweb Usa Inc.`, often used for proxies/fraud
+
 #### 29th September 2021
 
 + Updated all IP address ranges
