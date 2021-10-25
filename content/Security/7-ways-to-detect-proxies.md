@@ -263,31 +263,34 @@ var proxy_headers = ['Forwarded', 'Proxy-Authorization',
 
 Of course, those headers can be dropped by *anonymous* proxy servers, but many providers forget even that.
 
-
 ## Even More Juice
 
-And there are even more viable tests:
+And there are even more viable test strategies to detect proxies:
 
-1. IP Timezone vs Browser Timezone Test: You can compare the IP geolocation timezone with the browser timezone. If there is a mismatch, it might be because a proxy is used.
-2. Browser Based Port Scanning of the internal network: With [browser based port scanning techniques](https://incolumitas.com/2021/01/10/browser-based-port-scanning/), it is possible to find out if there is a proxy server listening for connections. TOR for example uses always the port 9050 or 9150, so browser based port scanning might detect TOR usage.
-3. Detect a Internet reachable host with `ping`. Hosts that are not behind a NAT and reachable from the Internet are suspiciuous. Downside: Network and Host must support ICMP, but ICMP is often filtered by firewalls.  
-4. Another idea is to frequent IP spam/ban lists such as the [fireHOL iplist](http://iplists.firehol.org/). The [blocklist-ipsets GitHub repository](https://github.com/firehol/blocklist-ipsets) accumulates IP ban lists from many sources on the internet!
+1. IP Timezone vs Browser Timezone Test: You can compare the timezone obtained with a IP geolocation API with the browser timezone. If there is a mismatch, it might be because a proxy is used.
+2. Browser Based Port Scanning of the internal network: With [browser based port scanning techniques](https://incolumitas.com/2021/01/10/browser-based-port-scanning/), it is possible to find out if there is a proxy server listening for connections. TOR for example uses always the port 9050 or 9150, so browser based port scanning might detect TOR usage. Other known ports used for proxys/VPNs are 3128, 8081 and 1080.
+3. Detect a Internet reachable host with `ping`. Hosts that are not behind a NAT and reachable from the Internet are suspicious. Downside: The network and hosts on the routing path must support ICMP, but ICMP packets are often filtered by firewalls.
+4. Another idea is to frequent public IP spam/ban lists such as the [fireHOL ipset list](http://iplists.firehol.org/). The [blocklist-ipsets GitHub repository](https://github.com/firehol/blocklist-ipsets) accumulates IP ban lists from many sources on the Internet! I recently published [an API](https://incolumitas.com/pages/FireHOL-API/) to query the blocklist-ipsets fireHOL lists.
 
 
 ## Discussion about Proxy/VPN Detection in the Internet
 
-Discussion on stackoverflow [How do you detect a VPN or Proxy connection?](https://stackoverflow.com/questions/33300877/how-do-you-detect-a-vpn-or-proxy-connection)
+Discussion on Stackoverflow regarding the question [How do you detect a VPN or Proxy connection?](https://stackoverflow.com/questions/33300877/how-do-you-detect-a-vpn-or-proxy-connection)
 
 > Frankly, IP-based bans (or actually, any kind of limiting focusing on people who do not exclusively possess their public IP address: proxy servers, VPNs, NAT devices, etc) have been unrealistic for a long time, and as the IPv4 pools have been getting depleted in many parts of the world, ISPs are putting more and more clients behind large NAT pools
 
 
-I doubt the above statement frankly said.
+I doubt the above statement frankly said. Most websites and anti bot companies put a lot of emphasis on IP addresses when it comes to bans.
 
-Better discussion on stackoverflow [How can I detect a VPN connection (even just in some cases) to get the real location of the user](https://security.stackexchange.com/questions/71774/how-can-i-detect-a-vpn-connection-even-just-in-some-cases-to-get-the-real-loca)
+Better discussion on stackoverflow: [How can I detect a VPN connection (even just in some cases) to get the real location of the user](https://security.stackexchange.com/questions/71774/how-can-i-detect-a-vpn-connection-even-just-in-some-cases-to-get-the-real-loca)
 
-1. Finding out that a user is using a VPN service provider isn't that difficult. Most of them have static IP addresses for their exit gateways, so it could just be using a list of known IP addresses to identify VPNs. 
+> Finding out that a user is using a VPN service provider isn't that difficult. Most of them have static IP addresses for their exit gateways, so it could just be using a list of known IP addresses to identify VPNs.
 
-2. And even when they don't have a list, a simple reverse DNS lookup might tell them that the IP has a hostname which is obviously a VPN provider and not one assigned by a normal internet service provider.
+Which is a reasonable strategy. It might hard to keep those lists up to date and to enumerate all VPN exit nodes though.
+
+> And even when they don't have a list, a simple reverse DNS lookup might tell them that the IP has a hostname which is obviously a VPN provider and not one assigned by a normal internet service provider.
+
+I doubt that VPN providers focused on privacy, have an DNS entry for their exit node IP addresses that identifies their company.
 
 
 #### Detect VPN Usage by decreased MTU/MSS
@@ -302,4 +305,4 @@ Main points from the blog article, **direct citation**:
 
 > Because of this unique MSS values, we can determine not only if the user is connected via OpenVPN , but also used connection protocol (IPv4, IPv6), transport protocol (UDP, TCP), cipher, MAC and compression as they affect MSS.
 
-I think I will cover VPN detection by deep package inspection and decreased MTU/MSS in the next blog post. I am already pumped about it :D
+I think I will cover VPN detection by deep package inspection and decreased MTU/MSS detection in the next blog post. I am already very exited about this topic!

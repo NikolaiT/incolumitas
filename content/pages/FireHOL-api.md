@@ -47,7 +47,7 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## API Usage
 
-You can reach the API endpoint with this URL: [**https://api.incolumitas.com/firehol?ip=3.5.140.2**](https://api.incolumitas.com/firehol?ip=)
+You can reach the API endpoint with this URL: [**https://api.incolumitas.com/firehol?ip=3.5.140.2**](https://api.incolumitas.com/firehol?ip=3.5.140.2)
 
 If you pass the IP address `3.5.140.2` to the API by calling [https://api.incolumitas.com/firehol?ip=3.5.140.2](https://api.incolumitas.com/firehol?ip=3.5.140.2), you'll obtain the result:
 
