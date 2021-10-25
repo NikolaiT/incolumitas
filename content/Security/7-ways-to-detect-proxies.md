@@ -1,5 +1,6 @@
 Title: 7 different ways to detect Proxies
 Date: 2021-10-16 12:46
+Modified: 2021-10-25 18:46
 Category: Security
 Tags: proxy, proxy-detection, bot-detection, proxy-provider, bot-detection, anti-scraping
 Slug: 7-different-ways-to-detect-proxies
@@ -269,3 +270,49 @@ And there are even more viable tests:
 
 1. IP Timezone vs Browser Timezone Test: You can compare the IP geolocation timezone with the browser timezone. If there is a mismatch, it might be because a proxy is used.
 2. Browser Based Port Scanning of the internal network: With [browser based port scanning techniques](https://incolumitas.com/2021/01/10/browser-based-port-scanning/), it is possible to find out if there is a proxy server listening for connections. TOR for example uses always the port 9050 or 9150, so browser based port scanning might detect TOR usage.
+
+
+#### Detect Running Server with ping
+
+`ping`
+
+Downsides: Network and Host must support ICMP, but ICMP is often filtered by firewalls. 
+
+
+#### IP Ban List
+
+http://iplists.firehol.org/
+
+https://raw.githubusercontent.com/ktsaou/blocklist-ipsets/master/firehol_level1.netset
+
+https://github.com/firehol/blocklist-ipsets
+
+https://github.com/firehol/blocklist-ipsets/wiki/Downloading-IP-Lists
+
+https://zeltser.com/malicious-ip-blocklists/
+
+
+## Existing Discussion in the Internet
+
+Discussion on stackoverflow [How do you detect a VPN or Proxy connection?](https://stackoverflow.com/questions/33300877/how-do-you-detect-a-vpn-or-proxy-connection)
+
+> Frankly, IP-based bans (or actually, any kind of limiting focusing on people who do not exclusively possess their public IP address: proxy servers, VPNs, NAT devices, etc) have been unrealistic for a long time, and as the IPv4 pools have been getting depleted in many parts of the world, ISPs are putting more and more clients behind large NAT pools
+
+Better discussion on stackoverflow [How can I detect a VPN connection (even just in some cases) to get the real location of the user](https://security.stackexchange.com/questions/71774/how-can-i-detect-a-vpn-connection-even-just-in-some-cases-to-get-the-real-loca)
+
+1. Finding out that a user is using a VPN service provider isn't that difficult. Most of them have static IP addresses for their exit gateways, so it could just be using a list of known IP addresses to identify VPNs. 
+
+2. And even when they don't have a list, a simple reverse DNS lookup might tell them that the IP has a hostname which is obviously a VPN provider and not one assigned by a normal internet service provider.
+
+
+#### Detect VPN Usage by decreased MTU/MSS
+
+A very interesting read: [Detecting VPN (and its configuration!) and proxy users on the server side](https://medium.com/@ValdikSS/detecting-vpn-and-its-configuration-and-proxy-users-on-the-server-side-1bcc59742413)
+
+Main points from the blog article:
+
++ As you try to open a web page with PPTP, L2TP(±IPsec) or IPsec IKE connected, your packet is encapsulated into another packet which introduces overhead. Large packets which could be sent without fragmentation without VPN connected now should be fragmented in order to be successfully delivered via your network, which lowers your speed and adds latency. In order to mitigate excessive fragmentation, OS sets lower MTU on the VPN interface then your real network interface MTU, preventing huge packets which would require fragmentation to be created.
+
++ To support old or just crappy software, OpenVPN doesn’t decrease interface MTU but decreases MSS inside encapsulated packet. That’s done with the mssfix setting which calculates OpenVPN overhead for the packet encapsulation and encryption and sets MSS accordingly for the packets to flow without any fragmentation. It is configured to work with any link with MTU 1450 or more by default.
+
++ Because of this unique MSS values, we can determine not only if the user is connected via OpenVPN , but also used connection protocol (IPv4, IPv6), transport protocol (UDP, TCP), cipher, MAC and compression as they affect MSS.
