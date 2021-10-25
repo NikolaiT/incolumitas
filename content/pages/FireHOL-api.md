@@ -104,12 +104,11 @@ fetch('https://api.incolumitas.com/firehol')
 The IP address ranges for the cloud providers are kept up to date and the IP ranges are pulled from the upstream sources every 4 hours.
 
 
-
 #### More Examples for the fireHOL API
 
 In the following section, I will show examples for looking up flagged IP addresses.
 
-Looking up TOR exit node addresses which [you can obtain from here](https://check.torproject.org/exit-addresses). Example TOR IP address: [https://api.incolumitas.com/firehol?ip=109.70.100.28](https://api.incolumitas.com/firehol?ip=109.70.100.28)
+Looking up **TOR exit node** addresses which [you can obtain from here](https://check.torproject.org/exit-addresses). Example TOR IP address: [https://api.incolumitas.com/firehol?ip=109.70.100.28](https://api.incolumitas.com/firehol?ip=109.70.100.28)
 
 ```json
 {
@@ -123,6 +122,23 @@ Looking up TOR exit node addresses which [you can obtain from here](https://chec
   "firehol_abusers_1d": "109.70.100.28 is in set firehol_abusers_1d.",
   "firehol_webserver": "109.70.100.28 is in set firehol_webserver.",
   "firehol_webclient": "109.70.100.28 is in set firehol_webclient."
+}
+```
+
+Another example for a malicious IP address comes from the [feodotracker abuse.ch tracker](https://feodotracker.abuse.ch/blocklist/), more specifically from the [feodotracker.rules](https://feodotracker.abuse.ch/downloads/feodotracker.rules). The API call is: [https://api.incolumitas.com/firehol?ip=52.73.70.149](https://api.incolumitas.com/firehol?ip=52.73.70.149)
+
+```json
+{
+  "firehol_webclient": "52.73.70.149 is NOT in set firehol_webclient.",
+  "firehol_proxies": "52.73.70.149 is NOT in set firehol_proxies.",
+  "firehol_level4": "52.73.70.149 is NOT in set firehol_level4.",
+  "firehol_level3": "52.73.70.149 is NOT in set firehol_level3.",
+  "firehol_level2": "52.73.70.149 is NOT in set firehol_level2.",
+  "firehol_level1": "52.73.70.149 is NOT in set firehol_level1.",
+  "firehol_anonymous": "52.73.70.149 is NOT in set firehol_anonymous.",
+  "firehol_abusers_30d": "52.73.70.149 is NOT in set firehol_abusers_30d.",
+  "firehol_abusers_1d": "52.73.70.149 is NOT in set firehol_abusers_1d.",
+  "firehol_webserver": "52.73.70.149 is in set firehol_webserver."
 }
 ```
 
