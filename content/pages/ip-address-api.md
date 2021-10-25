@@ -3,6 +3,7 @@ Date: 2021-09-29 00:13
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
+Sortorder: 5
 
 I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 

@@ -4,6 +4,7 @@ Modified: 2015-10-2 14:33
 Author: Nikolai Tschacher
 Slug: lichess-bot
 Status: published
+Sortorder: 100
 
 ### Video of Bot in action
 

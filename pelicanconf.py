@@ -102,6 +102,9 @@ MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
              ('Tags', '/tags.html'),)
 
+
+PAGES_SORT_ATTRIBUTE = 'sortorder'
+
 COPYRIGHT_NAME = 'Nikolai Tschacher - incolumitas.com'
 COPYRIGHT_YEAR = 2021
 MAIN_MENU = True

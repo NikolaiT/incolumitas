@@ -4,6 +4,7 @@ Modified: 2019-08-17 12:28
 Author: Nikolai Tschacher
 Slug: impressum
 Status: published
+Sortorder: 3
 
 All content on incolumitas.com is carefully reviewed and published with
 best intentions of the creator. If you nevertheless find a mistake, please contact me. Go to the [contact

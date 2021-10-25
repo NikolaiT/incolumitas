@@ -4,6 +4,7 @@ Modified: 2019-07-12 13:33
 Author: Nikolai Tschacher
 Slug: contact
 Status: published
+Sortorder: 2
 
 Please do not ask me questions about old projects where I explicitly 
 declared my end of support.

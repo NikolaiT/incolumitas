@@ -4,6 +4,7 @@ Modified: 2021-01-24 16:39
 Author: Nikolai Tschacher
 Slug: BotOrNot
 Status: published
+Sortorder: 4
 
 <a class="btn" href="https://bot.incolumitas.com" style="padding: 10px; font-weight: 600; font-size: 15px">Visit the BotOrNot detection page!</a>
 

@@ -3,6 +3,7 @@ Date: 2013-11-27 20:45
 Author: Nikolai Tschacher
 Slug: svgcaptcha
 Status: published
+Sortorder: 100
 
 #### What is SVGCaptcha?
 

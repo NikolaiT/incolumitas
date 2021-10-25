@@ -4,6 +4,7 @@ Modified: 2019-07-21 20:09
 Author: Nikolai Tschacher
 Slug: scrapeulous
 Status: published
+Sortorder: 100
 
 ### A scraping service for scientists, marketing professionals, analysts or SEO professionals
 

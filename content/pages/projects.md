@@ -4,6 +4,7 @@ Modified: 2021-01-02 18:28
 Author: Nikolai Tschacher
 Slug: projects
 Status: published
+Sortorder: 100
 
 My main development is done in Nodejs, Typescript and Python (using Django for web development and Celery/Redis for asynchronous tasks). Recently, I have picked up quite a bit of modern JavaScript, because it is the most used language when developing data extraction / crawling tools.
 
