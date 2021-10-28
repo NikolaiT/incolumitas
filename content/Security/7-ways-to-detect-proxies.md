@@ -8,6 +8,12 @@ Summary: In this blog post, I demonstrate 7 different efficient ways how to dete
 Author: Nikolai Tschacher
 Status: Published
 
+<a 
+  class="orange_button" 
+  href="https://bot.incolumitas.com/proxy_detect.html">
+Visit the Proxy/VPN Detection Page
+</a>
+
 ## Introduction
 
 In the past couple of months, I have been writing a lot about bot detection and proxy detection.
@@ -54,7 +60,7 @@ All proxy detection tests can be found on the following dedicated web site:
 <a 
   class="orange_button" 
   href="https://bot.incolumitas.com/proxy_detect.html">
-Visit the proxy detection page
+Visit the Proxy/VPN Detection Page
 </a>
 
 You can look at the source code of the client side proxy detection test when inspecting the page source code. 
