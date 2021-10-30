@@ -111,6 +111,9 @@ MAIN_MENU = True
 USE_FOLDER_AS_CATEGORY = True
 LOAD_CONTENT_CACHE = False
 
+# whether particles should be enabled
+ENABLE_PARTICLES = False
+
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 

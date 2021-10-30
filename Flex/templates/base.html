@@ -18,7 +18,7 @@
   {% endif %}
 
   {% if USE_GOOGLE_FONTS != False %}
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   {% endif %}
 
   {% if USE_LESS %}
@@ -315,15 +315,17 @@
     </script>
   {% endif %}
 
-  <!-- particles.js -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  {% if ENABLE_PARTICLES %}
+    <!-- particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
-  <script type="text/javascript">
-    var allowed = ["/pages/about/", "/", "/pages/projects/"];
-    if (allowed.indexOf(location.pathname) !== -1) {
-      particlesJS.load('particles-js', '/theme/particlesjs-config.json');
-    }
-  </script>
+    <script type="text/javascript">
+      var allowed = ["/pages/about/", "/", "/pages/projects/"];
+      if (allowed.indexOf(location.pathname) !== -1) {
+        particlesJS.load('particles-js', '/theme/particlesjs-config.json');
+      }
+    </script>
+  {% endif %}
 
   {% block additional_js %}{% endblock %}
 </body>
