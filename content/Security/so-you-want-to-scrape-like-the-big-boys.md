@@ -102,7 +102,11 @@ So that would be a larger project, probably costing thousands of dollars in main
 
 ### Improvement: Emulate Android
 
-Instead of buying real Android devices, it would be better to emulate Android devices with Android emulators such as [Android x86 with VirtualBox](https://www.android-x86.org/documentation/virtualbox.html), [bluestacks](https://www.bluestacks.com/de/index.html) or the [Android Studio Emulator](https://developer.android.com/studio/run/emulator).
+Instead of buying real Android devices, it would be better to emulate Android devices with Android emulators such as 
+
++ [Android x86 with VirtualBox](https://www.android-x86.org/documentation/virtualbox.html)
++ [bluestacks](https://www.bluestacks.com/de/index.html)
++ Or the [Android Studio Emulator](https://developer.android.com/studio/run/emulator)
 
 Obviously, here we play with the devil again because we want to cut costs!
 
