@@ -123,13 +123,13 @@ Instead of buying real Android devices, it would be better to emulate Android de
 
 Obviously, here we play with the devil again because we want to cut costs!
 
-Ho are those pesky anti bot companies going to find out that we are emulating Android devices?
+How are those pesky anti bot companies going to find out that we are emulating Android devices?
 
-1. Maybe with browser based red pills that reveals emulation?
-2. Maybe they will launch [browser based port scans](https://incolumitas.com/2021/01/10/browser-based-port-scanning/) against well known `adb` ports?
-3. Maybe Google sets some device wide [advertisement ID's](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) on each mobile device? 
-4. Every little website can find out whether you are logged into a Gmail or YouTube account with [Social Media Login Detection](https://browserleaks.com/social). No logged in Google account on Android = suspicious!
-5. There are probably 1000s more techniques
+1. An idea is to use browser based red pills that reveal that the browser is running in an emulated environment
+2. Maybe they will launch [browser based port scans](https://incolumitas.com/2021/01/10/browser-based-port-scanning/) against well known ports that are only running on emulated Android devices (such as `adb` service)?
+3. Maybe Google sets some device wide [advertisement ID's](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) on each mobile device? If this ID is missing or always stays the same, it could be a sign of suspicion.
+4. Every website can find out whether you are logged into a Gmail or YouTube account with [Social Media Login Detection](https://browserleaks.com/social). No logged in Google account on Android equals suspicion!
+5. There are probably 1000 more techniques that can be used to detect emulated Android devices
 
 Most likely, the Android emulators are imperfect and this imperfection is exhibited over the massive JavaScript API that each mobile browser offers to every website.
 
@@ -140,7 +140,7 @@ I am absolutely in favour of the emulation approach. This would mean that we onl
   <figcaption>A couple of 4G dongles that I use for my personal E-Mail checking and writing Whatsapp messages (Source: https://proxidize.com/gallery/)</figcaption>
 </figure>
 
-What [proxidize.com](https://proxidize.com/) is doing is offering 4G mobile proxies. I don't want proxies, because [proxies are detectable by itself](https://bot.incolumitas.com/proxy_detect.html). I want to directly use the 4G dongle from within the Android Emulator! No Latency due to geographical discrepancy between Android emulator and proxy!
+What [proxidize.com](https://proxidize.com/) is doing is offering 4G mobile proxies. I don't want proxies, because [proxies are detectable by itself](https://bot.incolumitas.com/proxy_detect.html). I want to directly use the 4G dongle from the Android emulator! No latency due to geographical discrepancy between Android emulator and proxy.
 
 So in the end, the scraping infrastructure could look like this:
 
