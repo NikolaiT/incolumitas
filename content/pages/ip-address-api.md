@@ -7,9 +7,9 @@ Sortorder: 5
 
 I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 
-+ API Version: v0.2 (29th September 2021)
++ API Version: v0.3 (6th November 2021)
 + API Endpoint: **https://api.incolumitas.com/datacenter?ip=3.5.140.2**
-+ Supported Datacenters: Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network
++ Supported Datacenters: Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more
 + IPv6 Support: Yes
 
 
@@ -37,7 +37,11 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## ChangeLog
 
+#### 6th November 2021
+
++ Updated all IP address ranges
 + Add cloud provider `m247 Ltd`, `servers.com Inc.`, `Leaseweb Usa Inc.`, often used for proxies/fraud
++ Checking for common datacenter in `whois` lookup
 
 #### 29th September 2021
 
