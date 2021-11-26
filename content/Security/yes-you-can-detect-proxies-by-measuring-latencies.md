@@ -217,6 +217,8 @@ https://0.0.0.0: [18, 18, 24, 24]
 https://167.99.241.135: [81, 85, 86, 87]
 ```
 
+**Observation:** No discrepancy when using VPN.
+
 ### More Data from the real World
 
 Because I record some data on my 
