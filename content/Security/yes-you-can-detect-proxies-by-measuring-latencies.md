@@ -1,9 +1,9 @@
-Title: Yes, you can detect Proxies by measuring Latencies
+Title: Is this a valid method to detect Proxies/VPN?
 Date: 2021-11-26 18:46
 Category: Security
 Tags: proxy, proxy-detection, bot-detection, proxy-provider, bot-detection, anti-scraping
-Slug: yes-you-can-detect-proxies-by-measuring-latencies
-Summary: Yes it's possible boys.
+Slug: is-this-a-valid-method-to-detect-proxies-or-vpn
+Summary: Is this a valid method to detect Proxies/VPN? I need your help!
 Author: Nikolai Tschacher
 Status: Published
 
