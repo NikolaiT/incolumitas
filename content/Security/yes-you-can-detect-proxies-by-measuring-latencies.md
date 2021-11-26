@@ -143,8 +143,6 @@ Maybe when Chrome uses a proxy server, it will route requests going to `0.0.0.0`
 
 ## Experimental Setup
 
-### JavaScript Latency Measurements
-
 In order to take latency measurements, I used the following JavaScript code:
 
 ```JavaScript
@@ -189,7 +187,7 @@ https://127.0.0.1: [23.4, 22.9, 22.4, 22, 26.3]
 https://167.99.241.135: [65.6, 64.3, 75.5, 77.3, 79.8]
 ```
 
-**Note: The `0.0.0.0` latencies are in the same range than the `127.0.0.1` latencies.**
+**Observation:** The `0.0.0.0` latencies are in the same range than the `127.0.0.1` latencies.
 
 However, when I start my chrome browser with a local forwarding proxy server (which in turn uses a SOCKS5 upstream proxy) with the command
 
@@ -207,7 +205,7 @@ https://0.0.0.0: [262.6, 264.8, 325.1, 327.2, 330.4]
 https://167.99.241.135: [379.2, 407.9, 410.3, 424, 428.8]
 ```
 
-**Note: It can be seen that the `0.0.0.0` latencies are significantly higher than the `127.0.0.1` latencies.**
+**Observation:** It can be seen that the `0.0.0.0` latencies are significantly higher than the `127.0.0.1` latencies.
 
 And when I use a VPN server, this is what I obtain:
 
