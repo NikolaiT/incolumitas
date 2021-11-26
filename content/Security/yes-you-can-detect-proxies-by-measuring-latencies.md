@@ -207,10 +207,14 @@ https://167.99.241.135: [379.2, 407.9, 410.3, 424, 428.8]
 
 **Observation:** It can be seen that the `0.0.0.0` latencies are significantly higher than the `127.0.0.1` latencies.
 
-And when I use a VPN server, this is what I obtain:
+And when I use a VPN server (with my Android Smartphone and OpenVPN Connect), this is what I obtain:
 
 ```
+https://127.0.0.1: [15, 21, 24, 24]
 
+https://0.0.0.0: [18, 18, 24, 24]
+
+https://167.99.241.135: [81, 85, 86, 87]
 ```
 
 ### More Data from the real World
