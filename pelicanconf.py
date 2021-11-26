@@ -94,9 +94,14 @@ THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
 CUSTOM_CSS = 'stylesheet/custom.css'
 CUSTOM_JS = 'javascript/custom.js'
 
+# Security & Tracking
+# Only using when recording data for scientif purposes
+
 BODY_JS = (
   'https://abs.incolumitas.com/lib.js',
 )
+
+PROXY_IFRAME = False
 
 MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
