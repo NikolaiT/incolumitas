@@ -7,6 +7,8 @@ Summary: Yes it's possible boys.
 Author: Nikolai Tschacher
 Status: Published
 
+**Full Disclosure:** I was quite hesitant to publish this article, because I don't know exactly how this proxy detection method works (if it works). I need your help to review this: Please leave a comment!
+
 ## Introduction
 
 The goal of this article is to reliably detect proxies and VPN's using JavaScript (more accurate: By measuring latencies with JavaScript). There are many legitimate reasons for proxy/VPN usage, but unfortunately, criminals tend to also camouflage their internet identity (IP address) by abusing proxies and VPN's.
@@ -225,6 +227,8 @@ Proxy/VPN Detection Page
 
 I managed to collect some real world data to confirm whether this method works. Some real world data:
 
+#### Data that confirms my Thesis
+
 ```
 https://abs.incolumitas.com/showFile?fileName=proxy_test_3-9_207.170.172.47_2021-11-24T20:34:08.989Z.json
 
@@ -244,3 +248,8 @@ https://abs.incolumitas.com/showFile?fileName=proxy_test_3-10_193.58.109.139_202
 
 https://abs.incolumitas.com/showFile?fileName=proxy_test_2-10_77.119.195.26_2021-11-22T15:17:40.318Z.json
 ```
+
+#### Bad Data
+
+
+## I need your Help
