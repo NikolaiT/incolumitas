@@ -14,3 +14,7 @@ If you find some of my work valuable, you have the ability to donate to me via P
 </form>
 
 
+<figure>
+    <img src="/theme/img/me-on-chasseral.webp" alt="me happy" style="width:600px" />
+    <figcaption>Me being happy :)</figcaption>
+</figure>
