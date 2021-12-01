@@ -11,6 +11,14 @@ Summary: The current state of high precision JavaScript timers.
 
 In this blog article I am investigating high-precision JavaScript timers.
 
+My setup:
+
+```Bash
+$ chromium-browser --version
+
+Chromium 91.0.4472.77 Built on Ubuntu , running on Ubuntu 18.04
+```
+
 Firefox and Google Chrome reduced the precision of `performance.now()` significantly:
 
 1. [Google Chrome reduced](https://developer.chrome.com/blog/cross-origin-isolated-hr-timers/) the `performance.now()` precision to 100 microseconds (`100µs` or `0.1ms`)
