@@ -7,8 +7,6 @@ Slug: on-high-precision-javascript-timers
 Author: Nikolai Tschacher
 Summary: The current state of high precision JavaScript timers.
 
-Well I am doing it again. Trying to understand something that is absolutely above my intellectual capacity. If I had to name one character trait in me I am particularly proud of: I am never humble enough to just say: "Fuck it man, that's way above your league, leave it be". So here we go.
-
 In this blog article I am investigating high-precision JavaScript timers.
 
 Firefox and Google Chrome reduced the precision of `performance.now()` significantly:
