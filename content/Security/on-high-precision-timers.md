@@ -7,6 +7,8 @@ Slug: on-high-precision-javascript-timers
 Author: Nikolai Tschacher
 Summary: The current state of high precision JavaScript timers.
 
+## Introduction
+
 In this blog article I am investigating high-precision JavaScript timers.
 
 Firefox and Google Chrome reduced the precision of `performance.now()` significantly:
@@ -28,3 +30,46 @@ The awesome [Spectre-Proof-of-Concept web page](https://security.googleblog.com/
 So my first idea is to try to make use of the high precision timers presented in the above cited paper from early 2017: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
 Do they still work?
+
+## Base precision/resolution of performance.now()
+
+First of all, I want to confirm that the precision/resolution of `performance.now()` is really `100µs` or `0.1ms`.
+
+This is accomplished by the below JavaScript snippet. I am collecting 10.000 `performance.now()` samples in a for-loop and I look how many unique samples are among those 10.000 collected samples, which gives me the precision.
+
+```JavaScript
+'use strict';
+// The performance.now() method returns a DOMHighResTimeStamp, measured in milliseconds.
+var samples = [];
+var t0 = performance.now();
+
+for (var i = 0; i < 10000; i++) {
+  samples.push(performance.now());
+}
+
+var t1 = performance.now();
+
+let diff1 = t1 - t0;
+let diff2 = samples[samples.length - 1] - samples[0];
+
+console.log('#1 Elapsed measured by performance.now(): ' + diff1 + 'ms');
+console.log('#2 Elapsed measured by collected samples: ' + diff2 + 'ms');
+
+console.log('Number of samples: ' + samples.length);
+let s = new Set(samples);
+console.log('Number of unique samples / measuring steps: ' + s.size);
+
+console.log('Granularity/Precision #1 of performance.now(): ' + diff1 / s.size + 'ms');
+console.log('Granularity/Precision #2 of performance.now(): ' + diff2 / s.size + 'ms');
+```
+
+As expected, the precision is almost exactly `100µs`.
+
+```
+#1 Elapsed measured by performance.now(): 18.199999999254942ms
+#2 Elapsed measured by collected samples: 18.199999999254942ms
+Number of samples: 10000
+Number of unique samples / measuring steps: 183
+Granularity/Precision #1 of performance.now(): 0.09945355190849695ms
+Granularity/Precision #2 of performance.now(): 0.09945355190849695ms
+```
