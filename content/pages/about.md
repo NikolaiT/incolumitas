@@ -67,4 +67,4 @@ only a fraction that I really realize.
 
 --- 
 
-*Nothing in life is as powerful as the beautiful first hour in the morning, after a well rested night, where the strong coffee your are sipping is starting to kick in and you just found the correct house/techno set and your hands start to hammer down letters appearing on a screen.*
+*Nothing in life is as powerful as the beautiful first hour in the morning, after a well rested night, where the strong coffee you are sipping is starting to kick in and you just found the correct house/techno set and your hands start to hammer down letters appearing on a screen.*
