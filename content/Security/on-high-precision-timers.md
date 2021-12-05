@@ -15,14 +15,6 @@ However, those papers are deeply amazing. I do not think that it get's much more
 
 ---
 
-My setup:
-
-```Bash
-$ chromium-browser --version
-
-Chromium 95.0.4638.69 Built on Ubuntu , running on Ubuntu 18.04
-```
-
 Firefox and Google Chrome reduced the precision of `performance.now()` significantly:
 
 1. [Google Chrome reduced](https://developer.chrome.com/blog/cross-origin-isolated-hr-timers/) the `performance.now()` precision to 100 microseconds (`100µs` or `0.1ms`)
@@ -38,8 +30,8 @@ The awesome [Google Security Blog](https://security.googleblog.com/2021/03/a-spe
 So I learned that:
 
 + Timing memory accesses reveals if a chosen address is in the cache or not
-+ Fast memory accesses means that the accessed address is cached
-+ Slow memory accesses means that the accessed address needs to be loaded from the memory
++ A fast memory access means that the accessed address is cached
++ A slow memory access means that the accessed address needs to be loaded from the memory
 + In order to measure the tiny difference in access times, we need High-Precision JavaScript Timers
 
 And then they go on...
@@ -54,14 +46,21 @@ and if you still want to use `SharedArrayBuffer`, you will need to do the follow
 
 > As a baseline requirement, your document needs to be in a secure context. For top-level documents, two headers will need to be set to cross-origin isolate your site: `Cross-Origin-Opener-Policy` with `same-origin` as value (protects your origin from attackers) and `Cross-Origin-Embedder-Policy` with `require-corp` as value (protects victims from your origin)
 
+So my first idea is to try to make use of the high precision timers presented in the paper cited above: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
-So my first idea is to try to make use of the high precision timers presented in the above cited paper from early 2017: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
-
-Do they still work? In the next sections I am going to test some of the techniques presented by this paper.
+Do the proposed techniques from early 2017 still work? In the next sections I am going to test some of the techniques presented by the authors (On Ubuntu 18.04, `Chromium 95.0.4638.69`).
 
 ## Base precision/resolution of performance.now()
 
-First of all, I want to confirm that the precision/resolution of `performance.now()` is really `100µs` or `0.1ms`.
+My setup:
+
+```Bash
+$ chromium-browser --version
+
+Chromium 95.0.4638.69 Built on Ubuntu , running on Ubuntu 18.04
+```
+
+First of all, I want to confirm that the precision/resolution of `performance.now()` is really `100µs` or `0.1ms` on `Chromium 95.0.4638.69`.
 
 This is accomplished by the below JavaScript snippet. I am collecting 10.000 `performance.now()` samples in a for-loop and I look how many unique samples are among those 10.000 collected samples, which gives me the precision.
 
@@ -91,13 +90,15 @@ console.log('Granularity/Precision #1 of performance.now(): ' + diff1 / s.size +
 console.log('Granularity/Precision #2 of performance.now(): ' + diff2 / s.size + 'ms');
 ```
 
-As expected, the precision is almost exactly `100µs`.
+As expected, the precision is almost exactly `100µs` or `0.1ms`.
 
 ```
-#1 Elapsed measured by performance.now(): 18.199999999254942ms
-#2 Elapsed measured by collected samples: 18.199999999254942ms
+#1 Elapsed measured by performance.now(): 15.20000000006985ms
+#2 Elapsed measured by collected samples: 15.20000000006985ms
 Number of samples: 10000
-Number of unique samples / measuring steps: 183
-Granularity/Precision #1 of performance.now(): 0.09945355190849695ms
-Granularity/Precision #2 of performance.now(): 0.09945355190849695ms
+Number of unique samples / measuring steps: 146
+Granularity/Precision #1 of performance.now(): 0.10410958904157432ms
+Granularity/Precision #2 of performance.now(): 0.10410958904157432ms
 ```
+
+## Base precision/resolution of performance.now()
