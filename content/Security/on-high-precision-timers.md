@@ -222,3 +222,12 @@ Precision: 0.0545 ms
 ```
 
 Therefore, with fast devices, the claimed `15 μs` are probably realistic!
+
+## Recovering the high resolution of `performance.now()`
+
+[Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claims:
+
+> As the underlying clock source has a high resolution, the
+difference between two clock edges varies only as much as the underlying clock.
+This property gives us a very accurate time base to build upon. As the time
+between two edges is always constant, we interpolate the time between them.
