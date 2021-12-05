@@ -20,6 +20,8 @@ Whenever I have difficulties solving a particular problem, I try to put it into 
 
 For that reason, I am writing this blog.
 
+If you want to know how I think and with what mindset I am navigating this world, read the article [Where is the World headed to?]({filename}/Society/where-is-the-world-headed-to.md)
+
 ## Education
 
 I am a computer science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) in 2019.

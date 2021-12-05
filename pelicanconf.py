@@ -105,7 +105,8 @@ PROXY_IFRAME = False
 
 MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
-             ('Tags', '/tags.html'),)
+             ('Tags', '/tags.html'),
+             ('Impressum', '/pages/impressum/'),)
 
 
 PAGES_SORT_ATTRIBUTE = 'sortorder'
@@ -122,7 +123,7 @@ ENABLE_PARTICLES = False
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 
-EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous')
+EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum')
 COMMENTS_PAGES = ('about', 'contact')
 COMMENTS_IN_PAGES = True
 
