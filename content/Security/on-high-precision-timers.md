@@ -231,3 +231,72 @@ Therefore, with fast devices, the claimed `15 μs` are probably realistic!
 difference between two clock edges varies only as much as the underlying clock.
 This property gives us a very accurate time base to build upon. As the time
 between two edges is always constant, we interpolate the time between them.
+
+The idea is as follows:
+
+1. Clock interpolation requires calibration before being able to return accurate
+timestamps.
+
+2. For this purpose, a busy-wait loop to increment a
+counter between two clock edges is used.
+
+3. The time it takes to increment the counter once equals the resolution
+that is recoverable. It can be approximated by dividing the interval
+of two clock edges by the number of interpolation steps.
+
+
+```html
+<html>
+  <head></head>
+  <body>
+    <script>
+      function calibrate() {
+        var counter = 0, next;
+
+        for (var i = 0; i < 10; i++) {
+          next = wait_edge();
+          counter += count_edge();
+        }
+
+        next = wait_edge();
+
+        return (wait_edge() - next) / (counter / 10.0);
+      }
+
+      function wait_edge() {
+        var next, last = performance.now();
+
+        while((next = performance.now()) == last) {
+
+        }
+
+        return next;
+      }
+
+      function count_edge() {
+        var last = performance.now(), count = 0;
+
+        while (performance.now() == last) {
+          count++;
+        }
+
+        return count;
+      }
+
+      var sleep = function(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function measure() {
+        var start = wait_edge();
+        await sleep(1000);
+        var count = count_edge();
+        document.write(count + '<br>');
+        return (performance.now() - start) - count * calibrate();
+      }
+
+      measure().then((res) => document.write(res));
+    </script>
+  </body>
+</html>
+```
