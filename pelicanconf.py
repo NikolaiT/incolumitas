@@ -126,10 +126,8 @@ EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous')
 COMMENTS_PAGES = ('about', 'contact')
 COMMENTS_IN_PAGES = True
 
-
 PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = ['assets', 'sitemap', 'gravatar', 'render_math', 'post_stats', 'neighbors']
-
 
 MATH_JAX = {'color': 'black', 'align': 'left'}
 

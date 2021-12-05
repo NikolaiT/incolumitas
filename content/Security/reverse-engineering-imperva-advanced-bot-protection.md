@@ -9,7 +9,7 @@ Summary: Imperva's advanced bot protection JavaScript is a hard nut to crack. Lu
 
 For example, when I look for apartments on the German real estate search engine [immobilienscout24.de](https://www.immobilienscout24.de/), I am sometimes presented a bot detection challenge that performs a check passively in the background.
 
-This is the [heavily obfuscated JavaScript file]({filename}/data/imperva.js) that does the bot detection work in the background. I am heavily assuming that the [above JavaScript]({filename}/data/imperva.js) is [Imperva's](https://www.imperva.com/products/advanced-bot-protection-management/) bot detection client side solution.
+This is the [heavily obfuscated JavaScript file]({static}/data/imperva.js) that does the bot detection work in the background. I am heavily assuming that the [above JavaScript]({static}/data/imperva.js) is [Imperva's](https://www.imperva.com/products/advanced-bot-protection-management/) bot detection client side solution.
 
 Why do I think that?
 
@@ -213,14 +213,14 @@ console.log(num);
 fs.writeFileSync('imperva-obfuscated-better-1.js', newbotCode);
 ```
 
-This is the [slightly more readable file]({filename}/data/imperva-obfuscated-better-1.js) that has all calls to `a0_0x1f86()` replaced with string literals.
+This is the [slightly more readable file]({static}/data/imperva-obfuscated-better-1.js) that has all calls to `a0_0x1f86()` replaced with string literals.
 
 Now I understand the structure of the obfuscated script a bit better.
 
 It consists of two parts
 
-1. [A challenge script]({filename}/data/imperva-challenge-script.js) which probably does some cryptographic proof of work operations 
-2. [And the second part]({filename}/data/imperva-second-part.js) that submits the challenge solution to the server and performs some browser checks (with already improved readability having replaced `a0_0x1f86()` with strings)
+1. [A challenge script]({static}/data/imperva-challenge-script.js) which probably does some cryptographic proof of work operations 
+2. [And the second part]({static}/data/imperva-second-part.js) that submits the challenge solution to the server and performs some browser checks (with already improved readability having replaced `a0_0x1f86()` with strings)
 
 The challenge script looks quite weird and does a lot of strange operations. An excerpt:
 
@@ -252,7 +252,7 @@ DP[AR.substr(865, 7)] = q_[AR.substr(1209, 12)](q_[nA.substr(79, 7)]);
 
 But having replaced the `a0_0x1f86('0xd6')` like calls with string literals helps already tremendously.
 
-When I open a blank page and execute the [challenge script]({filename}/data/imperva-challenge-script.js) only, I see that the window object has a `window.reese84interrogator` function emerging.
+When I open a blank page and execute the [challenge script]({static}/data/imperva-challenge-script.js) only, I see that the window object has a `window.reese84interrogator` function emerging.
 
 <figure>
   <img src="{static}/images/reese84interrogator.png" alt="reese84interrogator" />
@@ -341,7 +341,7 @@ But this all is not so interesting. What I know as of now:
 
 The obfuscated code consists of two parts:
 
-1. A challenge part that adds the `reese84interrogator` function to the `window` object. `reese84interrogator` points to the function `function M9(lr, on) {` which again starts all the [challenge madness]({filename}/data/imperva-challenge-script.js).
+1. A challenge part that adds the `reese84interrogator` function to the `window` object. `reese84interrogator` points to the function `function M9(lr, on) {` which again starts all the [challenge madness]({static}/data/imperva-challenge-script.js).
 
 2. I know that the second part of the obfuscated code makes use of this `reese84interrogator` object and sends the challenge result to the server.
 

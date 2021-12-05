@@ -15,6 +15,6 @@ If you find some of my work valuable, you have the ability to donate to me via P
 
 
 <figure>
-    <img src="/theme/img/me-on-chasseral.webp" alt="me happy" style="width:600px" />
-    <figcaption>Me being happy :)</figcaption>
+    <img src="/theme/img/me-on-chasseral.webp" alt="me being happy" style="width:600px" />
+    <figcaption>Me being happy in the snow :)</figcaption>
 </figure>

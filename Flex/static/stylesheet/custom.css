@@ -71,8 +71,13 @@ figure {
     margin-bottom: 36px;
 }
 
-header h2 {
-    font-size: 1.6em;
+header h2.articles-header {
+  font-size: 1.7em;
+}
+
+header h2.articles-header a {
+  font-weight: 550;
+  color: #464646;
 }
 
 .post-header .fa {

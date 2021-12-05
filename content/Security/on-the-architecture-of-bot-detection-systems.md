@@ -153,7 +153,7 @@ A well known JavaScript obfuscation tool is [javascript-obfuscator](https://gith
 
 For example, when I look for apartments on the German real estate search engine [immobilienscout24.de](https://www.immobilienscout24.de/), I am sometimes presented a bot detection challenge that performs a check passively in the background.
 
-This is the [heavily obfuscated JavaScript file]({filename}/data/imperva.js) that does the bot detection work in the background. I spent around 30 minutes trying to understand what it does, but honestly I could not figure out much without spending more time. I only know that the script performs some checks and sends the following payload back to the server, where `p` is a 30KB long base64 encoded binary blob:
+This is the [heavily obfuscated JavaScript file]({static}/data/imperva.js) that does the bot detection work in the background. I spent around 30 minutes trying to understand what it does, but honestly I could not figure out much without spending more time. I only know that the script performs some checks and sends the following payload back to the server, where `p` is a 30KB long base64 encoded binary blob:
 
 ```json
 {
@@ -176,7 +176,7 @@ This is the [heavily obfuscated JavaScript file]({filename}/data/imperva.js) tha
 
 The next steps in reverse engineering would be to find out what exactly `p` contains. Look at the place in the obfuscated JavaScript where `p` becomes encrypted/encoded and dump the clear text contents. Then I know what data is sent and I can therefore spoof it.
 
-I am heavily assuming that the [above JavaScript]({filename}/data/imperva.js) is [Imperva's](https://www.imperva.com/products/advanced-bot-protection-management/) bot detection client side solution.
+I am heavily assuming that the [above JavaScript]({static}/data/imperva.js) is [Imperva's](https://www.imperva.com/products/advanced-bot-protection-management/) bot detection client side solution.
 
 ---
 
@@ -232,7 +232,7 @@ Even solving more complex challenges such as [Google Picasso](https://static.goo
 
 Bot detection systems consists of IP reputation techniques and client side data gathering scripts. They need to reliably work even if their client side JavaScript libraries send spoofed data.
 
-Because of that potential spoofing, bot detection [JavaScript libraries]({filename}/data/imperva.js) are heavily obfuscated to make it harder for attackers to understand how they work. Proof of work challenges do not have to be solved by the client that received the challenge - they can be outsourced.
+Because of that potential spoofing, bot detection [JavaScript libraries]({static}/data/imperva.js) are heavily obfuscated to make it harder for attackers to understand how they work. Proof of work challenges do not have to be solved by the client that received the challenge - they can be outsourced.
 
 There are two fundamental approaches how to defeat bot detection:
 
