@@ -9,9 +9,9 @@ Summary: I in this blog post, I am investigating the current state of high preci
 
 ## Introduction
 
-I in this blog post, I am investigating the current state of high precision JavaScript timers. High precision timing techniques were mostly used to launch CPU-level cache attacks such as [Spectre](https://spectreattack.com/spectre.pdf) and [Meltdown](https://meltdownattack.com/meltdown.pdf) from the browser. However, I am not (that) interested in cache attacks, I need high precision JavaScript timing techniques (amongst other endeavours) mostly  to detect proxies and VPN usage.
+I in this blog post, I am investigating the current state of high precision JavaScript timers. High precision timing techniques were mostly used to launch CPU-level cache attacks such as [Spectre](https://spectreattack.com/spectre.pdf) and [Meltdown](https://meltdownattack.com/meltdown.pdf) from the browser. However, I am not (that) interested in cache attacks, I need high precision JavaScript timing techniques (amongst other endeavours) mostly to detect proxies and VPN usage.
 
-However, those papers are deeply amazing. I do not think that it get's much more better in IT Security. The sheer human creativity demonstrated by finding those attack paths is outstanding.
+However, those papers are deeply amazing. I do not think that it get's much better in the field of IT Security. The sheer human creativity demonstrated by finding those attack vectors is simply outstanding.
 
 ---
 
@@ -20,6 +20,7 @@ Firefox and Google Chrome reduced the precision of `performance.now()` significa
 1. [Google Chrome reduced](https://developer.chrome.com/blog/cross-origin-isolated-hr-timers/) the `performance.now()` precision to 100 microseconds (`100µs` or `0.1ms`)
 1. [Firefox reduced](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now#reduced_time_precision) the `performance.now()` precision even more to 1000 microseconds (`1000µs` or `1ms`)
 
+*Those bastards!*
 
 High precision timers are used to launch side-channel and timing attacks. In recent years, low level vulnerabilities such as Spectre, Meltdown, Rowhammer emerged. They all have in common that the attacker needs the ability to have a high resolution timers. 
 
@@ -46,11 +47,11 @@ and if you still want to use `SharedArrayBuffer`, you will need to do the follow
 
 > As a baseline requirement, your document needs to be in a secure context. For top-level documents, two headers will need to be set to cross-origin isolate your site: `Cross-Origin-Opener-Policy` with `same-origin` as value (protects your origin from attackers) and `Cross-Origin-Embedder-Policy` with `require-corp` as value (protects victims from your origin)
 
-So my first idea is to try to make use of the high precision timers presented in the paper cited above: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
+So my next idea is to try to make use of the other high precision timers presented in the paper cited above: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
-Do the proposed techniques from early 2017 still work? In the next sections I am going to test some of the techniques presented by the authors (On Ubuntu 18.04, `Chromium 95.0.4638.69`).
+Do the proposed techniques from early 2017 still work? In the next sections, I am going to test some of the techniques presented by the authors (On Ubuntu 18.04, `Chromium 95.0.4638.69`).
 
-## Base precision/resolution of performance.now()
+## Base precision of `performance.now()`
 
 My setup:
 
@@ -101,4 +102,123 @@ Granularity/Precision #1 of performance.now(): 0.10410958904157432ms
 Granularity/Precision #2 of performance.now(): 0.10410958904157432ms
 ```
 
-## Base precision/resolution of performance.now()
+## Building a Timer by (ab)using Web Workers
+
+JavaScript's concurrency model is based on a single-threaded event loop. Multithreading was introduced into JavaScript with *web workers*, which run in parallel and have their own event loop.
+
+Here, I am creating an **implicit timer** by attempting to abuse web workers to derive highly accurate timestamps. Put differently, we throw `performance.now()` into the trash and create our own timer!
+
+Or more nuanced: We create a web worker thread and let it stupidly increase a counter and consider it an approximation of a monotomic timer.
+
+But the [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) lists some caveats:
+
+> Web workers cannot post messages to other web workers (including themselves). They can only post messages to the main thread and web workers they spawn, so called sub workers.
+Posting messages to the main thread again blocks the main thread’s event loop,
+leaving sub web workers as the only viable option.
+
+<a 
+  class="btn"
+  href="https://bot.incolumitas.com/timers/web_worker_timer.html">
+Live Example of High-Precision Web Worker Timer
+</a>
+
+And this is how our implicit timer works:
+
+1. If the worker receives a message from the main thread, it sends back its current counter value. 
+
+2. Otherwise, the worker continuously *requests* the current counter value from the sub worker.
+
+3. The sub worker increments the counter on each request and sends the current
+value back to the worker.
+
+And in code:
+
+`web_worker_timer.html`:
+```html
+<html>
+  <head></head>
+  <body>
+    <script>
+      var ts = new Worker('subworker.js');
+      var elapsed = null;
+
+      function counter(e) {
+        var count = e.data;
+        if (count > 0) {
+          document.write('Counter: ' + count + '<br>');
+          let precision = elapsed / count;
+          document.write('Precision: ' + precision + ' ms<br>');
+        }
+      }
+
+      ts.addEventListener('message', counter);
+
+      var t0 = performance.now()
+      ts.postMessage(0);
+
+      // setTimeout() acts as a method that
+      // we want to time
+      setTimeout(function() {
+        ts.postMessage(0);
+        elapsed = (performance.now() - t0);
+        document.write('Elapsed Time: ' + elapsed + '<br>');
+      }, 1000)
+    </script>
+  </body>
+</html>
+```
+
+`subworker.js`:
+
+```js
+var sub = new Worker('subworker2.js');
+
+sub.postMessage(0);
+
+var count = 0;
+
+sub.onmessage = msg;
+onmessage = msg;
+
+function msg(event) {
+  if (event.data != 0) {
+    count = event.data;
+    sub.postMessage(0);
+  } else {
+    self.postMessage(count);
+  }
+}
+```
+
+`subworker2.js`:
+
+```js
+var count = 0;
+
+onmessage = function(event) {
+  count++;
+  postMessage(count);
+}
+```
+
+But what is the precision I am able to obtain with the above method?
+
+```
+Elapsed Time: 1000.2000000001863
+Counter: 10844
+Precision: 0.09223533751384971 ms
+```
+
+So this is bad news. I only manage to obtain the same precision as `performance.now()` gives us. Fail!
+
+The authors from the [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claim that the achieved resolution is up to 15 μs. I only manage to get around `90µs - 100µs` with my somewhat old laptop from 2014.
+
+However, on [browserstack.com](https://browserstack.com/), when using a real device, I manage to get results around `40µs / 50µs`, thus beating `performance.now()`
+
+```
+Elapsed Time: 1041.89999
+Counter: 19083
+Precision: 0.0545 ms
+```
+
+Therefore, with fast devices, the claimed `15 μs` are probably realistic!
