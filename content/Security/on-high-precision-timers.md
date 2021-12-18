@@ -1,6 +1,6 @@
 Title: On High-Precision JavaScript Timers
 Status: published
-Date: 2021-12-05 20:40
+Date: 2021-12-18 20:40
 Category: Security
 Tags: spectre, meltdown, cache-attacks, high-precision-timing, JavaScript
 Slug: on-high-precision-javascript-timers

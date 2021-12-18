@@ -181,6 +181,15 @@ main article blockquote {
     font-size: 1.0em;
 }
 
+
+/* Handle a bit larger desktop devices */
+@media screen and (min-width: 900px) {
+  main article {
+    margin-right: 14% !important;
+  }
+}
+
+
 /* Handle tablet and larger devices */
 @media screen and (min-width: 768px) {
     #particles-js {
@@ -208,15 +217,13 @@ main article blockquote {
     
     main article {
         margin-top: 2%;
-        margin-right: 13%;
+        margin-right: 6%;
         margin-bottom: 2%;
         margin-left: 4%;
     }
-}
 
-@media screen and (min-width: 768px) {
     .smallimg {
-        width: 36%;
+      width: 36%;
     }
 }
 
