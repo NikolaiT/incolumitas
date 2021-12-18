@@ -223,7 +223,7 @@ Precision: 0.0545 ms
 
 Therefore, with fast devices, the claimed `15 μs` are probably realistic!
 
-## Recovering the high resolution of `performance.now()`
+## Recovering the high resolution of `performance.now()` with Clock Interpolation
 
 [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claims:
 
@@ -234,16 +234,109 @@ between two edges is always constant, we interpolate the time between them.
 
 The idea is as follows:
 
-1. Clock interpolation requires calibration before being able to return accurate
-timestamps.
+When repeatedly invoking `performance.now()` in a while loop, we get the same results from the `performance.now()` invocation for a certain amount of time. As long as `performance.now()` yields the same number, we increment a counter. When we get a new value from `performance.now()`, we reset the counter.
 
-2. For this purpose, a busy-wait loop to increment a
-counter between two clock edges is used.
+The code below takes `n=20` samples:
 
-3. The time it takes to increment the counter once equals the resolution
-that is recoverable. It can be approximated by dividing the interval
-of two clock edges by the number of interpolation steps.
+```js
+for (var i=0; i < 20; i++) {
+  var counter = 0;
+  var next, last = performance.now();
 
+  while((next = performance.now()) == last) {
+    counter++;
+  }
+
+  console.log(next, counter);
+}
+```
+
+and yields the following output on my machine/browser:
+
+```
+5063.5999999996275 4
+5063.799999998882 13
+5063.89999999851 5
+5064.299999998882 11
+5064.799999998882 35
+5064.89999999851 4
+5065.0999999996275 54
+5065.199999999255 2
+5065.39999999851 33
+5065.5 8
+5065.699999999255 32
+5065.799999998882 4
+5066 42
+5066.0999999996275 19
+5066.199999999255 3
+5066.39999999851 42
+5066.5999999996275 66
+5066.799999998882 6
+5066.89999999851 29
+5067 15
+```
+
+What does the above output tell me?
+
+Sometimes edges are `0.2ms` apart, sometimes `0.3ms` and sometimes just `0.1ms`.
+
+In some cases edges are even `0.5ms` apart:
+
+```
+5064.299999998882 11
+5064.799999998882 35
+```
+
+However, isn't our assumption that larger edges also have larger counter values?
+
+Let's collect some statistical significant data.
+
+
+```js
+var samples = [];
+var stats = {};
+
+for (var i=0; i < 1000; i++) {
+  var counter = 0;
+  var next, last = performance.now();
+
+  while((next = performance.now()) == last) {
+    counter++;
+  }
+
+  samples.push([last, next, counter]);
+}
+
+for (let sample of samples) {
+  var delta = (sample[1] - sample[0]).toFixed(2);
+  if (!stats[delta]) {
+    stats[delta] = [sample[2]]
+  } else {
+    stats[delta].push(sample[2])
+  }
+}
+
+console.log(stats)
+```
+
+When invoking the code above, I don't find that larger edges have large counter values.
+
+I get quite weird results:
+
+<figure>
+  <img src="{static}/images/timersSamples.png" alt="timing" />
+  <figcaption>Most intervals we get are `0.1ms`, but larger intervals such as `0.8ms` have quite low counter values. Why?</figcaption>
+</figure>
+
+This is the clock interpolation algorithm proposition from [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
+
+You can also find the live example here:
+
+<a 
+  class="btn"
+  href="https://bot.incolumitas.com/timers/calibrate.html">
+Live Example of performance.now() Clock Interpolation
+</a>
 
 ```html
 <html>
@@ -252,15 +345,27 @@ of two clock edges by the number of interpolation steps.
     <script>
       function calibrate() {
         var counter = 0, next;
+        var count = 0;
 
         for (var i = 0; i < 10; i++) {
           next = wait_edge();
-          counter += count_edge();
+          count = count_edge();
+          counter += count;
+          document.write('Edge Length (in Count): ' + count + '<br>');
         }
 
         next = wait_edge();
 
-        return (wait_edge() - next) / (counter / 10.0);
+        var d1 = wait_edge() - next;
+        var d2 = counter / 10.0;
+
+        var calibrated = d1 / d2;
+
+        document.write('edge size in performance.now(): ' + d1 + '<br>');
+        document.write('average (n=10) edge size in steps: ' + d2 + '<br>');
+        document.write('calibration value (average count per edge): ' + calibrated + '<br>');
+
+        return calibrated;
       }
 
       function wait_edge() {
@@ -289,14 +394,54 @@ of two clock edges by the number of interpolation steps.
 
       async function measure() {
         var start = wait_edge();
-        await sleep(1000);
+        
+        // some heavy math that takes some time
+        for (var k = 0; k < 10000000; k++) {
+          var q = Math.log10(Math.pow(k) * Math.atan2(k) * Math.sqrt(k));
+        }
+
         var count = count_edge();
-        document.write(count + '<br>');
-        return (performance.now() - start) - count * calibrate();
+        var t1 = performance.now();
+
+        var elapsed = (t1 - start) - count * calibrate();
+
+        document.write('Original Timing: ' + (t1 - start).toFixed(6) + '<br>');
+        document.write('Improved Timing: ' + elapsed.toFixed(6) + '<br>');
       }
 
-      measure().then((res) => document.write(res));
+      measure()
     </script>
   </body>
 </html>
 ```
+
+To be honest, I have some issues with their proposed calibration function:
+
+```js
+function calibrate() {
+  var counter = 0, next;
+
+  for (var i = 0; i < 10; i++) {
+    next = wait_edge();
+    counter += count_edge();
+  }
+
+  next = wait_edge();
+
+  return (wait_edge() - next) / (counter / 10.0);
+}
+```
+
+As I have shown above, there is no clear correlation between `performance.now()` gap size and the
+counter steps. In the function `calibrate()` they collect the edge size in counter steps for 10 samples and then they calibrate by
+
+```js
+return (wait_edge() - next) / (counter / 10.0);
+```
+
+by dividing the size of one edge in terms of `performance.now()` millieseconds by the average edge size in terms of counter values (N=10).
+
+I have some issues with that approach:
+
+1. It seems to me that the `counter` value for each `performance.now()` step is rather irrational. It's probably dependent on page load, JavaScript execution, overall processor load and so on.
+2. We invoke `calibrate()` after the function that we want to time? Who says that 
