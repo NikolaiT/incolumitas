@@ -13,9 +13,7 @@ I in this blog post, I am investigating the current state of high precision Java
 
 However, those papers mentioned above are deeply amazing. I do not think that it get's much better in the field of IT Security. The sheer human creativity demonstrated by finding those cache and CPU-level attack vectors is simply outstanding.
 
----
-
-Firefox and Google Chrome reduced the precision of `performance.now()` significantly:
+Firefox and Google Chrome **reduced the precision of `performance.now()` significantly**:
 
 1. [Google Chrome reduced](https://developer.chrome.com/blog/cross-origin-isolated-hr-timers/) the `performance.now()` precision to 100 microseconds (`100µs` or `0.1ms`)
 1. [Firefox reduced](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now#reduced_time_precision) the `performance.now()` precision even more to 1000 microseconds (`1000µs` or `1ms`)
