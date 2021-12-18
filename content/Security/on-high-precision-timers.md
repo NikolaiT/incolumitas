@@ -120,6 +120,7 @@ leaving sub web workers as the only viable option.
 
 <a 
   class="btn"
+  style="margin-top: 3px; margin-bottom: 3px"
   href="https://bot.incolumitas.com/timers/web_worker_timer.html">
 Live Example of High-Precision Web Worker Timer
 </a>
@@ -226,6 +227,13 @@ Precision: 0.0545 ms
 Therefore, with fast devices, the claimed `15 μs` are probably realistic!
 
 ## Recovering the high resolution of `performance.now()` with clock interpolation
+
+<a 
+  class="btn"
+  style="margin-top: 3px; margin-bottom: 3px"
+  href="https://bot.incolumitas.com/timers/calibrate.html">
+Live Example of Clock Interpolation
+</a>
 
 [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claims:
 
@@ -336,8 +344,9 @@ You can also find the live example here:
 
 <a 
   class="btn"
+  style="margin-top: 3px; margin-bottom: 3px"
   href="https://bot.incolumitas.com/timers/calibrate.html">
-Live Example of performance.now() Clock Interpolation
+Live Example of Clock Interpolation
 </a>
 
 ```html
