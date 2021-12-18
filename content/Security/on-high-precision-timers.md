@@ -353,7 +353,7 @@ Live Example of performance.now() Clock Interpolation
           next = wait_edge();
           count = count_edge();
           counter += count;
-          document.write('Edge Length (in Count): ' + count + '<br>');
+          document.write('Increments per Edge (in Count): ' + count + '<br>');
         }
 
         next = wait_edge();
@@ -363,9 +363,9 @@ Live Example of performance.now() Clock Interpolation
 
         var calibrated = d1 / d2;
 
-        document.write('edge size in performance.now(): ' + d1 + '<br>');
-        document.write('average (n=10) edge size in steps: ' + d2 + '<br>');
-        document.write('calibration value (average count per edge): ' + calibrated + '<br>');
+        document.write('Edge size in performance.now() (ms): ' + d1 + '<br>');
+        document.write('Average (n=10) edge size in increments: ' + d2 + '<br>');
+        document.write('Calibration value (average ms per increment step): ' + calibrated + '<br>');
 
         return calibrated;
       }
