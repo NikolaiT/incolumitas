@@ -9,9 +9,9 @@ Summary: I in this blog post, I am investigating the current state of high preci
 
 ## Introduction
 
-I in this blog post, I am investigating the current state of high precision JavaScript timers. High precision timing techniques were mostly used to launch CPU-level cache attacks such as [Spectre](https://spectreattack.com/spectre.pdf) and [Meltdown](https://meltdownattack.com/meltdown.pdf) from the browser. However, I am not (that) interested in cache attacks, I need high precision JavaScript timing techniques (amongst other endeavours) mostly to detect proxies and VPN usage.
+I in this blog post, I am investigating the current state of high precision JavaScript timers. High precision timing techniques were mostly used to launch CPU-level cache attacks such as [Spectre](https://spectreattack.com/spectre.pdf) and [Meltdown](https://meltdownattack.com/meltdown.pdf) with JavaScript. However, I am not (that) interested in cache attacks, I need high precision JavaScript timing techniques mostly to detect proxies and VPN usage (amongst other use cases).
 
-However, those papers are deeply amazing. I do not think that it get's much better in the field of IT Security. The sheer human creativity demonstrated by finding those attack vectors is simply outstanding.
+However, those papers mentioned above are deeply amazing. I do not think that it get's much better in the field of IT Security. The sheer human creativity demonstrated by finding those cache and CPU-level attack vectors is simply outstanding.
 
 ---
 
@@ -22,9 +22,9 @@ Firefox and Google Chrome reduced the precision of `performance.now()` significa
 
 *Those bastards!*
 
-High precision timers are used to launch side-channel and timing attacks. In recent years, low level vulnerabilities such as Spectre, Meltdown, Rowhammer emerged. They all have in common that the attacker needs the ability to have a high resolution timers. 
+High precision timers are used to launch side-channel and timing attacks. In recent years, low level vulnerabilities such as Spectre, Meltdown, Rowhammer emerged. They all have in common that the attacker needs the ability to take high resolution time measurements.
 
-The awesome [Google Security Blog](https://security.googleblog.com/2021/03/a-spectre-proof-of-concept-for-spectre.html) explains on the page [Spectre Proof-Of-Concept website](https://leaky.page/timer.html) why:
+The awesome [Google Security Blog](https://security.googleblog.com/2021/03/a-spectre-proof-of-concept-for-spectre.html) explains on the [Spectre Proof-Of-Concept website](https://leaky.page/timer.html) why:
 
 > Before we run the Spectre proof of concept, we need a way to observe the side-effects of the transient execution. The most popular one is a cache side channel. By timing a memory access, we can infer if a chosen address is in the cache (if the access is fast) or needs to be loaded from memory (if the access is slow). Later, we will use a Spectre gadget to access a JavaScript array using a secret value as the index. Testing which array index got cached will allow us to recover that secret value.
 
@@ -33,7 +33,7 @@ So I learned that:
 + Timing memory accesses reveals if a chosen address is in the cache or not
 + A fast memory access means that the accessed address is cached
 + A slow memory access means that the accessed address needs to be loaded from the memory
-+ In order to measure the tiny difference in access times, we need High-Precision JavaScript Timers
++ In order to measure the tiny difference in access times, **we need high-precision JavaScript timers**
 
 And then they go on...
 
@@ -49,7 +49,9 @@ and if you still want to use `SharedArrayBuffer`, you will need to do the follow
 
 So my next idea is to try to make use of the other high precision timers presented in the paper cited above: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
-Do the proposed techniques from early 2017 still work? In the next sections, I am going to test some of the techniques presented by the authors (On Ubuntu 18.04, `Chromium 95.0.4638.69`).
+Do the proposed techniques from early 2017 still work? In the next sections, I am going to test some of the techniques presented by the authors 
+
+All tests were conducted on Ubuntu 18.04 with the `Chromium 95.0.4638.69` browser.
 
 ## Base precision of `performance.now()`
 
@@ -223,7 +225,7 @@ Precision: 0.0545 ms
 
 Therefore, with fast devices, the claimed `15 μs` are probably realistic!
 
-## Recovering the high resolution of `performance.now()` with Clock Interpolation
+## Recovering the high resolution of `performance.now()` with clock interpolation
 
 [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claims:
 
@@ -396,7 +398,7 @@ Live Example of performance.now() Clock Interpolation
         var start = wait_edge();
         
         // some heavy math that takes some time
-        for (var k = 0; k < 10000000; k++) {
+        for (var k = 0; k < 1000000; k++) {
           var q = Math.log10(Math.pow(k) * Math.atan2(k) * Math.sqrt(k));
         }
 
@@ -405,6 +407,7 @@ Live Example of performance.now() Clock Interpolation
 
         var elapsed = (t1 - start) - count * calibrate();
 
+        document.write('Count (Left in ongoing Edge): ' + count + '<br>');
         document.write('Original Timing: ' + (t1 - start).toFixed(6) + '<br>');
         document.write('Improved Timing: ' + elapsed.toFixed(6) + '<br>');
       }
@@ -443,5 +446,44 @@ by dividing the size of one edge in terms of `performance.now()` millieseconds b
 
 I have some issues with that approach:
 
-1. It seems to me that the `counter` value for each `performance.now()` step is rather irrational. It's probably dependent on page load, JavaScript execution, overall processor load and so on.
-2. We invoke `calibrate()` after the function that we want to time? Who says that 
+1. It seems to me that the `counter` value for each `performance.now()` step is rather unpredictable. It's probably dependent on page load, JavaScript execution, overall processor load and so on.
+2. We invoke `calibrate()` after the function that we want to time? Who says that suddenly there is less load on JavaScript and we obtain larger counter values than during function execution?
+
+But still, I think clock interpolation gives us better resolution than `performance.now()`.
+
+What do we gain in resolution?
+
+This is how a function with clock interpolation is measured:
+
+```js
+async function measure() {
+  var start = wait_edge();
+  
+  // some heavy math that takes some time
+  for (var k = 0; k < 10000000; k++) {
+    var q = Math.log10(Math.pow(k) * Math.atan2(k) * Math.sqrt(k));
+  }
+
+  var count = count_edge();
+  var t1 = performance.now();
+
+  var elapsed = (t1 - start) - count * calibrate();
+
+  document.write('Count (Left in ongoing Edge): ' + count + '<br>');
+  document.write('Original Timing: ' + (t1 - start).toFixed(6) + '<br>');
+  document.write('Improved Timing: ' + elapsed.toFixed(6) + '<br>');
+}
+```
+
+So the idea is actually the following:
+
+The execution time of the function is measured with the variabales `start` and `t1`. Both are variables populated from `performance.now()`.
+
+However, before the `t1` measurement is taken, it has to be waited until a new edge is reached (`var count = count_edge();`). We are now right at the start of a new edge. `count` holds the number of increments that were left in the ongoing edge.
+
+Then the elapsed time `t1 - start` is decreased by `count * calibrate()`.
+
+Multiplying `calibrate()` with `count` basically translates `count` into millieseconds, and this amount of millieseconds can be subracted from the elapsed time to obtain a higher resolution timestamp.
+
+
+
