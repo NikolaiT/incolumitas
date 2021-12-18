@@ -4,7 +4,7 @@ nav li a {
 
 body {
     background-color: #fdfdfd;
-    color: #333;
+    color: #515151;
     font: 400 16px/1.2 "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
     -moz-font-feature-settings: "kern" 1;
     -o-font-feature-settings: "kern" 1;
@@ -14,9 +14,17 @@ body {
     -webkit-text-size-adjust: 100%;
 }
 
+p {
+  margin-bottom: 1rem;
+}
+
 time {
     color: #505050;
     font-weight: bold;
+}
+
+.tag-cloud p {
+  margin-top: 0;
 }
 
 .post-content strong, .single strong {
@@ -24,11 +32,18 @@ time {
 }
 
 .post-content p, .single p {
+    text-align: justify;
     line-height: 1.4;
 }
 
 .post-content li, .single li {
+    text-align: justify;
     line-height: 1.6;
+}
+
+.post-content > h1:first-child, .post-content > h2:first-child,
+ .post-content > h3:first-child, .post-content > h4:first-child {
+  margin-top: 0;
 }
 
 .post-content h1, .single h1 {
@@ -192,7 +207,10 @@ main article blockquote {
     }
     
     main article {
-        margin: 0 4% 2%;
+        margin-top: 2%;
+        margin-right: 13%;
+        margin-bottom: 2%;
+        margin-left: 4%;
     }
 }
 
