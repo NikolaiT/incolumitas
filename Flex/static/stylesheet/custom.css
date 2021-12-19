@@ -14,6 +14,10 @@ body {
     -webkit-text-size-adjust: 100%;
 }
 
+main article {
+  margin: 0 5% 2%;
+}
+
 p {
   margin-bottom: 1rem;
 }
@@ -32,13 +36,11 @@ time {
 }
 
 .post-content p, .single p {
-    text-align: justify;
     line-height: 1.4;
 }
 
 .post-content li, .single li {
-    text-align: justify;
-    line-height: 1.6;
+    line-height: 1.4;
 }
 
 .post-content > h1:first-child, .post-content > h2:first-child,

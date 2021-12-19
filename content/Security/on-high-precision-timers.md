@@ -9,9 +9,9 @@ Summary: I in this blog post, I am investigating the current state of high preci
 
 ## Introduction
 
-I in this blog post, I am investigating the current state of high precision JavaScript timers. High precision timing techniques were mostly used to launch CPU-level cache attacks such as [Spectre](https://spectreattack.com/spectre.pdf) and [Meltdown](https://meltdownattack.com/meltdown.pdf) with JavaScript. However, I am not (that) interested in cache attacks, I need high precision JavaScript timing techniques mostly to detect proxies and VPN usage (amongst other use cases).
+I in this blog post, I am investigating the current state of high precision JavaScript timers. High precision timing techniques were mostly required to launch CPU-level cache attacks such as [Spectre](https://spectreattack.com/spectre.pdf) and [Meltdown](https://meltdownattack.com/meltdown.pdf) from within the browser with JavaScript. However, I am not interested in cache attacks, I need high precision JavaScript timing techniques mostly to detect proxies and VPN usage via side channel analysis.
 
-However, those papers mentioned above are deeply amazing. I do not think that it get's much better in the field of IT Security. The sheer human creativity demonstrated by finding those cache and CPU-level attack vectors is simply outstanding.
+However, those papers mentioned above are deeply amazing. I do not think that it get's much better in the field of IT Security. The sheer human creativity demonstrated by finding those cache and CPU-level attack vectors is simply outstanding. I highly recommand you to read those papers (Also the [Platypus paper](https://platypusattack.com/platypus.pdf) on power side-channel attacks).
 
 Firefox and Google Chrome **reduced the precision of `performance.now()` significantly**:
 
@@ -20,7 +20,7 @@ Firefox and Google Chrome **reduced the precision of `performance.now()` signifi
 
 *Those bastards!*
 
-High precision timers are used to launch side-channel and timing attacks. In recent years, low level vulnerabilities such as Spectre, Meltdown, Rowhammer emerged. They all have in common that the attacker needs the ability to take high resolution time measurements.
+As mentioned, high precision timers are used to launch side-channel and timing attacks. In recent years, low level vulnerabilities such as Spectre, Meltdown, Rowhammer emerged. They all have in common that the attacker needs the ability to take high resolution time measurements.
 
 The awesome [Google Security Blog](https://security.googleblog.com/2021/03/a-spectre-proof-of-concept-for-spectre.html) explains on the [Spectre Proof-Of-Concept website](https://leaky.page/timer.html) why:
 
@@ -35,7 +35,7 @@ So I learned that:
 
 And then they go on...
 
-> To be able to measure these small timing differences we need a high-precision timer. There is a great paper on this topic by Michael Schwarz, Clémentine Maurice, Daniel Gruss, and Stefan Mangard: "Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript". One example they show is the use of a SharedArrayBuffer as a monotonic clock: increment a counter in a worker thread and read it from a second thread as a high precision timestamp. SharedArrayBuffers in particular are nowadays only available if the site is cross-origin isolated but there are many more timers described in that paper.
+> To be able to measure these small timing differences we need a high-precision timer. There is a great paper on this topic by Michael Schwarz, Clémentine Maurice, Daniel Gruss, and Stefan Mangard: ["Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript"](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf). One example they show is the use of a SharedArrayBuffer as a monotonic clock: increment a counter in a worker thread and read it from a second thread as a high precision timestamp. SharedArrayBuffers in particular are nowadays only available if the site is cross-origin isolated but there are many more timers described in that paper.
 
 Unfortunately, the `SharedArrayBuffer` is no longer allowed by default. MDN says about [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements):
 
@@ -47,7 +47,7 @@ and if you still want to use `SharedArrayBuffer`, you will need to do the follow
 
 So my next idea is to try to make use of the other high precision timers presented in the paper cited above: [Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
-Do the proposed techniques from early 2017 still work? In the next sections, I am going to test some of the techniques presented by the authors 
+Do the proposed techniques from early 2017 still work? In the next sections, I am going to test some of the techniques presented by the authors.
 
 All tests were conducted on Ubuntu 18.04 with the `Chromium 95.0.4638.69` browser.
 
@@ -63,7 +63,7 @@ Chromium 95.0.4638.69 Built on Ubuntu , running on Ubuntu 18.04
 
 First of all, I want to confirm that the precision/resolution of `performance.now()` is really `100µs` or `0.1ms` on `Chromium 95.0.4638.69`.
 
-This is accomplished by the below JavaScript snippet. I am collecting 10.000 `performance.now()` samples in a for-loop and I look how many unique samples are among those 10.000 collected samples, which gives me the precision.
+This is accomplished by the below JavaScript snippet. I am collecting 10.000 `performance.now()` samples in a for-loop and I look how many unique samples are among those 10.000 collected samples, which gives me the precision. 
 
 ```JavaScript
 'use strict';
@@ -102,13 +102,31 @@ Granularity/Precision #1 of performance.now(): 0.10410958904157432ms
 Granularity/Precision #2 of performance.now(): 0.10410958904157432ms
 ```
 
+If you invoke `performance.now()` repeatedly in a while loop until you obtain a new timer value from `performance.now()` and you increment a counter until that point, then the value of the counter is considered the edge size of the timer resolution.
+
+```js
+(function edgeSize() {
+  var counter = 0;
+  var next, last = performance.now();
+
+  while((next = performance.now()) == last) {
+    counter++;
+  }
+
+  console.log(counter);
+})()
+```
+
+Put differently, the granularity of the `performance.now()` resolution can be measured in terms of increments of the `counter` variable. The counter is reset as soon as a new `performance.now()` is observed.
+
+
 ## Building a Timer by (ab)using Web Workers
 
 JavaScript's concurrency model is based on a single-threaded event loop. Multithreading was introduced into JavaScript with *web workers*, which run in parallel and have their own event loop.
 
 Here, I am creating an **implicit timer** by attempting to abuse web workers to derive highly accurate timestamps. Put differently, we throw `performance.now()` into the trash and create our own timer!
 
-Or more nuanced: We create a web worker thread and let it stupidly increase a counter and consider it an approximation of a monotomic timer.
+Or more nuanced: We create a web worker thread and let it monotonically increase a counter and consider it an approximation of a real timer.
 
 But the [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) lists some caveats:
 
@@ -212,7 +230,7 @@ Precision: 0.09223533751384971 ms
 
 So this is bad news. I only manage to obtain the same precision as `performance.now()` gives us. Fail!
 
-The authors from the [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claim that the achieved resolution is up to 15 μs. I only manage to get around `90µs - 100µs` with my somewhat old laptop from 2014.
+The authors from the [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claim that the achieved resolution is up to `15 μs`. I only manage to get around `90µs - 100µs` with my somewhat old laptop from 2014.
 
 However, on [browserstack.com](https://browserstack.com/), when using a real device, I manage to get results around `40µs / 50µs`, thus beating `performance.now()`
 
@@ -222,18 +240,17 @@ Counter: 19083
 Precision: 0.0545 ms
 ```
 
-Therefore, with fast devices, the claimed `15 μs` are probably realistic!
+Therefore, with fast devices, the claimed `15 μs` is probably realistic!
 
 ## Recovering the high resolution of `performance.now()` with clock interpolation
 
 <a 
   class="btn"
-  style="margin-top: 3px; margin-bottom: 3px"
   href="https://bot.incolumitas.com/timers/calibrate.html">
 Live Example of Clock Interpolation
 </a>
 
-[Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claims:
+The [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf) claims in section [3.1 Recovering a high resolution]:
 
 > As the underlying clock source has a high resolution, the
 difference between two clock edges varies only as much as the underlying clock.
@@ -297,7 +314,7 @@ In some cases edges are even `0.5ms` apart:
 
 However, isn't our assumption that larger edges also have larger counter values?
 
-Let's collect some statistical significant data.
+Let's collect some [statistical significant data](https://bot.incolumitas.com/timers/edges.html).
 
 
 ```js
@@ -333,46 +350,57 @@ I get quite weird results:
 
 <figure>
   <img src="{static}/images/timersSamples.png" alt="timing" />
-  <figcaption>Most intervals we get are `0.1ms`, but larger intervals such as `0.8ms` have quite low counter values. Why?</figcaption>
+  <figcaption>Most intervals we get are 0.1ms apart, but larger intervals such as 0.8ms can have quite low counter values. Why?</figcaption>
 </figure>
+
+Are the counter values larger and more stable on different machines with different CPUs? I am only testing on my very old laptop from 2014. Maybe this has a large influence. 
+
+Indeed, when testing on browserstack with macOS Montery and the latest Safari browser:
+
+<figure>
+  <img src="{static}/images/montery-safari.png" alt="timing" />
+  <figcaption>Much higher counter values. By a factor of 100. They also appear to be more stable, thus giving us much more accurate timer resolutions.</figcaption>
+</figure>
+
+So it has to be noted: **Clock interpolation is highly dependent on OS and CPU!**. The faster the device, the larger the counter values and the more accurate the interpolation. 
 
 This is the clock interpolation algorithm proposition from [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
-You can also find the live example here:
-
-<a 
-  class="btn"
-  style="margin-top: 3px; margin-bottom: 3px"
-  href="https://bot.incolumitas.com/timers/calibrate.html">
-Live Example of Clock Interpolation
-</a>
+You can also find the live example here: <a class="btn" href="https://bot.incolumitas.com/timers/calibrate.html">Live Example of Clock Interpolation</a>
 
 ```html
 <html>
   <head></head>
   <body>
+    <pre id="output"></pre>
     <script>
+
+      function write(text) {
+        document.getElementById('output').innerText += text + '\n';
+      }
+
       function calibrate() {
+        var N = 15;
         var counter = 0, next;
         var count = 0;
 
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < N; i++) {
           next = wait_edge();
           count = count_edge();
           counter += count;
-          document.write('Increments per Edge (in Count): ' + count + '<br>');
+          write('Increments per Edge (in Count): ' + count );
         }
 
         next = wait_edge();
 
         var d1 = wait_edge() - next;
-        var d2 = counter / 10.0;
+        var d2 = counter / N;
 
         var calibrated = d1 / d2;
 
-        document.write('Edge size in performance.now() (ms): ' + d1 + '<br>');
-        document.write('Average (n=10) edge size in increments: ' + d2 + '<br>');
-        document.write('Calibration value (average ms per increment step): ' + calibrated + '<br>');
+        write('Edge size in performance.now() (ms): ' + d1 );
+        write('Average (n=' + N + ') edge size in increments: ' + d2 );
+        write('Calibration value (average ms per increment step): ' + calibrated );
 
         return calibrated;
       }
@@ -414,12 +442,40 @@ Live Example of Clock Interpolation
 
         var elapsed = (t1 - start) - count * calibrate();
 
-        document.write('Count (Left in ongoing Edge): ' + count + '<br>');
-        document.write('Original Timing: ' + (t1 - start).toFixed(6) + '<br>');
-        document.write('Improved Timing: ' + elapsed.toFixed(6) + '<br>');
+        write('Count (Left in ongoing Edge): ' + count );
+        write('Original Timing: ' + (t1 - start).toFixed(6));
+        write('Improved Timing: ' + elapsed.toFixed(6));
       }
 
-      measure()
+      function measurePrecision() {
+        // The performance.now() method returns a DOMHighResTimeStamp, measured in milliseconds.
+        var samples = [];
+        var t0 = performance.now();
+
+        for (var i = 0; i < 10000; i++) {
+          samples.push(performance.now());
+        }
+
+        var t1 = performance.now();
+
+        let diff1 = t1 - t0;
+        let diff2 = samples[samples.length - 1] - samples[0];
+
+        write('#1 Elapsed measured by performance.now(): ' + diff1 + 'ms' );
+        write('#2 Elapsed measured by collected samples: ' + diff2 + 'ms' );
+
+        write('Number of samples: ' + samples.length );
+        let s = new Set(samples);
+        write('Number of unique samples / measuring steps: ' + s.size );
+
+        write('Granularity/Precision #1 of performance.now(): ' + diff1 / s.size + 'ms' );
+        write('Granularity/Precision #2 of performance.now(): ' + diff2 / s.size + 'ms');
+        write('');
+      }
+
+      measurePrecision();
+
+      setTimeout(measure, 1000);
     </script>
   </body>
 </html>
@@ -490,7 +546,28 @@ However, before the `t1` measurement is taken, it has to be waited until a new e
 
 Then the elapsed time `t1 - start` is decreased by `count * calibrate()`.
 
-Multiplying `calibrate()` with `count` basically translates `count` into millieseconds, and this amount of millieseconds can be subracted from the elapsed time to obtain a higher resolution timestamp.
+Multiplying `calibrate()` with `count` basically translates `count` into millieseconds, and this amount of millieseconds can be subtracted from the elapsed time to obtain a higher resolution timestamp.
 
+### Clock interpolation on different OS' and machines
 
+I am using browserstack to conduct my experiments. I am using real devices to visit my [test url](https://bot.incolumitas.com/timers/calibrate.html).
 
+<figure>
+  <img src="{static}/images/windows11-chrome-97.png" alt="timing" />
+  <figcaption>Win 11 with Chrome 97</figcaption>
+</figure>
+
+<figure>
+  <img src="{static}/images/windows11-ff-95.png" alt="timing" />
+  <figcaption>Win 11 with Firefox 95</figcaption>
+</figure>
+
+<figure>
+  <img src="{static}/images/montery-safari.png" alt="timing" />
+  <figcaption>macOS Montery with latest Safari</figcaption>
+</figure>
+
+<figure>
+  <img src="{static}/images/montery-chrome-97.png" alt="timing" />
+  <figcaption>macOS Montery with Chrome 97</figcaption>
+</figure>
