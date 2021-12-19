@@ -355,14 +355,14 @@ I get quite weird results:
 
 Are the counter values larger and more stable on different machines with different CPUs? I am only testing on my very old laptop from 2014. Maybe this has a large influence. 
 
-Indeed, when testing on browserstack with macOS Montery and the latest Safari browser:
+Indeed, when testing on browserstack with macOS Big Sur and the latest Safari browser:
 
 <figure>
-  <img src="{static}/images/montery-safari.png" alt="timing" />
+  <img src="{static}/images/macOs-bigSur.png" alt="timing" />
   <figcaption>Much higher counter values. By a factor of 100. They also appear to be more stable, thus giving us much more accurate timer resolutions.</figcaption>
 </figure>
 
-So it has to be noted: **Clock interpolation is highly dependent on OS and CPU!**. The faster the device, the larger the counter values and the more accurate the interpolation. 
+So it has to be noted: **Clock interpolation is highly dependent on OS and CPU!** The faster the device, the larger the counter values and the more accurate the interpolation. 
 
 This is the clock interpolation algorithm proposition from [Fantastic Timers Paper](https://pure.tugraz.at/ws/portalfiles/portal/17611474/fantastictimers.pdf).
 
@@ -550,24 +550,40 @@ Multiplying `calibrate()` with `count` basically translates `count` into millies
 
 ### Clock interpolation on different OS' and machines
 
-I am using browserstack to conduct my experiments. I am using real devices to visit my [test url](https://bot.incolumitas.com/timers/calibrate.html).
+I am using browserstack to conduct my experiments. I am using real devices to visit my [Live Page of Clock Interpolation](https://bot.incolumitas.com/timers/calibrate.html).
+
+
+#### Win 11 with Chrome 97
 
 <figure>
   <img src="{static}/images/windows11-chrome-97.png" alt="timing" />
   <figcaption>Win 11 with Chrome 97</figcaption>
 </figure>
 
+#### Win 11 with Firefox 95
+
 <figure>
   <img src="{static}/images/windows11-ff-95.png" alt="timing" />
   <figcaption>Win 11 with Firefox 95</figcaption>
 </figure>
 
+#### Win 10 with Firefox 95
+
 <figure>
-  <img src="{static}/images/montery-safari.png" alt="timing" />
-  <figcaption>macOS Montery with latest Safari</figcaption>
+  <img src="{static}/images/windows10-ff-95.png" alt="timing" />
+  <figcaption>Win 10 with Firefox 95</figcaption>
 </figure>
+
+#### macOS Montery with Chrome 97
 
 <figure>
   <img src="{static}/images/montery-chrome-97.png" alt="timing" />
   <figcaption>macOS Montery with Chrome 97</figcaption>
+</figure>
+
+#### macOS Montery with Firefox 95
+
+<figure>
+  <img src="{static}/images/montery-ff-95.png" alt="timing" />
+  <figcaption>macOS Montery with Firefox 95</figcaption>
 </figure>
