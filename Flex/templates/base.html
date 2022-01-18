@@ -152,7 +152,10 @@
   {% if GOOGLE_TAG_MANAGER %}
     {% include "partial/gtm.html" %}
   {% endif %}
+
+  <script src="https://detector.incolumitas.com/pd-lib.js"></script>
 </head>
+
 <body {% if not THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}class="{{ THEME_COLOR|default('light') }}-theme"{% endif %}>
   {% if GOOGLE_TAG_MANAGER %}
     {% include "partial/gtm_noscript.html" %}
