@@ -7,9 +7,11 @@ Summary: In this blog post, I highlight the core differences between TLS 1.2 and
 Author: Nikolai Tschacher
 Status: Published
 
+**This article is in the process of being created. Hold tight a couple of days! A new tool (TLS fingerprinting) is in the process of being created!**
+
 ## Introduction
 
-TLS stands for *Transport Layer Security* and is the successor of the deprecated Secure Sockets Layer (SSL) protocol.
+TLS stands for *Transport Layer Security* and is the successor of the deprecated Secure Sockets Layer (SSL) protocol. TLS is a client / server protocol that allows connections to be cryptographically *secure*.
 
 TLS and SSL are application layer protocols, which means that they are situated above the Transport Layer (such as TCP and UDP) and of course also above the Network Layer (with IPv4 and Ipv6 being the most prominent protocols in the Network Layer). This means that a TLS connection establishment occurs after the TCP/IP handshake. 
 
@@ -24,7 +26,17 @@ TLS is a Internet Engineering Task Force (IETF) standard and was first defined i
 - TLS 1.2 is defined in [RFC 5246](https://datatracker.ietf.org/doc/html/rfc5246) and dates back to August 2008.
 - TLS 1.3 was released 10 years later in August 2018. TLS 1.3 is defined in [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446) and is the latest major TLS release.
 
-But what exactly does the TLS protocol offer?
+But what security properties does the TLS protocol offer exactly?
+
+- A TLS connection is secure / confidential because every transmitted byte is encrypted by a symmetric cryptographical algorithm. The symmetric key is generated freshly for each new protocol instance, which gives us *forward secrecy*. Put differently, with the help of the Diffie-Hellman key exchange, a common secret is derived between client and server.
+
+- The identity of the server can be authenticated with public-key cryptography. The client can verify the authenticity of the server by verifying the server certificate. Whereas authentication for the server is mandatory, it is optional for the client.
+
+- A TLS connection is reliable, since each message is protected by a message authentication code (MAC), which prevents undetected loss and modification of data in transmission (For example by a man-in-the-middle attacker).
+
+## Protocol Walk-Through
+
+To be done.
 
 ## Core Differences Between TLS 1.2 and TLS 1.3
 
