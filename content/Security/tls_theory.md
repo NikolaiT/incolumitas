@@ -1,8 +1,8 @@
 Title: Fingerprinting TLS - Core differences between TLS 1.2 and TLS 1.3
 Date: 2022-01-18 12:46
 Category: Security
-Tags: TLS, TLS 1.2, TLS 1.3
-Slug: core-differences-between-tls1-2-and-tls1-3
+Tags: TLS Fingerprinting, TLS 1.2, TLS 1.3
+Slug: fingerprinting-TLS
 Summary: In this blog post, I highlight the core differences between TLS 1.2 and TLS 1.3 and investigate how we can use several properties of the protocol to obtain fingerprinting entropy from TLS clients.
 Author: Nikolai Tschacher
 Status: Published
