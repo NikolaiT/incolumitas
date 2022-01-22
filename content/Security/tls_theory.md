@@ -317,10 +317,39 @@ For that reason, TLS 1.3 only supports the ephemeral Diffie-Hellman key exchange
 
 **Removing PKCS#1 v1.5 padding:** As discussed above, [Bleichenbacher attacks](https://en.wikipedia.org/wiki/Daniel_Bleichenbacher) worked against RSA signatures used in TLS 1.2, with the underlying difficulty of implementing RSA padding correctly. In TLS 1.3, the newer design RSA-PSS obsoleted PKCS#1 v1.5 padding.
 
-**More changes:**
+**Signing the whole handshake:** The TLS server uses a digital signature to prove that they key exchange was not tampered. In TLS 1.2, the server signature only covers part of the handshake, especially not the part where the server negotiates which symmetric cipher should be used. This lead to a number of vulnerabilities such as FREAK and LogJam, where a man-in-the-middle attacker can downgrade the chosen ciphers to pick intentionally weak ciphers (export ciphers). In TLS 1.3, the server signs the entire handshake transcript.
 
--  The list of supported symmetric encryption algorithms has been pruned of all algorithms that are considered legacy
--  A zero round-trip time (0-RTT) mode was added, saving a round trip at connection setup for some application data, at the cost of certain security properties.
--  Static RSA and Diffie-Hellman cipher suites have been removed; all public-key based key exchange mechanisms now provide forward secrecy.
--  The handshake state machine has been significantly restructured to be more consistent and to remove superfluous messages such as ChangeCipherSpec (except when needed for middlebox compatibility).
--  Elliptic curve algorithms are now in the base spec, and new signature algorithms, such as EdDSA, are included.  TLS 1.3 removed point format negotiation in favor of a single point format for each curve.
+<figure>
+    <img src="{static}/images/FREAK.png" alt="TLS 1.2 vs FREAK" />
+    <figcaption>The TLS FREAK downgrade attack (<a href="https://blog.cloudflare.com/rfc-8446-aka-tls-1-3/">Image taken from the Cloudflare Blog</a>)</figcaption>
+</figure>
+
+
+**More protocol simplification:** In previous TLS protocols, the entire ciphersuite was negotiated including many crypto attributes:
+
+- certificate types that are supported
+- hash function used (SHA1, SHA256, ...)
+- MAC function (HMAC with SHA1, SHA256, ...)
+- key exchange algorithm (RSA, ECDHE, ...)
+- cipher (e.g., AES, RC4, ...) and cipher mode, if applicable (e.g., CBC)
+
+This lead to a combinational explosion of crypto ciphe code points that had to be maintained by the Internet Assigned Numbers Authority (IANA).
+
+TLS 1.3 on the other hand only allows peers to negotiate:
+
++ Cipher + HKDF Hash
++ Key Exchange
++ Signature Algorithm
+
+This has the side effect that the handshake only needs one RTT instead of two RTTs.
+
+**1-RTT handshake:** Due to the simpler cipher negotiation model and reduced set of key agreement options (no RSA, no user defined DH parameters), the parameters supported by the server are easier to guess (ECDHE with X25519 or P-256 for example). This allows the client to simply send DH key shares in the first message instead of waiting until the server has confirmed which key shares it supports. This leads to a one RTT handshake.
+
+**0-RTT handshake resumption:** With TLS 1.3, clients can send encrypted data in the first message. In TLS 1.2, there are two different ways to resume a connection:
+
+1. session ids 
+2. session tickets
+
+In TLS 1.3, there is a new session-resumption mode called PSK resumption. In this mode, the client and server derive a shared secret called the "resumption main secret" which is stored on the server. The session ticket is sent to the client and used when a new TLS session is created.
+
+The next time the client connects to the server, it can take the secret from the previous session and use it to encrypt application data that is sent to the server (alongside sending the session ticket).
