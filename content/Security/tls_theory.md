@@ -1,6 +1,6 @@
 Title: Fingerprinting TLS - Core differences between TLS 1.2 and TLS 1.3
 Date: 2022-01-18 12:46
-Modified: 2022-01-22 14:35
+Modified: 2022-01-22 18:35
 Category: Security
 Tags: TLS Fingerprinting, TLS 1.2, TLS 1.3
 Slug: fingerprinting-TLS
