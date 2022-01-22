@@ -1,6 +1,6 @@
 Title: Fingerprinting TLS - Core differences between TLS 1.2 and TLS 1.3
 Date: 2022-01-18 12:46
-Modified: 2022-01-19 20:46
+Modified: 2022-01-22 14:35
 Category: Security
 Tags: TLS Fingerprinting, TLS 1.2, TLS 1.3
 Slug: fingerprinting-TLS
@@ -8,12 +8,53 @@ Summary: In this blog post, I highlight the core differences between TLS 1.2 and
 Author: Nikolai Tschacher
 Status: Published
 
+<a 
+  class="orange_button" 
+  href="https://tls.incolumitas.com/fps">
+Get your TLS Fingerprint here
+</a>
+
 ## Goal of this Article
 
 The goal of this blog post is twofold:
 
 1. To gain a **better understanding** of the TLS 1.2 and TLS 1.3 protocol.
-2. Finding stable entropy sources to **fingerprint TLS client connections**. A TLS fingerprint allows me to infer what kind of TLS client library or operating system a client is using. Correlating TLS handshake data with the advertised HTTP User-Agent gives us information to **detect malicious bots**. For example, many advanced bots use Linux operating systems but claim to be macOS or Windows devices in the HTTP User-Agent. If there is a mismatch in the TLS fingerprint induced OS and the User-Agent advertised OS, grounds for suspicion rise.
+2. Finding stable entropy sources in the TLS handshake to **fingerprint TLS clients**. A TLS fingerprint allows me to infer what kind of TLS client library or operating system a client is using. 
+
+For instance, correlating TLS handshake data with the advertised HTTP User-Agent gives us information to **detect malicious bots**. For example, many advanced bots use Linux operating systems but claim to be macOS or Windows devices in the HTTP User-Agent. If there is a mismatch in the TLS fingerprint induced OS and the User-Agent advertised OS, this could be a sign that the client lies about its configuration.
+
+## Fingerprinting TLS - A new Tool
+
+In this section I present a simple tool that extracts properties / entropy from the TLS handshake and forms a TLS fingerprint. Such a TLS fingerprint may be used to identify devices. This tool will be able to collect statistical data and correlate the entropy with the User-Agent transmitted in HTTP headers. After this data collection process, I can answer questions such as:
+
+1. Does this TLS fingerprint belong to the operating system that is claimed by the User Agent?
+2. How unique is the TLS fingerprint of the client in question?
+3. Based on past observations and collected TLS client data, is this fingerprint a legit one?
+4. To what TLS implementation does this fingerprint belong?
+
+**Live TLS Entropy Detection:** This is your last seen TLS handshake data (From the initial Client Hello handshake message):
+
+<pre style="overflow: auto;" id="tls_fp">
+...loading
+</pre>
+
+<script>
+fetch('https://tls.incolumitas.com/fps')
+  .then(response => response.json())
+  .then(function(data) {
+    document.getElementById('tls_fp').innerText = JSON.stringify(data, null, 2);
+  })
+</script>
+
+Your User-Agent (`navigator.userAgent`) says that you are 
+
+<pre style="overflow: auto;" id="userAgent">
+</pre>
+
+<script>
+document.getElementById('userAgent').innerText = navigator.userAgent;
+</script>
+
 
 ## Introduction
 
@@ -40,7 +81,7 @@ But what security properties does the TLS protocol offer exactly?
 
 - A TLS connection is reliable, since each message is protected by a message authentication code (MAC), which prevents undetected loss and modification of data in transmission (For example by a man-in-the-middle attacker).
 
-## TLS 1.2 Theory
+## TLS 1.2 RFC 5246 Summary
 
 In the following sections, I will summarize the most important aspects of [RFC 5246](https://datatracker.ietf.org/doc/html/rfc5246). Some text sessions are direct quotes from [RFC 5246](https://datatracker.ietf.org/doc/html/rfc5246). Most of it is summarized and extended.
 
@@ -72,7 +113,7 @@ The TLS Handshake Protocol provides connection security that has three basic pro
 One advantage of TLS is that it is application protocol independent.
 Higher-level protocols can layer on top of the TLS protocol transparently.
 
-### The TLS Record Protocol
+### The TLS 1.2 Record Protocol
 
 The TLS Record Protocol is a layered protocol.
 
@@ -125,7 +166,7 @@ The **Alert Protocol** messages convey the severity of the message
 with a level of fatal result in the immediate termination of the
 connection.
 
-### TLS Handshake Protocol Overview
+### TLS 1.2 Handshake Protocol Overview
 
 The cryptographic parameters for each TLS session are produced by the
 TLS Handshake Protocol, which operates on top of the TLS record
@@ -247,15 +288,39 @@ Session resumption, abbreviated handshake:
 
 ## Core Differences Between TLS 1.2 and TLS 1.3
 
+In the following section, I will highlight the core differences between TLS 1.2 and TLS 1.3.  An article from 2018 from Cloudflare Inc. named (A Detailed Look at RFC 8446 (a.k.a. TLS 1.3))[https://blog.cloudflare.com/rfc-8446-aka-tls-1-3/] is an excellent read on that topic and my summary is based on this article.
+
+<figure>
+    <img src="{static}/images/tls-comp.png" alt="TLS 1.2 vs TLS 1.3" />
+    <figcaption>TLS 1.2 vs TLS 1.3 (<a href="https://www.embeddedcomputing.com/technology/security/advantages-to-using-tls-1-3-faster-more-efficient-more-secure">Image source</a>)</figcaption>
+</figure>
+
+
+**TLS 1.2 is slow:** The TLS 1.2 remained unchanged since TLS was first standardized in 1999, which means that it still requires two additional round-trips between client and server before the connection is encrypted. This is one reason why a new TLS version was in the planning.
+
+**Design goals for TLS 1.3:** There were several underlying design goals that drove the development of TLS 1.3 in an ope process:
+
++ Reducing the number of TLS handshake RTTs
++ Encrypting the whole TLS handshake
++ Increase the resilience against cross-protocol attacks
++ Removing legacy features, especially legacy ciphers
+
+The two main advantages of TLS 1.3 versus TLS 1.2 are increased performance and improved security.
+
+**Deprecation of the RSA key exchange in TLS 1.3:** In the RSA key exchange, the shared secret is decided by the client. The client encrypts the chosen secret with the server's public key (obtained from the server certificate) and sends it to the server. The RSA key exchange has a important downside: It is not forward secret. Forward secrecy is the property that prevents attackers from decrypting traffic that was recorded in the past if they manage to get hold of the RSA private key on the server. Put differently: If an attacker finds out the RSA private key of the server, they can decrypt all past and future traffic between the client and server.
+
+Another reason for the deprecation of RSA is the difficulty of implementing RSA encryption properly, as the infamous [Bleichenbacher attacks](https://en.wikipedia.org/wiki/Daniel_Bleichenbacher) (*million-message attacks*) against RSA have shown.
+
+For that reason, TLS 1.3 only supports the ephemeral Diffie-Hellman key exchange, where the client and server generate new public/private key pairs for each instance of the TLS handshake. Then they establish a shared secret by combining their respective public key parts. Because a new key pair is generated for each instance, the handshake is ephemeral and is forward secret. 
+
+**TLS 1.3 reduces choice in cryptographic schemes:** TLS 1.3 reduces Diffie-Hellman parameters to ones that are known to be secure. Furthermore, TLS 1.3 also reduces heavily the choice of symmetric ciphers used for decryption and their mode of operation. In fact, TLS 1.3 removed all CBC-mode ciphers or insecure stream ciphers such as RC4. The only symmetric crypto that is still allowed in TLS 1.3 are AEAD (authenticated encryption with additional data) ciphers, which means that encryption and integrity occur in one and the same operation.
+
+**Removing PKCS#1 v1.5 padding:** As discussed above, [Bleichenbacher attacks](https://en.wikipedia.org/wiki/Daniel_Bleichenbacher) worked against RSA signatures used in TLS 1.2, with the underlying difficulty of implementing RSA padding correctly. In TLS 1.3, the newer design RSA-PSS obsoleted PKCS#1 v1.5 padding.
+
+**More changes:**
+
 -  The list of supported symmetric encryption algorithms has been pruned of all algorithms that are considered legacy
 -  A zero round-trip time (0-RTT) mode was added, saving a round trip at connection setup for some application data, at the cost of certain security properties.
 -  Static RSA and Diffie-Hellman cipher suites have been removed; all public-key based key exchange mechanisms now provide forward secrecy.
 -  The handshake state machine has been significantly restructured to be more consistent and to remove superfluous messages such as ChangeCipherSpec (except when needed for middlebox compatibility).
 -  Elliptic curve algorithms are now in the base spec, and new signature algorithms, such as EdDSA, are included.  TLS 1.3 removed point format negotiation in favor of a single point format for each curve.
-
-## Fingerprinting TLS - A new Tool
-
-In this section I present a simple tool that extracts properties / entropy from the TLS handshake and forms a TLS fingerprint. Such a TLS fingerprint may be used to identify devices. I will also collect statistical data and correlate the entropy with the User-Agent transmitted in HTTP headers. After this data collection process, I can answer questions such as:
-
-1. Does this TLS fingerprint belong to the operating system that is claimed by the User Agent?
-2. How unique is the TLS fingerprint of the client in question?
