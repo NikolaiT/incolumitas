@@ -1,12 +1,13 @@
 Title: Fingerprinting TLS - Core differences between TLS 1.2 and TLS 1.3
 Date: 2022-01-18 12:46
-Modified: 2022-01-22 18:35
+Modified: 2022-01-26 18:35
 Category: Security
 Tags: TLS Fingerprinting, TLS 1.2, TLS 1.3
 Slug: fingerprinting-TLS
 Summary: In this blog post, I highlight the core differences between TLS 1.2 and TLS 1.3 and investigate how we can use several properties of the protocol to obtain fingerprinting entropy from TLS clients.
 Author: Nikolai Tschacher
 Status: Published
+
 
 <a 
   class="orange_button" 
@@ -25,14 +26,14 @@ For instance, correlating TLS handshake data with the advertised HTTP User-Agent
 
 ## Fingerprinting TLS - A new Tool
 
-In this section I present a simple tool that extracts properties / entropy from the TLS handshake and forms a TLS fingerprint. Such a TLS fingerprint may be used to identify devices. This tool will be able to collect statistical data and correlate the entropy with the User-Agent transmitted in HTTP headers. After this data collection process, I can answer questions such as:
+In this section, I present a simple tool that extracts properties / entropy from the TLS handshake and forms a TLS fingerprint. Such a TLS fingerprint may be used to identify devices / TLS implementations. This tool will be able to collect statistical data and correlate the entropy with the User-Agent transmitted in HTTP headers. After this data collection process, I can answer questions such as:
 
 1. Does this TLS fingerprint belong to the operating system that is claimed by the User Agent?
 2. How unique is the TLS fingerprint of the client in question?
 3. Based on past observations and collected TLS client data, is this fingerprint a legit one?
 4. To what TLS implementation does this fingerprint belong?
 
-**Live TLS Entropy Detection:** This is your last seen TLS handshake data (From the initial Client Hello handshake message):
+**Live TLS Entropy Detection:** This is your last seen TLS handshake data - Taken from the initial Client Hello handshake message:
 
 <pre style="overflow: auto;" id="tls_fp">
 ...loading
@@ -54,7 +55,6 @@ Your User-Agent (`navigator.userAgent`) says that you are
 <script>
 document.getElementById('userAgent').innerText = navigator.userAgent;
 </script>
-
 
 ## Introduction
 
@@ -81,7 +81,7 @@ But what security properties does the TLS protocol offer exactly?
 
 - A TLS connection is reliable, since each message is protected by a message authentication code (MAC), which prevents undetected loss and modification of data in transmission (For example by a man-in-the-middle attacker).
 
-## TLS 1.2 RFC 5246 Summary
+# TLS 1.2 - An RFC 5246 Summary
 
 In the following sections, I will summarize the most important aspects of [RFC 5246](https://datatracker.ietf.org/doc/html/rfc5246). Some text sessions are direct quotes from [RFC 5246](https://datatracker.ietf.org/doc/html/rfc5246). Most of it is summarized and extended.
 
@@ -113,7 +113,7 @@ The TLS Handshake Protocol provides connection security that has three basic pro
 One advantage of TLS is that it is application protocol independent.
 Higher-level protocols can layer on top of the TLS protocol transparently.
 
-### The TLS 1.2 Record Protocol
+## The TLS 1.2 Record Protocol
 
 The TLS Record Protocol is a layered protocol.
 
@@ -166,7 +166,7 @@ The **Alert Protocol** messages convey the severity of the message
 with a level of fatal result in the immediate termination of the
 connection.
 
-### TLS 1.2 Handshake Protocol Overview
+## TLS 1.2 Handshake Protocol Overview
 
 The cryptographic parameters for each TLS session are produced by the
 TLS Handshake Protocol, which operates on top of the TLS record
@@ -286,34 +286,95 @@ Session resumption, abbreviated handshake:
       Application Data              <------->     Application Data
 
 
-## Core Differences Between TLS 1.2 and TLS 1.3
+# Core Improvements of TLS 1.3 compared to TLS 1.2
 
-In the following section, I will highlight the core differences between TLS 1.2 and TLS 1.3.  An article from 2018 from Cloudflare Inc. named (A Detailed Look at RFC 8446 (a.k.a. TLS 1.3))[https://blog.cloudflare.com/rfc-8446-aka-tls-1-3/] is an excellent read on that topic and my summary is based on this article.
+Excellent articles on the most important differences between TLS 1.2 and TLS 1.3 can be found in
+
++ an article from 2018 from Cloudflare Inc. named [A Detailed Look at RFC 8446 (a.k.a. TLS 1.3)](https://blog.cloudflare.com/rfc-8446-aka-tls-1-3/), which is an excellent read on that topic
+
++ and another great article from thesslstore.com named [TLS 1.2 vs. TLS 1.3 – What’s the difference?](https://www.thesslstore.com/blog/tls-1-3-everything-possibly-needed-know/)
+
+This section is heavily based on those two articles.
 
 <figure>
     <img src="{static}/images/tls-comp.png" alt="TLS 1.2 vs TLS 1.3" />
-    <figcaption>TLS 1.2 vs TLS 1.3 (<a href="https://www.embeddedcomputing.com/technology/security/advantages-to-using-tls-1-3-faster-more-efficient-more-secure">Image source</a>)</figcaption>
+    <figcaption>Visual comparison of TLS 1.2 and TLS 1.3 (<a href="https://www.embeddedcomputing.com/technology/security/advantages-to-using-tls-1-3-faster-more-efficient-more-secure">Image source</a>)</figcaption>
 </figure>
 
 
-**TLS 1.2 is slow:** The TLS 1.2 remained unchanged since TLS was first standardized in 1999, which means that it still requires two additional round-trips between client and server before the connection is encrypted. This is one reason why a new TLS version was in the planning.
+The core improvements from TLS 1.3 over its predecessor TLS 1.2 are:
 
-**Design goals for TLS 1.3:** There were several underlying design goals that drove the development of TLS 1.3 in an ope process:
++ *Removal of legacy ciphers:* TLS 1.3 eliminates support for outmoded algorithms and ciphers
++ *RSA removed:* TLS 1.3 eliminates RSA key exchange, mandates Perfect Forward Secrecy
++ *Reduced handshake complexity:* Reduces the number of negotiations in the handshake
++ *Less ciphers:* Reduces the number of algorithms in a cipher suite to only 2
++ *No more block ciphers:* TLS 1.3 eliminates block mode ciphers and mandates AEAD bulk encryption
++ TLS 1.3 uses HKDF cryptographic extraction and key derivation
++ *Reduced RTTs:* TLS 1.3 offers 1-RTT mode and Zero Round Trip Resumption
++ *More secure:* TLS 1.3 signs the entire handshake, an improvement of TLS 1.2
++ *More curves:* TLS 1.3 supports additional elliptic curves
+
+
+**TLS 1.2 is slow:** TLS 1.2 remained unchanged since TLS was first standardized in 1999, which means that it still requires two additional round-trips between client and server before the connection is encrypted. This is one reason why a new TLS version was in the planning.
+
+**Design goals for TLS 1.3:** There were several underlying design goals that drove the development of TLS 1.3 in an open process:
 
 + Reducing the number of TLS handshake RTTs
-+ Encrypting the whole TLS handshake
++ Encrypting the whole TLS handshake instead of the partial handshake as in TLS 1.2
 + Increase the resilience against cross-protocol attacks
 + Removing legacy features, especially legacy ciphers
 
-The two main advantages of TLS 1.3 versus TLS 1.2 are increased performance and improved security.
+The two main advantages from TLS 1.3 on TLS 1.2 are increased performance and improved security.
 
-**Deprecation of the RSA key exchange in TLS 1.3:** In the RSA key exchange, the shared secret is decided by the client. The client encrypts the chosen secret with the server's public key (obtained from the server certificate) and sends it to the server. The RSA key exchange has a important downside: It is not forward secret. Forward secrecy is the property that prevents attackers from decrypting traffic that was recorded in the past if they manage to get hold of the RSA private key on the server. Put differently: If an attacker finds out the RSA private key of the server, they can decrypt all past and future traffic between the client and server.
+**Deprecation of the RSA key exchange in TLS 1.3:** In the RSA key exchange, the shared secret is decided by the client. The client encrypts the chosen secret with the server's public key (obtained from the server certificate) and sends it to the server. The RSA key exchange has an important downside: It is not forward secret because it doesn’t offer an ephemeral key mode.
 
-Another reason for the deprecation of RSA is the difficulty of implementing RSA encryption properly, as the infamous [Bleichenbacher attacks](https://en.wikipedia.org/wiki/Daniel_Bleichenbacher) (*million-message attacks*) against RSA have shown.
+Forward secrecy is the property that prevents attackers from decrypting traffic that was recorded in the past, if they manage to get hold of the RSA private key from the server.
+
+Put differently: If an attacker finds out the RSA private key of the server, they can decrypt all past and future traffic between the client and server. Obtaining the server RSA private key was possible through the [Heartbleed vulnerability](https://heartbleed.com/), therefore it is not an hypothetical example. RSA usage is dangerous!
+
+Another reason for the deprecation of RSA is the difficulty of implementing RSA encryption properly, as the infamous [Bleichenbacher attacks](https://en.wikipedia.org/wiki/Daniel_Bleichenbacher) (*million-message attacks*) against RSA have shown. Those attacks are also known under the name [Oracle padding attacks](https://www.thesslstore.com/blog/bleichenbachers-cat-rsa-key-exchange/).
 
 For that reason, TLS 1.3 only supports the ephemeral Diffie-Hellman key exchange, where the client and server generate new public/private key pairs for each instance of the TLS handshake. Then they establish a shared secret by combining their respective public key parts. Because a new key pair is generated for each instance, the handshake is ephemeral and is forward secret. 
 
+Another advantage of deprecating RSA as key exchange option: Client and server may only use the ephemeral Diffie-Hellman key exchange, so the client can save one RTT by sending the requisite randoms and inputs needed for key generation directly, without having to agree with the server whether RSA or DH should be used.
+
+This leads to...
+
+**1-RTT handshake:** Due to the simpler cipher negotiation model and reduced set of key agreement options (no RSA, no user defined DH parameters), the parameters supported by the server are easier to guess (ECDHE with X25519 or P-256 for example). This allows the client to simply send DH key shares in the first message instead of waiting until the server has confirmed which key shares it supports. 
+
+This leads to a one RTT handshake that looks like the following:
+
+<figure>
+    <img src="{static}/images/Single-Round-Trip-Handshake-1.png" alt="TLS 1.3 simplified handshake" />
+    <figcaption>The TLS 1.3 simplified handshake (<a href="https://www.thesslstore.com/blog/tls-1-3-everything-possibly-needed-know/">Image taken from the www.thesslstore.com blog</a>)</figcaption>
+</figure>
+
+
+**0-RTT handshake resumption:** With TLS 1.3, clients can send encrypted data in the first message. In TLS 1.2, there are two different ways to resume a connection:
+
+1. session ids 
+2. session tickets
+
+In TLS 1.3, there is a new session-resumption mode called PSK resumption, which allows for almost-instantaneous session resumption for visitors that have recently connected to your TLS server.
+
+In this mode, the client and server derive a shared secret called the "resumption main secret" which is stored on the server. The session ticket is sent to the client and used when a new TLS session is created.
+
+The next time the client connects to the server, it can take the secret from the previous session and use it to encrypt application data that is sent to the server (alongside sending the session ticket). The server validates the session ticket and the session resumes.
+
+
 **TLS 1.3 reduces choice in cryptographic schemes:** TLS 1.3 reduces Diffie-Hellman parameters to ones that are known to be secure. Furthermore, TLS 1.3 also reduces heavily the choice of symmetric ciphers used for decryption and their mode of operation. In fact, TLS 1.3 removed all CBC-mode ciphers or insecure stream ciphers such as RC4. The only symmetric crypto that is still allowed in TLS 1.3 are AEAD (authenticated encryption with additional data) ciphers, which means that encryption and integrity occur in one and the same operation.
+
+Among others, TLS 1.3 mandated the removal of the following TLS 1.2 ciphers:
+
++ RC4 Stream Cipher
++ RSA Key Exchange
++ SHA-1 Hash Function
++ CBC (Block) Mode Ciphers
++ MD5 Algorithm
++ Various non-ephemeral Diffie-Hellman groups
++ EXPORT-strength ciphers
++ DES
++ 3DES
 
 **Removing PKCS#1 v1.5 padding:** As discussed above, [Bleichenbacher attacks](https://en.wikipedia.org/wiki/Daniel_Bleichenbacher) worked against RSA signatures used in TLS 1.2, with the underlying difficulty of implementing RSA padding correctly. In TLS 1.3, the newer design RSA-PSS obsoleted PKCS#1 v1.5 padding.
 
@@ -321,11 +382,10 @@ For that reason, TLS 1.3 only supports the ephemeral Diffie-Hellman key exchange
 
 <figure>
     <img src="{static}/images/FREAK.png" alt="TLS 1.2 vs FREAK" />
-    <figcaption>The TLS FREAK downgrade attack (<a href="https://blog.cloudflare.com/rfc-8446-aka-tls-1-3/">Image taken from the Cloudflare Blog</a>)</figcaption>
+    <figcaption>The TLS FREAK downgrade attack (<a href="https://blog.cloudflare.com/rfc-8446-aka-tls-1-3/">Image taken from the Cloudflare blog</a>)</figcaption>
 </figure>
 
-
-**More protocol simplification:** In previous TLS protocols, the entire ciphersuite was negotiated including many crypto attributes:
+**General protocol simplification:** In previous TLS protocols, the entire ciphersuite was negotiated including many crypto attributes:
 
 - certificate types that are supported
 - hash function used (SHA1, SHA256, ...)
@@ -333,7 +393,7 @@ For that reason, TLS 1.3 only supports the ephemeral Diffie-Hellman key exchange
 - key exchange algorithm (RSA, ECDHE, ...)
 - cipher (e.g., AES, RC4, ...) and cipher mode, if applicable (e.g., CBC)
 
-This lead to a combinational explosion of crypto ciphe code points that had to be maintained by the Internet Assigned Numbers Authority (IANA).
+This lead to a combinational explosion of crypto ciphe code points that had to be maintained by the Internet Assigned Numbers Authority (IANA). There is the [IANA page](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4) that hosts a [CSV file](https://www.iana.org/assignments/tls-parameters/tls-parameters-4.csv) that includes all the ciphers currently used in TLS 1.2. It's a huge file!
 
 TLS 1.3 on the other hand only allows peers to negotiate:
 
@@ -341,15 +401,33 @@ TLS 1.3 on the other hand only allows peers to negotiate:
 + Key Exchange
 + Signature Algorithm
 
-This has the side effect that the handshake only needs one RTT instead of two RTTs.
+As discussed above, this has the side effect that the handshake only needs one RTT instead of two RTTs.
 
-**1-RTT handshake:** Due to the simpler cipher negotiation model and reduced set of key agreement options (no RSA, no user defined DH parameters), the parameters supported by the server are easier to guess (ECDHE with X25519 or P-256 for example). This allows the client to simply send DH key shares in the first message instead of waiting until the server has confirmed which key shares it supports. This leads to a one RTT handshake.
+**Simplified Cipher Suites:** 
 
-**0-RTT handshake resumption:** With TLS 1.3, clients can send encrypted data in the first message. In TLS 1.2, there are two different ways to resume a connection:
+Due to this massive elimination of cipher suites in TLS 1.3, the size of possible cipher suites went down.
 
-1. session ids 
-2. session tickets
+A TLS 1.2 cipher had the following format:
 
-In TLS 1.3, there is a new session-resumption mode called PSK resumption. In this mode, the client and server derive a shared secret called the "resumption main secret" which is stored on the server. The session ticket is sent to the client and used when a new TLS session is created.
+<figure>
+    <img src="{static}/images/TLS-1.2-Cipher-Suite.png" alt="TLS 1.2 ciphersuite" />
+    <figcaption>TLS 1.2 ciphersuite (<a href="https://www.thesslstore.com/blog/tls-1-3-everything-possibly-needed-know/">Image taken from the www.thesslstore.com blog</a>)</figcaption>
+</figure>
 
-The next time the client connects to the server, it can take the secret from the previous session and use it to encrypt application data that is sent to the server (alongside sending the session ticket).
+And this is how a TLS 1.3 ciphersuite looks. Much easier, right?!
+
+<figure>
+    <img src="{static}/images/TLS-1.3-cipher-suite.png" alt="TLS 1.3 ciphersuite" />
+    <figcaption>Much simpler TLS 1.3 ciphersuite (<a href="https://www.thesslstore.com/blog/tls-1-3-everything-possibly-needed-know/">Image taken from the www.thesslstore.com blog</a>)</figcaption>
+</figure>
+
+There were an awful lot of [TLS 1.2 ciphersuite choices](https://www.iana.org/assignments/tls-parameters/tls-parameters-4.csv). 
+
+With TLS 1.3, we have only the following recommended secure choices:
+
++ TLS_AES_256_GCM_SHA384
++ TLS_CHACHA20_POLY1305_SHA256
++ TLS_AES_128_GCM_SHA256
++ TLS_AES_128_CCM_8_SHA256
++ TLS_AES_128_CCM_SHA256
+
