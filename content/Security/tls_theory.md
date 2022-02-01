@@ -98,7 +98,7 @@ Some TLS clients will randomize some TLS parameters for each new handshake. This
 }
 ```
 
-As you can observe, the first element of `ciphers`, `extensions` and `supported_groups` seems to be chosen at random.
+As you can observe, the first element of `ciphers`, `extensions` and `supported_groups` seems to be chosen at random, which results in a different `sha3_384` fingerprint.
 
 ```json
 {
@@ -118,7 +118,7 @@ As you can observe, the first element of `ciphers`, `extensions` and `supported_
 }
 ```
 
-Solution: I will only consider non-Reserved and non-Unassigned values for `ciphers`, `extensions` and `supported_groups`.
+**Solution:** I will only consider non-Reserved and non-Unassigned values for `ciphers`, `extensions` and `supported_groups` in the TLS fingerprint.
 
 ## Introduction
 
