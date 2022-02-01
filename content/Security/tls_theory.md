@@ -1,6 +1,6 @@
 Title: Fingerprinting TLS - Core differences between TLS 1.2 and TLS 1.3
 Date: 2022-01-18 12:46
-Modified: 2022-01-26 18:35
+Modified: 2022-02-01 18:35
 Category: Security
 Tags: TLS Fingerprinting, TLS 1.2, TLS 1.3
 Slug: fingerprinting-TLS
@@ -15,6 +15,14 @@ Status: Published
 Get your TLS Fingerprint here
 </a>
 
+ — 
+
+<a 
+  class="orange_button" 
+  href="https://tls.incolumitas.com/stats">
+  View TLS Fingerprint Statistics
+</a>
+
 ## Goal of this Article
 
 The goal of this blog post is twofold:
@@ -26,7 +34,7 @@ For instance, correlating TLS handshake data with the advertised HTTP User-Agent
 
 ## Fingerprinting TLS - A new Tool
 
-In this section, I present a simple tool that extracts properties / entropy from the TLS handshake and forms a TLS fingerprint. Such a TLS fingerprint may be used to identify devices / TLS implementations. This tool will be able to collect statistical data and correlate the entropy with the User-Agent transmitted in HTTP headers. After this data collection process, I can answer questions such as:
+In this section, I present a simple tool that extracts properties / entropy from the TLS handshake and forms a TLS fingerprint. Such a TLS fingerprint may be used to identify devices / TLS implementations. This tool will be able to collect statistical data and correlate the entropy with the `User-Agent` transmitted in HTTP headers. After this data collection process, I can answer questions such as:
 
 1. Does this TLS fingerprint belong to the operating system that is claimed by the User Agent?
 2. How unique is the TLS fingerprint of the client in question?
@@ -36,7 +44,7 @@ In this section, I present a simple tool that extracts properties / entropy from
 **Live TLS Entropy Detection:** This is your last seen TLS handshake data - Taken from the initial Client Hello handshake message:
 
 <pre style="overflow: auto;" id="tls_fp">
-...loading
+...loading (JavaScript required)
 </pre>
 
 <script>
@@ -55,6 +63,62 @@ Your User-Agent (`navigator.userAgent`) says that you are
 <script>
 document.getElementById('userAgent').innerText = navigator.userAgent;
 </script>
+
+## TLS Fingerprint Definition
+
+What fields/data from the TLS handshake constitutes the TLS fingerprint? Put differently: What sources of entropy do I use to build the TLS fingerprint?
+
+Currently, I use the following data sources from the initial client `ClientHello` TLS handshake message:
+
++ **TLS Cipher Suites** - The preference-ordered list of [supported cipher suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4) of the client. (Example: `"19018,4865,4866,4867,49195,49199,49196,49200,52393,52392,49171,49172,156,157,47,53"`)
++ **Client Hello Version** - The supported TLS version (Example: `"TLS 1.2"`)
++ **EC Point Formats** - The [EC point formats](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-9) the client supports (Example: `"0,1,2"`)
++ **Extensions** - The list of [supported extensions](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#tls-extensiontype-values-1) (Example: `"56026,0,23,65281,10,11,35,16,5,13,18,51,45,43,27,17513,31354"`)
++ **Record Version** - The TLS record version, which is mostly `1.0` (Example: `"TLS 1.0"`)
++ **Signature Algorithms** - The list of supported client [signature algorithms](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-16) (Example: `"1027,2052,1025,1283,2053,1281,2054,1537"`)
++ **Supported Groups** - The list of the [supported groups](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-8) of the client (Example: `"56026,29,23,24"`)
+
+Some TLS clients will randomize some TLS parameters for each new handshake. This is a small problem, but not substantial. For example, my own laptop/browser sends the following `ClientHello` and a slightly different in the next `ClientHello`:
+
+```json
+{
+  "num_fingerprints": 10,
+  "sha3_384": "a14851b3e6b9daa564f285c983ab929318875eeac94c56d02268bfb00ca37427e7d7d677140284f7aa4da36e0a8979de",
+  "timestamp": 1643713939.2002213,
+  "tls_fp": {
+    "ciphers": "31354,4865,4866,4867,49195,49199,49196,49200,52393,52392,49171,49172,156,157,47,53",
+    "client_hello_version": "TLS 1.2",
+    "ec_point_formats": "0",
+    "extensions": "14906,0,23,65281,10,11,35,16,5,13,18,51,45,43,27,17513,10794",
+    "record_version": "TLS 1.0",
+    "signature_algorithms": "1027,2052,1025,1283,2053,1281,2054,1537",
+    "supported_groups": "47802,29,23,24"
+  },
+  "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+}
+```
+
+As you can observe, the first element of `ciphers`, `extensions` and `supported_groups` seems to be chosen at random.
+
+```json
+{
+  "num_fingerprints": 12,
+  "sha3_384": "f18a2ee62ee0548fb09c5a31d4bbc61845cc53055c1640e381201d779a80a94e0d870fd48c2fc39fb5b15715ea731d95",
+  "timestamp": 1643713950.4840238,
+  "tls_fp": {
+    "ciphers": "14906,4865,4866,4867,49195,49199,49196,49200,52393,52392,49171,49172,156,157,47,53",
+    "client_hello_version": "TLS 1.2",
+    "ec_point_formats": "0",
+    "extensions": "64250,0,23,65281,10,11,35,16,5,13,18,51,45,43,27,17513,60138,21",
+    "record_version": "TLS 1.0",
+    "signature_algorithms": "1027,2052,1025,1283,2053,1281,2054,1537",
+    "supported_groups": "35466,29,23,24"
+  },
+  "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+}
+```
+
+Solution: I will only consider non-Reserved and non-Unassigned values for `ciphers`, `extensions` and `supported_groups`.
 
 ## Introduction
 
