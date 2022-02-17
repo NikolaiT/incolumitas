@@ -26,7 +26,7 @@ ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
 PAGE_URL = 'pages/{slug}/'
 PAGE_SAVE_AS = 'pages/{slug}/index.html'
 
-PATH = 'content'
+PATH = './content'
 
 TIMEZONE = 'Europe/Berlin'
 
@@ -89,7 +89,7 @@ STATIC_PATHS = ['uploads/', 'images/', 'data/']
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
-THEME = '/home/nikolai/projects/private/incolumitas/incolumitas/Flex'
+THEME = './Flex'
 
 CUSTOM_CSS = 'stylesheet/custom.css'
 CUSTOM_JS = 'javascript/custom.js'
