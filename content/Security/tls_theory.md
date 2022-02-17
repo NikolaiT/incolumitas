@@ -1,6 +1,6 @@
 Title: Fingerprinting TLS - Core differences between TLS 1.2 and TLS 1.3
 Date: 2022-01-18 12:46
-Modified: 2022-02-01 18:35
+Modified: 2022-02-02 18:35
 Category: Security
 Tags: TLS Fingerprinting, TLS 1.2, TLS 1.3
 Slug: fingerprinting-TLS
@@ -119,6 +119,15 @@ As you can observe, the first element of `ciphers`, `extensions` and `supported_
 ```
 
 **Solution:** I will only consider non-Reserved and non-Unassigned values for `ciphers`, `extensions` and `supported_groups` in the TLS fingerprint.
+
+## Recommended Reading List
+
+So you want to start fingerprinting TLS connections? It's plenty of fun. For me, the following reading list was very helpful:
+
+1. [Slides - The Generation and Use of TLS Fingerprints](https://resources.sei.cmu.edu/asset_files/Presentation/2019_017_001_539902.pdf) - Cisco is doing advanced TLS fingerprinting and they [open sourced](https://github.com/cisco/joy) some of their TLS fingerprinting methodology and fingerprint database. They are also talking in a blog article named [TLS Fingerprinting in the Real World
+](https://blogs.cisco.com/security/tls-fingerprinting-in-the-real-world) about the subject.
+2. A rather new paper by researchers from the Technical University of Munich named [TLS Fingerprinting Techniques](https://www.net.in.tum.de/fileadmin/TUM/NET/NET-2020-04-1/NET-2020-04-1_04.pdf) is also a highly suggested read about TLS fingerprinting.
+3. Another great read is a blog article named [TLS Fingerprinting with JA3 and JA3S from Salesforce](https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967) which explains in-depth how Salesforce's JA3 and JA3S TLS fingerprinting works. The code for [JA3 and JA3S is open sourced](https://github.com/salesforce/ja3).
 
 ## Introduction
 
