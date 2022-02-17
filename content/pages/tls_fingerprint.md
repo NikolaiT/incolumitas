@@ -5,7 +5,19 @@ Slug: TLS-Fingerprint
 Status: published
 Sortorder: 8
 
+**Author:** Nikolai Tschacher <br>
+**API Version:** v0.1 <br>
+**Version Date:** 17th February 2022 <br>
+**API Access:** Free <br>
+**Source Code Download:** Closed Source (Source Code upon request only)
+
 ## API
+
+The TLS fingerprinting API allows you to get your [TLS fingerprint](https://tls.incolumitas.com/fps). It can be used for various purposes such as:
+
+1. Networking traffic analyisis 
+2. Malware detection
+3. Bot detection
 
 | Endpoint          | Description                                                                                                                                                                                                                                                             | Live API Call                                                                           |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
