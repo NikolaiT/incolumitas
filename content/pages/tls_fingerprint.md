@@ -8,8 +8,8 @@ Sortorder: 8
 | Item Name        | Item Value                                    |
 |------------------|-----------------------------------------------|
 | **Author**       | Nikolai Tschacher                             |
-| **API Version**  | v0.1                                          |
-| **Version Date** | 17th February 2022                            |
+| **API Version**  | v0.2                                          |
+| **Version Date** | 18th February 2022                            |
 | **API Access**   | Free                                          |
 | **Download**     | Closed Source (Upon request only)             |
 
@@ -21,16 +21,17 @@ The TLS fingerprinting API allows you to get your [TLS fingerprint](https://tls.
 2. Malware detection
 3. Bot detection
 
+### Endpoint `/fps`
+
+The `/fps` endpoint returns the most recent TLS fingerprint of the client making the request. Internally, the client's public IP address is used to lookup matching TLS fingerprints. Since clients generate many TLS sessions over time, only the most recent TLS fingerprint is returned by default.
+
 | Endpoint          | Description                                                                                                                                                                                                                                                             | Live API Call                                                                           |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| **/fps**          | This endpoint will return the TLS fingerprint for the requesting client. Internally, the client's public IP address is used to lookup matching TLS fingerprints.  Since clients generate many TLS sessions over time, only the most recent TLS fingerprint is returned. | <a href="https://tls.incolumitas.com/fps">tls.incolumitas.com/fps</a>                   |
+| **/fps**          | This endpoint returns the most recent TLS fingerprint for the requesting client. | <a href="https://tls.incolumitas.com/fps">tls.incolumitas.com/fps</a>                   |
 | **/fps?detail=1** | Request a detailed/verbose version of the TLS fingerprint for the current connection.                                                                                                                                                                                   | <a href="https://tls.incolumitas.com/fps?detail=1">tls.incolumitas.com/fps?detail=1</a> |
 | **/fps?all=1**    | Request all TLS fingerprints for this client that exist in server memory (The server is restarted periodically).   All the fingerprints that match the client's IP address will be returned.                                                                            | <a href="https://tls.incolumitas.com/fps?all=1"> tls.incolumitas.com/fps?all=1 </a>     |
-| -                 | -                                                                                                                                                                                                                                                                       | -                                                                                       |
-| **/stats**        | Lists all TLS statistics.                                                                                                                                                                                                                                               | <a href="https://tls.incolumitas.com/stats">tls.incolumitas.com/stats</a>               |
-| **/stats?bo=1**   | Get statistics only for TLS fingerprints with associated User-Agents                                                                                                                                                                                                    | <a href="https://tls.incolumitas.com/stats?bo=1">tls.incolumitas.com/stats?bo=1</a>     |
 
-## API Example
+#### Example for endpoint `/fps`
 
 Example by using `curl`:
 
@@ -57,6 +58,17 @@ returns the following JSON response from the API:
   "utc_now": "2022-02-17 19:07:09.136016"
 }
 ```
+
+
+### Endpoint `/stats`
+
+The `/stats` endpoint returns statistics over all stored TLS connections on the server side. Due to performance reasons, only the most recent 50MB of TLS data are considered in `/stats` lookups. Thus, the database is of reduced accuracy and statistical significance.
+
+| Endpoint          | Description                                                                                                                                                                                                                                                             | Live API Call                                                                           |
+|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| **/stats**        | Lists all TLS statistics.                                                                                                                                                                                                                                               | <a href="https://tls.incolumitas.com/stats">tls.incolumitas.com/stats</a>               |
+| **/stats?bo=1**   | Get statistics only for TLS fingerprints with associated User-Agents                                                                                                                                                                                                    | <a href="https://tls.incolumitas.com/stats?bo=1">tls.incolumitas.com/stats?bo=1</a>     |
+
 
 ## Introduction
 
