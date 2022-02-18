@@ -1,6 +1,6 @@
 Title: About
 Date: 2012-07-01 14:20
-Modified: 2020-05-17 14:09
+Modified: 2022-02-18 14:09
 Author: Nikolai Tschacher
 Slug: about
 Status: published
@@ -22,23 +22,19 @@ For that reason, I am writing this blog.
 
 If you want to know how I think and with what mindset I am navigating this world, read the article [Where is the World headed to?]({filename}/Society/where-is-the-world-headed-to.md)
 
-## Education
+## Education & Professional Experience
 
 I am a computer science professional, having graduated with my **B.Sc. in Information Systems** in 2016 from the [University of Hamburg](https://www.uni-hamburg.de/) and with a **Master in Computer Science** from the [Humboldt University](http://hu-berlin.de) in 2019.
 
-I visited highschool in Switzerland/Bern and spent the first twenty years of my life in beautiful Switzerland. Then I moved to Germany and lived in Hamburg, Berlin and Cologne. 
+I worked several years in the IT security industry and have experience in a wide field of IT security.
+
+Currently, I am interested in **web scraping**, **large scale crawling**, **machine learning**, **bot detection** and always generic IT security.
 
 ## Bachelors Thesis
 
 My bachelor thesis about **Typosquatting Programming Language Package Managers** in 2016 gained some popularity. There, I demonstrated how it is possible within weeks to intrude into more than 17.000 unique systems by typosquatting package names on [PyPi](https://pypi.org/) or [npmjs.com](https://www.npmjs.com/). As far as I know, this security vulnerability is still unfixed in late 2018.
 
 See my original [blog post here](https://incolumitas.com/2016/06/08/typosquatting-package-managers/). An [news article from Heise](https://www.heise.de/security/meldung/Student-verschreibt-sich-absichtlich-und-US-Regierung-fuehrt-potentiellen-Schadcode-aus-3246728.html) and an [article from ars technica](https://arstechnica.com/information-technology/2016/06/college-student-schools-govs-and-mils-on-perils-of-arbitrary-code-execution/). A year later the large IT portal [Golem wrote also about my thesis](https://www.golem.de/news/pypi-boesartige-python-pakete-entdeckt-1709-130098.html).
-
-## Interests
-
-Currently, I am interested in **web scraping**, **large scale crawling**, **machine learning**, **bot detection** and always generic IT security.
-
-I like to work remotely and travel to far away countries, attempting to simultaneously explore while working on interesting projects. I like to connect to smart people around the globe and I am open to collaborating on interesting ideas.
 
 ## Expertise and Skills
 
@@ -65,8 +61,4 @@ By starting this blog in July 2012, my intention was to feed the community with 
 snippets and some of my ideas. There are many ideas – too many – but
 only a fraction that I really realize.
 
-**Nikolai Tschacher** - Last update: **June 2021**
-
---- 
-
-*Nothing in life is as powerful as the beautiful first hour in the morning, after a well rested night, where the strong coffee you are sipping is starting to kick in and you just found the correct house/techno set and your hands start to hammer down letters appearing on a screen.*
+**Nikolai Tschacher** - Last update: **February 2022**

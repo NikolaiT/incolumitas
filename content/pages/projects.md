@@ -1,6 +1,6 @@
 Title: Projects
 Date: 2013-12-27 14:27
-Modified: 2021-10-28 18:28
+Modified: 2022-02-18 18:28
 Author: Nikolai Tschacher
 Slug: projects
 Status: published
@@ -8,11 +8,7 @@ Sortorder: 0
 
 My main development is done in Node.js, Typescript and Python. I use Django for web development and Celery/Redis for asynchronous tasks. Nowadays, I mostly program in modern JavaScript, because it is the most used language when developing data extraction / crawling tools.
 
-Some JavaScript frameworks I used a lot recently: [React](https://reactjs.org/), [Ant.design](https://ant.design/), puppeteer, express, serverless.
-
-For my master thesis, I used a lot of good old C, because it involved fuzzing with [AFL](https://github.com/google/AFL) and [LibFuzzer](https://llvm.org/docs/LibFuzzer.html).
-
-I know a bit of web design too, but tend to avoid it in favor of CSS frameworks such as bulma.io, bootstrap or ant.design.
+Some JavaScript frameworks I used a lot recently: [React](https://reactjs.org/), [Ant.design](https://ant.design/), puppeteer, express, serverless. For my master thesis, I used a lot of good old C, because it involved fuzzing with [AFL](https://github.com/google/AFL) and [LibFuzzer](https://llvm.org/docs/LibFuzzer.html). I know a bit of web design too, but tend to avoid it in favor of CSS frameworks such as bulma.io, bootstrap or ant.design.
 
 My most recent projects are:
 
@@ -25,7 +21,7 @@ My most recent projects are:
 - [Distributed crawling infrastructure](https://github.com/NikolaiT/Crawling-Infrastructure) - Distributed crawling infrastructure running on top of serverless computation, cloud storage (such as S3) and sophisticated queues. This software allows you to crawl and scrape the Internet in scale. It supports basic crawling via http as well as sophisticated crawling with the help of a heavily customized headless chrome browser controlled via puppeteer.
 - [struktur.js](https://github.com/NikolaiT/struktur) - A way to extract structured information from any visually rendered HTML page. This project aims to deprecate the scraping of websites with CSS selectors and Xpath queries. I don't have enough time to push it forward, but I like the idea a lot and I think it has a tremendous amount of potential.
 
-Some old projects of mine:
+Some old/deprecated projects of mine:
 
 - [scrapeulous](https://scrapeulous.com/) - A scraping platform, aiming to solve many annoying tasks when developing scrapers/crawlers. Currently, scrapeulous focuses on search engine scraping. In the near future, scraping of any website will be possible. *Discontinued*
 - [se-scraper](https://github.com/NikolaiT/se-scraper) - The successor of GoogleScraper that builds on top of puppeteer, written in JS. *Discontinued*

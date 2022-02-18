@@ -91,3 +91,9 @@ What TCP/IP header fields exactly are assumed to be OS-specific?
 + `TCP.urgent_pointer (16 bits)` - If the URG flag is set, then this 16-bit field is an offset from the sequence number indicating the last urgent data byte. It *should* be zero in initial SYN packets.
 + `TCP.options (Variable 0-320 bits)` - All TCP Options. The length of this field is determined by the data offset field. Contains a lot of information, but most importantly: The Maximum Segment Size (MSS), the Window scale value. Because the TCP options data is variable in size, it is the most important source of entropy to distinguish operating systems. The order of the TCP options is also taken into account.
 
+## TODO
+
+- Think about reverse-engineering the [TCP congestion control algorithm](https://en.wikipedia.org/wiki/TCP_congestion_control) by inspecting the packet flow. Reason: Different operating systems use different congestion control mechanisms. Citing [Wikipedia](https://en.wikipedia.org/wiki/TCP_congestion_contro) shows why it might be interesting: 
+> Per the end-to-end principle, congestion control is largely a function of internet hosts, not the network itself. There are several variations and versions of the algorithm implemented in protocol stacks of operating systems of computers that connect to the Internet.
+
+- Collect and create a new fingerprint database, because the old one is from mid-2021
