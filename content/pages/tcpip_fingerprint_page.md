@@ -5,13 +5,39 @@ Slug: TCP-IP-Fingerprint
 Status: published
 Sortorder: 9
 
-**Author:** Nikolai Tschacher <br>
-**API Version:** v0.1 <br>
-**Version Date:** 17th February 2022 <br>
-**API Access:** Free <br>
-**Source Code Download:** [Open Source](https://github.com/NikolaiT/zardaxt)
+| Item Name        | Item Value                                         |
+|------------------|----------------------------------------------------|
+| **Author**       | Nikolai Tschacher                                  |
+| **API Version**  | v0.1                                               |
+| **Version Date** | 17th February 2022                                 |
+| **API Access**   | Free                                               |
+| **Download**     | [Open Source](https://github.com/NikolaiT/zardaxt) |
+
 
 ## API
+
+The TCP/IP fingerprinting API allows you to get your [TCP/IP fingerprint](https://tcpip.incolumitas.com/classify?by_ip=1). It can be used for various purposes such as:
+
+1. Networking traffic analyisis 
+2. Malware detection
+3. Bot detection
+4. Proxy / VPN detection
+
+Currently, there is only one API endpoint:
+
+| Endpoint          | Description                                                             | Live API Call                                                                            |
+|-------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| /classify?by_ip=1 | This endpoint returns the TCP/IP fingerprint for the requesting client. | [tcpip.incolumitas.com/classify?by_ip=1](https://tcpip.incolumitas.com/classify?by_ip=1) |
+
+You can invoke this API endpoint with curl:
+
+Example by using `curl`:
+
+```bash
+curl 'https://tcpip.incolumitas.com/classify?by_ip=1'
+```
+
+## API Example
 
 Based on your initial TCP/IP SYN packet, your device most likely is:
 

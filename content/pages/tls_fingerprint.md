@@ -5,11 +5,13 @@ Slug: TLS-Fingerprint
 Status: published
 Sortorder: 8
 
-**Author:** Nikolai Tschacher <br>
-**API Version:** v0.1 <br>
-**Version Date:** 17th February 2022 <br>
-**API Access:** Free <br>
-**Source Code Download:** Closed Source (Source Code upon request only)
+| Item Name        | Item Value                                    |
+|------------------|-----------------------------------------------|
+| **Author**       | Nikolai Tschacher                             |
+| **API Version**  | v0.1                                          |
+| **Version Date** | 17th February 2022                            |
+| **API Access**   | Free                                          |
+| **Download**     | Closed Source (Upon request only)             |
 
 ## API
 
