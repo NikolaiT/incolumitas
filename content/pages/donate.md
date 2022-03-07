@@ -3,7 +3,7 @@ Date: 2021-11-27 14:20
 Author: Nikolai Tschacher
 Slug: donations
 Status: published
-Sortorder: -1
+Sortorder: 2
 
 If you find some of my work valuable, you have the ability to donate to me via PayPal by clicking on the button below. Thanks!
 

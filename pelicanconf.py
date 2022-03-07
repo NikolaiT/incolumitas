@@ -7,7 +7,7 @@ SITEURL = 'http://localhost:8000'
 SITENAME = 'incolumitas.com'
 SITETITLE = 'incolumitas.com'
 
-SITESUBTITLE = 'Where computer science meets entrepreneurship — Blog articles about various topics in computer science and the lifestyle attached to it.'
+SITESUBTITLE = 'Where computer science meets entrepreneurship — Blog articles about programming and the lifestyle attached to it.'
 
 SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas around IT security and computer science'
 SITELOGO = '/theme/img/me-on-chasseral.webp'
@@ -106,7 +106,8 @@ PROXY_IFRAME = False
 MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
              ('Tags', '/tags.html'),
-             ('Impressum', '/pages/impressum/'),)
+             ('Impressum', '/pages/impressum/'),
+             ('Contact', '/pages/contact/'),)
 
 
 PAGES_SORT_ATTRIBUTE = 'sortorder'
@@ -123,7 +124,10 @@ ENABLE_PARTICLES = False
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 
-EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum')
+EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum', 'contact')
+
+API_PAGES = ('BotOrNot', 'FireHOL-API', 'Datacenter-IP-API', 'TCP-IP-Fingerprint', 'TLS-Fingerprint')
+
 COMMENTS_PAGES = ('about', 'contact')
 COMMENTS_IN_PAGES = True
 

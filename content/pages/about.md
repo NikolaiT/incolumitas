@@ -4,7 +4,7 @@ Modified: 2022-02-18 14:09
 Author: Nikolai Tschacher
 Slug: about
 Status: published
-Sortorder: 1
+Sortorder: 0
 
 <figure>
     <img src="/images/me2.png" alt="me in grayscale" style="width:400px" />
