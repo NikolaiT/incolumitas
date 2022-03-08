@@ -1,5 +1,29 @@
 # Todo
 
+## 07.03.2022
+
+### Update all the APIs
+
+TLS FP: 
+
+- Add TLS 1.3 support on the server side, write blog article: "TLS 1.3 Fingerprinting"
+- Add Server Hello support to the FP
+
+TCP/IP FP: 
+
+- Record new data
+- Add a simple fingerprint hash
+
+Datacenter API:
+
+- Update all the ranges
+
+
+### Web Analytics
+
+Make in memory-mechanism, only flush to files every 20 minutes or if there are more than 1000 active sessions
+
+
 ## 11.12.2020
 
 - get newest version of https://github.com/alexandrevicenzi/Flex/ [done]

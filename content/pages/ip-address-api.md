@@ -1,5 +1,6 @@
 Title: Datacenter IP Address API
 Date: 2021-09-29 00:13
+Modified: 2022-03-07 00:13
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
@@ -7,11 +8,17 @@ Sortorder: 5
 
 I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
 
-+ API Version: v0.3 (6th November 2021)
-+ API Endpoint: **https://api.incolumitas.com/datacenter?ip=3.5.140.2**
-+ Supported Datacenters: Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more
-+ IPv6 Support: Yes
+The purpose of this API is simple: This API allows you to check whether an IP address belongs to an datacenter or not.
 
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| Author         | **Nikolai Tschacher (incolumitas.com)**     |
+| API Access         | **Free & unlimited** (fair use)         |
+| API Version         | **v0.4 (8th March 2022)**         |
+| API Endpoint         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
+| Supported Datacenters         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more         |
+| IPv6 Support         | Yes         |
 
 ## Live API
 
@@ -36,6 +43,13 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 </script>
 
 ## ChangeLog
+
+#### 8th March 2022
+
++ Added cloud service providers / hosting providers / VPN service providers: `Linode`, `Mullvad VPN`, `B2 Net Solutions Inc.`, `scaleway.com`, `Vultr Holdings, LLC`, `The Constant Company, LLC`, `QuadraNet Enterprises LLC`, `Zscaler, Inc.`, `CloudCone, LLC`, `Psychz Networks`,  `BuyVM Services (buyvm.net)`,  `DataCamp Limited`,  `ColoCrossing`,  `IT7 Networks Inc.`,  `G-Core Labs S.A.`,  `AlmaHost Ltd`,  `Reg.Ru Hosting`,  `Packethub S.A.`,  `Clouvider Limited`,  `24Shells Inc`,  `Performive LLC`,  `Packet Host, Inc.`,  `veesp.com vps clients`,  `tzulo, inc.`,  `Cluster Logic Inc`,  `Owl Limited`,  `HIVELOCITY, Inc.`
++ Added lookup time in `ms` to the API output as attribute `elapsed_ms`
++ Updated this API page
++ Updated all IP address ranges
 
 #### 6th November 2021
 
@@ -91,15 +105,15 @@ Usage with JavaScript:
 
 ```JavaScript
 fetch('https://api.incolumitas.com/datacenter') 
-.then(response => response.json())
-.then(function(data) {
-  console.log(data)
-})
+  .then(response => response.json())
+  .then(function(data) {
+    console.log(data)
+  })
 ```
 
 The IP address ranges for the cloud providers are kept up to date and the IP ranges are pulled from the upstream sources every 4 hours.
 
-#### More Examples for the IP Address Datacenter API
+### More Examples for the IP Address Datacenter API
 
 In the following section, I will show examples for looking up IP addresses belonging to the three biggest cloud providers AWS, Azure and GCP:
 
@@ -172,3 +186,18 @@ Currently, the API supports IP address ranges from the following [cloud provider
 | Tor Network                        | ?                      | ✓           |
 
 The API database is updated every 4 hours with the official source of the IP address ranges of the cloud provides listed above (with a ✓). For some cloud providers such as OVH or Hetzner there is no official IP address range source, so I have to rely on [third party sources](https://bgp.he.net/search?search%5Bsearch%5D=OVH&commit=Search).
+
+### Sources for Datacenter IP Address Ranges
+
+Where do I get the [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) address ranges for the datacenters? 
+
+Most datacenters publish their own IP ranges, such as AWS or Google Cloud. But often, those IP address ranges are not complete. For that reason, other means of lookup have to be used, such as [whois lookups](https://en.wikipedia.org/wiki/WHOIS) or searching through [ASN](https://en.wikipedia.org/wiki/Autonomous_system_(Internet)) databases.
+
+This API follows the following lookup logic:
+
+1. First, check if the IP is to be found in the published IP ranges from the providers.
+2. If the first step farils, a lookup of the IP address with `whois 105.226.177.72 | grep -E -i "(OrgName:|address:|OrgTechName:|descr:)"` is conducted. If the orgname belongs to a datacenter, we have a match. Simple string matching.
+3. If the above whois lookup did not produce a datacenter match, we lookup the autonomous system `OriginAS: AS21928` and we perform a simple grep `cat ripe-asn.txt | grep -E -i "^13335\s"` in the ASN lists to check if the ASN belongs to a large cloud provider.
+
+Other techniques are pursuited, if the above algorithm doesn't yield a match.
+
