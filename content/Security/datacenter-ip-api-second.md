@@ -1,7 +1,7 @@
 Title: How to find out if an IP address belongs to a Hosting / Cloud Provider?
 Status: published
 Date: 2022-03-09 17:45
-Modified: 2022-03-13 17:45
+Modified: 2022-03-13 22:48
 Category: Security
 Tags: API, Datacenter, Hosting, Cloud-Provider, IP API, Bot-Detection, VPN-Detection, IP-Intelligence, IP-Lookup
 Slug: find-out-if-an-IP-address-belongs-to-a-hosting-provider
@@ -87,20 +87,55 @@ whois -h whois.radb.net 77.247.84.129
 echo '77.247.84.129' | nc whois.radb.net 43
 ```
 
+#### ASN Lookups
+
+Some Regional Internet Registries publish lists of AS numbers and the associated companies.
+
+[Example ASN list for RIPE-NCC](https://ftp.ripe.net/ripe/asnames/).
+
+Excerpt:
+
+```text
+[...]
+24928 NORDEAPL-AS Nordea Bank Polska SA, PL
+24929 NGCS IT arte Sp. z o.o., PL
+24931 DEDIPOWER Pulsant Limited, GB
+24933 MINXS-AS MILLENNIUMS.NET GmbH, DE
+24935 ATE-AS AVENIR TELEMATIQUE SAS, FR
+24936 RIM2000M-AS Plusinfo OOO, RU
+24937 UNTN PJSC "Ukrtelecom", UA
+24938 TELECITYREDBUS-IT TELECITYGROUP INTERNATIONAL LIMITED, GB
+24939 IVV ivv Informationsverarbeitung fuer Versicherungen GmbH, DE
+24940 HETZNER-AS Hetzner Online GmbH, DE
+24941 -Reserved AS-, ZZ
+24944 ARENA-AS Arena Bilgisayar San. ve Tic A.S, TR
+24945 ASN-VNTP Telecommunication Company Vinteleport Ltd., UA
+24947 OZ-IP-Transit Parsun Network Solutions PTY LTD, AU
+24949 BTCML-AXA-AS AXA Technology Services UK Limited, GB
+24950 SOFIASAT-AS Venus REIT OOD, BG
+[...]
+```
+
+The idea is to lookup well known database names in this ASN lists and then perform a search such as:
+
+```bash
+echo 'AS24940' | nc whois.radb.net 43
+```
+
 #### Download whois databases from Region Internet Registries (RIR)
 
 There are six regional internet registries:
 
-1. 1992 (RIPE NCC)
-2. 1993 (APNIC)
-3. 1997 (ARIN)
-4. 1999 (LACNIC)
-5. 2003 (NRO)
-6. 2004 (AFRINIC)
+1. RIPE NCC (Established in 1992)
+2. APNIC (Established in 1993)
+3. ARIN (Established in 1997)
+4. LACNIC (Established in 1999)
+5. NRO (Established in 2003)
+6. AFRINIC (Established in 2004)
 
 Almost all of them publish `whois` databases on their FTP servers.
 
-The whois databases for the RIRs can be found here:
+The whois databases for the RIRs can be found here (**Careful**, some of those links download large files):
 
 + [AFRINIC whois database](https://ftp.afrinic.net/pub/dbase/afrinic.db.gz)
 + [APNIC whois database](https://ftp.apnic.net/apnic/whois/)
@@ -108,7 +143,7 @@ The whois databases for the RIRs can be found here:
 + [ARIN whois database](https://ftp.arin.net/pub/rr/arin.db.gz)
 + [RIPE-NCC whois database](https://ftp.ripe.net/ripe/dbase/ripe.db.gz)
 
-The [RIPE-NCC](https://ftp.ripe.net/ripe/dbase/ripe.db.gz) is quite large:
+The [RIPE-NCC database](https://ftp.ripe.net/ripe/dbase/ripe.db.gz) is quite large:
 
 ```bash
 curl -I https://ftp.ripe.net/ripe/dbase/ripe.db.gz
@@ -125,17 +160,13 @@ Content-Type: application/x-gzip
 
 Uncompressed, the RIPE-NCC database is 5.5GB large. 
 
-Whois data does not follow any standard format, so the informational content varies along different RIRs.
+Whois databases (which are in fact simple text files) do not follow any standard format, so the informational content varies along different RIRs.
 
 But this is still by far the best source of data in order to infer whether an IP belongs to a datacenter or not.
 
-#### ASN Lookups
-
-If the above whois lookup did not produce a datacenter match,  the autonomous system `OriginAS: AS21928` and we perform a simple grep `cat ripe-asn.txt | grep -E -i "^13335\s"` in the ASN lists to check if the ASN belongs to a large cloud provider.
-
 #### Reverse DNS Lookups
 
-This is also an idea. Sometimes reverse DNS queries for an IP address reveal that the IP address belongs to a datacenter. Obvious downside: slow!
+Reverse DNS Lookups could also be an idea. Sometimes reverse DNS queries for an IP address reveal that the IP address belongs to a datacenter. Obvious downside: DNS queries are slow!
 
 ```bash
 dig -x 167.99.241.135
