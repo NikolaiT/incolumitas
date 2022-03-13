@@ -5,7 +5,7 @@ Slug: TCP-IP-Fingerprint
 Status: published
 Sortorder: 9
 
-| Item Name        | Item Value                                         |
+| <!-- -->         | <!-- -->                                           |   
 |------------------|----------------------------------------------------|
 | **Author**       | Nikolai Tschacher                                  |
 | **API Version**  | v0.1                                               |

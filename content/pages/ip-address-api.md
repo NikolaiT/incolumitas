@@ -13,12 +13,12 @@ The purpose of this API is simple: This API allows you to check whether an IP ad
 
 | <!-- -->    | <!-- -->    |
 |-------------|-------------|
-| Author         | **Nikolai Tschacher (incolumitas.com)**     |
-| API Access         | **Free & unlimited** (fair use)         |
-| API Version         | **v0.4 (8th March 2022)**         |
-| API Endpoint         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
-| Supported Datacenters         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more         |
-| IPv6 Support         | Yes         |
+| **Author**         | Nikolai Tschacher (incolumitas.com)     |
+| **API Access**         | Free & unlimited (fair use)         |
+| **API Version**         | **v0.5 (11th March 2022)**         |
+| **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
+| **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more         |
+| **IPv6 Support**         | Yes         |
 
 ## Live API
 
@@ -42,11 +42,29 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 })
 </script>
 
+
+## Datacenter/Cloud IP API Key Features
+
++ **Always updated**: The API database is automatically updated every day. Data is gathered from many sources: Self published IP ranges from large cloud providers, whois lookups and many other sources
++ **Pretty fast**: The API is very performant. On average, an IP lookup takes `0.042ms` (server side time consumed)
++ **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
+
+
 ## ChangeLog
+
+#### 11th March 2022
+
++ Added bulk IP lookup mode, up to 100 IP addresses can be queried with one API request
++ Added fast IPv6 lookup support (Speedup of factor `883x`, average lookup time now  `0.056ms` instead of `49.99ms`)
+
+#### 9th March 2022
+
++ Added `cidr` attribute to the API output
++ Improved API performance for IPv4 (IPv6 still pending), the performance is now 1500x times faster on average (Average lookup time before: `100.37ms`, average lookup time now `0.068ms`)
 
 #### 8th March 2022
 
-+ Added cloud service providers / hosting providers / VPN service providers: `Linode`, `Mullvad VPN`, `B2 Net Solutions Inc.`, `scaleway.com`, `Vultr Holdings, LLC`, `The Constant Company, LLC`, `QuadraNet Enterprises LLC`, `Zscaler, Inc.`, `CloudCone, LLC`, `Psychz Networks`,  `BuyVM Services (buyvm.net)`,  `DataCamp Limited`,  `ColoCrossing`,  `IT7 Networks Inc.`,  `G-Core Labs S.A.`,  `AlmaHost Ltd`,  `Reg.Ru Hosting`,  `Packethub S.A.`,  `Clouvider Limited`,  `24Shells Inc`,  `Performive LLC`,  `Packet Host, Inc.`,  `veesp.com vps clients`,  `tzulo, inc.`,  `Cluster Logic Inc`,  `Owl Limited`,  `HIVELOCITY, Inc.`
++ Added cloud service providers / hosting providers / VPN service providers: `Linode`, `Mullvad VPN`, `B2 Net Solutions Inc.`, `scaleway.com`, `Vultr Holdings, LLC`, `The Constant Company, LLC`, `QuadraNet Enterprises LLC`, `Zscaler, Inc.`, `CloudCone, LLC`, `Psychz Networks`,  `BuyVM Services (buyvm.net)`,  `DataCamp Limited`,  `ColoCrossing`,  `IT7 Networks Inc.`,  `G-Core Labs S.A.`,  `AlmaHost Ltd`,  `Reg.Ru Hosting`,  `Packethub S.A.`,  `Clouvider Limited`,  `24Shells Inc`,  `Performive LLC`,  `Packet Host, Inc.`,  `veesp.com vps clients`,  `tzulo, inc.`,  `Cluster Logic Inc`,  `Owl Limited`,  `HIVELOCITY, Inc.`, `SysEleven SysEleven GmbH`
 + Added lookup time in `ms` to the API output as attribute `elapsed_ms`
 + Updated this API page
 + Updated all IP address ranges
@@ -64,7 +82,7 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 + Old API Endpoint: https://abs.incolumitas.com/datacenter?ip=1.2.3.4
 
 
-## API Usage
+## API Usage Documentation
 
 You can reach the API endpoint with this URL: **https://api.incolumitas.com/datacenter?ip=**
 
@@ -73,9 +91,27 @@ If you pass the IP address `3.5.140.2` to the API by calling [https://api.incolu
 ```json
 {
   "ip": "3.5.140.2",
+  "is_datacenter": true,
+  "cidr": "3.5.140.0/22",
   "region": "ap-northeast-2",
   "service": "AMAZON",
-  "network_border_group": "ap-northeast-2"
+  "network_border_group": "ap-northeast-2",
+  "other_matches": [
+    {
+      "cidr": "3.5.140.0/22",
+      "region": "ap-northeast-2",
+      "service": "S3",
+      "network_border_group": "ap-northeast-2"
+    },
+    {
+      "cidr": "3.5.140.0/22",
+      "region": "ap-northeast-2",
+      "service": "EC2",
+      "network_border_group": "ap-northeast-2"
+    }
+  ],
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 0.08
 }
 ```
 
@@ -84,9 +120,13 @@ Alternatively, you can also lookup IPv6 addresses. Try the url [https://api.inco
 ```json
 {
   "ip": "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef",
+  "is_datacenter": true,
+  "cidr": "2406:dafe:e000::/40",
   "region": "ap-east-1",
   "service": "AMAZON",
-  "network_border_group": "ap-east-1"
+  "network_border_group": "ap-east-1",
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 16.14
 }
 ```
 
@@ -94,8 +134,10 @@ If you don't specify any IP address with the `ip=` query parameter and you invok
 
 ```json
 {
-  "ip": "84.155.231.57",
-  "service": "No match for this IP address"
+  "ip": "46.114.160.242",
+  "is_datacenter": false,
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 0.29
 }
 ```
 
@@ -117,51 +159,101 @@ The IP address ranges for the cloud providers are kept up to date and the IP ran
 
 In the following section, I will show examples for looking up IP addresses belonging to the three biggest cloud providers AWS, Azure and GCP:
 
+#### Looking up Azure IP Address
+
 Looking up an Azure IP address: [https://api.incolumitas.com/datacenter?ip=20.41.193.225](https://api.incolumitas.com/datacenter?ip=20.41.193.225)
 
 ```json
 {
   "ip": "20.41.193.225",
+  "is_datacenter": true,
+  "cidr": "20.41.193.224/27",
   "name": "AzurePortal",
+  "service": "Azure",
   "region": "",
   "regionId": 0,
   "platform": "Azure",
-  "systemService": "AzurePortal"
+  "systemService": "AzurePortal",
+  "other_matches": [
+    {
+      "cidr": "20.41.193.224/27",
+      "name": "AzurePortal.SouthIndia",
+      "service": "Azure",
+      "region": "southindia",
+      "regionId": 22,
+      "platform": "Azure",
+      "systemService": "AzurePortal"
+    }
+  ],
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 0.12
 }
 ```
+
+#### Looking up AWS IP Address
 
 Looking up an AWS IP address: [https://api.incolumitas.com/datacenter?ip=3.5.140.2](https://api.incolumitas.com/datacenter?ip=3.5.140.2)
 
 ```json
 {
   "ip": "3.5.140.2",
+  "is_datacenter": true,
+  "cidr": "3.5.140.0/22",
   "region": "ap-northeast-2",
   "service": "AMAZON",
-  "network_border_group": "ap-northeast-2"
+  "network_border_group": "ap-northeast-2",
+  "other_matches": [
+    {
+      "cidr": "3.5.140.0/22",
+      "region": "ap-northeast-2",
+      "service": "S3",
+      "network_border_group": "ap-northeast-2"
+    },
+    {
+      "cidr": "3.5.140.0/22",
+      "region": "ap-northeast-2",
+      "service": "EC2",
+      "network_border_group": "ap-northeast-2"
+    }
+  ],
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 0.09
 }
 ```
+
+#### Looking up GCP IP Address
 
 Looking up an GCP IP address: [https://api.incolumitas.com/datacenter?ip=23.236.48.55](https://api.incolumitas.com/datacenter?ip=23.236.48.55)
 
 ```json
 {
   "ip": "23.236.48.55",
-  "service": "GCP"
+  "is_datacenter": true,
+  "cidr": "23.236.48.0/20",
+  "service": "GCP",
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 0.11
 }
 ```
+
+#### Looking up AWS IPv6 Address
 
 And looking up a AWS IPv6 address: [https://api.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000](https://api.incolumitas.com/datacenter?ip=2600:1F18:7FFF:F800:0000:ffff:0000:0000):
 
 ```json
 {
   "ip": "2600:1F18:7FFF:F800:0000:ffff:0000:0000",
+  "is_datacenter": true,
+  "cidr": "2600:1f18:7fff:f800::/56",
   "region": "us-east-1",
-  "service": "AMAZON",
-  "network_border_group": "us-east-1"
+  "service": "ROUTE53_HEALTHCHECKS",
+  "network_border_group": "us-east-1",
+  "lookup_method": "public_ip_ranges",
+  "elapsed_ms": 0.21
 }
 ```
 
-As you can see from the example lookups above, sometimes the API gives additional meta data information for a specific IP address such as regional and data center information.
+As you can see from the example lookups above, the API gives additional meta data information for a specific IP address such as regional and data center information.
 
 ## What cloud providers are supported by the API?
 

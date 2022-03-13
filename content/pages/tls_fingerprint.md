@@ -5,7 +5,7 @@ Slug: TLS-Fingerprint
 Status: published
 Sortorder: 8
 
-| Item Name        | Item Value                                    |
+| <!-- -->         | <!-- -->                                      |
 |------------------|-----------------------------------------------|
 | **Author**       | Nikolai Tschacher                             |
 | **API Version**  | v0.2                                          |
