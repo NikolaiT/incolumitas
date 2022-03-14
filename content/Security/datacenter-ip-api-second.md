@@ -1,7 +1,7 @@
 Title: How to find out if an IP address belongs to a Hosting / Cloud Provider?
 Status: published
 Date: 2022-03-09 17:45
-Modified: 2022-03-13 22:48
+Modified: 2022-03-14 14:48
 Category: Security
 Tags: API, Datacenter, Hosting, Cloud-Provider, IP API, Bot-Detection, VPN-Detection, IP-Intelligence, IP-Lookup
 Slug: find-out-if-an-IP-address-belongs-to-a-hosting-provider
@@ -28,28 +28,70 @@ Datacenters and cloud providers such as [DigitalOcean](https://www.digitalocean.
 
 For example, there are many projects that make use of the Amazon AWS infrastructure to proxy traffic through their network. One such example is the [Ge0rg3/requests-ip-rotator](https://github.com/Ge0rg3/requests-ip-rotator) library, which allows to *utilize AWS API Gateway's large IP pool as a proxy to generate pseudo-infinite IPs for web scraping and brute forcing.*
 
-Therefore, if a IP address can be traced to a datacenter / cloud provider, it can be conjured that the resulting traffic is of lower reputation, since it is very easy to rent hosting/network infrastructure in large quantities. In reality, most website visitors with a datacenter IP address are probably in 99% of the cases bots.
+Therefore, if a IP address can be traced to a datacenter / cloud provider, it can be conjured that the resulting traffic is of lower reputation, since it is very easy to rent hosting/network infrastructure in large quantities for any party. In reality, most website visitors that come from datacenter IP address ranges are probably in 99% of all cases bots.
 
-In this blog article, a straightforward technical process is developed, that determines if an IP address belongs to a datacenter or not.
+In this blog article, a straightforward technical process is presented, that determines if an IP address belongs to a datacenter or not.
 
-## An Algorithm that checks if an IP address belongs to a Hosting / Cloud Provider
+## Algorithm that checks if an IP address belongs to a Hosting / Cloud Provider
 
-#### Lookup in Self-Published IP-Ranges from Datacenters
+### Lookup in Self-Published IP-Ranges from Datacenters
 
-First, check if the IP is to be found in self-published IP-ranges (Often in CIDR format) from datacenter providers. Not every datacenter provider publishes their IP-ranges. And sometimes, the publishes IP ranges are incomplete. But it certainly makes sense to incorporate self-published datacenter IP ranges.
+First, check if the IP is to be found in self-published IP-ranges (Often in CIDR format) from datacenter providers. Not every datacenter provider publishes their IP-ranges. And sometimes, the publishes IP ranges are incomplete. But it certainly makes sense to incorporate self-published datacenter IP ranges in the lookup process.
 
 1. Amazon AWS publishes their IP ranges: [Amazon AWS IP ranges](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html)
 2. Google Cloud also publishes their IP ranges: [Google Cloud IP ranges](https://www.gstatic.com/ipranges/cloud.json)
-3. Counterexample: [Hetzner.com](https://www.hetzner.com/) does not publish their IP ranges!
+3. Counterexample: [Hetzner.com](https://www.hetzner.com/) does not publish IP ranges!
+4. Counterexample: [OVH Cloud](https://www.ovhcloud.com/en/) also doesn't publish IP ranges...
 
+This is how those published IP ranges look like (excerpt) from [Google Cloud](https://www.gstatic.com/ipranges/cloud.json):
 
-Obviously, self-published IP ranges are not sufficient. Most datacenters do not publish their complete set of IP ranges. Other sources have to be considered. One obvious source is `whois` data.
+```json
+{
+  "syncToken": "1647190988307",
+  "creationTime": "2022-03-13T10:03:08.30788",
+  "prefixes": [{
+    "ipv4Prefix": "35.185.128.0/19",
+    "service": "Google Cloud",
+    "scope": "asia-east1"
+  }, {
+    "ipv4Prefix": "35.185.160.0/20",
+    "service": "Google Cloud",
+    "scope": "asia-east1"
+  }, {
+    "ipv4Prefix": "35.187.144.0/20",
+    "service": "Google Cloud",
+    "scope": "asia-east1"
+  }, {
+    "ipv4Prefix": "35.189.160.0/19",
+    "service": "Google Cloud",
+    "scope": "asia-east1"
+  }, {
+    "ipv4Prefix": "35.201.128.0/17",
+    "service": "Google Cloud",
+    "scope": "asia-east1"
+  }
+]
+```
 
-#### Whois/RDAP Lookups
+Obviously, self-published IP ranges are not sufficient. Most datacenters do not publish their complete set of IP ranges. Other sources have to be considered. One obvious source is `whois` data from Regional Internet registries (RIR). The task of RIRs is to:
 
-If an IP address is not found in self-published IP ranges from datacenters, a [Whois/RDAP lookup](https://www.arin.net/resources/registry/whois/) of the IP address is conducted (Example: `whois 105.226.177.72 | grep -E -i "(OrgName:|address:|OrgTechName:|descr:)"`). If the name of the organization belongs to a datacenter, we have a match. This is a simple string matching approach.
+> Manage the allocation and registration of Internet number resources within a region of the world. Internet number resources include IP addresses and autonomous system (AS) numbers.
 
-Downside: Whois/RDAP lookups do not scale and it's an expensive operation in terms of time (A TCP/IP connection has to be established). Whois/RDAP servers could and will block a single API server after many requests.
+### Whois/RDAP Lookups
+
+If an IP address is not found in self-published IP ranges from datacenters, a [Whois/RDAP lookup](https://www.arin.net/resources/registry/whois/) of the IP address can be conducted. Example:
+
+```bash
+whois 105.226.177.72 | grep -E -i "(OrgName:|address:|OrgTechName:|descr:)"
+```
+
+If the name of the organization belongs to a datacenter, we have a match. This is a simple string matching approach.
+
+Downside: Whois/RDAP lookups do not scale and it's an expensive operation in terms of time (A TCP/IP connection has to be established). Whois/RDAP servers could and will block a single server after many requests.
+
+In fact, [ripe.net states the following](https://www.ripe.net/manage-ips-and-asns/db/support/querying-the-ripe-database):
+
+> Please note that when searching for resources such as an IP address block or AS Number, contact information from related objects will automatically be returned as well. You can only query for a limited amount of personal information every day. After reaching that limit, you will be blocked from making further queries. To disable automatic queries for personal information, please use the "-r" flag, as explained in the Advanced Queries section.
 
 Whois lookups can be improved when you specify the whois database manually, so it's possible to load balance to some extent:
 
@@ -69,25 +111,210 @@ You can also make direkt RDAP queries:
 
 ```bash
 curl https://rdap.arin.net/registry/ip/18.236.125.255
+
+# snip
+"handle" : "AEA8-ARIN",
+"vcardArray" : [ "vcard", [ [ "version", { }, "text", "4.0" ], [ "adr", {
+"label" : "Amazon Web Services Elastic Compute Cloud, EC2\n410 Terry Avenue North\nSeattle\nWA\n98109-5210\nUnited States"
+}, "text", [ "", "", "", "", "", "", "" ] ], [ "fn", { }, "text", "Amazon EC2 Abuse" ], [ "org", { }, "text", "Amazon EC2 Abuse" ], [ "kind", { }, "text", "group" ], [ "email", { }, "text", "abuse@amazonaws.com" ], [ "tel", {
+"type" : [ "work", "voice" ]
+}, "text", "+1-206-266-4064" ] ] ],
+"roles" : [ "abuse" ],
+"remarks" : [ {
+"title" : "Registration Comments",
+# snip
 ```
 
-The [RIPE-NCC whois database is documented here](https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API) and [here](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation).
+The [RIPE-NCC whois database is documented here](https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API) and [on www.ripe.net](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation).
 
-This is how a API request to the [RIPE-NCC whois database](https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API) looks like:
+There also exists a good tutorial on [Querying the RIPE Database](https://www.ripe.net/manage-ips-and-asns/db/support/querying-the-ripe-database).
+
+This is how a API request to the [RIPE-NCC whois database](https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API) look like with curl. [Here is an example API lookup](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/how-to-query-the-ripe-database/restful-api-queries/api-lookup) which looks up an [inetnum object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-4-description-of-the-inetnum-object):
 
 ```bash
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" https://rest.db.ripe.net/RIPE/inetnum/18.236.125.255
+curl -H 'Accept: application/json' 'https://rest.db.ripe.net/ripe/inetnum/193.0.0.0%20-%20193.0.7.255?unfiltered'
+
+{
+   "objects":{
+      "object":[
+         {
+            "type":"inetnum",
+            "link":{
+               "type":"locator",
+               "href":"https://rest.db.ripe.net/ripe/inetnum/193.0.0.0 - 193.0.7.255"
+            },
+            "source":{
+               "id":"ripe"
+            },
+            "primary-key":{
+               "attribute":[
+                  {
+                     "name":"inetnum",
+                     "value":"193.0.0.0 - 193.0.7.255"
+                  }
+               ]
+            },
+            "attributes":{
+               "attribute":[
+                  {
+                     "name":"inetnum",
+                     "value":"193.0.0.0 - 193.0.7.255"
+                  },
+                  {
+                     "name":"netname",
+                     "value":"RIPE-NCC"
+                  },
+                  {
+                     "name":"descr",
+                     "value":"RIPE Network Coordination Centre"
+                  },
+                  {
+                     "link":{
+                        "type":"locator",
+                        "href":"https://rest.db.ripe.net/ripe/organisation/ORG-RIEN1-RIPE"
+                     },
+                     "name":"org",
+                     "value":"ORG-RIEN1-RIPE",
+                     "referenced-type":"organisation"
+                  },
+                  {
+                     "name":"descr",
+                     "value":"Amsterdam, Netherlands"
+                  },
+                  {
+                     "name":"remarks",
+                     "value":"Used for RIPE NCC infrastructure."
+                  },
+                  {
+                     "name":"country",
+                     "value":"NL"
+                  },
+                  {
+                     "link":{
+                        "type":"locator",
+                        "href":"https://rest.db.ripe.net/ripe/person/BRD-RIPE"
+                     },
+                     "name":"admin-c",
+                     "value":"BRD-RIPE",
+                     "referenced-type":"person"
+                  },
+                  {
+                     "link":{
+                        "type":"locator",
+                        "href":"https://rest.db.ripe.net/ripe/role/OPS4-RIPE"
+                     },
+                     "name":"tech-c",
+                     "value":"OPS4-RIPE",
+                     "referenced-type":"role"
+                  },
+                  {
+                     "name":"status",
+                     "value":"ASSIGNED PA"
+                  },
+                  {
+                     "link":{
+                        "type":"locator",
+                        "href":"https://rest.db.ripe.net/ripe/mntner/RIPE-NCC-MNT"
+                     },
+                     "name":"mnt-by",
+                     "value":"RIPE-NCC-MNT",
+                     "referenced-type":"mntner"
+                  },
+                  {
+                     "name":"created",
+                     "value":"2003-03-17T12:15:57Z"
+                  },
+                  {
+                     "name":"last-modified",
+                     "value":"2017-12-04T14:42:31Z"
+                  },
+                  {
+                     "name":"source",
+                     "value":"RIPE"
+                  }
+               ]
+            },
+            "tags":{
+               "tag":[
+                  {
+                     "id":"RIPE-USER-RESOURCE"
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "terms-and-conditions":{
+      "type":"locator",
+      "href":"http://www.ripe.net/db/support/db-terms-conditions.pdf"
+   },
+   "version":{
+      "version":"1.102.2",
+      "timestamp":"2021-12-20T10:25:04Z",
+      "commit-id":"768f78e"
+   }
+}
 ```
 
-Other third party API's such as the one from `whois.radb.net` may be used:
 
-```
-curl 'https://rest.db.ripe.net/search.json?query-string=77.247.84.129'
-whois -h whois.radb.net 77.247.84.129
-echo '77.247.84.129' | nc whois.radb.net 43
+You can also look up other whois data objects such as:
+
++ [AUT-NUM Object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-1-description-of-the-aut-num-object)
++ [DOMAIN Object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-2-description-of-the-domain-object)
++ [INET6NUM Object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-3-description-of-the-inet6num-object)
++ [ROUTE Object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-5-description-of-the-route-object)
++ [ROUTE6 Object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-6-description-of-the-route6-object)
+
+Another API lookup example:
+
+```bash
+curl -H 'Accept: application/json' 'https://rest.db.ripe.net/ripe/route/193.0.0.0%20-%20193.0.7.255?unfiltered'
 ```
 
-#### ASN Lookups
+
+### RIPEstat API
+
+Another excellent ressource from RIPE NCC is the [RIPEstat API](https://stat.ripe.net/docs/01.getting-started/#getting-started-with-ripestat).
+
+What is RIPEstat?
+
+> RIPEstat is a large-scale information service and the RIPE NCC’s open data platform. You can get essential information on IP address space and Autonomous System Numbers (ASNs) along with related statistics on specific hostnames and countries.
+
+Potential downside: API calls are restricted. No possibility to download the database.
+
+For the purpose of finding datacenter IP ranges, the following API endpoints are especially interesting:
+
+#### [Address Space Hierarchy](https://stat.ripe.net/docs/02.data-api/address-space-hierarchy.html)
+
+> This data call returns address space objects (inetnum or inet6num) from the RIPE Database related to the queried resource.
+
+Example: 
+
+```bash
+curl --location --request GET "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=193/21"
+```
+
+#### [Address Space Usage](https://stat.ripe.net/docs/02.data-api/address-space-usage.html)
+
+> This data call shows the usage of a prefix or IP range according to the objects currently present in the RIPE database. The data returned lists the assignments and allocations covered by the queried resource as well statistics on the total numbers of IPs in the different categories.
+
+Example: 
+
+```bash
+curl --location --request GET "https://stat.ripe.net/data/address-space-usage/data.json?resource=193/23"
+```
+
+#### [Announced Prefixes](https://stat.ripe.net/docs/02.data-api/announced-prefixes.html)
+
+> This data call returns all announced prefixes for a given ASN. The results can be restricted to a specific time period.
+
+Example: 
+
+```bash
+curl --location --request GET "https://stat.ripe.net/data/announced-prefixes/data.json?resource=3333&starttime=2020-12-12T12:00"
+```
+
+### ASN Lookups
 
 Some Regional Internet Registries publish lists of AS numbers and the associated companies.
 
@@ -122,7 +349,7 @@ The idea is to lookup well known database names in this ASN lists and then perfo
 echo 'AS24940' | nc whois.radb.net 43
 ```
 
-#### Download whois databases from Region Internet Registries (RIR)
+### Download whois databases from Region Internet Registries (RIR)
 
 There are six regional internet registries:
 
@@ -160,11 +387,28 @@ Content-Type: application/x-gzip
 
 Uncompressed, the RIPE-NCC database is 5.5GB large. 
 
-Whois databases (which are in fact simple text files) do not follow any standard format, so the informational content varies along different RIRs.
+Whois databases (which are in fact simple text files) do store information in records known as objects. These are blocks of text in a standard notation defined in the Routing Policy Specification Language (RPSL). An object has multiple fields, called attributes or keys, that each have a value. Below is an example of a route object: [Source](https://www.ripe.net/manage-ips-and-asns/db/support/querying-the-ripe-database)
 
-But this is still by far the best source of data in order to infer whether an IP belongs to a datacenter or not.
+```text
+route:          5.9.0.0/16
+descr:          HETZNER-RZ-FKS-BLK5
+origin:         AS24940
+mnt-by:         HOS-GUN
+created:        2012-04-26T10:30:12Z
+last-modified:  2012-04-26T10:30:12Z
+source:         RIPE
+remarks:        ****************************
+remarks:        * THIS OBJECT IS MODIFIED
+remarks:        * Please note that all data that is generally regarded as personal
+remarks:        * data has been removed from this object.
+remarks:        * To view the original object, please query the RIPE Database at:
+remarks:        * http://www.ripe.net/whois
+remarks:        ****************************
+```
 
-#### Reverse DNS Lookups
+Querying those whois databases is still by far the best source of data in order to infer whether an IP belongs to a datacenter or not.
+
+### Reverse DNS Lookups
 
 Reverse DNS Lookups could also be an idea. Sometimes reverse DNS queries for an IP address reveal that the IP address belongs to a datacenter. Obvious downside: DNS queries are slow!
 
