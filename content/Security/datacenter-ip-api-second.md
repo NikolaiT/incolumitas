@@ -129,7 +129,7 @@ The [RIPE-NCC whois database is documented here](https://github.com/RIPE-NCC/who
 
 There also exists a good tutorial on [Querying the RIPE Database](https://www.ripe.net/manage-ips-and-asns/db/support/querying-the-ripe-database).
 
-This is how a API request to the [RIPE-NCC whois database](https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API) look like with curl. [Here is an example API lookup](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/how-to-query-the-ripe-database/restful-api-queries/api-lookup) which looks up an [inetnum object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-4-description-of-the-inetnum-object):
+This is how a API request to the [RIPE-NCC whois database](https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API) look like with curl. [Here is an example API lookup](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/how-to-query-the-ripe-database/restful-api-queries/api-lookup) which looks up an [inetnum object](https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/rpsl-object-types/4-2-descriptions-of-primary-objects/4-2-4-description-of-the-inetnum-object) (API output modified for brevity):
 
 ```bash
 curl -H 'Accept: application/json' 'https://rest.db.ripe.net/ripe/inetnum/193.0.0.0%20-%20193.0.7.255?unfiltered'
@@ -189,73 +189,13 @@ curl -H 'Accept: application/json' 'https://rest.db.ripe.net/ripe/inetnum/193.0.
                      "name":"country",
                      "value":"NL"
                   },
-                  {
-                     "link":{
-                        "type":"locator",
-                        "href":"https://rest.db.ripe.net/ripe/person/BRD-RIPE"
-                     },
-                     "name":"admin-c",
-                     "value":"BRD-RIPE",
-                     "referenced-type":"person"
-                  },
-                  {
-                     "link":{
-                        "type":"locator",
-                        "href":"https://rest.db.ripe.net/ripe/role/OPS4-RIPE"
-                     },
-                     "name":"tech-c",
-                     "value":"OPS4-RIPE",
-                     "referenced-type":"role"
-                  },
-                  {
-                     "name":"status",
-                     "value":"ASSIGNED PA"
-                  },
-                  {
-                     "link":{
-                        "type":"locator",
-                        "href":"https://rest.db.ripe.net/ripe/mntner/RIPE-NCC-MNT"
-                     },
-                     "name":"mnt-by",
-                     "value":"RIPE-NCC-MNT",
-                     "referenced-type":"mntner"
-                  },
-                  {
-                     "name":"created",
-                     "value":"2003-03-17T12:15:57Z"
-                  },
-                  {
-                     "name":"last-modified",
-                     "value":"2017-12-04T14:42:31Z"
-                  },
-                  {
-                     "name":"source",
-                     "value":"RIPE"
-                  }
-               ]
-            },
-            "tags":{
-               "tag":[
-                  {
-                     "id":"RIPE-USER-RESOURCE"
-                  }
                ]
             }
          }
       ]
-   },
-   "terms-and-conditions":{
-      "type":"locator",
-      "href":"http://www.ripe.net/db/support/db-terms-conditions.pdf"
-   },
-   "version":{
-      "version":"1.102.2",
-      "timestamp":"2021-12-20T10:25:04Z",
-      "commit-id":"768f78e"
    }
 }
 ```
-
 
 You can also look up other whois data objects such as:
 
@@ -284,17 +224,17 @@ Potential downside: API calls are restricted. No possibility to download the dat
 
 For the purpose of finding datacenter IP ranges, the following API endpoints are especially interesting:
 
-#### [Address Space Hierarchy](https://stat.ripe.net/docs/02.data-api/address-space-hierarchy.html)
+#### Endpoint: [Address Space Hierarchy](https://stat.ripe.net/docs/02.data-api/address-space-hierarchy.html)
 
 > This data call returns address space objects (inetnum or inet6num) from the RIPE Database related to the queried resource.
 
-Example: 
+Example:
 
 ```bash
 curl --location --request GET "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=193/21"
 ```
 
-#### [Address Space Usage](https://stat.ripe.net/docs/02.data-api/address-space-usage.html)
+#### Endpoint: [Address Space Usage](https://stat.ripe.net/docs/02.data-api/address-space-usage.html)
 
 > This data call shows the usage of a prefix or IP range according to the objects currently present in the RIPE database. The data returned lists the assignments and allocations covered by the queried resource as well statistics on the total numbers of IPs in the different categories.
 
@@ -304,7 +244,7 @@ Example:
 curl --location --request GET "https://stat.ripe.net/data/address-space-usage/data.json?resource=193/23"
 ```
 
-#### [Announced Prefixes](https://stat.ripe.net/docs/02.data-api/announced-prefixes.html)
+#### Endpoint: [Announced Prefixes](https://stat.ripe.net/docs/02.data-api/announced-prefixes.html)
 
 > This data call returns all announced prefixes for a given ASN. The results can be restricted to a specific time period.
 
