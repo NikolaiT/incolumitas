@@ -220,7 +220,7 @@ What is RIPEstat?
 
 > RIPEstat is a large-scale information service and the RIPE NCC’s open data platform. You can get essential information on IP address space and Autonomous System Numbers (ASNs) along with related statistics on specific hostnames and countries.
 
-Potential downside: API calls are restricted. No possibility to download the database.
+Potential downside: API calls are restricted. No possibility to download the database. Only for RIPE-NCC, not the other RIRs. Observation: Seems to be slow?!
 
 For the purpose of finding datacenter IP ranges, the following API endpoints are especially interesting:
 
@@ -231,7 +231,40 @@ For the purpose of finding datacenter IP ranges, the following API endpoints are
 Example:
 
 ```bash
-curl --location --request GET "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=193/21"
+curl --location --request GET "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=193.47.99.0/24"
+{
+    "data_call_name": "address-space-hierarchy",
+    "data_call_status": "supported",
+    "cached": false,
+    "data": {
+        "rir": "ripe",
+        "resource": "193.47.99.0/24",
+        "exact": [
+            {
+                "inetnum": "193.47.99.0 - 193.47.99.255",
+                "netname": "HETZNER-PORTABLE-PI",
+                "country": "DE",
+                "org": "ORG-HOA1-RIPE",
+                "admin-c": "HOAC1-RIPE",
+                "tech-c": "HOAC1-RIPE",
+                "status": "ASSIGNED PI",
+                "mnt-by": "RIPE-NCC-END-MNTHOS-GUN",
+                "mnt-domains": "HOS-GUN",
+                "mnt-routes": "HOS-GUNMYLOC-MNT",
+                "created": "2005-07-07T15:27:12Z",
+                "last-modified": "2016-04-14T08:14:55Z",
+                "source": "RIPE"
+            }
+        ],
+        "more_specific": [],
+        "query_time": "2022-03-14T13:34:32",
+        "parameters": {
+            "resource": "193.47.99.0/24"
+        }
+    },
+    "query_id": "20220314133432-07794397-fd21-4a59-b335-af95bcab6d0d",
+    "process_time": 116,
+}
 ```
 
 #### Endpoint: [Address Space Usage](https://stat.ripe.net/docs/02.data-api/address-space-usage.html)
@@ -241,7 +274,43 @@ curl --location --request GET "https://stat.ripe.net/data/address-space-hierarch
 Example: 
 
 ```bash
-curl --location --request GET "https://stat.ripe.net/data/address-space-usage/data.json?resource=193/23"
+curl --location --request GET "https://stat.ripe.net/data/address-space-usage/data.json?resource=95.216.0.0/16"
+{
+    "data_call_name": "address-space-usage",
+    "data_call_status": "supported",
+    "cached": false,
+    "data": {
+        "query_time": "2022-03-13T00:00:00",
+        "resource": "95.216.0.0/16",
+        "assignments": [
+            {
+                "address_range": "95.216.0.0/26",
+                "asn_name": "HETZNER-hel1-dc2",
+                "status": "ASSIGNED PA",
+                "parent_allocation": "95.216.0.0/15"
+            },
+            {
+                "address_range": "95.216.0.64/26",
+                "asn_name": "HETZNER-hel1-dc2",
+                "status": "ASSIGNED PA",
+                "parent_allocation": "95.216.0.0/15"
+            },
+            {
+                "address_range": "95.216.0.128/26",
+                "asn_name": "HETZNER-hel1-dc2",
+                "status": "ASSIGNED PA",
+                "parent_allocation": "95.216.0.0/15"
+            },
+            {
+                "address_range": "95.216.0.192/26",
+                "asn_name": "HETZNER-hel1-dc2",
+                "status": "ASSIGNED PA",
+                "parent_allocation": "95.216.0.0/15"
+            }
+            # snip
+        ]
+    }
+}
 ```
 
 #### Endpoint: [Announced Prefixes](https://stat.ripe.net/docs/02.data-api/announced-prefixes.html)
@@ -251,7 +320,60 @@ curl --location --request GET "https://stat.ripe.net/data/address-space-usage/da
 Example: 
 
 ```bash
-curl --location --request GET "https://stat.ripe.net/data/announced-prefixes/data.json?resource=3333&starttime=2020-12-12T12:00"
+curl --location --request GET "https://stat.ripe.net/data/announced-prefixes/data.json?resource=24940&starttime=2020-12-12T12:00"
+{
+    "messages": [
+        [
+            "info",
+            "Results exclude routes with very low visibility (less than 10 RIS full-feed peers seeing)."
+        ]
+    ],
+    "version": "1.2",
+    "data_call_name": "announced-prefixes",
+    "data_call_status": "supported - connecting to ursa",
+    "cached": false,
+    "data": {
+        "prefixes": [
+            {
+                "prefix": "185.209.124.0/22",
+                "timelines": [
+                    {
+                        "starttime": "2020-12-12T16:00:00",
+                        "endtime": "2022-03-14T08:00:00"
+                    }
+                ]
+            },
+            {
+                "prefix": "185.171.224.0/22",
+                "timelines": [
+                    {
+                        "starttime": "2020-12-12T16:00:00",
+                        "endtime": "2022-03-14T08:00:00"
+                    }
+                ]
+            },
+            {
+                "prefix": "185.228.8.0/23",
+                "timelines": [
+                    {
+                        "starttime": "2020-12-12T16:00:00",
+                        "endtime": "2022-03-14T08:00:00"
+                    }
+                ]
+            },
+            {
+                "prefix": "195.248.224.0/24",
+                "timelines": [
+                    {
+                        "starttime": "2020-12-12T16:00:00",
+                        "endtime": "2022-03-14T08:00:00"
+                    }
+                ]
+            }            
+            # snip
+        ]
+    }
+}
 ```
 
 ### ASN Lookups
