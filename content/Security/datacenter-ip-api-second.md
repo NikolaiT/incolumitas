@@ -32,9 +32,9 @@ Therefore, if a IP address can be traced to a datacenter / cloud provider, it ca
 
 In this blog article, a straightforward technical process is presented, that determines if an IP address belongs to a datacenter or not.
 
-## Algorithm that checks if an IP address belongs to a Hosting / Cloud Provider
+## Sources/Algorithms for checking whether an IP address belongs to a Hosting / Cloud Provider
 
-### Lookup in Self-Published IP-Ranges from Datacenters
+### Idea 1: Lookup in Self-Published IP-Ranges from Datacenters
 
 First, check if the IP is to be found in self-published IP-ranges (Often in CIDR format) from datacenter providers. Not every datacenter provider publishes their IP-ranges. And sometimes, the publishes IP ranges are incomplete. But it certainly makes sense to incorporate self-published datacenter IP ranges in the lookup process.
 
@@ -77,7 +77,7 @@ Obviously, self-published IP ranges are not sufficient. Most datacenters do not 
 
 > Manage the allocation and registration of Internet number resources within a region of the world. Internet number resources include IP addresses and autonomous system (AS) numbers.
 
-### Whois/RDAP Lookups
+### Idea 2: Whois/RDAP Lookups
 
 If an IP address is not found in self-published IP ranges from datacenters, a [Whois/RDAP lookup](https://www.arin.net/resources/registry/whois/) of the IP address can be conducted. Example:
 
@@ -212,7 +212,7 @@ curl -H 'Accept: application/json' 'https://rest.db.ripe.net/ripe/route/193.0.0.
 ```
 
 
-### RIPEstat API
+### Idea 3: RIPEstat API
 
 Another excellent ressource from RIPE NCC is the [RIPEstat API](https://stat.ripe.net/docs/01.getting-started/#getting-started-with-ripestat).
 
@@ -376,7 +376,7 @@ curl --location --request GET "https://stat.ripe.net/data/announced-prefixes/dat
 }
 ```
 
-### ASN Lookups
+### Idea 4: ASN Lookups
 
 Some Regional Internet Registries publish lists of AS numbers and the associated companies.
 
@@ -411,7 +411,7 @@ The idea is to lookup well known database names in this ASN lists and then perfo
 echo 'AS24940' | nc whois.radb.net 43
 ```
 
-### Download whois databases from Region Internet Registries (RIR)
+### Idea 5: Download whois databases from Region Internet Registries (RIR)
 
 There are six regional internet registries:
 
@@ -470,7 +470,7 @@ remarks:        ****************************
 
 Querying those whois databases is still by far the best source of data in order to infer whether an IP belongs to a datacenter or not.
 
-### Reverse DNS Lookups
+### Idea 6: Reverse DNS Lookups
 
 Reverse DNS Lookups could also be an idea. Sometimes reverse DNS queries for an IP address reveal that the IP address belongs to a datacenter. Obvious downside: DNS queries are slow!
 
@@ -481,5 +481,13 @@ dig -x 167.99.241.135
 241.99.167.in-addr.arpa. 1800	IN	SOA	ns1.digitalocean.com. hostmaster.241.99.167.in-addr.arpa. 1647194251 10800 3600 604800 1800
 ```
 
+## Conclusion
 
+There are many different sources that are helpful when deciding whether an IP address belongs to a datacenter or not.
+
+But the following steps are essential and most relevant:
+
+1. Self published IP ranges from hosting providers need to be considered
+2. The downloadable whois databases from RIR's such as RIPE-NCC or ARIN can be searched.
+3. Manual task: A list of datacenters and hosting providers needs to be compiled. With this list of datacenter needles, the whois databases from the RIR's can be searched/grepped.
 
