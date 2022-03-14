@@ -52,6 +52,17 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## ChangeLog
 
+
+27130 whois IPv4 CIDR ranges
+
+#### 14th March 2022
+
++ Added 27130 IPv4 CIDR ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases. Example: [Lookup for 178.162.192.22 from Leaseweb](https://api.incolumitas.com/datacenter?ip=178.162.192.22). 
++ Added the following datacenters to the API: 
+```json
+["XT Global Networks LTD","OVH","myLoc","ServiHosting Networks S.L.","Clouvider Limited","Hetzner Online","GoDaddy Operating Company, LLC.","Claranet limited","Selectel Ltd.","M247 Ltd","Imperva, Inc.","Beget","trueserver.nl","1&1 Internet","DediPath","iomart Hosting Ltd","Aruba S.p.a","Strato AG","DataCamp Limited","Rackspace, Inc.","Reg.Ru Hosting","Heficed","LeaseWeb","Mittwald","The Constant Company, LLC","American Internet Services","Hostinger","PlusServer GmbH","Equinix, Inc.","GHOSTnet GmbH","It7 Networks Inc","xservers.ro","Cloudflare","IBM Cloud","iWeb Technologies Inc.","SysEleven SysEleven GmbH","G-Core Labs S.A.","Tencent Cloud","Choopa, LLC.","DigitalOcean","Webair Internet Development Inc","Hostway","Phoenix NAP, LLC","Contabo GmbH","A2 Hosting","Zenlayer","Optimate Server","LogicWeb Inc.","Packethub S.A.","MULTACOM Inc.","veesp.com vps clients","Sakura Internet Inc.","Zscaler, Inc.","Vultr Holdings LLC","Enzu Inc.","24Shells Inc","GZ Systems (PureVPN)","HIVELOCITY, Inc.","Transip Bv.","Host Europe","Internap Corporation","IP Exchange GmbH","Datapipe","Savvis","home.pl S.A.","Redstation Limited","hosting.ua","Daou Technology","Linode","Amazon AWS","kinx.net","Dreamscape","Xneelo (Pty) Ltd","Fiber Grid Inc","Performive LLC","Microsoft Azure","UCloud","Hostgator","Hostwinds.com","Namecheap","Stackpath, LLC","ALL INKL","Online SAS (Scaleway)","ServerCentral","Quadranet, Inc","FDC Servers","ColoCrossing","Aptum Technologies","Sharktech Inc.","Wholesale Internet, Inc","Dreamhost","Pair Networks","ServerHub","Psychz Networks","CoreSpace,Inc.","Cologix, Inc.","Colocation America Inc","ServerMania Inc.","Peak10","Google Cloud","Fasthosts Internet Ltd","latisys","Mullvad VPN","InMotion","Unified Layer","Fastly, Inc.","Ubiquity Hosting"]
+```
+
 #### 11th March 2022
 
 + Added bulk IP lookup mode, up to 100 IP addresses can be queried with one API request
