@@ -15,7 +15,7 @@ The purpose of this API is simple: This API allows you to check whether an IP ad
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher (incolumitas.com)     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.5 (11th March 2022)**         |
+| **API Version**         | **v0.6 (15th March 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
 | **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more         |
 | **IPv6 Support**         | Yes         |
@@ -52,16 +52,50 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## ChangeLog
 
+#### 14th March 2022 and 15th March 2022
 
-27130 whois IPv4 CIDR ranges
-
-#### 14th March 2022
-
-+ Added 27130 IPv4 CIDR ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases. Example: [Lookup for 178.162.192.22 from Leaseweb](https://api.incolumitas.com/datacenter?ip=178.162.192.22). 
-+ Added the following datacenters to the API: 
-```json
-["XT Global Networks LTD","OVH","myLoc","ServiHosting Networks S.L.","Clouvider Limited","Hetzner Online","GoDaddy Operating Company, LLC.","Claranet limited","Selectel Ltd.","M247 Ltd","Imperva, Inc.","Beget","trueserver.nl","1&1 Internet","DediPath","iomart Hosting Ltd","Aruba S.p.a","Strato AG","DataCamp Limited","Rackspace, Inc.","Reg.Ru Hosting","Heficed","LeaseWeb","Mittwald","The Constant Company, LLC","American Internet Services","Hostinger","PlusServer GmbH","Equinix, Inc.","GHOSTnet GmbH","It7 Networks Inc","xservers.ro","Cloudflare","IBM Cloud","iWeb Technologies Inc.","SysEleven SysEleven GmbH","G-Core Labs S.A.","Tencent Cloud","Choopa, LLC.","DigitalOcean","Webair Internet Development Inc","Hostway","Phoenix NAP, LLC","Contabo GmbH","A2 Hosting","Zenlayer","Optimate Server","LogicWeb Inc.","Packethub S.A.","MULTACOM Inc.","veesp.com vps clients","Sakura Internet Inc.","Zscaler, Inc.","Vultr Holdings LLC","Enzu Inc.","24Shells Inc","GZ Systems (PureVPN)","HIVELOCITY, Inc.","Transip Bv.","Host Europe","Internap Corporation","IP Exchange GmbH","Datapipe","Savvis","home.pl S.A.","Redstation Limited","hosting.ua","Daou Technology","Linode","Amazon AWS","kinx.net","Dreamscape","Xneelo (Pty) Ltd","Fiber Grid Inc","Performive LLC","Microsoft Azure","UCloud","Hostgator","Hostwinds.com","Namecheap","Stackpath, LLC","ALL INKL","Online SAS (Scaleway)","ServerCentral","Quadranet, Inc","FDC Servers","ColoCrossing","Aptum Technologies","Sharktech Inc.","Wholesale Internet, Inc","Dreamhost","Pair Networks","ServerHub","Psychz Networks","CoreSpace,Inc.","Cologix, Inc.","Colocation America Inc","ServerMania Inc.","Peak10","Google Cloud","Fasthosts Internet Ltd","latisys","Mullvad VPN","InMotion","Unified Layer","Fastly, Inc.","Ubiquity Hosting"]
-```
++ Added **39,246** IPv4 and **360,372** IPv6 CIDR ranges ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases. Example: [Lookup for 178.162.192.22 from Leaseweb](https://api.incolumitas.com/datacenter?ip=178.162.192.22).
++ Added the following datacenters to the API: `XT Global Networks LTD`, `OVH`, `myLoc`,
+`ServiHosting Networks S.L.`, `Clouvider Limited`,
+`Hetzner Online`, `GoDaddy Operating Company, LLC.`,
+`Claranet limited`, `Selectel Ltd.`, `M247 Ltd`, 
+`Imperva, Inc.`, `Beget`, `trueserver.nl`, `1&1 Internet`,
+`DediPath`, `iomart Hosting Ltd`, 
+`Aruba S.p.a`, `Strato AG`, `DataCamp Limited`, 
+`Rackspace, Inc.`, `Reg.Ru Hosting`, `Heficed`, `LeaseWeb`,
+`Mittwald`, `The Constant Company, LLC`, 
+`American Internet Services`, `Hostinger`,
+`PlusServer GmbH`, `Equinix, Inc.`, `GHOSTnet GmbH`, 
+`It7 Networks Inc`, 
+`xservers.ro`, `Cloudflare`, `IBM Cloud`,
+`iWeb Technologies Inc.`, 
+`SysEleven SysEleven GmbH`, `G-Core Labs S.A.`, 
+`Tencent Cloud`, `Choopa, LLC.`, `DigitalOcean`,
+`Webair Internet Development Inc`, `Hostway`, 
+`Phoenix NAP, LLC`, `Contabo GmbH`, `A2 Hosting`,
+`Zenlayer`, `Optimate Server`, `LogicWeb Inc.`, 
+`Packethub S.A.`, `MULTACOM Inc.`, `veesp.com vps clients`,
+`Sakura Internet Inc.`, `Zscaler, Inc.`, 
+`Vultr Holdings LLC`, `Enzu Inc.`, `24Shells Inc`,
+`GZ Systems (PureVPN)`, `HIVELOCITY, Inc.`, `Transip Bv.`, 
+`Host Europe`, `Internap Corporation`, `IP Exchange GmbH`,
+`Datapipe`, `Savvis`, 
+`home.pl S.A.`, `Redstation Limited`, `hosting.ua`,
+`Daou Technology`, `Linode`, `Amazon AWS`, 
+`kinx.net`, `Dreamscape`, `Xneelo (Pty) Ltd`,
+`Fiber Grid Inc`, `Performive LLC`, `Microsoft Azure`, 
+`UCloud`, `Hostgator`, `Hostwinds.com`, `Namecheap`,
+`Stackpath, LLC`, `ALL INKL`, 
+`Online SAS (Scaleway)`, `ServerCentral`,
+`Quadranet, Inc`, `FDC Servers`, 
+`ColoCrossing`, `Aptum Technologies`, `Sharktech Inc.`,
+`Wholesale Internet, Inc`, `Dreamhost`, 
+`Pair Networks`, `ServerHub`, `Psychz Networks`,
+`CoreSpace,Inc.`, `Cologix, Inc.`, 
+`Colocation America Inc`, `ServerMania Inc.`, `Peak10`,
+`Google Cloud`, `Fasthosts Internet Ltd`, 
+`latisys`, `Mullvad VPN`, `InMotion`, `Unified Layer`,
+`Fastly, Inc.`, `Ubiquity Hosting`.
 
 #### 11th March 2022
 
@@ -299,7 +333,7 @@ Most datacenters publish their own IP ranges, such as AWS or Google Cloud. But o
 This API follows the following lookup logic:
 
 1. First, check if the IP is to be found in the published IP ranges from the providers.
-2. If the first step farils, a lookup of the IP address with `whois 105.226.177.72 | grep -E -i "(OrgName:|address:|OrgTechName:|descr:)"` is conducted. If the orgname belongs to a datacenter, we have a match. Simple string matching.
+2. If the first step farils, a lookup of the IP address with `whois 105.226.177.72` is conducted. If the orgname belongs to a datacenter, we have a match. Simple string matching.
 3. If the above whois lookup did not produce a datacenter match, we lookup the autonomous system `OriginAS: AS21928` and we perform a simple grep `cat ripe-asn.txt | grep -E -i "^13335\s"` in the ASN lists to check if the ASN belongs to a large cloud provider.
 
 Other techniques are pursuited, if the above algorithm doesn't yield a match.
