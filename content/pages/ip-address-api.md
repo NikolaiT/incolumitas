@@ -6,7 +6,9 @@ Slug: Datacenter-IP-API
 Status: published
 Sortorder: 5
 
-I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction.
+I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction. 
+
+And please consider reading another blog article:  ["How to find out if an IP address belongs to a Hosting / Cloud Provider?"]({filename}/Security/datacenter-ip-api-second.md) - Where I explain in detail about my approch of finding datacenter IP addresses.
 
 The purpose of this API is simple: This API allows you to check whether an IP address belongs to an datacenter or not.
 
@@ -54,7 +56,9 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 #### 14th March 2022 and 15th March 2022
 
-+ Added **39,246** IPv4 and **360,372** IPv6 CIDR ranges ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases. Example: [Lookup for 178.162.192.22 from Leaseweb](https://api.incolumitas.com/datacenter?ip=178.162.192.22).
++ Added **39,246** IPv4 and **360,372** IPv6 CIDR ranges ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases.
++ Some Examples: [Lookup of Cloudflare IP](https://api.incolumitas.com/datacenter?ip=104.28.48.132), [Lookup of M247 Ltd IP](https://api.incolumitas.com/datacenter?ip=193.27.14.71)
+, [Lookup of Packethub S.A. IP](https://api.incolumitas.com/datacenter?ip=185.153.176.242),  [Lookup of Leaseweb IP](https://api.incolumitas.com/datacenter?ip=178.162.192.22)
 + Added the following datacenters to the API: `XT Global Networks LTD`, `OVH`, `myLoc`,
 `ServiHosting Networks S.L.`, `Clouvider Limited`,
 `Hetzner Online`, `GoDaddy Operating Company, LLC.`,
