@@ -145,26 +145,23 @@ If you pass the IP address `3.5.140.2` to the API by calling [https://api.incolu
 {
   "ip": "3.5.140.2",
   "is_datacenter": true,
+  "ip_data_source": "self_published_ip_ranges",
   "cidr": "3.5.140.0/22",
   "region": "ap-northeast-2",
+  "datacenter": "Amazon AWS",
   "service": "AMAZON",
   "network_border_group": "ap-northeast-2",
   "other_matches": [
     {
+      "ip_data_source": "self_published_ip_ranges",
       "cidr": "3.5.140.0/22",
       "region": "ap-northeast-2",
-      "service": "S3",
-      "network_border_group": "ap-northeast-2"
-    },
-    {
-      "cidr": "3.5.140.0/22",
-      "region": "ap-northeast-2",
+      "datacenter": "Amazon AWS",
       "service": "EC2",
       "network_border_group": "ap-northeast-2"
     }
   ],
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 0.08
+  "elapsed_ms": 1.15
 }
 ```
 
@@ -174,12 +171,13 @@ Alternatively, you can also lookup IPv6 addresses. Try the url [https://api.inco
 {
   "ip": "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef",
   "is_datacenter": true,
+  "ip_data_source": "self_published_ip_ranges",
   "cidr": "2406:dafe:e000::/40",
   "region": "ap-east-1",
+  "datacenter": "Amazon AWS",
   "service": "AMAZON",
   "network_border_group": "ap-east-1",
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 16.14
+  "elapsed_ms": 1.34
 }
 ```
 
@@ -187,10 +185,9 @@ If you don't specify any IP address with the `ip=` query parameter and you invok
 
 ```json
 {
-  "ip": "46.114.160.242",
+  "ip": "84.157.228.82",
   "is_datacenter": false,
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 0.29
+  "elapsed_ms": 0.28
 }
 ```
 
@@ -220,26 +217,23 @@ Looking up an Azure IP address: [https://api.incolumitas.com/datacenter?ip=20.41
 {
   "ip": "20.41.193.225",
   "is_datacenter": true,
+  "ip_data_source": "self_published_ip_ranges",
   "cidr": "20.41.193.224/27",
   "name": "AzurePortal",
-  "service": "Azure",
+  "datacenter": "Microsoft Azure",
   "region": "",
   "regionId": 0,
   "platform": "Azure",
   "systemService": "AzurePortal",
   "other_matches": [
     {
-      "cidr": "20.41.193.224/27",
-      "name": "AzurePortal.SouthIndia",
-      "service": "Azure",
-      "region": "southindia",
-      "regionId": 22,
-      "platform": "Azure",
-      "systemService": "AzurePortal"
+      "datacenter": "Microsoft Azure",
+      "asn": "8075",
+      "cidr": "20.40.0.0/13",
+      "ip_data_source": "whois_database"
     }
   ],
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 0.12
+  "elapsed_ms": 16.2
 }
 ```
 
@@ -251,26 +245,23 @@ Looking up an AWS IP address: [https://api.incolumitas.com/datacenter?ip=3.5.140
 {
   "ip": "3.5.140.2",
   "is_datacenter": true,
+  "ip_data_source": "self_published_ip_ranges",
   "cidr": "3.5.140.0/22",
   "region": "ap-northeast-2",
+  "datacenter": "Amazon AWS",
   "service": "AMAZON",
   "network_border_group": "ap-northeast-2",
   "other_matches": [
     {
+      "ip_data_source": "self_published_ip_ranges",
       "cidr": "3.5.140.0/22",
       "region": "ap-northeast-2",
-      "service": "S3",
-      "network_border_group": "ap-northeast-2"
-    },
-    {
-      "cidr": "3.5.140.0/22",
-      "region": "ap-northeast-2",
+      "datacenter": "Amazon AWS",
       "service": "EC2",
       "network_border_group": "ap-northeast-2"
     }
   ],
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 0.09
+  "elapsed_ms": 1.16
 }
 ```
 
@@ -282,10 +273,18 @@ Looking up an GCP IP address: [https://api.incolumitas.com/datacenter?ip=23.236.
 {
   "ip": "23.236.48.55",
   "is_datacenter": true,
+  "datacenter": "Google Cloud",
+  "asn": "15169",
   "cidr": "23.236.48.0/20",
-  "service": "GCP",
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 0.11
+  "ip_data_source": "whois_database",
+  "other_matches": [
+    {
+      "ip_data_source": "self_published_ip_ranges",
+      "cidr": "23.236.48.0/20",
+      "datacenter": "Google Cloud"
+    }
+  ],
+  "elapsed_ms": 27.27
 }
 ```
 
@@ -297,12 +296,13 @@ And looking up a AWS IPv6 address: [https://api.incolumitas.com/datacenter?ip=26
 {
   "ip": "2600:1F18:7FFF:F800:0000:ffff:0000:0000",
   "is_datacenter": true,
+  "ip_data_source": "self_published_ip_ranges",
   "cidr": "2600:1f18:7fff:f800::/56",
   "region": "us-east-1",
+  "datacenter": "Amazon AWS",
   "service": "ROUTE53_HEALTHCHECKS",
   "network_border_group": "us-east-1",
-  "lookup_method": "public_ip_ranges",
-  "elapsed_ms": 0.21
+  "elapsed_ms": 0.38
 }
 ```
 
