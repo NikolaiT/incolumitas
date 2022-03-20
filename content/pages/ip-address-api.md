@@ -205,6 +205,39 @@ fetch('https://api.incolumitas.com/datacenter')
 
 The IP address ranges for the cloud providers are kept up to date and the IP ranges are pulled from the upstream sources every 4 hours.
 
+### Bulk IP Lookup
+
+You can also lookup up to 100 IP addresses at once with a bulk API lookup mode.
+
+For that, you will need to make a POST request. See this example with `curl`:
+
+```bash
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"ips": ["162.158.0.0", "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef", "162.88.0.0", "20.41.193.225"]}' \
+  https://api.incolumitas.com/datacenter
+```
+
+The HTTP method needs to be `POST` and the API endpoint is the same: **https://api.incolumitas.com/datacenter**.
+
+Only the IP addresses that have a match (`is_datacenter` equals `true`) will returned by the API. All other IP addresses will be omitted in order to save network bandwith. Duplicate IPs will be removed.
+
+Example with JavaScript:
+
+```JavaScript
+const ips = ["162.158.0.0", "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef", "162.88.0.0", "20.41.193.225"];
+
+fetch('https://api.incolumitas.com/datacenter', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ips: ips})
+}).then(res => res.json())
+  .then(res => console.log(res));
+```
+
 ### More Examples for the IP Address Datacenter API
 
 In the following section, I will show examples for looking up IP addresses belonging to the three biggest cloud providers AWS, Azure and GCP:
