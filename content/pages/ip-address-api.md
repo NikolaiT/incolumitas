@@ -1,6 +1,6 @@
 Title: Datacenter IP Address API
 Date: 2021-09-29 00:13
-Modified: 2022-03-07 00:13
+Modified: 2022-03-20 16:13
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
@@ -17,7 +17,7 @@ The purpose of this API is simple: This API allows you to check whether an IP ad
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher (incolumitas.com)     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.6 (15th March 2022)**         |
+| **API Version**         | **v0.7 (20th March 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
 | **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more         |
 | **IPv6 Support**         | Yes         |
@@ -51,6 +51,12 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 + **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
 
 ## ChangeLog
+
+#### 20th March 2022
+
++ Improved API
++ Remove the `service` attribute in API output. Only attribute that identifies the cloud provider is now `datacenter`
++ Add bulk IP lookup mode. Allow up to 100 ips in bulk lookup mode. Only return datacenter IP addresses. Uses POST method. Ignore Invalid IPs
 
 #### 14th March 2022 and 15th March 2022
 

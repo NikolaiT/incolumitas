@@ -1,6 +1,6 @@
 Title: BotOrNot
 Date: 2021-01-13 00:13
-Modified: 2021-01-24 16:39
+Modified: 2021-03-2 16:39
 Author: Nikolai Tschacher
 Slug: BotOrNot
 Status: published
@@ -8,9 +8,7 @@ Sortorder: 4
 
 <a class="btn" href="https://bot.incolumitas.com" style="padding: 10px; font-weight: 600; font-size: 15px">Visit the BotOrNot detection page!</a>
 
-**Last Edit: 2nd March 2021**
-
-I currently put a lot of effort into researching the question how to distinguish web based bots from real human beings. Researchers are publishing intriguing new papers constantly that try to answer this question for good. On this page however, I try to take a slightly more practical approach to find solutions. 
+I currently put a lot of effort into researching the question how to distinguish web based bots from real human beings. Researchers are publishing intriguing new papers constantly that try to answer this question for good. On this page however, I try to take a slightly more practical approach to find solutions.
 
 *— Personal Stance*
 Compared to other actors active in this niche, I am convinced that advanced bots are not always bad. On the contrary, they often drive innovation and nurture creativity. After all, the Internet becomes a greater Oligopoly each passing day. Giving information back to smaller actors is a necessary and endorsed correction.

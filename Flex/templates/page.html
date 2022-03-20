@@ -15,15 +15,45 @@
 
 {% block content %}
 <article class="single">
-  <header>
+  <header class="post-header">
     {% import 'partial/translations.html' as translations with context %}
     {{ translations.translations_for(page) }}
-    <h1 id="{{ page.slug }}">{{ page.title }}</h1>
+    <h1 class="post-title" id="{{ page.slug }}">{{ page.title }}</h1>
+    <div class="post-meta">
+      <div class="published-date meta-item">
+          <i class="fa fa-clock-o"></i>
+          <span class="metadata-description">Published on </span>
+          <time class="date dt-published" datetime="{{ page.locale_date }}" itemprop="datePublished">
+              {{ page.locale_date }}
+          </time>
+          {% if 'post_stats' in PLUGINS %}
+              <span class="metadata-description">&#8226; {{ page.stats['read_mins'] }} min read</span>
+          {% endif %}
+          <span class="metadata-description">&#8226; <a href="#isso-thread">Write Comment</a></span>
+      </div>
+      {% if page.modified %}
+      <div class="modified-date meta-item">
+          <i class="fa fa-history"></i>
+          <span class="metadata-description">Modified on </span>
+          <time class="date dt-modified" datetime="{{ page.modified }}" itemprop="dateModified">
+              {{ page.modified.strftime('%B %d, %Y') }}
+          </time>
+      </div>
+      {% endif %}
+      <div class="author meta-item">
+          <i class="fa fa-user"></i>
+          <span class="metadata-description">Author </span>
+          <a href="https://incolumitas.com/pages/about/">{{ page.author }}</a>
+      </div>
+    </div>
   </header>
+
   <div>
     {% block before_content %}{% endblock %}
     {% block page_content %}{{ page.content }}{% endblock %}
     {% block after_content %}{% endblock %}
   </div>
+
+  {% include "partial/isso_page.html" %}
 </article>
 {% endblock %}
