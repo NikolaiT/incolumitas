@@ -1,6 +1,6 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
-Modified: 2021-03-08 22:31
+Modified: 2022-05-25 11:31
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
@@ -10,42 +10,28 @@ Summary: There are many resources in the Internet that show how to detect uBlock
 There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`.
 
 <script type="text/javascript">
-  (function detectAdblock(callback) {
-    var flaggedURL = 'https://adblockanalytics.com';
+  function adblockDetected() {
+      return new Promise(function (resolve, reject) {
+          var script = document.createElement('script');
 
-    if (window.fetch) {
-      var request = new Request(flaggedURL, {
-        method: 'HEAD',
-        mode: 'no-cors',
-      });
-      fetch(request)
-        .then(function(response) {
-          if (response.status === 404) {
-            callback(false);
-          } else {
-            callback('unknown (' + response.status + ')');
+          script.onload = function() {
+              if (document.getElementById('ybVg4vsBhs')) {
+                  resolve(false);
+              } else {
+                  resolve(true);
+              }
           }
-        })
-        .catch(function(error) {
-          callback(true);
-        });
-    } else {
-      var http = new XMLHttpRequest();
-      http.open('HEAD', flaggedURL, false);
 
-      try {
-        http.send();
-      } catch (err) {
-        callback(true);
-      }
+          script.onerror = function() {
+              resolve(true);
+          }
 
-      if (http.status === 404) {
-        callback(false);
-      } else {
-        callback('unknown (' + http.status + ')');
-      }
-    }
-  })(function (detected) {
+          script.src = 'https://incolumitas.com/data/sailthru.js';
+          document.body.appendChild(script);
+      });
+  }
+  
+  adblockDetected().then(function (detected) {
     var el = document.getElementById('ad_demo');
     if (detected) {
       el.innerHTML = 'You are using Adblock! (' + detected + ')';
@@ -62,6 +48,38 @@ There are several Adblock detection techniques discussed in this article. If you
     margin-top: 20px;
     display: block;
     width: 300px;"></span>
+
+
+### Update Adblock Detection on May 25th 2022
+
+I updated the adblock detection code (Also in the demo). This is the newest adblock detection code:
+
+```js
+function adblockDetected() {
+    return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+
+        script.onload = function() {
+            if (document.getElementById('ybVg4vsBhs')) {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        }
+
+        script.onerror = function() {
+            resolve(true);
+        }
+
+        script.src = 'https://incolumitas.com/data/sailthru.js';
+        document.body.appendChild(script);
+    });
+}
+
+adblockDetected().then(function(result) {
+    console.log('Adblock detected: ', result);
+});
+```
 
 ### Introduction
 
