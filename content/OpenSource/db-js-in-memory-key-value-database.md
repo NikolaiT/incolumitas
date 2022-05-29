@@ -1,6 +1,6 @@
 Title: db.js — In-Memory Key-Value Database with Persistent File Storage
 Date: 2022-05-29 12:36
-Modified: 2022-05-29 16:18
+Modified: 2022-05-29 16:30
 Category: Open Source
 Tags: db.js, in-memory database, key-value storage, JSON file persistance
 Slug: db.js-in-memory-key-value-database-with-persistent-file-storage
@@ -63,24 +63,24 @@ Of course `db.js` has many different configuration options that you can use:
 const DBjs = require('./dbjs').DBjs;
 
 const config = {
-    // after what size in MB the memory cache should be persisted to disk
-    persist_after_MB: 20,
-    // after what time in seconds the memory cache should be persisted to disk
-    persist_after_seconds: 12 * 60 * 60,
-    // absolute/relative path to database directory
-    database_path: '/tmp/database/',
-    // path to file where to log debug outputs to
-    logfile_path: '/tmp/dbjs.log',
-    // after how many seconds should the cache and index be persisted
-    flush_interval: 5 * 60,
-    // file prefix for archived files
-    file_prefix: 'dbjs_',
-    // whether to print debug output
-    debug: false,
-    // max key size in bytes
-    max_key_size_bytes: 1024,
-    // max value size in bytes
-    max_value_size_bytes: 1048576,
+  // after what size in MB the memory cache should be persisted to disk
+  persist_after_MB: 20,
+  // after what time in seconds the memory cache should be persisted to disk
+  persist_after_seconds: 12 * 60 * 60,
+  // absolute/relative path to database directory
+  database_path: '/tmp/database/',
+  // path to file where to log debug outputs to
+  logfile_path: '/tmp/dbjs.log',
+  // after how many seconds should the cache and index be persisted
+  flush_interval: 5 * 60,
+  // file prefix for archived files
+  file_prefix: 'dbjs_',
+  // whether to print debug output
+  debug: false,
+  // max key size in bytes
+  max_key_size_bytes: 1024,
+  // max value size in bytes
+  max_value_size_bytes: 1048576,
 };
 
 let db_js = new DBjs(config);
@@ -99,12 +99,12 @@ const express = require('express')
 const DBjs = require('./dbjs').DBjs
 
 const config = {
-    // absolute/relative path to database directory
-    database_path: '/tmp/exampleDatabase/',
-    // path to file where to log debug outputs to
-    logfile_path: '/tmp/example.log',
-    // whether to print debug output
-    debug: true,
+  // absolute/relative path to database directory
+  database_path: '/tmp/exampleDatabase/',
+  // path to file where to log debug outputs to
+  logfile_path: '/tmp/example.log',
+  // whether to print debug output
+  debug: true,
 };
 
 let db_js = new DBjs(config);
@@ -113,78 +113,78 @@ const app = express()
 const port = 3000
 
 function randomString(length = 100) {
-    let str = '';
-    for (let i = 0; i < length; i++) {
-        str += String.fromCharCode(Math.floor(65 + Math.random() * 25));
-    }
-    return str;
+  let str = '';
+  for (let i = 0; i < length; i++) {
+    str += String.fromCharCode(Math.floor(65 + Math.random() * 25));
+  }
+  return str;
 }
 
 // Setting keys: http://localhost:3000/set?key=alpha&value=beta
 // Getting value for a key: http://localhost:3000/get?key=alpha
 
 app.all('/set', (req, res) => {
-    res.header('Content-Type', 'application/json');
+  res.header('Content-Type', 'application/json');
 
-    if (req.query.key === undefined) {
-        return res.status(400).send({ msg: 'you must provide a key' })
-    }
+  if (req.query.key === undefined) {
+    return res.status(400).send({ msg: 'you must provide a key' })
+  }
 
-    let key = req.query.key;
-    let value = undefined;
+  let key = req.query.key;
+  let value = undefined;
 
-    if (req.query.value) {
-        value = req.query.value
-    }
+  if (req.query.value) {
+    value = req.query.value
+  }
 
-    if (req.body && req.body.value) {
-        value = req.body.value;
-    }
+  if (req.body && req.body.value) {
+    value = req.body.value;
+  }
 
-    if (value === undefined) {
-        return res.status(400).send({ msg: 'you must provide a value' })
-    }
+  if (value === undefined) {
+    return res.status(400).send({ msg: 'you must provide a value' })
+  }
 
-    db_js.set(key, value);
+  db_js.set(key, value);
 
-    return res.status(200).send({ msg: 'ok' })
+  return res.status(200).send({ msg: 'ok' })
 })
 
 app.get('/get', (req, res) => {
-    res.header('Content-Type', 'application/json');
+  res.header('Content-Type', 'application/json');
 
-    if (req.query.key === undefined) {
-        return res.status(400).send({ msg: 'you must provide a key' })
-    }
+  if (req.query.key === undefined) {
+    return res.status(400).send({ msg: 'you must provide a key' })
+  }
 
-    let key = req.query.key;
+  let key = req.query.key;
 
-    return res.status(200).send(db_js.get(key))
+  return res.status(200).send(db_js.get(key))
 })
 
 app.get('/get_all', (req, res) => {
-    res.header('Content-Type', 'application/json');
-    return res.status(200).send(JSON.stringify(db_js._getn(100000), null, 2))
+  res.header('Content-Type', 'application/json');
+  return res.status(200).send(JSON.stringify(db_js._getn(100000), null, 2))
 })
 
 app.get('/insert_random', (req, res) => {
-    res.header('Content-Type', 'application/json');
+  res.header('Content-Type', 'application/json');
 
-    if (req.query.num === undefined) {
-        return res.status(400).send({ msg: 'you must provide the number of random values to insert with the key `num`' })
-    }
+  if (req.query.num === undefined) {
+    return res.status(400).send({ msg: 'you must provide the number of random values to insert with the key `num`' })
+  }
 
-    let num = parseInt(req.query.num);
+  let num = parseInt(req.query.num);
 
-    for (let i = 0; i < num; i++) {
-        db_js.set(randomString(5), randomString(30));
-    }
+  for (let i = 0; i < num; i++) {
+    db_js.set(randomString(5), randomString(30));
+  }
 
-    return res.status(200).send({ msg: 'ok' })
+  return res.status(200).send({ msg: 'ok' })
 })
 
 app.listen(port, () => {
-    console.log(`Example db.js app listening on port ${port}`)
+  console.log(`Example db.js app listening on port ${port}`)
 })
 ```
 
