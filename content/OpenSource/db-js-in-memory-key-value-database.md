@@ -1,13 +1,14 @@
-Title: db.js — In-Memory Key-Value Database with Persistant File Storage
+Title: db.js — In-Memory Key-Value Database with Persistent File Storage
 Date: 2022-05-29 12:36
+Modified: 2022-05-29 16:18
 Category: Open Source
 Tags: db.js, in-memory database, key-value storage, JSON file persistance
-Slug: db.js-in-memory-key-value-database-with-persistant-file-storage
+Slug: db.js-in-memory-key-value-database-with-persistent-file-storage
 Summary: Instead of using one of the many battle proofed and reliable database solutions out there, I rather created my own solution. In this quick blog post, I am announcing the release of `db.js` - A in-memory database with persistant file storage.
 Author: Nikolai Tschacher
 Status: Published
 
-<a class="btn" href="https://github.com/NikolaiT/db.js/" style="padding: 10px; font-size: 16px;">Find db.js on GitHub</a>
+<a class="btn" href="https://github.com/NikolaiT/db.js" style="padding: 10px; font-size: 16px;">Checkout db.js on GitHub</a>
 
 # Design Principles
 
@@ -37,13 +38,15 @@ Having discussed reinventing the wheel and that I like doing it, let's focus on 
 Installation:
 
 ```
-npm install https://github.com/NikolaiT/db.js
+git clone https://github.com/NikolaiT/db.js
+
+cd db.js/
 ```
 
 Simple Usage:
 
 ```js
-const DBjs = require('./index').DBjs;
+const DBjs = require('./dbjs').DBjs;
 
 let db_js = new DBjs();
 
@@ -51,6 +54,39 @@ db_js.set('4343', {'name': 'test'});
 
 console.log(db_js.get('4343'));
 
+db_js.close();
+```
+
+Of course `db.js` has many different configuration options that you can use:
+
+```js
+const DBjs = require('./dbjs').DBjs;
+
+const config = {
+    // after what size in MB the memory cache should be persisted to disk
+    persist_after_MB: 20,
+    // after what time in seconds the memory cache should be persisted to disk
+    persist_after_seconds: 12 * 60 * 60,
+    // absolute/relative path to database directory
+    database_path: '/tmp/database/',
+    // path to file where to log debug outputs to
+    logfile_path: '/tmp/dbjs.log',
+    // after how many seconds should the cache and index be persisted
+    flush_interval: 5 * 60,
+    // file prefix for archived files
+    file_prefix: 'dbjs_',
+    // whether to print debug output
+    debug: false,
+    // max key size in bytes
+    max_key_size_bytes: 1024,
+    // max value size in bytes
+    max_value_size_bytes: 1048576,
+};
+
+let db_js = new DBjs(config);
+
+db_js.set('someKey', 'someValue');
+console.log(db_js.get('someKey'));
 db_js.close();
 ```
 
@@ -62,7 +98,16 @@ Obviously, using `db.js` like above does not make much sense. I use `db.js` most
 const express = require('express')
 const DBjs = require('./dbjs').DBjs
 
-let db_js = new DBjs();
+const config = {
+    // absolute/relative path to database directory
+    database_path: '/tmp/exampleDatabase/',
+    // path to file where to log debug outputs to
+    logfile_path: '/tmp/example.log',
+    // whether to print debug output
+    debug: true,
+};
+
+let db_js = new DBjs(config);
 
 const app = express()
 const port = 3000
