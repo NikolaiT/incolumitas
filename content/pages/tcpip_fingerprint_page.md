@@ -1,5 +1,6 @@
 Title: TCP/IP Fingerprinting
 Date: 2022-02-17 23:30
+Modified: 2022-06-03 12:00
 Author: Nikolai Tschacher
 Slug: TCP-IP-Fingerprint
 Status: published
@@ -8,8 +9,8 @@ Sortorder: 9
 | <!-- -->         | <!-- -->                                           |   
 |------------------|----------------------------------------------------|
 | **Author**       | Nikolai Tschacher                                  |
-| **API Version**  | v0.1                                               |
-| **Version Date** | 17th February 2022                                 |
+| **API Version**  | v0.2                                               |
+| **Version Date** | 3rd June 2022                                      |
 | **API Access**   | Free                                               |
 | **Download**     | [Open Source](https://github.com/NikolaiT/zardaxt) |
 
@@ -92,6 +93,10 @@ What TCP/IP header fields exactly are assumed to be OS-specific?
 + `TCP.options (Variable 0-320 bits)` - All TCP Options. The length of this field is determined by the data offset field. Contains a lot of information, but most importantly: The Maximum Segment Size (MSS), the Window scale value. Because the TCP options data is variable in size, it is the most important source of entropy to distinguish operating systems. The order of the TCP options is also taken into account.
 
 ## TODO
+
+- **Important:** Because of the way the API works (lookup by IP), only the first TCP SYN packet from your public IP address is stored. Data is purged/reset every once in a while. Therefore, if you first request the TCP/IP fingerprint API with one device from your internal network and then another device, you might still see the TCP/IP fingerprint from your first device. This will change in the future.
+
+- Store TCP/IP fingerprints with the key being a tuple of `(Timestamp, IP)`. If a client requests then by public IP, only return the most recent entry in the database.
 
 - Think about reverse-engineering the [TCP congestion control algorithm](https://en.wikipedia.org/wiki/TCP_congestion_control) by inspecting the packet flow. Reason: Different operating systems use different congestion control mechanisms. Citing [Wikipedia](https://en.wikipedia.org/wiki/TCP_congestion_contro) shows why it might be interesting: 
 > Per the end-to-end principle, congestion control is largely a function of internet hosts, not the network itself. There are several variations and versions of the algorithm implemented in protocol stacks of operating systems of computers that connect to the Internet.
