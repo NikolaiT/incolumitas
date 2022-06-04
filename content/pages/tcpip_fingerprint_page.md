@@ -10,7 +10,7 @@ Sortorder: 9
 |------------------|----------------------------------------------------|
 | **Author**       | Nikolai Tschacher                                  |
 | **API Version**  | v0.2                                               |
-| **Version Date** | 3rd June 2022                                      |
+| **Version Date** | 4th June 2022                                      |
 | **API Access**   | Free                                               |
 | **Download**     | [Open Source](https://github.com/NikolaiT/zardaxt) |
 
@@ -24,18 +24,21 @@ The TCP/IP fingerprinting API allows you to get your [TCP/IP fingerprint](https:
 3. Bot detection
 4. Proxy / VPN detection
 
-Currently, there is only one API endpoint:
+Currently, there is only one public API endpoint:
 
-| Endpoint          | Description                                                             | Live API Call                                                                            |
-|-------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| /classify?by_ip=1 | This endpoint returns the TCP/IP fingerprint for the requesting client. | [tcpip.incolumitas.com/classify?by_ip=1](https://tcpip.incolumitas.com/classify?by_ip=1) |
+| <!-- -->         | <!-- -->                                           |   
+|------------------|----------------------------------------------------|
+| **Endpoint**       | /classify                                  |
+| **Description**  | This endpoint returns the TCP/IP fingerprint for the requesting client                                               |
+| **Live API Call** | [tcpip.incolumitas.com/classify](https://tcpip.incolumitas.com/classify)                                      |
 
-You can invoke this API endpoint with curl:
+
+You can invoke this API endpoint also with curl:
 
 Example by using `curl`:
 
 ```bash
-curl 'https://tcpip.incolumitas.com/classify?by_ip=1'
+curl 'https://tcpip.incolumitas.com/classify'
 ```
 
 ## API Example
@@ -63,6 +66,11 @@ Your User-Agent (`navigator.userAgent`) says that you are
 document.getElementById('userAgent').innerText = navigator.userAgent;
 </script>
 
+## Internal API Behavior
+
+The TCP/IP fingerprint API uses your public IP address to lookup your most recent stored TCP/IP fingerprint. Of course you can have several different devices in the same network with the same public IP address. For example, if you request the TCP/IP fingerprint API first with you laptop running MacOS and then with your Andoid smartphone, the stored fingerprint will be overwritten once and you will first see the fingerprint for the MacOS laptop, then the Android device. 
+
+This is what an API consumer would expect by default, but it's not trivial that the API behaves like this. An alternative behavior would be to return ALL stored TCP/IP fingerprints for the public IP address.
 
 ## What is TCP/IP fingerprinting?
 
@@ -94,11 +102,7 @@ What TCP/IP header fields exactly are assumed to be OS-specific?
 
 ## TODO
 
-- **Important:** Because of the way the API works (lookup by IP), only the first TCP SYN packet from your public IP address is stored. Data is purged/reset every once in a while. Therefore, if you first request the TCP/IP fingerprint API with one device from your internal network and then another device, you might still see the TCP/IP fingerprint from your first device. This will change in the future.
-
-- Store TCP/IP fingerprints with the key being a tuple of `(Timestamp, IP)`. If a client requests then by public IP, only return the most recent entry in the database.
-
 - Think about reverse-engineering the [TCP congestion control algorithm](https://en.wikipedia.org/wiki/TCP_congestion_control) by inspecting the packet flow. Reason: Different operating systems use different congestion control mechanisms. Citing [Wikipedia](https://en.wikipedia.org/wiki/TCP_congestion_contro) shows why it might be interesting: 
 > Per the end-to-end principle, congestion control is largely a function of internet hosts, not the network itself. There are several variations and versions of the algorithm implemented in protocol stacks of operating systems of computers that connect to the Internet.
 
-- Collect and create a new fingerprint database, because the old one is from mid-2021
+- Collect and create a new fingerprint database, because the old one is from mid-2021 ✔️ [last update of database in May 2022]
