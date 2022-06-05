@@ -52,17 +52,36 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 
 ## API Endpoints
 
-### Endpoint /datacenter
+### Endpoint `/datacenter` - GET
 
 | <!-- -->         | <!-- -->                                           |   
 |------------------|----------------------------------------------------|
 | **Endpoint**       | /datacenter                                  |
+| **Method**       | `GET`                                  |
 | **Parameter**       | `ip` - The IPv4 or IPv6 address to lookup                                 |
 | **Description**  | If the provided IP address belongs to a datacenter, the API will return all meta data for the datacenter. The attribute `is_datacenter` will be set to `true`.   |
-| **Live API Call** | [https://api.incolumitas.com/datacenter?ip=13.34.52.117](https://api.incolumitas.com/datacenter?ip=13.34.52.117)    
+| **Example** | [https://api.incolumitas.com/datacenter?ip=13.34.52.117](https://api.incolumitas.com/datacenter?ip=13.34.52.117)    
 
+### Endpoint `/datacenter` - POST - bulk IP lookup
 
-### Endpoint /info
+| <!-- -->         | <!-- -->                                           |   
+|------------------|----------------------------------------------------|
+| **Endpoint**       | /datacenter                                  |
+| **Method**       | `POST`                                  |
+| **Content-Type**       | `Content-Type: application/json`                                  |
+| **Parameter**       | `ips` - An array of IPv4 and IPv6 addresses to lookup                                 |
+| **Description**  | The API will return datacenter lookups for each of the IP addresses provided. Only IP addresses that have a datacenter match will be returned in the API response.  |
+
+Example:
+
+```bash
+curl --header "Content-Type: application/json" \
+     --request POST \
+     --data '{"ips": ["162.158.0.0", "162.88.0.0", "20.41.193.225", "1.2.3.4"]}' \
+  https://api.incolumitas.com/datacenter
+```
+
+### Endpoint `/info` - GET
 
 | <!-- -->         | <!-- -->                                           |   
 |------------------|----------------------------------------------------|
