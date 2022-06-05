@@ -1,26 +1,31 @@
 Title: Datacenter IP Address API
 Date: 2021-09-29 00:13
-Modified: 2022-03-20 16:13
+Modified: 2022-06-05 16:13
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
 Sortorder: 5
 
-I maintain a public API to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for more a through introduction. 
+The Datacenter IP Address API can be used to check whether an IP address belongs to a data center IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for a thorough introduction.
 
-And please consider reading another blog article:  ["How to find out if an IP address belongs to a Hosting / Cloud Provider?"]({filename}/Security/datacenter-ip-api-second.md) - Where I explain in detail about my approch of finding datacenter IP addresses.
-
-The purpose of this API is simple: This API allows you to check whether an IP address belongs to an datacenter or not.
+And please consider reading another blog article:  ["How to find out if an IP address belongs to a Hosting / Cloud Provider?"]({filename}/Security/datacenter-ip-api-second.md) - This blog article contains a detailed explanation how to use public data sources such as whois data to determine if an IP address belongs to a datacenter.
 
 
 | <!-- -->    | <!-- -->    |
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher (incolumitas.com)     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.7 (20th March 2022)**         |
+| **API Version**         | **v0.8 (5th June 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
 | **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network and many more         |
 | **IPv6 Support**         | Yes         |
+
+
+Key Features:
+
++ **Always updated**: The API database is automatically updated every day. Data is gathered from many sources: Self published IP ranges from large cloud providers, whois lookups and many other sources
++ **Pretty fast**: The API is very performant. On average, an IP lookup takes `0.042ms` (server side time consumed)
++ **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
 
 ## Live API
 
@@ -44,13 +49,35 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 })
 </script>
 
-## Datacenter/Cloud IP API Key Features
 
-+ **Always updated**: The API database is automatically updated every day. Data is gathered from many sources: Self published IP ranges from large cloud providers, whois lookups and many other sources
-+ **Pretty fast**: The API is very performant. On average, an IP lookup takes `0.042ms` (server side time consumed)
-+ **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
+## API Endpoints
 
-## ChangeLog
+### Endpoint /datacenter
+
+| <!-- -->         | <!-- -->                                           |   
+|------------------|----------------------------------------------------|
+| **Endpoint**       | /datacenter                                  |
+| **Parameter**       | `ip` - The IPv4 or IPv6 address to lookup                                 |
+| **Description**  | If the provided IP address belongs to a datacenter, the API will return all meta data for the datacenter. The attribute `is_datacenter` will be set to `true`.   |
+| **Live API Call** | [https://api.incolumitas.com/datacenter?ip=13.34.52.117](https://api.incolumitas.com/datacenter?ip=13.34.52.117)    
+
+
+### Endpoint /info
+
+| <!-- -->         | <!-- -->                                           |   
+|------------------|----------------------------------------------------|
+| **Endpoint**       | /info                                  |
+| **Description**  | Returns all datacenters that are currently present in the API. The number of IPv4 (`total_ipv4`) and IPv6 (`total_ipv6`) addresses for each datacenter will also be provided.   |
+| **Live API Call** | [https://api.incolumitas.com/info](https://api.incolumitas.com/info)    
+
+
+## Change Log
+
+#### 5th June 2022
+
++ Added [APNIC whois data](https://www.apnic.net/) to database
++ Updated database in general
++ added API endpoint [/info](https://api.incolumitas.com/info)
 
 #### 20th March 2022
 
@@ -347,161 +374,165 @@ Currently, the API supports IP address ranges from the following [cloud provider
 
 | # | Cloud Provider | Number of IPv4 Addresses | Number of IPv6 Addresses| API support |
 |------------|------------|------------|------------|------------|
-|1| [Amazon AWS](https://aws.amazon.com/) | 144,807,562 | 4,722,366,482,869,645,000,000|✓|
-|2| [Microsoft Azure](https://azure.microsoft.com/) | 98,310,633 | 1,208,925,819,614,629,200,000,000|✓|
-|3| [Google Cloud](https://cloud.google.com/) | 50,452,565 | 1,208,925,819,614,629,200,000,000|✓|
-|4| [Akamai Technologies](https://www.akamai.com/) | 42,688,775 | 1,208,925,819,614,629,200,000,000|✓|
-|5| [Alibaba Cloud](https://www.alibabacloud.com/) | 27,621,563 | 633,825,300,114,114,700,000,000,000,000|✓|
-|6| [One.com A/S](https://www.one.com/) | 24,197,856 | 79,228,162,514,264,340,000,000,000,000|✓|
-|7| [OVH](http://www.ovh.com/) | 16,713,066 | 18,446,744,073,709,552,000|✓|
-|8| [IBM Cloud](https://www.ibm.com/cloud) | 15,097,620 | 1,208,925,819,614,629,200,000,000|✓|
-|9| [Savvis](http://www.savvis.net/) | 10,142,698 | 4,835,703,278,458,517,000,000,000|✓|
-|10| [Hetzner Online](https://www.hetzner.com/) | 9,868,233 | 309,485,009,821,345,100,000,000,000|✓|
-|11| [Cloudflare](https://www.cloudflare.com/) | 9,126,348 | 79,228,162,514,264,340,000,000,000,000|✓|
-|12| [Liquid Web](https://www.liquidweb.com/) | 8,857,554 | 1,208,925,819,614,629,200,000,000|✓|
-|13| [DigitalOcean](https://www.digitalocean.com/) | 6,145,331 | 316,912,650,057,057,350,000,000,000,000|✓|
-|14| [1&1 Internet](http://www.1and1.com/) | 4,194,972 | 1,208,925,819,614,629,200,000,000|✓|
-|15| [LeaseWeb](https://www.leaseweb.com/) | 3,452,136 | 79,228,162,514,264,340,000,000,000,000|✓|
-|16| [Equinix, Inc.](http://www.equinix.com/) | 2,684,829 | 1,208,925,819,614,629,200,000,000|✓|
-|17| [Rackspace, Inc.](https://www.rackspace.com/) | 2,528,973 | 1,208,925,819,614,629,200,000,000|✓|
-|18| [Cloudinnovation](http://cloudinnovation.org/) | 2,509,056 | 18,446,744,073,709,552,000|✓|
-|19| [Claranet limited](https://www.claranet.com/) | 2,404,068 | 18,446,744,073,709,552,000|✓|
-|20| [Energy Group Networks](https://egihosting.com/) | 2,380,800 | 1,208,925,819,614,629,200,000,000|✓|
-|21| [Fiber Grid Inc](https://fibergrid.eu/) | 2,235,904 | 0|✓|
-|22| [PlusServer GmbH](https://www.plusserver.com/) | 2,089,170 | 18,446,744,073,709,552,000|✓|
-|23| [Selectel](https://selectel.com/) | 2,043,168 | 309,485,009,821,345,100,000,000,000|✓|
-|24| [M247 Ltd](https://m247.com/) | 1,815,840 | 1,208,925,819,614,629,200,000,000|✓|
-|25| [Oracle Cloud](https://www.oracle.com/cloud/) | 1,577,482 | 0|✓|
-|26| [GoDaddy Operating Company, LLC.](https://www.godaddy.com/) | 1,567,737 | 79,228,162,514,264,340,000,000,000,000|✓|
-|27| [GHOSTnet GmbH](http://www.ghostnet.de/) | 1,511,397 | 18,446,744,073,709,552,000|✓|
-|28| [Linode](https://www.linode.com/) | 1,472,718 | 1,208,925,819,614,629,200,000,000|✓|
-|29| [DreamHost](https://www.dreamhost.com/) | 1,458,751 | 1,208,925,819,614,629,200,000,000|✓|
-|30| [Aruba S.p.a](https://www.aruba.it/) | 1,447,972 | 79,228,162,514,264,340,000,000,000,000|✓|
-|31| [ServiHosting Networks S.L.](http://servihosting.es/) | 1,441,616 | 316,912,650,057,057,350,000,000,000,000|✓|
-|32| [Online SAS (Scaleway)](https://www.scaleway.com/) | 1,413,113 | 1,237,940,039,285,380,300,000,000,000|✓|
-|33| [Huawei Cloud Service](https://www.huaweicloud.com/) | 1,310,818 | 1,208,925,819,614,629,200,000,000|✓|
-|34| [Strato AG](https://www.strato.de/) | 1,261,265 | 79,228,162,514,264,340,000,000,000,000|✓|
-|35| [iomart Hosting Ltd](http://www.rapidswitch.com/) | 1,249,437 | 79,228,162,514,264,340,000,000,000,000|✓|
-|36| [Contabo GmbH](https://contabo.de/) | 1,240,036 | 79,228,162,514,264,340,000,000,000,000|✓|
-|37| [Internap Corporation](http://www.internap.com/) | 1,232,575 | 18,446,744,073,709,552,000|✓|
-|38| [Choopa, LLC.](https://www.choopa.com/) | 1,208,565 | 1,208,925,819,614,629,200,000,000|✓|
-|39| [Sakura Internet Inc.](http://www.sakura.ne.jp/) | 1,106,153 | 633,825,300,114,114,700,000,000,000,000|✓|
-|40| [Aptum Technologies](https://aptum.com/) | 1,044,480 | 309,485,009,821,345,100,000,000,000|✓|
-|41| [Host Europe](https://www.hosteurope.de/) | 944,337 | 79,228,162,514,264,340,000,000,000,000|✓|
-|42| [ColoCrossing](https://www.colocrossing.com/) | 852,736 | 0|✓|
-|43| [home.pl S.A.](https://home.pl/) | 806,501 | 1,208,925,819,614,629,200,000,000|✓|
-|44| [Quadranet, Inc](https://www.quadranet.com/) | 681,726 | 2,417,851,639,229,258,300,000,000|✓|
-|45| [Fastly, Inc.](https://www.fastly.com/) | 605,210 | 1,208,925,819,614,629,200,000,000|✓|
-|46| [Lumen](https://www.lumen.com/) | 556,139 | 1,208,925,819,614,629,200,000,000|✓|
-|47| [DediPath](https://dedipath.com/) | 551,244 | 18,446,744,073,709,552,000|✓|
-|48| [It7 Networks Inc](https://www.it7.net/) | 502,553 | 1,208,925,819,614,629,200,000,000|✓|
-|49| [Hostway](https://hostway.com/) | 462,238 | 633,825,300,114,114,700,000,000,000,000|✓|
-|50| [trueserver.nl](http://trueserver.nl/) | 459,999 | 1,208,925,819,614,629,200,000,000|✓|
-|51| [Reg.Ru Hosting](https://www.reg.ru/hosting/) | 454,102 | 1,208,925,819,614,629,200,000,000|✓|
-|52| [DataCamp Limited](https://datacamp.co.uk/) | 450,822 | 633,825,300,114,114,700,000,000,000,000|✓|
-|53| [Locaweb Serviços de Internet S/A](http://www.locaweb.com.br/) | 445,440 | 1,208,925,819,614,629,200,000,000|✓|
-|54| [G-Core Labs S.A.](https://gcorelabs.com/) | 439,459 | 19,342,813,113,834,067,000,000,000|✓|
-|55| [myLoc](https://www.myloc.de/) | 436,497 | 1,208,925,819,614,629,200,000,000|✓|
-|56| [Hostinger](https://www.hostinger.com/) | 409,308 | 1,208,925,819,614,629,200,000,000|✓|
-|57| [netcup GmbH](https://www.netcup.de/) | 391,261 | 1,208,925,819,614,629,200,000,000|✓|
-|58| [IP Exchange GmbH](http://www.ip-exchange.de/) | 389,098 | 1,208,925,819,614,629,200,000,000|✓|
-|59| [A2 Hosting](http://www.mittwald.de/) | 364,186 | 79,228,162,514,264,340,000,000,000,000|✓|
-|60| [Zscaler, Inc.](https://www.zscaler.com/) | 363,313 | 79,228,162,514,264,340,000,000,000,000|✓|
-|61| [CoreSpace,Inc.](https://corespace.com/) | 358,144 | 79,228,162,514,264,340,000,000,000,000|✓|
-|62| [Transip B.V](https://www.transip.nl/) | 356,869 | 1,208,925,819,614,629,200,000,000|✓|
-|63| [kinx.net](https://www.kinx.net/) | 344,576 | 1,208,925,819,614,629,200,000,000|✓|
-|64| [XT Global Networks LTD](http://www.xtglobal.vg/) | 341,512 | 79,228,162,514,264,340,000,000,000,000|✓|
-|65| [Hostwinds.com](https://www.hostwinds.com/) | 331,518 | 633,825,300,114,114,700,000,000,000,000|✓|
-|66| [Combell NV](https://www.combell.com/) | 326,893 | 1,208,925,819,614,629,200,000,000|✓|
-|67| [Datapipe](http://www.datapipe.com/) | 326,124 | 1,208,925,819,614,629,200,000,000|✓|
-|68| [UCloud](https://www.ucloud.cn/) | 323,765 | 1,208,925,819,614,629,200,000,000|✓|
-|69| [Gmo Internet, Inc](https://www.gmo.jp/) | 310,016 | 1,208,925,819,614,629,200,000,000|✓|
-|70| [Arsys](https://www.arsys.es/) | 301,013 | 1,208,925,819,614,629,200,000,000|✓|
-|71| [Xneelo](https://xneelo.co.za/) | 300,544 | 18,446,744,073,709,552,000|✓|
-|72| [ServerCentral](http://www.servercentral.net/) | 284,734 | 633,825,300,114,114,700,000,000,000,000|✓|
-|73| [Imperva, Inc.](https://www.imperva.com/) | 284,141 | 79,228,162,514,264,340,000,000,000,000|✓|
-|74| [DomainFactory](https://www.df.eu/) | 281,455 | 1,208,925,819,614,629,200,000,000|✓|
-|75| [latisys](http://www.latisys.com/) | 279,869 | 1,208,925,819,614,629,200,000,000|✓|
-|76| [iWeb Technologies Inc.](https://iweb.com/) | 262,142 | 79,228,162,514,264,340,000,000,000,000|✓|
-|77| [TimeWeb](https://timeweb.com/) | 246,113 | 1,208,925,819,614,629,200,000,000|✓|
-|78| [Stackpath, LLC](https://www.stackpath.com/) | 238,454 | 1,208,925,819,614,629,200,000,000|✓|
-|79| [Heficed](https://www.heficed.com/) | 235,388 | 1,208,925,819,614,629,200,000,000|✓|
-|80| [Input Output Flood LLC](https://ioflood.com/) | 226,560 | 79,228,162,514,264,340,000,000,000,000|✓|
-|81| [X server Co., Ltd.](https://www.xserver.co.jp/) | 221,894 | 1,208,925,819,614,629,200,000,000|✓|
-|82| [Infomaniak](https://www.infomaniak.com/) | 200,861 | 1,208,925,819,614,629,200,000,000|✓|
-|83| [Clouvider Limited](https://www.clouvider.com/) | 197,654 | 1,208,925,819,614,629,200,000,000|✓|
-|84| [Daou Technology](http://www.daouidc.com/) | 187,952 | 1,208,925,819,614,629,200,000,000|✓|
-|85| [Node4](https://www.node4.co.uk/) | 184,331 | 18,446,744,073,709,552,000|✓|
-|86| [Performive LLC](https://performive.com/) | 174,329 | 1,208,925,819,614,629,200,000,000|✓|
-|87| [LogicWeb Inc.](https://www.logicweb.com/) | 158,707 | 633,825,300,114,114,700,000,000,000,000|✓|
-|88| [Rackray](http://www.rackray.eu/) | 157,078 | 1,208,925,819,614,629,200,000,000|✓|
-|89| [Redstation Limited](http://redstation.com/) | 152,921 | 1,208,925,819,614,629,200,000,000|✓|
-|90| [SysEleven GmbH](https://www.syseleven.de/en/) | 149,924 | 1,208,925,819,614,629,200,000,000|✓|
-|91| [Wholesale Internet, Inc](https://www.wholesaleinternet.net/) | 149,760 | 1,208,925,819,614,629,200,000,000|✓|
-|92| [Steadfast](https://www.steadfast.net/) | 147,200 | 1,208,925,819,614,629,200,000,000|✓|
-|93| [Duocast B.V.](https://duocast.nl/) | 144,193 | 18,446,744,073,709,552,000|✓|
-|94| [Fortress Integrated Technologies](https://www.dedicatednow.com/) | 140,925 | 1,208,925,819,614,629,200,000,000|✓|
-|95| [HopOne](http://www.hopone.net/) | 137,216 | 1,208,925,819,614,629,200,000,000|✓|
-|96| [tzulo, inc.](http://www.tzulo.com/) | 136,192 | 4,951,760,157,141,521,000,000,000,000|✓|
-|97| [Mittwald](http://www.mittwald.de/) | 135,185 | 309,485,009,821,345,100,000,000,000|✓|
-|98| [Namecheap](https://www.namecheap.com/) | 130,809 | 79,228,162,514,264,340,000,000,000,000|✓|
-|99| [LightEdge Solutions, Inc.](https://www.lightedge.com/) | 123,392 | 4,951,760,157,141,521,000,000,000,000|✓|
-|100| [Sharktech Inc.](https://sharktech.net/) | 121,856 | 0|✓|
-|101| [Enzu Inc.](https://www.enzu.com/) | 114,220 | 1,208,925,819,614,629,200,000,000|✓|
-|102| [24Shells Inc](https://www.24shells.net/) | 111,356 | 633,825,300,114,114,700,000,000,000,000|✓|
-|103| [Unified Layer](https://www.unitedlayer.com/) | 91,904 | 1,208,925,819,614,629,200,000,000|✓|
-|104| [DinaHosting S.L.](https://dinahosting.com/) | 88,450 | 4,722,366,482,869,645,000,000|✓|
-|105| [SuperHosting.BG](https://www.superhosting.bg/) | 84,764 | 1,208,925,819,614,629,200,000,000|✓|
-|106| [First Colo](https://www.first-colo.net/) | 81,641 | 18,446,744,073,709,552,000|✓|
-|107| [Serverplan srl](https://www.serverplan.com/) | 78,120 | 1,208,925,819,614,629,200,000,000|✓|
-|108| [Hivelocity](https://www.hivelocity.net/) | 75,968 | 79,228,162,514,264,340,000,000,000,000|✓|
-|109| [veesp.com vps clients](https://veesp.com/) | 75,567 | 79,228,162,514,264,340,000,000,000,000|✓|
-|110| [VSHosting](https://www.vshosting.cz/) | 72,500 | 1,208,925,819,614,629,200,000,000|✓|
-|111| [Zenlayer](https://www.zenlayer.com/) | 71,394 | 633,825,300,114,114,700,000,000,000,000|✓|
-|112| [Dreamscape](https://www.dreamscapenetworks.com/) | 70,651 | 4,951,760,157,141,521,000,000,000,000|✓|
-|113| [Krystal Hosting](https://krystal.uk/) | 65,834 | 633,825,300,114,114,700,000,000,000,000|✓|
-|114| [Media Temple](https://mediatemple.net/) | 62,464 | 0|✓|
-|115| [GZ Systems (PureVPN)](https://www.purevpn.com/) | 60,431 | 0|✓|
-|116| [BuyVM (frantech)](https://buyvm.net/) | 60,159 | 1,208,925,819,614,629,200,000,000|✓|
-|117| [InMotion](https://www.inmotionhosting.com/) | 57,855 | 18,446,744,073,709,552,000|✓|
-|118| [Phoenix NAP, LLC](https://phoenixnap.com/) | 54,129 | 79,228,162,514,264,340,000,000,000,000|✓|
-|119| [cloudsigma](https://www.cloudsigma.com/) | 46,576 | 1,208,925,819,614,629,200,000,000|✓|
-|120| [Hostpoint](https://www.hostpoint.ch/en) | 42,999 | 4,951,760,157,141,521,000,000,000,000|✓|
-|121| [World4You Internet Services GmbH](https://www.world4you.com/) | 37,030 | 633,825,300,114,114,700,000,000,000,000|✓|
-|122| [Kamatera](https://www.kamatera.com/) | 36,091 | 1,208,925,819,614,629,200,000,000|✓|
-|123| [Packethub S.A.](https://www.packethub.net/) | 35,161 | 1,208,925,819,614,629,200,000,000|✓|
-|124| [Beget](https://beget.com/en) | 33,792 | 0|✓|
-|125| [Amsio B.V.](https://www.amsio.com/) | 28,203 | 0|✓|
-|126| [ServerHub](https://www.serverhub.com/) | 27,136 | 79,228,162,514,264,340,000,000,000,000|✓|
-|127| [Hosting Ukraine](https://www.ukraine.com.ua/) | 26,873 | 18,446,744,073,709,552,000|✓|
-|128| [20i](https://www.20i.com/) | 22,253 | 4,722,366,482,869,645,000,000|✓|
-|129| [Servers Australia](https://www.serversaustralia.com.au/) | 18,944 | 1,208,925,819,614,629,200,000,000|✓|
-|130| [Synergy Wholesale](https://synergywholesale.com/) | 15,616 | 1,208,925,819,614,629,200,000,000|✓|
-|131| [hosting.ua](http://hosting.ua/) | 12,349 | 1,208,925,819,614,629,200,000,000|✓|
-|132| [Optimate Server](http://optimate-server.de/) | 5,108 | 18,446,744,073,709,552,000|✓|
-|133| [Webair Internet Development Inc](https://www.webair.com/) | 4,863 | 633,825,300,114,114,700,000,000,000,000|✓|
-|134| [ALL INKL](https://all-inkl.com/) | 4,350 | 0|✓|
-|135| [Hostgator](https://www.hostgator.com/) | 4,158 | 0|✓|
-|136| [Hurricane Electic](http://www.he.net/) | 4,154 | 1,208,925,819,614,629,200,000,000|✓|
-|137| [FDC Servers](https://www.fdcservers.net/) | 3,325 | 0|✓|
-|138| [Cologix, Inc.](http://www.cologix.com/) | 3,069 | 0|✓|
-|139| [HostDime](https://www.hostdime.com/) | 2,137 | 633,825,300,114,114,700,000,000,000,000|✓|
-|140| [Peak10](http://www.peak10.com/) | 2,048 | 0|✓|
-|141| [MULTACOM Inc.](http://multacom.com/) | 2,045 | 79,228,162,514,264,340,000,000,000,000|✓|
-|142| [Colocation America Inc](http://www.colocationamerica.com/) | 1,536 | 0|✓|
-|143| [HostPapa](https://www.hostpapa.com/) | 1,531 | 0|✓|
-|144| [Vultr Holdings LLC](https://www.vultr.com/) | 1,308 | 19,342,813,113,834,067,000,000,000|✓|
-|145| [Bluehosting](https://www.bluehosting.cl/) | 1,024 | 0|✓|
-|146| [Fasthosts Internet Ltd](https://www.fasthosts.co.uk/) | 1,024 | 2,417,851,639,229,258,300,000,000|✓|
-|147| [Ubiquity Hosting](https://www.ubiquityhosting.com/) | 767 | 0|✓|
-|148| [AlmaHost Ltd](https://almahost.co.uk/) | 512 | 0|✓|
-|149| [TierPoint](https://www.tierpoint.com/) | 512 | 1,208,925,819,614,629,200,000,000|✓|
-|150| [ServerMania Inc.](https://www.servermania.com/) | 512 | 0|✓|
-|151| [Psychz Networks](https://www.psychz.net/) | 511 | 0|✓|
-|152| [Mullvad VPN](https://mullvad.net/) | 507 | 1,208,925,819,614,629,200,000,000|✓|
-|153| [The Constant Company, LLC](https://www.constant.com/) | 256 | 0|✓|
-|154| [American Internet Services](https://nfinit.com/) | 63 | 79,228,162,514,264,340,000,000,000,000|✓|
-|155| [Bluehost Inc.](https://www.bluehost.com/) | 0 | 309,485,009,821,345,100,000,000,000|✓|
+|1| [Amazon AWS](https://aws.amazon.com/) | 147,119,660 | 4,722,366,482,869,645,000,000|✓|
+|2| [Microsoft Azure](https://azure.microsoft.com/) | 104,291,502 | 1,208,925,819,614,629,200,000,000|✓|
+|3| [Alibaba Cloud](https://www.alibabacloud.com/) | 57,117,523 | 633,825,300,114,114,700,000,000,000,000|✓|
+|4| [Google Cloud](https://cloud.google.com/) | 50,488,912 | 633,825,300,114,114,700,000,000,000,000|✓|
+|5| [Akamai Technologies](https://www.akamai.com/) | 42,869,267 | 1,208,925,819,614,629,200,000,000|✓|
+|6| [One.com A/S](https://www.one.com/) | 24,263,967 | 79,228,162,514,264,340,000,000,000,000|✓|
+|7| [OVH](http://www.ovh.com/) | 16,857,348 | 18,446,744,073,709,552,000|✓|
+|8| [IBM Cloud](https://www.ibm.com/cloud) | 14,186,547 | 1,208,925,819,614,629,200,000,000|✓|
+|9| [Savvis](http://www.savvis.net/) | 10,154,984 | 4,835,703,278,458,517,000,000,000|✓|
+|10| [Hetzner Online](https://www.hetzner.com/) | 9,809,532 | 19,807,040,628,566,084,000,000,000,000|✓|
+|11| [Cloudflare](https://www.cloudflare.com/) | 9,173,180 | 79,228,162,514,264,340,000,000,000,000|✓|
+|12| [Liquid Web](https://www.liquidweb.com/) | 8,873,676 | 1,208,925,819,614,629,200,000,000|✓|
+|13| [Tencent Cloud](https://intl.cloud.tencent.com/) | 7,908,768 | 0|✓|
+|14| [DigitalOcean](https://www.digitalocean.com/) | 6,418,707 | 79,228,162,514,264,340,000,000,000,000|✓|
+|15| [Huawei Cloud Service](https://www.huaweicloud.com/) | 5,326,661 | 1,208,925,819,614,629,200,000,000|✓|
+|16| [LeaseWeb](https://www.leaseweb.com/) | 4,490,190 | 79,228,162,514,264,340,000,000,000,000|✓|
+|17| [1&1 Internet](http://www.1and1.com/) | 4,328,725 | 309,485,009,821,345,100,000,000,000|✓|
+|18| [Sakura Internet Inc.](http://www.sakura.ne.jp/) | 3,960,886 | 1,208,925,819,614,629,200,000,000|✓|
+|19| [Equinix, Inc.](http://www.equinix.com/) | 3,351,217 | 1,208,925,819,614,629,200,000,000|✓|
+|20| [M247 Ltd](https://m247.com/) | 2,836,520 | 1,208,925,819,614,629,200,000,000|✓|
+|21| [Rackspace, Inc.](https://www.rackspace.com/) | 2,713,478 | 1,208,925,819,614,629,200,000,000|✓|
+|22| [Cloudinnovation](http://cloudinnovation.org/) | 2,414,334 | 18,446,744,073,709,552,000|✓|
+|23| [Claranet limited](https://www.claranet.com/) | 2,403,812 | 18,446,744,073,709,552,000|✓|
+|24| [Energy Group Networks](https://egihosting.com/) | 2,380,800 | 1,208,925,819,614,629,200,000,000|✓|
+|25| [Fiber Grid Inc](https://fibergrid.eu/) | 2,236,926 | 0|✓|
+|26| [Selectel](https://selectel.com/) | 2,060,047 | 309,485,009,821,345,100,000,000,000|✓|
+|27| [PlusServer GmbH](https://www.plusserver.com/) | 2,009,405 | 1,208,925,819,614,629,200,000,000|✓|
+|28| [Oracle Cloud](https://www.oracle.com/cloud/) | 1,966,602 | 0|✓|
+|29| [Online SAS (Scaleway)](https://www.scaleway.com/) | 1,933,543 | 39,614,081,257,132,170,000,000,000,000|✓|
+|30| [GoDaddy Operating Company, LLC.](https://www.godaddy.com/) | 1,641,253 | 79,228,162,514,264,340,000,000,000,000|✓|
+|31| [GHOSTnet GmbH](http://www.ghostnet.de/) | 1,512,934 | 18,446,744,073,709,552,000|✓|
+|32| [Linode](https://www.linode.com/) | 1,496,005 | 1,208,925,819,614,629,200,000,000|✓|
+|33| [DreamHost](https://www.dreamhost.com/) | 1,458,751 | 1,208,925,819,614,629,200,000,000|✓|
+|34| [Aruba S.p.a](https://www.aruba.it/) | 1,455,713 | 1,208,925,819,614,629,200,000,000|✓|
+|35| [ServiHosting Networks S.L.](http://servihosting.es/) | 1,437,324 | 633,825,300,114,114,700,000,000,000,000|✓|
+|36| [Gmo Internet, Inc](https://www.gmo.jp/) | 1,404,828 | 1,208,925,819,614,629,200,000,000|✓|
+|37| [Internap Corporation](http://www.internap.com/) | 1,329,755 | 18,446,744,073,709,552,000|✓|
+|38| [Choopa, LLC.](https://www.choopa.com/) | 1,292,249 | 1,208,925,819,614,629,200,000,000|✓|
+|39| [Contabo GmbH](https://contabo.de/) | 1,272,788 | 79,228,162,514,264,340,000,000,000,000|✓|
+|40| [Strato AG](https://www.strato.de/) | 1,247,353 | 1,208,925,819,614,629,200,000,000|✓|
+|41| [iomart Hosting Ltd](http://www.rapidswitch.com/) | 1,241,441 | 79,228,162,514,264,340,000,000,000,000|✓|
+|42| [UCloud](https://www.ucloud.cn/) | 1,088,546 | 1,208,925,819,614,629,200,000,000|✓|
+|43| [Aptum Technologies](https://aptum.com/) | 1,044,480 | 309,485,009,821,345,100,000,000,000|✓|
+|44| [Host Europe](https://www.hosteurope.de/) | 944,211 | 79,228,162,514,264,340,000,000,000,000|✓|
+|45| [ColoCrossing](https://www.colocrossing.com/) | 852,736 | 0|✓|
+|46| [home.pl S.A.](https://home.pl/) | 808,037 | 1,208,925,819,614,629,200,000,000|✓|
+|47| [Quadranet, Inc](https://www.quadranet.com/) | 681,471 | 2,417,851,639,229,258,300,000,000|✓|
+|48| [A2 Hosting](http://www.mittwald.de/) | 608,289 | 79,228,162,514,264,340,000,000,000,000|✓|
+|49| [Fastly, Inc.](https://www.fastly.com/) | 607,764 | 1,208,925,819,614,629,200,000,000|✓|
+|50| [Daou Technology](http://www.daouidc.com/) | 583,200 | 79,228,162,514,264,340,000,000,000,000|✓|
+|51| [Lumen](https://www.lumen.com/) | 577,124 | 1,208,925,819,614,629,200,000,000|✓|
+|52| [DediPath](https://dedipath.com/) | 541,787 | 18,446,744,073,709,552,000|✓|
+|53| [It7 Networks Inc](https://www.it7.net/) | 504,601 | 1,208,925,819,614,629,200,000,000|✓|
+|54| [DataCamp Limited](https://datacamp.co.uk/) | 493,795 | 633,825,300,114,114,700,000,000,000,000|✓|
+|55| [Hostway](https://hostway.com/) | 466,074 | 1,208,925,819,614,629,200,000,000|✓|
+|56| [trueserver.nl](http://trueserver.nl/) | 460,446 | 1,208,925,819,614,629,200,000,000|✓|
+|57| [IP Exchange GmbH](http://www.ip-exchange.de/) | 454,862 | 1,208,925,819,614,629,200,000,000|✓|
+|58| [G-Core Labs S.A.](https://gcorelabs.com/) | 445,565 | 19,342,813,113,834,067,000,000,000|✓|
+|59| [Locaweb Serviços de Internet S/A](http://www.locaweb.com.br/) | 445,440 | 1,208,925,819,614,629,200,000,000|✓|
+|60| [myLoc](https://www.myloc.de/) | 444,435 | 1,208,925,819,614,629,200,000,000|✓|
+|61| [Reg.Ru Hosting](https://www.reg.ru/hosting/) | 436,212 | 1,208,925,819,614,629,200,000,000|✓|
+|62| [Hostinger](https://www.hostinger.com/) | 423,636 | 1,208,925,819,614,629,200,000,000|✓|
+|63| [X server Co., Ltd.](https://www.xserver.co.jp/) | 404,791 | 1,208,925,819,614,629,200,000,000|✓|
+|64| [netcup GmbH](https://www.netcup.de/) | 391,516 | 1,208,925,819,614,629,200,000,000|✓|
+|65| [Zscaler, Inc.](https://www.zscaler.com/) | 369,756 | 79,228,162,514,264,340,000,000,000,000|✓|
+|66| [Zenlayer](https://www.zenlayer.com/) | 367,399 | 633,825,300,114,114,700,000,000,000,000|✓|
+|67| [CoreSpace,Inc.](https://corespace.com/) | 358,144 | 79,228,162,514,264,340,000,000,000,000|✓|
+|68| [Transip B.V](https://www.transip.nl/) | 356,869 | 1,208,925,819,614,629,200,000,000|✓|
+|69| [kinx.net](https://www.kinx.net/) | 344,831 | 1,208,925,819,614,629,200,000,000|✓|
+|70| [XT Global Networks LTD](http://www.xtglobal.vg/) | 341,000 | 79,228,162,514,264,340,000,000,000,000|✓|
+|71| [Hostwinds.com](https://www.hostwinds.com/) | 335,610 | 633,825,300,114,114,700,000,000,000,000|✓|
+|72| [Datapipe](http://www.datapipe.com/) | 330,471 | 1,208,925,819,614,629,200,000,000|✓|
+|73| [Combell NV](https://www.combell.com/) | 326,766 | 1,208,925,819,614,629,200,000,000|✓|
+|74| [Arsys](https://www.arsys.es/) | 302,352 | 1,208,925,819,614,629,200,000,000|✓|
+|75| [Xneelo](https://xneelo.co.za/) | 300,544 | 18,446,744,073,709,552,000|✓|
+|76| [Imperva, Inc.](https://www.imperva.com/) | 287,718 | 79,228,162,514,264,340,000,000,000,000|✓|
+|77| [ServerCentral](http://www.servercentral.net/) | 286,780 | 633,825,300,114,114,700,000,000,000,000|✓|
+|78| [DomainFactory](https://www.df.eu/) | 282,475 | 1,208,925,819,614,629,200,000,000|✓|
+|79| [latisys](http://www.latisys.com/) | 279,869 | 633,825,300,114,114,700,000,000,000,000|✓|
+|80| [iWeb Technologies Inc.](https://iweb.com/) | 262,142 | 79,228,162,514,264,340,000,000,000,000|✓|
+|81| [TimeWeb](https://timeweb.com/) | 246,624 | 1,208,925,819,614,629,200,000,000|✓|
+|82| [Stackpath, LLC](https://www.stackpath.com/) | 241,266 | 1,208,925,819,614,629,200,000,000|✓|
+|83| [Infomaniak](https://www.infomaniak.com/) | 227,220 | 1,208,925,819,614,629,200,000,000|✓|
+|84| [Input Output Flood LLC](https://ioflood.com/) | 226,560 | 79,228,162,514,264,340,000,000,000,000|✓|
+|85| [Heficed](https://www.heficed.com/) | 215,780 | 1,208,925,819,614,629,200,000,000|✓|
+|86| [Servers Australia](https://www.serversaustralia.com.au/) | 211,790 | 1,208,925,819,614,629,200,000,000|✓|
+|87| [Dreamscape](https://www.dreamscapenetworks.com/) | 201,547 | 4,951,760,157,141,521,000,000,000,000|✓|
+|88| [Clouvider Limited](https://www.clouvider.com/) | 198,184 | 1,208,925,819,614,629,200,000,000|✓|
+|89| [Node4](https://www.node4.co.uk/) | 184,331 | 18,446,744,073,709,552,000|✓|
+|90| [Performive LLC](https://performive.com/) | 174,839 | 1,208,925,819,614,629,200,000,000|✓|
+|91| [Wholesale Internet, Inc](https://www.wholesaleinternet.net/) | 157,497 | 1,208,925,819,614,629,200,000,000|✓|
+|92| [Rackray](http://www.rackray.eu/) | 157,078 | 1,208,925,819,614,629,200,000,000|✓|
+|93| [LogicWeb Inc.](https://www.logicweb.com/) | 156,658 | 633,825,300,114,114,700,000,000,000,000|✓|
+|94| [Redstation Limited](http://redstation.com/) | 152,921 | 1,208,925,819,614,629,200,000,000|✓|
+|95| [SysEleven GmbH](https://www.syseleven.de/en/) | 149,797 | 1,208,925,819,614,629,200,000,000|✓|
+|96| [Fortress Integrated Technologies](https://www.dedicatednow.com/) | 147,310 | 1,208,925,819,614,629,200,000,000|✓|
+|97| [Steadfast](https://www.steadfast.net/) | 147,200 | 1,208,925,819,614,629,200,000,000|✓|
+|98| [Duocast B.V.](https://duocast.nl/) | 144,704 | 18,446,744,073,709,552,000|✓|
+|99| [HopOne](http://www.hopone.net/) | 137,216 | 1,208,925,819,614,629,200,000,000|✓|
+|100| [tzulo, inc.](http://www.tzulo.com/) | 136,192 | 4,951,760,157,141,521,000,000,000,000|✓|
+|101| [Mittwald](http://www.mittwald.de/) | 135,185 | 309,485,009,821,345,100,000,000,000|✓|
+|102| [Namecheap](https://www.namecheap.com/) | 130,809 | 79,228,162,514,264,340,000,000,000,000|✓|
+|103| [LightEdge Solutions, Inc.](https://www.lightedge.com/) | 123,392 | 4,951,760,157,141,521,000,000,000,000|✓|
+|104| [Sharktech Inc.](https://sharktech.net/) | 121,856 | 0|✓|
+|105| [Enzu Inc.](https://www.enzu.com/) | 119,976 | 1,208,925,819,614,629,200,000,000|✓|
+|106| [24Shells Inc](https://www.24shells.net/) | 111,356 | 633,825,300,114,114,700,000,000,000,000|✓|
+|107| [The Constant Company, LLC](https://www.constant.com/) | 100,598 | 0|✓|
+|108| [Unified Layer](https://www.unitedlayer.com/) | 91,904 | 1,208,925,819,614,629,200,000,000|✓|
+|109| [DinaHosting S.L.](https://dinahosting.com/) | 88,450 | 4,722,366,482,869,645,000,000|✓|
+|110| [SuperHosting.BG](https://www.superhosting.bg/) | 84,764 | 1,208,925,819,614,629,200,000,000|✓|
+|111| [veesp.com vps clients](https://veesp.com/) | 79,915 | 79,228,162,514,264,340,000,000,000,000|✓|
+|112| [Serverplan srl](https://www.serverplan.com/) | 78,120 | 1,208,925,819,614,629,200,000,000|✓|
+|113| [First Colo](https://www.first-colo.net/) | 76,521 | 18,446,744,073,709,552,000|✓|
+|114| [Hivelocity](https://www.hivelocity.net/) | 76,031 | 79,228,162,514,264,340,000,000,000,000|✓|
+|115| [VSHosting](https://www.vshosting.cz/) | 72,500 | 1,208,925,819,614,629,200,000,000|✓|
+|116| [Krystal Hosting](https://krystal.uk/) | 65,897 | 633,825,300,114,114,700,000,000,000,000|✓|
+|117| [GZ Systems (PureVPN)](https://www.purevpn.com/) | 62,592 | 0|✓|
+|118| [Media Temple](https://mediatemple.net/) | 62,464 | 0|✓|
+|119| [BuyVM (frantech)](https://buyvm.net/) | 60,159 | 1,208,925,819,614,629,200,000,000|✓|
+|120| [InMotion](https://www.inmotionhosting.com/) | 57,855 | 633,825,300,114,114,700,000,000,000,000|✓|
+|121| [Phoenix NAP, LLC](https://phoenixnap.com/) | 56,039 | 1,208,925,819,614,629,200,000,000|✓|
+|122| [cloudsigma](https://www.cloudsigma.com/) | 46,576 | 1,208,925,819,614,629,200,000,000|✓|
+|123| [Kamatera](https://www.kamatera.com/) | 45,286 | 1,208,925,819,614,629,200,000,000|✓|
+|124| [Hostpoint](https://www.hostpoint.ch/en) | 42,999 | 4,951,760,157,141,521,000,000,000,000|✓|
+|125| [Packethub S.A.](https://www.packethub.net/) | 41,536 | 1,208,925,819,614,629,200,000,000|✓|
+|126| [World4You Internet Services GmbH](https://www.world4you.com/) | 37,030 | 633,825,300,114,114,700,000,000,000,000|✓|
+|127| [Beget](https://beget.com/en) | 33,792 | 0|✓|
+|128| [Synergy Wholesale](https://synergywholesale.com/) | 30,450 | 1,208,925,819,614,629,200,000,000|✓|
+|129| [Amsio B.V.](https://www.amsio.com/) | 28,203 | 0|✓|
+|130| [ServerHub](https://www.serverhub.com/) | 27,647 | 79,228,162,514,264,340,000,000,000,000|✓|
+|131| [Hosting Ukraine](https://www.ukraine.com.ua/) | 26,873 | 18,446,744,073,709,552,000|✓|
+|132| [Digital Pacific](https://www.digitalpacific.com.au/) | 24,048 | 0|✓|
+|133| [Hurricane Electic](http://www.he.net/) | 21,557 | 1,208,925,819,614,629,200,000,000|✓|
+|134| [20i](https://www.20i.com/) | 21,229 | 4,722,366,482,869,645,000,000|✓|
+|135| [Umbrellar](https://www.umbrellar.com/) | 19,497 | 0|✓|
+|136| [hosting.ua](http://hosting.ua/) | 12,349 | 1,208,925,819,614,629,200,000,000|✓|
+|137| [Hostgator](https://www.hostgator.com/) | 12,340 | 0|✓|
+|138| [HostDime](https://www.hostdime.com/) | 5,426 | 633,825,300,114,114,700,000,000,000,000|✓|
+|139| [Psychz Networks](https://www.psychz.net/) | 5,112 | 0|✓|
+|140| [Optimate Server](http://optimate-server.de/) | 5,108 | 18,446,744,073,709,552,000|✓|
+|141| [Webair Internet Development Inc](https://www.webair.com/) | 4,863 | 633,825,300,114,114,700,000,000,000,000|✓|
+|142| [ALL INKL](https://all-inkl.com/) | 4,350 | 0|✓|
+|143| [FDC Servers](https://www.fdcservers.net/) | 3,325 | 0|✓|
+|144| [Cologix, Inc.](http://www.cologix.com/) | 3,069 | 0|✓|
+|145| [Peak10](http://www.peak10.com/) | 2,048 | 0|✓|
+|146| [MULTACOM Inc.](http://multacom.com/) | 2,045 | 316,912,650,057,057,350,000,000,000,000|✓|
+|147| [Colocation America Inc](http://www.colocationamerica.com/) | 1,536 | 0|✓|
+|148| [HostPapa](https://www.hostpapa.com/) | 1,531 | 0|✓|
+|149| [Vultr Holdings LLC](https://www.vultr.com/) | 1,309 | 309,485,009,821,345,100,000,000,000|✓|
+|150| [Bluehosting](https://www.bluehosting.cl/) | 1,024 | 0|✓|
+|151| [Fasthosts Internet Ltd](https://www.fasthosts.co.uk/) | 1,024 | 2,417,851,639,229,258,300,000,000|✓|
+|152| [Bluehost Inc.](https://www.bluehost.com/) | 1,022 | 309,485,009,821,345,100,000,000,000|✓|
+|153| [Ubiquity Hosting](https://www.ubiquityhosting.com/) | 767 | 0|✓|
+|154| [AlmaHost Ltd](https://almahost.co.uk/) | 512 | 0|✓|
+|155| [TierPoint](https://www.tierpoint.com/) | 512 | 1,208,925,819,614,629,200,000,000|✓|
+|156| [ServerMania Inc.](https://www.servermania.com/) | 512 | 0|✓|
+|157| [Mullvad VPN](https://mullvad.net/) | 507 | 1,208,925,819,614,629,200,000,000|✓|
+|158| [American Internet Services](https://nfinit.com/) | 63 | 79,228,162,514,264,340,000,000,000,000|✓|
+|159| [Server Central Network](https://www.servercentral.com/) | 0 | 18,446,744,073,709,552,000|✓|
 
 
 The API database is updated every 4 hours with the official source of the IP address ranges of the cloud provides listed above (with a ✓). For some cloud providers such as OVH or Hetzner there is no official IP address range source, so I have to rely on [third party sources](https://bgp.he.net/search?search%5Bsearch%5D=OVH&commit=Search).
