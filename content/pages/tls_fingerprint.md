@@ -1,4 +1,4 @@
-Title: TLS Fingerprinting
+Title: TLS Fingerprint API
 Date: 2022-02-17 20:30
 Author: Nikolai Tschacher
 Slug: TLS-Fingerprint
@@ -8,12 +8,12 @@ Sortorder: 8
 | <!-- -->         | <!-- -->                                      |
 |------------------|-----------------------------------------------|
 | **Author**       | Nikolai Tschacher                             |
-| **API Version**  | v0.2                                          |
-| **Version Date** | 18th February 2022                            |
+| **API Version**  | v0.3                                          |
+| **Version Date** | 6th June 2022                            |
 | **API Access**   | Free                                          |
 | **Download**     | Closed Source (Upon request only)             |
 
-## API
+# API
 
 The TLS fingerprinting API allows you to get your [TLS fingerprint](https://tls.incolumitas.com/fps). It can be used for various purposes such as:
 
@@ -21,15 +21,16 @@ The TLS fingerprinting API allows you to get your [TLS fingerprint](https://tls.
 2. Malware detection
 3. Bot detection
 
-### Endpoint `/fps`
+## Endpoint `/fps`
 
-The `/fps` endpoint returns the most recent TLS fingerprint of the client making the request. Internally, the client's public IP address is used to lookup matching TLS fingerprints. Since clients generate many TLS sessions over time, only the most recent TLS fingerprint is returned by default.
+The `/fps` endpoint returns the most recent TLS fingerprint from the requesting client. Internally, the client's public IP address is used to lookup matching TLS fingerprints. Since clients generate many TLS sessions over time, only the most recent TLS fingerprint is returned by default.
 
-| Endpoint          | Description                                                                                                                                                                                                                                                             | Live API Call                                                                           |
-|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| **/fps**          | This endpoint returns the most recent TLS fingerprint for the requesting client. | <a href="https://tls.incolumitas.com/fps">tls.incolumitas.com/fps</a>                   |
-| **/fps?detail=1** | Request a detailed/verbose version of the TLS fingerprint for the current connection.                                                                                                                                                                                   | <a href="https://tls.incolumitas.com/fps?detail=1">tls.incolumitas.com/fps?detail=1</a> |
-| **/fps?all=1**    | Request all TLS fingerprints for this client that exist in server memory (The server is restarted periodically).   All the fingerprints that match the client's IP address will be returned.                                                                            | <a href="https://tls.incolumitas.com/fps?all=1"> tls.incolumitas.com/fps?all=1 </a>     |
+| Endpoint         | Description                                      |
+|------------------|-----------------------------------------------|
+|  <a href="https://tls.incolumitas.com/fps">tls.incolumitas.com/fps</a>          | This endpoint returns the most recent TLS fingerprint for the requesting client. | 
+| <a href="https://tls.incolumitas.com/fps?detail=1">tls.incolumitas.com/fps?detail=1</a> | Request a detailed/verbose version of the TLS fingerprint for the current connection.                                                                                                                                                                                   |
+| <a href="https://tls.incolumitas.com/fps?all=1"> tls.incolumitas.com/fps?all=1 </a>    | Request all TLS fingerprints for this client that exist in server memory (The server is restarted periodically).   All the fingerprints that match the client's IP address will be returned.                                                                            |
+
 
 #### Example for endpoint `/fps`
 
@@ -43,34 +44,34 @@ returns the following JSON response from the API:
 
 ```json
 {
-  "num_fingerprints": 13,
-  "sha3_384": "47ff8777e0a84c9a3869c514b6de51943c2c063d55dd667344c5d1a3809df5f9bf9c700c7ea11debc29ad8fe9df8eeec",
+  "num_fingerprints": 55,
+  "sha3_384": "5cfe8ec2fdc3fc735e78aedd401c4e45a3ea465b4e851d4c964969c2ed953664f227114ae4c48103a41093548b2a0891",
   "tls_fp": {
-    "ciphers": "52393,52392,52394,49200,49196,49192,49188,49172,49162,159,107,57,65413,196,136,157,61,53,192,132,49199,49195,49191,49187,49171,49161,158,103,51,190,69,156,60,47,186,65,49169,49159,5,4,49170,49160,22,10,255",
+    "ciphers": "4867,4866,4865,52393,52392,52394,49200,49196,49192,49188,49172,49162,159,107,57,65413,196,136,157,61,53,192,132,49199,49195,49191,49187,49171,49161,158,103,51,190,69,156,60,47,186,65,49169,49159,5,4,49170,49160,22,10,255",
     "client_hello_version": "TLS 1.2",
     "ec_point_formats": "0",
-    "extensions": "0,11,10,13,16",
+    "extensions": "43,51,0,11,10,13,16",
     "record_version": "TLS 1.0",
-    "signature_algorithms": "1537,1539,61423,1281,1283,1025,1027,61166,60909,769,771,513,515",
-    "supported_groups": "29,23,24"
+    "signature_algorithms": "2054,1537,1539,2053,1281,1283,2052,1025,1027,513,515",
+    "supported_groups": "29,23,24,25"
   },
-  "user-agent": "curl/7.77.0",
-  "utc_now": "2022-02-17 19:07:09.136016"
+  "user-agent": "curl/7.79.1",
+  "utc_now": "2022-06-06 11:23:03.245922"
 }
 ```
 
 
-### Endpoint `/stats`
+## Endpoint `/stats`
 
 The `/stats` endpoint returns statistics over all stored TLS connections on the server side. Due to performance reasons, only the most recent 50MB of TLS data are considered in `/stats` lookups. Thus, the database is of reduced accuracy and statistical significance.
 
-| Endpoint          | Description                                                                                                                                                                                                                                                             | Live API Call                                                                           |
-|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| **/stats**        | Lists all TLS statistics.                                                                                                                                                                                                                                               | <a href="https://tls.incolumitas.com/stats">tls.incolumitas.com/stats</a>               |
-| **/stats?bo=1**   | Get statistics only for TLS fingerprints with associated User-Agents                                                                                                                                                                                                    | <a href="https://tls.incolumitas.com/stats?bo=1">tls.incolumitas.com/stats?bo=1</a>     |
+| Endpoint         | Description                                      |
+|------------------|-----------------------------------------------|
+| <a href="https://tls.incolumitas.com/stats">tls.incolumitas.com/stats</a>        | Lists all TLS statistics.                                                                                                                                                                                                                                               |
+| <a href="https://tls.incolumitas.com/stats?bo=1">tls.incolumitas.com/stats?bo=1</a>   | Get statistics only for TLS fingerprints with associated User-Agents                                                                                                                                                                                                    |
 
 
-## Introduction
+# Introduction
 
 On this page, a server-side tool is presented, which extracts entropy from the TLS handshake in order to form a TLS fingerprint.
 
@@ -105,7 +106,7 @@ document.getElementById('userAgent').innerText = navigator.userAgent;
 </script>
 
 
-## TLS Fingerprint Definition
+# TLS Fingerprint Definition
 
 What fields from the TLS handshake is considered in the TLS fingerprint? Put differently: What sources of entropy does this tool use to build the TLS fingerprint?
 
@@ -162,7 +163,7 @@ As it can be observed, the first element of `ciphers`, `extensions` and `support
 **Solution:** Only non-Reserved and non-Unassigned values for `ciphers`, `extensions` and `supported_groups` in the TLS fingerprint will be considered.
 
 
-## Recommended Reading List
+# Recommended Reading List
 
 So you want to start fingerprinting TLS connections? It's plenty of fun. The following reading list is highly recommended:
 
@@ -172,7 +173,7 @@ So you want to start fingerprinting TLS connections? It's plenty of fun. The fol
 3. Another great read is a blog article named [TLS Fingerprinting with JA3 and JA3S from Salesforce](https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967) which explains in-depth how Salesforce's JA3 and JA3S TLS fingerprinting works. The code for [JA3 and JA3S is open sourced](https://github.com/salesforce/ja3).
 
 
-## TODO
+# TODO
 
 - Add tool support for TLS 1.3
 - Setup nginx to use TLS 1.3 on the server side

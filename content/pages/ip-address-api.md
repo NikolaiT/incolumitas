@@ -86,6 +86,7 @@ curl --header "Content-Type: application/json" \
 | <!-- -->         | <!-- -->                                           |   
 |------------------|----------------------------------------------------|
 | **Endpoint**       | /info                                  |
+| **Method**       | `GET`                                  |
 | **Description**  | Returns all datacenters that are currently present in the API. The number of IPv4 (`total_ipv4`) and IPv6 (`total_ipv6`) addresses for each datacenter will also be provided.   |
 | **Live API Call** | [https://api.incolumitas.com/info](https://api.incolumitas.com/info)    
 
