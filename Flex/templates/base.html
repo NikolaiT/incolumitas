@@ -17,6 +17,12 @@
     <meta name="robots" content="{{ ROBOTS }}" />
   {% endif %}
 
+  {% if HEAD_JS %}
+    {% for src in HEAD_JS %}
+      <script type="text/javascript" src="{{ src }}"></script>
+    {% endfor %}
+  {% endif %}
+
   {% if USE_GOOGLE_FONTS != False %}
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   {% endif %}
@@ -230,6 +236,11 @@
 
           {% if API_PAGES %}
             <li>—</li>
+            <li>
+              <a target="_self" href="https://bot.incolumitas.com/proxy_detect.html">
+                Proxy/VPN Detection Tests
+              </a>
+            </li>
             {% for page in pages %}
               {% if page.slug in API_PAGES %}
                 <li>

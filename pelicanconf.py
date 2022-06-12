@@ -97,9 +97,13 @@ CUSTOM_JS = 'javascript/custom.js'
 # Security & Tracking
 # Only using when recording data for scientif purposes
 
-BODY_JS = (
+HEAD_JS = (
   'https://abs.incolumitas.com/lib.js',
 )
+
+# BODY_JS = (
+#   'https://abs.incolumitas.com/lib.js',
+# )
 
 PROXY_IFRAME = False
 
@@ -124,9 +128,14 @@ ENABLE_PARTICLES = False
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 
-EXCLUDE_PAGES = ('lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum', 'contact')
+EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum', 'contact')
 
-API_PAGES = ('BotOrNot', 'FireHOL-API', 'Datacenter-IP-API', 'TCP-IP-Fingerprint', 'TLS-Fingerprint')
+API_PAGES = (
+    'BotOrNot',
+    'Datacenter-IP-API',
+    'TCP-IP-Fingerprint',
+    'TLS-Fingerprint'
+)
 
 COMMENTS_PAGES = ('about', 'contact')
 COMMENTS_IN_PAGES = True
