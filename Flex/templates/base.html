@@ -1,147 +1,141 @@
 {% if 'jinja2.ext.i18n' not in JINJA_ENVIRONMENT.extensions and 'jinja2.ext.i18n' not in JINJA_EXTENSIONS %}
-  {%- macro _(msg) -%}
-    {{ msg % kwargs }}
-  {%- endmacro -%}
+{%- macro _(msg) -%}
+{{ msg % kwargs }}
+{%- endmacro -%}
 {% endif %}
 
 <!DOCTYPE html>
 <html lang="{{ DEFAULT_LANG }}">
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   {% if page in hidden_pages %}
-    <meta name="robots" content="noindex, nofollow" />
+  <meta name="robots" content="noindex, nofollow" />
   {% else %}
-    <meta name="robots" content="{{ ROBOTS }}" />
+  <meta name="robots" content="{{ ROBOTS }}" />
   {% endif %}
 
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/stackoverflow-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+
   {% if HEAD_JS %}
-    {% for src in HEAD_JS %}
-      <script type="text/javascript" src="{{ src }}"></script>
-    {% endfor %}
+  {% for src in HEAD_JS %}
+  <script type="text/javascript" src="{{ src }}"></script>
+  {% endfor %}
   {% endif %}
 
   {% if USE_GOOGLE_FONTS != False %}
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
   {% endif %}
 
   {% if USE_LESS %}
-    <link rel="stylesheet/less" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/stylesheet/style.less">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js" type="text/javascript"></script>
+  <link rel="stylesheet/less" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/stylesheet/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js" type="text/javascript"></script>
   {% else %}
-    <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/stylesheet/style.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/stylesheet/style.min.css">
   {% endif %}
 
   {# DARK THEME STYLES #}
   {% if THEME_COLOR == "dark" or THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE or THEME_COLOR_ENABLE_USER_OVERRIDE %}
-    <link id="dark-theme-style" rel="stylesheet" type="text/css"
-      {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}
-        {% if THEME_COLOR|default("light") == "dark" %}
-          media="(prefers-color-scheme: dark), (prefers-color-scheme: no-preference)"
-        {% else %}
-          media="(prefers-color-scheme: dark)"
-        {% endif %}
-      {% elif THEME_COLOR_ENABLE_USER_OVERRIDE and THEME_COLOR|default("light") == "light" %}
-        disabled="disabled"
-      {% endif %}
+  <link id="dark-theme-style" rel="stylesheet" type="text/css" {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %} {% if
+    THEME_COLOR|default("light")=="dark" %} media="(prefers-color-scheme: dark), (prefers-color-scheme: no-preference)"
+    {% else %} media="(prefers-color-scheme: dark)" {% endif %} {% elif THEME_COLOR_ENABLE_USER_OVERRIDE and
+    THEME_COLOR|default("light")=="light" %} disabled="disabled" {% endif %}
     href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/stylesheet/dark-theme.min.css">
   {% endif %}
 
   {# PYGMENTS STYLES #}
   {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE or THEME_COLOR_ENABLE_USER_OVERRIDE or THEME_COLOR == "dark" %}
-    <link id="pygments-dark-theme" rel="stylesheet" type="text/css"
-          {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}
-            {% if THEME_COLOR|default("light") == "dark" %}
-              media="(prefers-color-scheme: dark), (prefers-color-scheme: no-preference)"
-            {% else %}
-              media="(prefers-color-scheme: dark)"
-            {% endif %}
-          {% elif THEME_COLOR_ENABLE_USER_OVERRIDE and THEME_COLOR|default("light") == "light" %}
-            disabled="disabled"
-          {% endif %}
-          href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/pygments/{{ PYGMENTS_STYLE_DARK or PYGMENTS_STYLE or 'monokai' }}.min.css">
+  <link id="pygments-dark-theme" rel="stylesheet" type="text/css" {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %} {%
+    if THEME_COLOR|default("light")=="dark" %}
+    media="(prefers-color-scheme: dark), (prefers-color-scheme: no-preference)" {% else %}
+    media="(prefers-color-scheme: dark)" {% endif %} {% elif THEME_COLOR_ENABLE_USER_OVERRIDE and
+    THEME_COLOR|default("light")=="light" %} disabled="disabled" {% endif %}
+    href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/pygments/{{ PYGMENTS_STYLE_DARK or PYGMENTS_STYLE or 'monokai' }}.min.css">
   {% endif %}
   {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE or not THEME_COLOR or THEME_COLOR == "light" %}
-    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
-          {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}
-            {% if THEME_COLOR|default("light") == "dark" %}
-              media="(prefers-color-scheme: light)"
-            {% else %}
-              media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-            {% endif %}
-          {% endif %}
-          href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/pygments/{{ PYGMENTS_STYLE|default('github') }}.min.css">
+  <link id="pygments-light-theme" rel="stylesheet" type="text/css" {% if THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}
+    {% if THEME_COLOR|default("light")=="dark" %} media="(prefers-color-scheme: light)" {% else %}
+    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" {% endif %} {% endif %}
+    href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/pygments/{{ PYGMENTS_STYLE|default('github') }}.min.css">
   {% endif %}
 
   {% if PLUGINS and 'tipue_search' in PLUGINS %}
-    <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/jquery.min.js"></script>
-    <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.js"></script>
-    <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.js"></script>
-    <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch_set.min.js"></script>
-    <script src="{{ SITEURL }}/tipuesearch_content.js"></script>
-    <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.css" />
+  <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/jquery.min.js"></script>
+  <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.js"></script>
+  <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.js"></script>
+  <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch_set.min.js"></script>
+  <script src="{{ SITEURL }}/tipuesearch_content.js"></script>
+  <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/tipuesearch/tipuesearch.min.css" />
   {% endif %}
 
   {% if USE_FONTAWESOME %}
-    <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font-awesome/css/font-awesome.min.css">
   {% endif %}
 
   {% if CUSTOM_CSS %}
-    <link href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/{{ CUSTOM_CSS }}" rel="stylesheet">
+  <link href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/{{ CUSTOM_CSS }}" rel="stylesheet">
   {% endif %}
 
   {% if CUSTOM_JS %}
-    <script type="text/javascript" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/{{ CUSTOM_JS }}"></script>
+  <script type="text/javascript" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/{{ CUSTOM_JS }}"></script>
   {% endif %}
 
   {% if FEED_ALL_ATOM %}
-    <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom">
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" type="application/atom+xml" rel="alternate"
+    title="{{ SITENAME }} Atom">
   {% endif %}
 
   {% if FEED_ALL_RSS %}
-    <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS">
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_RSS }}" type="application/rss+xml" rel="alternate"
+    title="{{ SITENAME }} RSS">
   {% endif %}
 
   {% if FAVICON %}
-    <link rel="shortcut icon" href="/{{ THEME_STATIC_DIR }}/{{ FAVICON }}" type="image/x-icon">
-    <link rel="icon" href="/{{ THEME_STATIC_DIR }}/{{ FAVICON }}" type="image/x-icon">
+  <link rel="shortcut icon" href="/{{ THEME_STATIC_DIR }}/{{ FAVICON }}" type="image/x-icon">
+  <link rel="icon" href="/{{ THEME_STATIC_DIR }}/{{ FAVICON }}" type="image/x-icon">
   {% endif %}
 
   {% if GOOGLE_ANALYTICS %}
-    {% include "partial/ga.html" %}
+  {% include "partial/ga.html" %}
   {% endif %}
 
   {% if BROWSER_COLOR %}
-    <!-- Chrome, Firefox OS and Opera -->
-    <meta name="theme-color" content="{{ BROWSER_COLOR }}">
-    <!-- Windows Phone -->
-    <meta name="msapplication-navbutton-color" content="{{ BROWSER_COLOR }}">
-    <!-- iOS Safari -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- Microsoft EDGE -->
-    <meta name="msapplication-TileColor" content="{{ BROWSER_COLOR }}">
+  <!-- Chrome, Firefox OS and Opera -->
+  <meta name="theme-color" content="{{ BROWSER_COLOR }}">
+  <!-- Windows Phone -->
+  <meta name="msapplication-navbutton-color" content="{{ BROWSER_COLOR }}">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Microsoft EDGE -->
+  <meta name="msapplication-TileColor" content="{{ BROWSER_COLOR }}">
   {% endif %}
 
   {% if REL_CANONICAL %}
-    {% if page %}
-      <link rel="canonical" href="{{ SITEURL }}/{{ page.url }}">
-    {% elif article %}
-      <link rel="canonical" href="{{ SITEURL }}/{{ article.url }}">
-    {% elif page_name == 'index' and not articles_previous_page %}
-      <link rel="canonical" href="{{ SITEURL }}">
-    {% elif author or category or tag or page_name == 'index' %}
-      <link rel="canonical" href="{{ SITEURL }}/{{ articles_page.url }}">
-    {% else %}
-      <link rel="canonical" href="{{ SITEURL }}/{{ output_file }}">
-    {% endif %}
+  {% if page %}
+  <link rel="canonical" href="{{ SITEURL }}/{{ page.url }}">
+  {% elif article %}
+  <link rel="canonical" href="{{ SITEURL }}/{{ article.url }}">
+  {% elif page_name == 'index' and not articles_previous_page %}
+  <link rel="canonical" href="{{ SITEURL }}">
+  {% elif author or category or tag or page_name == 'index' %}
+  <link rel="canonical" href="{{ SITEURL }}/{{ articles_page.url }}">
+  {% else %}
+  <link rel="canonical" href="{{ SITEURL }}/{{ output_file }}">
+  {% endif %}
   {% endif %}
   {% block meta %}
-    <meta name="author" content="{{ AUTHOR }}" />
-    <meta name="description" content="{{ SITEDESCRIPTION }}" />
-    {% include "partial/og.html" %}
+  <meta name="author" content="{{ AUTHOR }}" />
+  <meta name="description" content="{{ SITEDESCRIPTION }}" />
+  {% include "partial/og.html" %}
   {% endblock %}
 
   <title>{{ SITENAME }}{% block title %}{% endblock %}</title>
@@ -156,28 +150,27 @@
   </script>
   {% endif %}
   {% if GOOGLE_TAG_MANAGER %}
-    {% include "partial/gtm.html" %}
+  {% include "partial/gtm.html" %}
   {% endif %}
 
   <script src="https://detector.incolumitas.com/pd-lib.js"></script>
 </head>
 
-<body {% if not THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}class="{{ THEME_COLOR|default('light') }}-theme"{% endif %}>
+<body {% if not THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE %}class="{{ THEME_COLOR|default('light') }}-theme" {% endif
+  %}>
   {% if GOOGLE_TAG_MANAGER %}
-    {% include "partial/gtm_noscript.html" %}
+  {% include "partial/gtm_noscript.html" %}
   {% endif %}
 
   {% if BODY_JS %}
-    {% for src in BODY_JS %}
-      <script type="text/javascript" src="{{ src }}"></script>
-    {% endfor %}
+  {% for src in BODY_JS %}
+  <script type="text/javascript" src="{{ src }}"></script>
+  {% endfor %}
   {% endif %}
 
   {% if PROXY_IFRAME %}
-    <iframe 
-      src="https://bot.incolumitas.com/proxy_detect.html" 
-      style="position: absolute;width:0;height:0;border:0;">
-    </iframe>
+  <iframe src="https://bot.incolumitas.com/proxy_detect.html" style="position: absolute;width:0;height:0;border:0;">
+  </iframe>
   {% endif %}
 
   <aside>
@@ -198,9 +191,9 @@
       {% if SITESUBTITLE %}<p>{{ SITESUBTITLE }}</p>{% endif %}
 
       {% if PLUGINS and 'tipue_search' in PLUGINS %}
-        <form class="navbar-search" action="/search.html" role="search">
-          <input type="text" name="q" id="tipue_search_input" placeholder="{{ _('Search...') }}">
-        </form>
+      <form class="navbar-search" action="/search.html" role="search">
+        <input type="text" name="q" id="tipue_search_input" placeholder="{{ _('Search...') }}">
+      </form>
       {% endif %}
 
       {% if pages or LINKS %}
@@ -208,55 +201,55 @@
         <ul class="list">
           {# Open links in new window depending on the LINKS_IN_NEW_TAB setting #}
           {% macro get_target(link) -%}
-            {%- if LINKS_IN_NEW_TAB in ('all', true) -%}
-            _blank
-            {%- elif LINKS_IN_NEW_TAB == "external" and not link.startswith("/") and not link.startswith(SITEURL) -%}
-            _blank
-            {%- else -%}
-            _self
-            {%- endif -%}
+          {%- if LINKS_IN_NEW_TAB in ('all', true) -%}
+          _blank
+          {%- elif LINKS_IN_NEW_TAB == "external" and not link.startswith("/") and not link.startswith(SITEURL) -%}
+          _blank
+          {%- else -%}
+          _self
+          {%- endif -%}
           {%- endmacro %}
 
           {% if PAGES_SORT_ATTRIBUTE -%}
-            {% set pages = pages|sort(attribute=PAGES_SORT_ATTRIBUTE) %}
+          {% set pages = pages|sort(attribute=PAGES_SORT_ATTRIBUTE) %}
           {%- endif %}
 
           {% if DISPLAY_PAGES_ON_MENU %}
-            {% for page in pages %}
-              {% if page.slug not in EXCLUDE_PAGES and page.slug not in API_PAGES %}
-                <li>
-                  <a target="{{ get_target(SITEURL) }}"
-                    href="{{ SITEURL }}/{{ page.url }}{% if not DISABLE_URL_HASH %}#{{ page.slug }}{% endif %}">
-                    {{ page.title }}
-                  </a>
-                </li>
-              {% endif %}
-            {% endfor %}
+          {% for page in pages %}
+          {% if page.slug not in EXCLUDE_PAGES and page.slug not in API_PAGES %}
+          <li>
+            <a target="{{ get_target(SITEURL) }}"
+              href="{{ SITEURL }}/{{ page.url }}{% if not DISABLE_URL_HASH %}#{{ page.slug }}{% endif %}">
+              {{ page.title }}
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
           {% endif %}
 
           {% if API_PAGES %}
-            <li>—</li>
-            <li>
-              <a target="_self" href="https://bot.incolumitas.com/proxy_detect.html">
-                Proxy/VPN Detection Tests
-              </a>
-            </li>
-            {% for page in pages %}
-              {% if page.slug in API_PAGES %}
-                <li>
-                  <a target="{{ get_target(SITEURL) }}"
-                    href="{{ SITEURL }}/{{ page.url }}{% if not DISABLE_URL_HASH %}#{{ page.slug }}{% endif %}">
-                    {{ page.title }}
-                  </a>
-                </li>
-              {% endif %}
-            {% endfor %}
+          <li>—</li>
+          <li>
+            <a target="_self" href="https://bot.incolumitas.com/proxy_detect.html">
+              Proxy/VPN Detection Tests
+            </a>
+          </li>
+          {% for page in pages %}
+          {% if page.slug in API_PAGES %}
+          <li>
+            <a target="{{ get_target(SITEURL) }}"
+              href="{{ SITEURL }}/{{ page.url }}{% if not DISABLE_URL_HASH %}#{{ page.slug }}{% endif %}">
+              {{ page.title }}
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
           {% endif %}
 
           {% for name, link in LINKS %}
-            <li>
-              <a target="{{ get_target(link) }}" href="{{ link }}" >{{ name }}</a>
-            </li>
+          <li>
+            <a target="{{ get_target(link) }}" href="{{ link }}">{{ name }}</a>
+          </li>
           {% endfor %}
         </ul>
       </nav>
@@ -264,34 +257,32 @@
 
       <ul class="social">
         {% for name, link in SOCIAL %}
-          <li>
-            <a {% if name == 'mastodon' %}rel="me"{% endif %} class="sc-{{ name }}" href="{{ link }}" target="_blank">
-              <i class="fa fa-{{ name }}"></i>
-            </a>
-          </li>
+        <li>
+          <a {% if name=='mastodon' %}rel="me" {% endif %} class="sc-{{ name }}" href="{{ link }}" target="_blank">
+            <i class="fa fa-{{ name }}"></i>
+          </a>
+        </li>
         {% endfor %}
       </ul>
     </div>
 
     {% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads.aside %}
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <ins class="adsbygoogle ads-aside"
-           data-ad-client="{{ GOOGLE_ADSENSE.ca_id }}"
-           data-ad-slot="{{ GOOGLE_ADSENSE.ads.aside }}"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside" data-ad-client="{{ GOOGLE_ADSENSE.ca_id }}"
+      data-ad-slot="{{ GOOGLE_ADSENSE.ads.aside }}"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     {% endif %}
   </aside>
   <main>
     {% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads.main_menu %}
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <ins class="adsbygoogle ads-responsive"
-           data-ad-client="{{ GOOGLE_ADSENSE.ca_id }}"
-           data-ad-slot="{{ GOOGLE_ADSENSE.ads.main_menu }}"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive" data-ad-client="{{ GOOGLE_ADSENSE.ca_id }}"
+      data-ad-slot="{{ GOOGLE_ADSENSE.ads.main_menu }}"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     {% endif %}
 
     {% if MAIN_MENU %}
@@ -317,51 +308,53 @@
 
     <footer>
       {% if CC_LICENSE %}
-        {% include "partial/cc_license.html" %}
+      {% include "partial/cc_license.html" %}
       {% else %}
-        {% include "partial/copyright.html" %}
+      {% include "partial/copyright.html" %}
       {% endif %}
     </footer>
   </main>
 
   {% if GUAGES %}
-    {% include "partial/guages.html" %}
+  {% include "partial/guages.html" %}
   {% endif %}
 
   {% if ADD_THIS_ID %}
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid={{ ADD_THIS_ID }}" async="async"></script>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid={{ ADD_THIS_ID }}"
+    async="async"></script>
   {% endif %}
 
   {% if (PIWIK_URL and PIWIK_SITE_ID) or (MATOMO_URL and MATOMO_SITE_ID) %}
-    {% include "partial/matomo.html" %}
+  {% include "partial/matomo.html" %}
   {% endif %}
 
   {% include "partial/jsonld.html" %}
 
   {% if GITHUB_CORNER_URL %}
-    {% include 'partial/github.html' %}
+  {% include 'partial/github.html' %}
   {% endif %}
 
   {% if PLUGINS and 'tipue_search' in PLUGINS %}
-    <script>
-      $(document).ready(function() {
-        $('#tipue_search_input').tipuesearch();
-      });
-    </script>
+  <script>
+    $(document).ready(function () {
+      $('#tipue_search_input').tipuesearch();
+    });
+  </script>
   {% endif %}
 
   {% if ENABLE_PARTICLES %}
-    <!-- particles.js -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <!-- particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
-    <script type="text/javascript">
-      var allowed = ["/pages/about/", "/", "/pages/projects/"];
-      if (allowed.indexOf(location.pathname) !== -1) {
-        particlesJS.load('particles-js', '/theme/particlesjs-config.json');
-      }
-    </script>
+  <script type="text/javascript">
+    var allowed = ["/pages/about/", "/", "/pages/projects/"];
+    if (allowed.indexOf(location.pathname) !== -1) {
+      particlesJS.load('particles-js', '/theme/particlesjs-config.json');
+    }
+  </script>
   {% endif %}
 
   {% block additional_js %}{% endblock %}
 </body>
+
 </html>

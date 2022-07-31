@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PRIV_KEY=~/.ssh/root_new_server
+PRIV_KEY=~/.ssh/inc/inc
 
 pelican -s publishconf.py
 
