@@ -23,9 +23,9 @@ What is a datacenter / hosting provider?
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
 | **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network [and many other hosting providers](https://api.incolumitas.com/info)         |
 | **IPv6 Support**         | Yes         |
-| **Total Tracked Hosting Providers**         |    **[1018 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **309,747** IPv4 CIDR ranges (896,521,499 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **392,778** IPv6 CIDR ranges (1.2264266186738505e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[1292 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **210,603** IPv4 CIDR ranges (627,607,601 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **393,386** IPv6 CIDR ranges (1.2958097148550618e+33 Addresses in total)      |
 
 
 ## Live API
