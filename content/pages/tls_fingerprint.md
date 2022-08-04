@@ -21,15 +21,19 @@ Sortorder: 8
 
 This is your last seen TLS fingerprint - Taken from the initial TLS Client Hello handshake message:
 
-<pre style="overflow: auto;" id="tls_fp">
-...loading (JavaScript required)
+<pre id="wrapper">
+  <code id="tls_fp" class="JSON hljs">...loading (JavaScript required)</code>
 </pre>
 
 <script>
+var el = document.getElementById('tls_fp');
+hljs.highlightBlock(el);
+
 fetch('https://tls.incolumitas.com/fps')
   .then(response => response.json())
   .then(function(data) {
-    document.getElementById('tls_fp').innerText = JSON.stringify(data, null, 2);
+    document.getElementById('tls_fp').innerHTML = JSON.stringify(data, null, 2);
+    hljs.highlightBlock(el);
   })
 </script>
 

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-PRIV_KEY=~/.ssh/inc/inc
-
+PRIV_KEY=~/.ssh/root_new_server
 pelican -s publishconf.py
 
 # function deploy_isso () {

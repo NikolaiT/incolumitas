@@ -21,15 +21,19 @@ Sortorder: 9
 
 Based on your initial TCP/IP SYN packet, your device most likely is:
 
-<pre id="tcpipFp">
-...loading
+<pre id="wrapper">
+  <code id="tcpip_fp" class="JSON hljs">...loading (JavaScript required)</code>
 </pre>
 
 <script>
+var el = document.getElementById('tcpip_fp');
+hljs.highlightBlock(el);
+
 fetch('https://tcpip.incolumitas.com/classify?by_ip=1')
   .then(response => response.json())
   .then(function(data) {
-    document.getElementById('tcpipFp').innerText = JSON.stringify(data, null, 2);
+    document.getElementById('tcpip_fp').innerHTML = JSON.stringify(data, null, 2);
+    hljs.highlightBlock(el);
   })
 </script>
 
