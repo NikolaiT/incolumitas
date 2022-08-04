@@ -1,5 +1,6 @@
 Title: TLS Fingerprint API
 Date: 2022-02-17 20:30
+Modified: 2022-08-04 14:00
 Author: Nikolai Tschacher
 Slug: TLS-Fingerprint
 Status: published
@@ -13,7 +14,36 @@ Sortorder: 8
 | **API Access**   | Free                                          |
 | **Download**     | Closed Source (Upon request only)             |
 
-# API
+
+## TLS Fingerprint API Demo
+
+**API Endpoint:** [https://tls.incolumitas.com/fps](https://tls.incolumitas.com/fps)
+
+This is your last seen TLS fingerprint - Taken from the initial TLS Client Hello handshake message:
+
+<pre style="overflow: auto;" id="tls_fp">
+...loading (JavaScript required)
+</pre>
+
+<script>
+fetch('https://tls.incolumitas.com/fps')
+  .then(response => response.json())
+  .then(function(data) {
+    document.getElementById('tls_fp').innerText = JSON.stringify(data, null, 2);
+  })
+</script>
+
+Your User-Agent (`navigator.userAgent`) says that you are 
+
+<pre style="overflow: auto;" id="userAgent">
+</pre>
+
+<script>
+document.getElementById('userAgent').innerText = navigator.userAgent;
+</script>
+
+
+## TLS Fingerprint API
 
 The TLS fingerprinting API allows you to get your [TLS fingerprint](https://tls.incolumitas.com/fps). It can be used for various purposes such as:
 
@@ -81,29 +111,6 @@ Such a TLS fingerprint may be used to identify devices / TLS protocol implementa
 2. How unique is the TLS fingerprint among all clients?
 3. Based on past observations and collected TLS client data, is this fingerprint a legit one?
 4. To which TLS implementation does this fingerprint belong?
-
-**Live TLS Entropy Detection:** This is your last seen TLS fingerprint - Taken from the initial TLS Client Hello handshake message:
-
-<pre style="overflow: auto;" id="tls_fp">
-...loading (JavaScript required)
-</pre>
-
-<script>
-fetch('https://tls.incolumitas.com/fps')
-  .then(response => response.json())
-  .then(function(data) {
-    document.getElementById('tls_fp').innerText = JSON.stringify(data, null, 2);
-  })
-</script>
-
-Your User-Agent (`navigator.userAgent`) says that you are 
-
-<pre style="overflow: auto;" id="userAgent">
-</pre>
-
-<script>
-document.getElementById('userAgent').innerText = navigator.userAgent;
-</script>
 
 
 # TLS Fingerprint Definition

@@ -1,6 +1,6 @@
 Title: TCP/IP Fingerprint API
 Date: 2022-02-17 23:30
-Modified: 2022-06-03 12:00
+Modified: 2022-08-04 14:00
 Author: Nikolai Tschacher
 Slug: TCP-IP-Fingerprint
 Status: published
@@ -15,7 +15,34 @@ Sortorder: 9
 | **Download**     | [Open Source](https://github.com/NikolaiT/zardaxt) |
 
 
-## API
+## TCP/IP Fingerprint API Demo
+
+**API Endpoint:** [https://tcpip.incolumitas.com/classify?by_ip=1](https://tcpip.incolumitas.com/classify?by_ip=1)
+
+Based on your initial TCP/IP SYN packet, your device most likely is:
+
+<pre id="tcpipFp">
+...loading
+</pre>
+
+<script>
+fetch('https://tcpip.incolumitas.com/classify?by_ip=1')
+  .then(response => response.json())
+  .then(function(data) {
+    document.getElementById('tcpipFp').innerText = JSON.stringify(data, null, 2);
+  })
+</script>
+
+Your User-Agent (`navigator.userAgent`) says that you are 
+
+<pre id="userAgent">
+</pre>
+
+<script>
+document.getElementById('userAgent').innerText = navigator.userAgent;
+</script>
+
+## TCP/IP Fingerprint API
 
 The TCP/IP fingerprinting API allows you to get your [TCP/IP fingerprint](https://tcpip.incolumitas.com/classify?by_ip=1). It can be used for various purposes such as:
 
@@ -40,31 +67,6 @@ Example by using `curl`:
 ```bash
 curl 'https://tcpip.incolumitas.com/classify'
 ```
-
-## API Example
-
-Based on your initial TCP/IP SYN packet, your device most likely is:
-
-<pre id="tcpipFp">
-...loading
-</pre>
-
-<script>
-fetch('https://tcpip.incolumitas.com/classify?by_ip=1')
-  .then(response => response.json())
-  .then(function(data) {
-    document.getElementById('tcpipFp').innerText = JSON.stringify(data, null, 2);
-  })
-</script>
-
-Your User-Agent (`navigator.userAgent`) says that you are 
-
-<pre id="userAgent">
-</pre>
-
-<script>
-document.getElementById('userAgent').innerText = navigator.userAgent;
-</script>
 
 ## Internal API Behavior
 
