@@ -1,6 +1,6 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
-Modified: 2022-05-25 11:31
+Modified: 2022-08-08 11:31
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
@@ -10,36 +10,36 @@ Summary: There are many resources in the Internet that show how to detect uBlock
 There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`.
 
 <script type="text/javascript">
-  function adblockDetected() {
-      return new Promise(function (resolve, reject) {
-          var script = document.createElement('script');
+function adblockDetected() {
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
 
-          script.onload = function() {
-              if (document.getElementById('ybVg4vsBhs')) {
-                  resolve(false);
-              } else {
-                  resolve(true);
-              }
-          }
-
-          script.onerror = function() {
-              resolve(true);
-          }
-
-          script.src = 'https://incolumitas.com/data/sailthru.js';
-          document.body.appendChild(script);
-      });
-  }
-  
-  adblockDetected().then(function (detected) {
-    var el = document.getElementById('ad_demo');
-    if (detected) {
-      el.innerHTML = 'You are using Adblock! (' + detected + ')';
-    } else {
-      el.style.backgroundColor = '#63ff85';
-      el.innerHTML = 'You are not using Adblock (' + detected + ')';
+    script.onload = function () {
+      if (document.getElementById('837jlaBksSjd9jh')) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
     }
-  })
+
+    script.onerror = function () {
+      resolve(true);
+    }
+
+    script.src = 'https://incolumitas.com/data/pp34.js?sv=';
+    document.body.appendChild(script);
+  });
+}
+
+adblockDetected().then(function (detected) {
+  var el = document.getElementById('ad_demo');
+  if (detected) {
+    el.innerHTML = 'You are using Adblock! (' + detected + ')';
+  } else {
+    el.style.backgroundColor = '#63ff85';
+    el.innerHTML = 'You are not using Adblock (' + detected + ')';
+  }
+})
 </script>
 
 <strong>Adblock Detection Demo:</strong> <span id="ad_demo" style="border: 3px #4f4f4f solid;
@@ -50,34 +50,34 @@ There are several Adblock detection techniques discussed in this article. If you
     width: 300px;"></span>
 
 
-### Update Adblock Detection on May 25th 2022
+### Update Adblock Detection on August 8th 2022
 
 I updated the adblock detection code (Also in the demo). This is the newest adblock detection code:
 
 ```js
 function adblockDetected() {
-    return new Promise(function (resolve, reject) {
-        var script = document.createElement('script');
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
 
-        script.onload = function() {
-            if (document.getElementById('ybVg4vsBhs')) {
-                resolve(false);
-            } else {
-                resolve(true);
-            }
-        }
+    script.onload = function () {
+      if (document.getElementById('837jlaBksSjd9jh')) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    }
 
-        script.onerror = function() {
-            resolve(true);
-        }
+    script.onerror = function () {
+      resolve(true);
+    }
 
-        script.src = 'https://incolumitas.com/data/sailthru.js';
-        document.body.appendChild(script);
-    });
+    script.src = 'https://incolumitas.com/data/pp34.js?sv=';
+    document.body.appendChild(script);
+  });
 }
 
 adblockDetected().then(function(result) {
-    console.log('Adblock detected: ', result);
+  console.log('Adblock detected: ', result);
 });
 ```
 
