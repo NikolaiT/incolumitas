@@ -1,16 +1,19 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
-Modified: 2022-08-08 11:31
+Modified: 2022-08-09 11:31
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
 Author: Nikolai Tschacher
 Summary: There are many resources in the Internet that show how to detect uBlock Origin and Adblock Plus. However, after some research, it became clear that most detection methods are unreliable and cease to exist after a while. In this blog article, a reliable detection method for uBlock Origin and Adblock Plus is demonstrated. No external libraries. Just plain and simple JavaScript.
 
-There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`.
+**Edit (9th August 2022):** In case this will stop working in the next days / weeks, I will make the selection of filter dynamic and random. Put differently: If you whitelist a filter such as `pp34.js?sv=` (uBlock Origin) or `&ad_height=` (EasyList - uBlock Origin and Adblock Plus), I will make a random selection of a filter / list entry in the following block-lists:
+
++ Adblock EasyList: [https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt](https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt)
++ uBlock Origin uAssets: [https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt](https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt)
 
 <script type="text/javascript">
-function adblockDetected() {
+function uBlockOriginDetected() {
   return new Promise(function (resolve, reject) {
     var script = document.createElement('script');
 
@@ -31,31 +34,76 @@ function adblockDetected() {
   });
 }
 
-adblockDetected().then(function (detected) {
-  var el = document.getElementById('ad_demo');
+function adblockPlusDetected() {
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
+
+    script.onload = function () {
+      if (document.getElementById('hfuBadsf3hFAk')) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    }
+
+    script.onerror = function () {
+      resolve(true);
+    }
+
+    script.src = 'https://incolumitas.com/data/neutral.js?&ad_height=';
+    document.body.appendChild(script);
+  });
+}
+
+adblockPlusDetected().then(function (detected) {
+  var el = document.getElementById('adblock_plus');
   if (detected) {
-    el.innerHTML = 'You are using Adblock! (' + detected + ')';
+    el.innerHTML = 'You are using Adblock Plus! (' + detected + ')';
   } else {
     el.style.backgroundColor = '#63ff85';
-    el.innerHTML = 'You are not using Adblock (' + detected + ')';
+    el.innerHTML = 'You are not using Adblock Plus (' + detected + ')';
+  }
+})
+
+uBlockOriginDetected().then(function (detected) {
+  var el = document.getElementById('ublock_origin');
+  if (detected) {
+    el.innerHTML = 'You are using uBlock Origin! (' + detected + ')';
+  } else {
+    el.style.backgroundColor = '#63ff85';
+    el.innerHTML = 'You are not using uBlock Origin (' + detected + ')';
   }
 })
 </script>
 
-<strong>Adblock Detection Demo:</strong> <span id="ad_demo" style="border: 3px #4f4f4f solid;
+<strong>Adblock Plus Detected:</strong> <span id="adblock_plus" style="border: 3px #4f4f4f solid;
     padding: 10px;
     background-color: #ff6363;
     margin-top: 20px;
     display: block;
     width: 300px;"></span>
 
+<strong>uBlock Origin Detected:</strong> <span id="ublock_origin" style="border: 3px #4f4f4f solid;
+    padding: 10px;
+    background-color: #ff6363;
+    margin-top: 10px;
+    display: block;
+    width: 300px;"></span>
 
-### Update Adblock Detection on August 8th 2022
 
-I updated the adblock detection code (Also in the demo). This is the newest adblock detection code:
+### Update Adblock / uBlock Origin Detection on August 9th 2022
+
+**Edit:** In case this will stop working in the next days / weeks, I will make the selection of filter dynamic and random. Put differently: If you whitelist a filter such as `pp34.js?sv=`, I will make a random selection of a filter / list entry in the following lists:
+
++ Adblock EasyList: https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt
++ uBlock Origin uAssets: https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt
+
+I updated the Adblock / uBlock Origin detection code (Also in the demo). This is the newest detection code:
 
 ```js
-function adblockDetected() {
+// Author: Nikolai Tschacher
+// Updated: 9th August 2022
+function uBlockOriginDetected() {
   return new Promise(function (resolve, reject) {
     var script = document.createElement('script');
 
@@ -76,10 +124,39 @@ function adblockDetected() {
   });
 }
 
-adblockDetected().then(function(result) {
-  console.log('Adblock detected: ', result);
+function adblockPlusDetected() {
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
+
+    script.onload = function () {
+      if (document.getElementById('hfuBadsf3hFAk')) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    }
+
+    script.onerror = function () {
+      resolve(true);
+    }
+
+    script.src = 'https://incolumitas.com/data/neutral.js?&ad_height=';
+    document.body.appendChild(script);
+  });
+}
+
+adblockPlusDetected().then(function(result) {
+  console.log('AdblockPlus detected: ', result);
+});
+
+uBlockOriginDetected().then(function(result) {
+  console.log('uBlockOrigin detected: ', result);
 });
 ```
+
+### Package and GitHub
+
+There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`. ()
 
 ### Introduction
 
