@@ -1,6 +1,6 @@
 Title: Datacenter IP Address API
 Date: 2021-09-29 00:13
-Modified: 2022-07-30 20:00
+Modified: 2022-08-13 20:00
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
@@ -19,13 +19,12 @@ What is a datacenter / hosting provider?
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher (incolumitas.com)     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.9.1 (30th July 2022)**         |
+| **API Version**         | **v0.9.2 (13th August 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
 | **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network [and many other hosting providers](https://api.incolumitas.com/info)         |
-| **IPv6 Support**         | Yes         |
-| **Total Tracked Hosting Providers**         |    **[1292 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **210,603** IPv4 CIDR ranges (627,607,601 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **393,386** IPv6 CIDR ranges (1.2958097148550618e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[1358 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **197,932** IPv4 CIDR ranges (514,549,716 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **391,206** IPv6 CIDR ranges (1.182433118801632e+33 Addresses in total)      |
 
 
 ## Live API
