@@ -7,7 +7,8 @@ SITEURL = 'http://localhost:8000'
 SITENAME = 'incolumitas.com'
 SITETITLE = 'incolumitas.com'
 
-SITESUBTITLE = 'Where computer science meets entrepreneurship — Blog articles about programming and the lifestyle attached to it.'
+# uncomment to display a site subtitle
+# SITESUBTITLE = 'Where computer science meets entrepreneurship — Blog articles about programming and the lifestyle attached to it.'
 
 SITEDESCRIPTION = 'Nikolai Tschacher\'s ideas around IT security and computer science'
 SITELOGO = '/theme/img/me-on-chasseral.webp'
