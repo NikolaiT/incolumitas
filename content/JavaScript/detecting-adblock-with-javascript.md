@@ -13,12 +13,23 @@ Summary: There are many resources in the Internet that show how to detect uBlock
 + uBlock Origin uAssets: [https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt](https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt)
 
 <script type="text/javascript">
-function uBlockOriginDetected() {
+const adblockTests = {
+  uBlockOrigin: {
+    url: 'https://incolumitas.com/data/pp34.js?sv=',
+    id: '837jlaBksSjd9jh',
+  },
+  adblockPlus: {
+    url: 'https://incolumitas.com/data/neutral.js?&ad_height=',
+    id: 'hfuBadsf3hFAk',
+  },
+};
+
+function canLoadRemoteScript(obj) {
   return new Promise(function (resolve, reject) {
     var script = document.createElement('script');
 
     script.onload = function () {
-      if (document.getElementById('837jlaBksSjd9jh')) {
+      if (document.getElementById(obj.id)) {
         resolve(false);
       } else {
         resolve(true);
@@ -29,43 +40,12 @@ function uBlockOriginDetected() {
       resolve(true);
     }
 
-    script.src = 'https://incolumitas.com/data/pp34.js?sv=';
+    script.src = obj.url;
     document.body.appendChild(script);
   });
 }
 
-function adblockPlusDetected() {
-  return new Promise(function (resolve, reject) {
-    var script = document.createElement('script');
-
-    script.onload = function () {
-      if (document.getElementById('hfuBadsf3hFAk')) {
-        resolve(false);
-      } else {
-        resolve(true);
-      }
-    }
-
-    script.onerror = function () {
-      resolve(true);
-    }
-
-    script.src = 'https://incolumitas.com/data/neutral.js?&ad_height=';
-    document.body.appendChild(script);
-  });
-}
-
-adblockPlusDetected().then(function (detected) {
-  var el = document.getElementById('adblock_plus');
-  if (detected) {
-    el.innerHTML = 'You are using Adblock Plus! (' + detected + ')';
-  } else {
-    el.style.backgroundColor = '#63ff85';
-    el.innerHTML = 'You are not using Adblock Plus (' + detected + ')';
-  }
-})
-
-uBlockOriginDetected().then(function (detected) {
+canLoadRemoteScript(adblockTests.uBlockOrigin).then((detected) => {
   var el = document.getElementById('ublock_origin');
   if (detected) {
     el.innerHTML = 'You are using uBlock Origin! (' + detected + ')';
@@ -73,7 +53,17 @@ uBlockOriginDetected().then(function (detected) {
     el.style.backgroundColor = '#63ff85';
     el.innerHTML = 'You are not using uBlock Origin (' + detected + ')';
   }
-})
+});
+
+canLoadRemoteScript(adblockTests.adblockPlus).then((detected) => {
+  var el = document.getElementById('adblock_plus');
+  if (detected) {
+    el.innerHTML = 'You are using Adblock Plus! (' + detected + ')';
+  } else {
+    el.style.backgroundColor = '#63ff85';
+    el.innerHTML = 'You are not using Adblock Plus (' + detected + ')';
+  }
+});
 </script>
 
 <strong>Adblock Plus Detected:</strong> <span id="adblock_plus" style="border: 3px #4f4f4f solid;
@@ -98,12 +88,23 @@ This is the **newest** detection code:
 ```js
 // Author: Nikolai Tschacher
 // Updated: 9th August 2022
-function uBlockOriginDetected() {
+const adblockTests = {
+  uBlockOrigin: {
+    url: 'https://incolumitas.com/data/pp34.js?sv=',
+    id: '837jlaBksSjd9jh',
+  },
+  adblockPlus: {
+    url: 'https://incolumitas.com/data/neutral.js?&ad_height=',
+    id: 'hfuBadsf3hFAk',
+  },
+};
+
+function canLoadRemoteScript(obj) {
   return new Promise(function (resolve, reject) {
     var script = document.createElement('script');
 
     script.onload = function () {
-      if (document.getElementById('837jlaBksSjd9jh')) {
+      if (document.getElementById(obj.id)) {
         resolve(false);
       } else {
         resolve(true);
@@ -114,38 +115,17 @@ function uBlockOriginDetected() {
       resolve(true);
     }
 
-    script.src = 'https://incolumitas.com/data/pp34.js?sv=';
+    script.src = obj.url;
     document.body.appendChild(script);
   });
 }
 
-function adblockPlusDetected() {
-  return new Promise(function (resolve, reject) {
-    var script = document.createElement('script');
-
-    script.onload = function () {
-      if (document.getElementById('hfuBadsf3hFAk')) {
-        resolve(false);
-      } else {
-        resolve(true);
-      }
-    }
-
-    script.onerror = function () {
-      resolve(true);
-    }
-
-    script.src = 'https://incolumitas.com/data/neutral.js?&ad_height=';
-    document.body.appendChild(script);
-  });
-}
-
-adblockPlusDetected().then(function(result) {
-  console.log('AdblockPlus detected: ', result);
+canLoadRemoteScript(adblockTests.uBlockOrigin).then((detected) => {
+  console.log('uBlockOrigin detected: ', detected);
 });
 
-uBlockOriginDetected().then(function(result) {
-  console.log('uBlockOrigin detected: ', result);
+canLoadRemoteScript(adblockTests.adblockPlus).then((detected) => {
+  console.log('AdblockPlus detected: ', detected);
 });
 ```
 
