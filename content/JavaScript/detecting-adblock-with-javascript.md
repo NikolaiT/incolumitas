@@ -93,12 +93,7 @@ uBlockOriginDetected().then(function (detected) {
 
 ### Update Adblock / uBlock Origin Detection on August 9th 2022
 
-**Edit:** In case this will stop working in the next days / weeks, I will make the selection of filter dynamic and random. Put differently: If you whitelist a filter such as `pp34.js?sv=`, I will make a random selection of a filter / list entry in the following lists:
-
-+ Adblock EasyList: https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt
-+ uBlock Origin uAssets: https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt
-
-I updated the Adblock / uBlock Origin detection code (Also in the demo). This is the newest detection code:
+This is the **newest** detection code:
 
 ```js
 // Author: Nikolai Tschacher
@@ -156,7 +151,10 @@ uBlockOriginDetected().then(function(result) {
 
 ### Package and GitHub
 
-There are several Adblock detection techniques discussed in this article. If you quickly want a working solution, go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`. ()
+There are several Adblock detection techniques discussed in this article. If you quickly want a working solution:
+
++ Go to the [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only). 
++ Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`.
 
 ### Introduction
 
