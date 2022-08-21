@@ -1,6 +1,6 @@
 Title: Datacenter IP Address API
 Date: 2021-09-29 00:13
-Modified: 2022-08-13 20:00
+Modified: 2022-08-21 20:00
 Author: Nikolai Tschacher
 Slug: Datacenter-IP-API
 Status: published
@@ -19,7 +19,7 @@ What is a datacenter / hosting provider?
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher (incolumitas.com)     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.9.2 (13th August 2022)**         |
+| **API Version**         | **v0.9.3 (21th August 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
 | **Supported Datacenters**         | Amazon AWS, Microsoft Azure, Google Cloud, IBM Cloud, OVH, Digital Ocean, Hetzner Online, CloudFlare, Oracle Cloud, Tor Network [and many other hosting providers](https://api.incolumitas.com/info)         |
 | **Total Tracked Hosting Providers**         |    **[1566 hosting providers]({filename}/pages/datacenters.md)**      |
