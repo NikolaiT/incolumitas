@@ -86,47 +86,71 @@ canLoadRemoteScript(adblockTests.adblockPlus).then((detected) => {
 This is the **newest** detection code:
 
 ```js
-// Author: Nikolai Tschacher
-// Updated: 9th August 2022
-const adblockTests = {
-  uBlockOrigin: {
-    url: 'https://incolumitas.com/data/pp34.js?sv=',
-    id: '837jlaBksSjd9jh',
-  },
-  adblockPlus: {
-    url: 'https://incolumitas.com/data/neutral.js?&ad_height=',
-    id: 'hfuBadsf3hFAk',
-  },
-};
+/**
+ * Author: Nikolai Tschacher
+ * Updated: 16.08.2022
+ * Website: https://incolumitas.com/
+ * 
+ * Detecting uBlock Origin and Adblock Plus with JavaScript only.
+ * 
+ * Usage: detectAdblock().then((res) => { console.log(res) });
+ * 
+ */
+function detectAdblock() {
+  const adblockTests = {
+    uBlockOrigin: {
+      url: 'https://incolumitas.com/data/pp34.js?sv=',
+      id: '837jlaBksSjd9jh',
+    },
+    adblockPlus: {
+      url: 'https://incolumitas.com/data/neutral.js?&ad_height=',
+      id: 'hfuBadsf3hFAk',
+    },
+  };
 
-function canLoadRemoteScript(obj) {
-  return new Promise(function (resolve, reject) {
-    var script = document.createElement('script');
+  function canLoadRemoteScript(obj) {
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
 
-    script.onload = function () {
-      if (document.getElementById(obj.id)) {
-        resolve(false);
-      } else {
+      script.onload = function () {
+        if (document.getElementById(obj.id)) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      }
+
+      script.onerror = function () {
         resolve(true);
       }
-    }
 
-    script.onerror = function () {
-      resolve(true);
-    }
+      script.src = obj.url;
+      document.body.appendChild(script);
+    });
+  }
 
-    script.src = obj.url;
-    document.body.appendChild(script);
+  return new Promise(function (resolve, reject) {
+    let promises = [
+      canLoadRemoteScript(adblockTests.uBlockOrigin),
+      canLoadRemoteScript(adblockTests.adblockPlus),
+    ];
+
+    Promise.all(promises).then((results) => {
+      resolve({
+        uBlockOrigin: results[0],
+        adblockPlus: results[1],
+      });
+    }).catch((err) => {
+      reject(err);
+    });
   });
 }
+```
 
-canLoadRemoteScript(adblockTests.uBlockOrigin).then((detected) => {
-  console.log('uBlockOrigin detected: ', detected);
-});
+Usage:
 
-canLoadRemoteScript(adblockTests.adblockPlus).then((detected) => {
-  console.log('AdblockPlus detected: ', detected);
-});
+```js
+detectAdblock().then((res) => { console.log(res) });
 ```
 
 ### Package and GitHub
