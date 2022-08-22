@@ -8,7 +8,7 @@ Sortorder: 5
 
 The Datacenter IP Address API can be used to check whether an IP address belongs to a datacenter/hosting IP address range such as Azure, AWS, Digitalocean, Google Cloud Platform and many other cloud providers. Please read the [full blog article]({filename}/Security/datacenter-ip-api.md) for a thorough introduction. And please consider reading another blog article:  ["How to find out if an IP address belongs to a Hosting / Cloud Provider?"]({filename}/Security/datacenter-ip-api-second.md)
 
-It is not trivial to determine if an IPv4 or IPv6 address belongs to a hosting provider. Therefore, this API will not be free from false positives. However, by using an intelligent datacenter detection algorithm (which uses public whois data and BGP/ASN data from Regional Internet Registries), most (somehwat prominent) hosting provideres can be found.
+It is not trivial to determine if an IPv4 or IPv6 address belongs to a hosting provider. Therefore, this API will not be free from false positives. However, by using an intelligent datacenter detection algorithm (which uses public whois data and BGP/ASN routing information from Regional Internet Registries), most hosting provideres can be found.
 
 What is a datacenter / hosting provider?
 
@@ -17,7 +17,7 @@ What is a datacenter / hosting provider?
 
 | <!-- -->    | <!-- -->    |
 |-------------|-------------|
-| **Author**         | Nikolai Tschacher (incolumitas.com)     |
+| **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **API Access**         | Free & unlimited (fair use)         |
 | **API Version**         | **v0.9.3 (21th August 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/datacenter?ip=3.5.140.2**](https://api.incolumitas.com/datacenter?ip=3.5.140.2)         |
@@ -26,21 +26,23 @@ What is a datacenter / hosting provider?
 | **Number of Ipv4 Addresses**         |    **578,607** IPv4 CIDR ranges (1,124,037,736 Addresses in total)      |
 | **Number of Ipv6 Addresses**         |    **491,415** IPv6 CIDR ranges (1.3398119786246428e+33 Addresses in total)      |
 
-
 ## Live API
 
 <div class="ipAPIDemo">
-  <label style="font-weight: 600; font-size: 15px" for="ip">IP Address or ASN:</label>
-  <input style="padding: 6px;" type="text" id="ip" name="ip" value="13.34.52.117"><br><br>
-  <input class="orange_button" type="submit" value="Make API Request">
+  <label style="font-weight: 600; font-size: 16px" for="ip">IP Address / ASN:</label>
+  <input style="padding: 8px; margin-left: 4px; margin-right: 4px" type="text" id="ip" name="ip" value="13.34.52.117">
+  <input class="orange_button" style="" type="submit" value="Make API Request" placeholder="IP Address or ASN">
 
   <div>
     <p><strong>Examples:</strong>
+      <a class="api-example" data-query="165.227.176.0" href="#">165.227.176.0</a> —
       <a class="api-example" data-query="43.181.128.0" href="#">43.181.128.0</a> —
       <a class="api-example" data-query="194.126.177.0" href="#">194.126.177.0</a> —
       <a class="api-example" data-query="AS209103" href="#">AS209103</a> —
-      <a class="api-example" data-query="23.236.48.55" href="#">23.236.48.55</a> —
-      <a class="api-example" data-query="2600:1F18:7FFF:F800:0000:ffff:0000:0000" href="#">2600:1F18:7FFF:F800:0000:ffff:0000:0000</a>
+      <a class="api-example" data-query="23.236.48.55" href="#">23.236.48.55</a> —</br>
+      <a class="api-example" data-query="2600:1F18:7FFF:F800:0000:ffff:0000:0000" href="#">2600:1F18:7FFF:F800:0000:ffff:0000:0000</a> —
+      <a class="api-example" data-query="107.174.138.172" href="#">107.174.138.172</a> —
+      <a class="api-example" data-query="107.152.214.169" href="#">107.152.214.169</a>
     </p>
   </div>
 
@@ -89,7 +91,7 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 })
 </script>
 
-## Key API Features
+## API Features
 
 + **Ready for Production**: This API can be used in production and is stable
 + **Many datacenters supported:** [Thousands of different hosting providers and counting]({filename}/pages/datacenters.md) - From Huawei Cloud Service to ServerMania Inc.
@@ -98,13 +100,13 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
     + Public whois data from regional internet registries (RIR's) such as RIPE NCC or APNIC
     + Many other data sources such as public [BGP data](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
 + **AS (Autonomous System) support**: The API provides Autonomous System information for every IP address looked up
-+ **Pretty fast**: The API is very performant. On average, an IP lookup takes `0.042ms` (server side time consumed)
++ **Company Support**: The API provides organisational information for each network of each looked up IP address.
 + **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
 
 
 ## API Endpoints
 
-The API has exactly **three endpoints**:
+The API has **three endpoints**:
 
 1. `/datacenter` - **GET** - Used to lookup a **single IP address** by specifying the parameter `ip`. You can also lookup **ASN** numbers by looking up a ASN (Example: `ip=AS209103`).
 2. `/datacenter` - **POST** - Used to lookup **up to 100 different IP addresses** by specifying the POST parameter `ips`.
@@ -115,18 +117,26 @@ The `/datacenter` endpoints (both GET and POST) return information about the IP 
 The JSON API response **will always include the keys** (Even if the looked up IP address was not a match):
 
 + `ip` - `string` - the IP address that was looked up
++ `rir` - `string` - to which [Regional Internet Registry](https://en.wikipedia.org/wiki/Regional_Internet_registry) the looked up IP address belongs
 + `is_datacenter` - `boolean` - whether the IP address belongs to a datacenter
++ `is_tor` - `boolean` - is true if the IP address belongs to the TOR network
++ `is_proxy` - `boolean` - whether the IP address is a proxy
++ `is_abuser` - `boolean` - is true if the IP address committed abuse actions
++ `company` - `object` - Company information for the looked up IP address. The `company` object includes the following attributes:
+    + `name` - `string` - The name of the company
+    + `domain` - `string` - The domain of the company
+    + `network` - `string` - The network for which the company has ownership
 + `asn` - `object` - ASN information for the looked up IP address. The `asn` object includes the following information:
     + `asn` - `int` - The AS number 
     + `cidr` - `string` - The IP range as CIDR within the AS
     + `descr` - `string` - An informational description of the AS
     + `country` - `string` - The country where the AS is situated in
-+ `rir` - `string` - to which [Regional Internet Registry](https://en.wikipedia.org/wiki/Regional_Internet_registry) the looked up IP address belongs
++ `location` - `object` - Geolocation information for the looked up IP address. The `location` object includes the following attributes:
+    + `country` - `string` - The ISO 3166-1 alpha-2 country code to which the IP address belongs. This is the country specific geolocation of the IP address.
 + `elapsed_ms` - `float` - how much internal processing time was spent in ms (Example: `1.71`)
 
 If there is a datacenter match, the API response will always include the following keys:
 
-+ `src` - `string` - the data source that claims that this IP belongs to a datacenter (Example: `whois`)
 + `datacenter` - `string` - to which datacenter the IP address belongs. For a full list of datacenters, check the [api.incolumitas.com/info endpoint](https://api.incolumitas.com/info) (Example: `"Amazon AWS"`)
 + `cidr` - `string` - the CIDR range that this IP address belongs to (Example: `"13.34.52.96/27"`)
 
@@ -195,23 +205,34 @@ If you pass the IP address `3.5.140.2` to the API by calling [https://api.incolu
 {
   "ip": "3.5.140.2",
   "is_datacenter": true,
-  "src": "selfPublished",
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "cidr": "3.5.140.0/22",
   "region": "ap-northeast-2",
   "datacenter": "Amazon AWS",
-  "service": "AMAZON",
+  "service": "EC2",
   "network_border_group": "ap-northeast-2",
   "rir": "arin",
+  "company": {
+    "name": "Amazon Technologies Inc.",
+    "domain": "amazon.com",
+    "network": "3.0.0.0 - 3.127.255.255"
+  },
   "asn": {
     "asn": 16509,
-    "cidr": "3.5.140.0/22",
+    "route": "3.5.140.0/22",
     "descr": "AMAZON-02, US",
-    "country": "us"
+    "country": "us",
+    "active": true,
+    "website": "https://amazon.com",
+    "org": "Amazon.com, Inc.",
+    "abuse": "abuse@amazonaws.com"
   },
   "location": {
     "country": "us"
   },
-  "elapsed_ms": 0.16
+  "elapsed_ms": 0.25
 }
 ```
 
@@ -221,18 +242,24 @@ Alternatively, you can also lookup IPv6 addresses. Try the url [https://api.inco
 {
   "ip": "2406:dafe:e0ff:ffff:ffff:ffff:dead:beef",
   "is_datacenter": true,
-  "src": "selfPublished",
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "cidr": "2406:dafe:e000::/40",
   "region": "ap-east-1",
   "datacenter": "Amazon AWS",
   "service": "AMAZON",
   "network_border_group": "ap-east-1",
   "rir": "APNIC",
+  "company": {
+    "name": "Amazon.com, Inc.",
+    "network": "2406:da00::/24"
+  },
   "asn": null,
   "location": {
     "country": "not found"
   },
-  "elapsed_ms": 0.69
+  "elapsed_ms": 0.56
 }
 ```
 
@@ -240,19 +267,31 @@ If you don't specify any IP address with the `ip=` query parameter and you invok
 
 ```json
 {
-  "ip": "86.56.xx.xx",
+  "ip": "88.x.x.x",
   "is_datacenter": false,
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "rir": "ripe ncc",
+  "company": {
+    "name": "XZY GmbH",
+    "domain": "XZY.de",
+    "network": "88.x.x.x - 88.x.x.x"
+  },
   "asn": {
-    "asn": 20880,
-    "cidr": "86.56.xx.xx/17",
-    "descr": "xxx",
-    "country": "de"
+    "asn": 0,
+    "route": "88.x.x.x/24",
+    "descr": "XZY, DE",
+    "country": "de",
+    "active": true,
+    "website": "https://XZY.de",
+    "org": "XZY GmbH",
+    "abuse": "abuse@XZY.de"
   },
   "location": {
     "country": "de"
   },
-  "elapsed_ms": 7.79
+  "elapsed_ms": 12.02
 }
 ```
 
@@ -315,25 +354,36 @@ Looking up an Azure IP address: [https://api.incolumitas.com/datacenter?ip=20.41
 {
   "ip": "20.41.193.225",
   "is_datacenter": true,
-  "src": "selfPublished",
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "cidr": "20.41.193.224/27",
-  "name": "AzurePortal",
+  "name": "AzurePortal.SouthIndia",
   "datacenter": "Microsoft Azure",
-  "region": "",
-  "regionId": 0,
+  "region": "southindia",
+  "regionId": 22,
   "platform": "Azure",
   "systemService": "AzurePortal",
   "rir": "arin",
+  "company": {
+    "name": "Microsoft Corporation",
+    "domain": "microsoft.com",
+    "network": "20.33.0.0 - 20.128.255.255"
+  },
   "asn": {
     "asn": 8075,
-    "cidr": "20.40.0.0/13",
+    "route": "20.40.0.0/13",
     "descr": "MICROSOFT-CORP-MSN-AS-BLOCK, US",
-    "country": "us"
+    "country": "us",
+    "active": true,
+    "website": "https://microsoft.com",
+    "org": "Microsoft Corporation",
+    "abuse": "abuse@microsoft.com"
   },
   "location": {
     "country": "us"
   },
-  "elapsed_ms": 0.19
+  "elapsed_ms": 0.24
 }
 ```
 
@@ -345,23 +395,34 @@ Looking up an AWS IP address: [https://api.incolumitas.com/datacenter?ip=3.5.140
 {
   "ip": "3.5.140.2",
   "is_datacenter": true,
-  "src": "selfPublished",
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "cidr": "3.5.140.0/22",
   "region": "ap-northeast-2",
   "datacenter": "Amazon AWS",
-  "service": "AMAZON",
+  "service": "EC2",
   "network_border_group": "ap-northeast-2",
   "rir": "arin",
+  "company": {
+    "name": "Amazon Technologies Inc.",
+    "domain": "amazon.com",
+    "network": "3.0.0.0 - 3.127.255.255"
+  },
   "asn": {
     "asn": 16509,
-    "cidr": "3.5.140.0/22",
+    "route": "3.5.140.0/22",
     "descr": "AMAZON-02, US",
-    "country": "us"
+    "country": "us",
+    "active": true,
+    "website": "https://amazon.com",
+    "org": "Amazon.com, Inc.",
+    "abuse": "abuse@amazonaws.com"
   },
   "location": {
     "country": "us"
   },
-  "elapsed_ms": 0.14
+  "elapsed_ms": 0.26
 }
 ```
 
@@ -373,15 +434,26 @@ Looking up an GCP IP address: [https://api.incolumitas.com/datacenter?ip=23.236.
 {
   "ip": "23.236.48.55",
   "is_datacenter": true,
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "datacenter": "Google Cloud",
-  "cidr": "23.236.48.0/20",
-  "src": "whois",
+  "cidr": "23.236.48.0 - 23.236.63.255",
   "rir": "arin",
+  "company": {
+    "name": "Google LLC",
+    "domain": "google.com",
+    "network": "23.236.48.0 - 23.236.63.255"
+  },
   "asn": {
     "asn": 15169,
-    "cidr": "23.236.48.0/20",
+    "route": "23.236.48.0/20",
     "descr": "GOOGLE, US",
-    "country": "us"
+    "country": "us",
+    "active": true,
+    "website": "https://google.com",
+    "org": "Google LLC",
+    "abuse": "network-abuse@google.com"
   },
   "location": {
     "country": "us"
@@ -398,23 +470,34 @@ And looking up a AWS IPv6 address: [https://api.incolumitas.com/datacenter?ip=26
 {
   "ip": "2600:1F18:7FFF:F800:0000:ffff:0000:0000",
   "is_datacenter": true,
-  "src": "selfPublished",
+  "is_tor": false,
+  "is_proxy": false,
+  "is_abuser": false,
   "cidr": "2600:1f18:7fff:f800::/56",
   "region": "us-east-1",
   "datacenter": "Amazon AWS",
   "service": "ROUTE53_HEALTHCHECKS",
   "network_border_group": "us-east-1",
   "rir": "ARIN",
+  "company": {
+    "name": "Amazon.com, Inc.",
+    "domain": "amazon.com",
+    "network": "2600:1F00::/24"
+  },
   "asn": {
     "asn": 14618,
-    "cidr": "2600:1f18:6000::/35",
+    "route": "2600:1f18:6000::/35",
     "descr": "AMAZON-AES, US",
-    "country": "us"
+    "country": "us",
+    "active": true,
+    "website": "https://amazon.com",
+    "org": "Amazon.com, Inc.",
+    "abuse": "abuse@amazonaws.com"
   },
   "location": {
     "country": "not found"
   },
-  "elapsed_ms": 0.54
+  "elapsed_ms": 5.33
 }
 ```
 
@@ -433,6 +516,13 @@ This API uses a proprietary datacenter/hosting discovery algortithm that uses:
 3. Daily published AS and netmask information from backbone Internet routers
 
 ## Change Log
+
+#### 21th August 2022
+
++ Added country specific geolocation information
++ Updated datacenter ranges and added new datacenters
++ Now providing company information for almost all active networks in the Internet
++ Providing organisation and abuse meta information for each of the 79247 active ASN's
 
 #### 30th July 2022
 
