@@ -1,21 +1,14 @@
 Title: Contact
 Date: 2012-07-01 14:21
-Modified: 2019-07-12 13:33
+Modified: 2022-08-24 13:33
 Author: Nikolai Tschacher
 Slug: contact
 Status: published
 Sortorder: 2
 
 Please do not ask me questions about old projects where I explicitly 
-declared my end of support.
+declared the end of support.
 
-You can contact me under this email address concerning the
-content/publications on my site (Without spaces and instead of [[at]]
-@):
+You can contact me under this email address:
 
-**a d m i n [[at]] incolumitas.com**
-
-If you are interested in my work and **want to hire me**, feel free to leave
-a mail here:
-
-**h i r e [[at]] incolumitas.com**
+**tschacher.nikolai [[at]] gmail.com**

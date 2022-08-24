@@ -11,6 +11,10 @@ Sortorder: 0
     <figcaption>Me reading the secret formula of life</figcaption>
 </figure>
 
+You can contact me under this email address:
+
+**tschacher.nikolai [[at]] gmail.com**
+
 ## Why?
 
 Whenever I have difficulties solving a particular problem, I try to put it into words. This process has two advantages:
