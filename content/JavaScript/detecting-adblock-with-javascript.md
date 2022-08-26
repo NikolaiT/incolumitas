@@ -9,7 +9,7 @@ Summary: There are many resources in the Internet that show how to detect uBlock
 
 **Edit (27th August 2022):**
 
-+ [GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only).
++ [For the code, visit the GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only)
 + Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`
 
 In case this will stop working in the next days / weeks, I will make the selection of filter dynamic and random. Put differently: If you whitelist a filter such as `pp34.js?sv=` (uBlock Origin) or `&ad_height=` (EasyList - uBlock Origin and Adblock Plus), I will make a random selection of a filter / list entry in the following block-lists:
@@ -81,20 +81,22 @@ function detectAdblock() {
 }
 
 detectAdblock().then((res) => {
-  var el = document.getElementById('ublock_origin');
+  var ublockEl = document.getElementById('ublock_origin');
+  var adblockEl = document.getElementById('adblock_plus');
+
   if (res.uBlockOrigin) {
-    el.innerHTML = 'You are using uBlock Origin! (' + detected + ')';
+    ublockEl.innerHTML = 'You are using uBlock Origin! (' + res.uBlockOrigin + ')';
   } else {
-    el.style.backgroundColor = '#63ff85';
-    el.innerHTML = 'You are not using uBlock Origin (' + detected + ')';
+    ublockEl.style.backgroundColor = '#63ff85';
+    ublockEl.innerHTML = 'You are not using uBlock Origin (' + res.uBlockOrigin + ')';
   }
 
   if (res.adblockPlus) {
-    el.innerHTML = 'You are using Adblock Plus! (' + detected + ')';
+    adblockEl.innerHTML = 'You are using Adblock Plus! (' + res.adblockPlus + ')';
   } else {
-    el.style.backgroundColor = '#63ff85';
-    el.innerHTML = 'You are not using Adblock Plus (' + detected + ')';
-  }  
+    adblockEl.style.backgroundColor = '#63ff85';
+    adblockEl.innerHTML = 'You are not using Adblock Plus (' + res.adblockPlus + ')';
+  }
 });
 </script>
 
