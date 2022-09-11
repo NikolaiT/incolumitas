@@ -129,11 +129,11 @@ ENABLE_PARTICLES = False
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 
-EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum', 'contact', 'Hosting-Providers-List')
+EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum', 'contact', 'Hosting-Providers-List', 'Datacenter-IP-API')
 
 API_PAGES = (
     'BotOrNot',
-    'Datacenter-IP-API',
+    'IP-API',
     'TCP-IP-Fingerprint',
     'TLS-Fingerprint'
 )
