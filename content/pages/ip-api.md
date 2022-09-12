@@ -5,26 +5,9 @@ Slug: IP-API
 Status: published
 Sortorder: 5
 
-The IP Address API returns useful information for each submitted IP address such as which company/organization has ownership of the IP address, to which ASN the IP address belongs to and the geographic location (geolocation) of IP addresses. Furthermore, it allows you to derive security information for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if a IP address is a proxy (`is_proxy`) or belongs to an abuser (`is_abuser`).
+The IP Address API returns useful information for each submitted IP address such as which company/organization has ownership of the IP address, to which ASN the IP address belongs to and the geographic location (geolocation) of IP addresses.
 
-This API uses the following sources:
-
-1. Public whois records from regional Internet address registries such as RIPE NCC, APNIC, ARIN and so on
-2. Public BGP information (to find ASN information and their associated routes/prefixes)
-3. Public blocklists such as [firehol/blocklist-ipset](https://github.com/firehol/blocklist-ipsets)
-4. The API uses several proprietary datacenter/hosting detection algorithms
-5. The API uses IP threat data from public honeypots
-6. IP geolocation information (Geolocation is accurate to the country level)
-
-| <!-- -->    | <!-- -->    |
-|-------------|-------------|
-| **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
-| **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.9.4 (11th September 2022)**         |
-| **API Endpoint**         | [**https://api.incolumitas.com/?ip=3.5.140.2**](https://api.incolumitas.com/?ip=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[1566 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **578,607** IPv4 CIDR ranges (1,124,037,736 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **491,415** IPv6 CIDR ranges (1.3398119786246428e+33 Addresses in total)      |
+Furthermore, it allows you to derive security information for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if a IP address is a proxy (`is_proxy`) or belongs to an abuser (`is_abuser`).
 
 ## Live API
 
@@ -90,6 +73,28 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
   makeApiRequest(ip)
 })
 </script>
+
+## Introduction
+
+The IP adddress API uses the following sources:
+
+1. Public whois records from regional Internet address registries such as RIPE NCC, APNIC, ARIN and so on
+2. Public BGP information (to find ASN information and their associated routes/prefixes)
+3. Public blocklists such as [firehol/blocklist-ipset](https://github.com/firehol/blocklist-ipsets)
+4. The API uses several proprietary datacenter/hosting detection algorithms
+5. The API uses IP threat data from public honeypots
+6. IP geolocation information (Geolocation is accurate to the country level)
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
+| **API Access**         | Free & unlimited (fair use)         |
+| **API Version**         | **v0.9.4 (11th September 2022)**         |
+| **API Endpoint**         | [**https://api.incolumitas.com/?ip=3.5.140.2**](https://api.incolumitas.com/?ip=3.5.140.2)         |
+| **Total Tracked Hosting Providers**         |    **[1566 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **578,607** IPv4 CIDR ranges (1,124,037,736 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **491,415** IPv6 CIDR ranges (1.3398119786246428e+33 Addresses in total)      |
+
 
 ## API Features
 
