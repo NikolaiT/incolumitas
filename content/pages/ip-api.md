@@ -5,15 +5,15 @@ Slug: IP-API
 Status: published
 Sortorder: 5
 
-The IP Address API gives you meta information for each IP address such as company and ASN details. Furthermore, it allows you to find out security information for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if a IP address is a proxy (`is_proxy`) or belongs to an abuser (`is_abuser`).
+The IP Address API returns useful information for each submitted IP address such as which company/organization has ownership of the IP address, to which ASN the IP address belongs to and the geographic location (geolocation) of IP addresses. Furthermore, it allows you to derive security information for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if a IP address is a proxy (`is_proxy`) or belongs to an abuser (`is_abuser`).
 
-This API makes use of the following sources:
+This API uses the following sources:
 
 1. Public whois records from regional Internet address registries such as RIPE NCC, APNIC, ARIN and so on
-2. BGP information (to find active ASN's and their routes)
-3. Public blocklists such as firehol/blocklist-ipset
-4. Several datacenter/hosting detection algorithms
-5. IP threat data from public honeypots
+2. Public BGP information (to find ASN information and their associated routes/prefixes)
+3. Public blocklists such as [firehol/blocklist-ipset](https://github.com/firehol/blocklist-ipsets)
+4. The API uses several proprietary datacenter/hosting detection algorithms
+5. The API uses IP threat data from public honeypots
 6. IP geolocation information (Geolocation is accurate to the country level)
 
 | <!-- -->    | <!-- -->    |
@@ -94,55 +94,49 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 ## API Features
 
 + **Ready for Production**: This API can be used in production and is stable
-+ **Many datacenters supported:** [Thousands of different hosting providers and counting]({filename}/pages/datacenters.md) - From Huawei Cloud Service to ServerMania Inc.
-+ **Always updated**: The API database is automatically updated every week. IP data is gathered from many sources:
++ **Many datacenters supported:** [Thousands of different hosting providers and counting]({filename}/pages/datacenters.md) - From Huawei Cloud Service to ServerMania Inc. Find out whether the IP address is hosted by looking at the `is_datacenter` property!
++ **Always updated**: The API database is automatically several times per week. IP data is gathered from many sources:
     + Self published IP ranges from large cloud providers
     + Public whois data from regional internet registries (RIR's) such as RIPE NCC or APNIC
     + Many other data sources such as public [BGP data](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
-+ **AS (Autonomous System) support**: The API provides Autonomous System information for every IP address looked up
-+ **Company Support**: The API provides organisational information for each network of each looked up IP address.
+    + Open Source IP blocklists
++ **AS (Autonomous System) support**: The API provides autonomous system information for each looked-up IP address
++ **Company Support**: The API provides organisational information for each network of each looked up IP address
 + **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
 
-## API Endpoints
+## API Response Format
 
-The API has **two endpoints**:
-
-1. `/` - **GET** - Used to lookup a **single IP address** by specifying the parameter `ip`. You can also lookup **ASN** numbers by looking up a ASN (Example: `ip=AS209103`).
-2. `/` - **POST** - Used to lookup **up to 100 different IP addresses** by specifying the POST parameter `ips`.
-
-The `/` endpoints (both GET and POST) return information about the IP addresses specified in the `ip` (GET) or `ips` (POST) parameters.
-
-The JSON API response **will always include the keys**:
+The JSON API response **will always include the following information**
 
 + `ip` - `string` - the IP address that was looked up
 + `rir` - `string` - to which [Regional Internet Registry](https://en.wikipedia.org/wiki/Regional_Internet_registry) the looked up IP address belongs
-+ `is_bogon` - `boolean` - Whether the IP address is bogon
++ `is_bogon` - `boolean` - Whether the IP address is bogon. For example, the loopback IP `127.0.0.1` is a special/bogon IP address
 + `is_datacenter` - `boolean` - whether the IP address belongs to a datacenter
 + `is_tor` - `boolean` - is true if the IP address belongs to the TOR network
 + `is_proxy` - `boolean` - whether the IP address is a proxy
-+ `is_abuser` - `boolean` - is true if the IP address committed abuse actions
++ `is_abuser` - `boolean` - is true if the IP address committed abusive actions
 + `company` - `object` - Company information for the looked up IP address. The `company` object includes the following attributes:
     + `name` - `string` - The name of the company
-    + `domain` - `string` - The domain of the company
+    + `domain` - `string` - The domain name of the company
     + `network` - `string` - The network for which the company has ownership
 + `asn` - `object` - ASN information for the looked up IP address. The `asn` object includes the following information:
     + `asn` - `int` - The AS number
     + `route` - `string` - The IP route as CIDR in this AS
     + `descr` - `string` - An informational description of the AS
     + `country` - `string` - The country where the AS is situated in
-    + `active` - `string` - Whether the AS is active (at least one route)
+    + `active` - `string` - Whether the AS is active (active = at least one route administred by the AS)
     + `website` - `string` - The website of the organization to which this AS belongs
     + `org` - `string` - The organization responisible for this AS
-    + `type` - `string` - The type for this ASN, this is either `hosting`, `education`, `government`, `banking` or `business`.
-
+    + `type` - `string` - The type for this ASN, this is either `hosting`, `education`, `government`, `banking` or `business`
 + `location` - `object` - Geolocation information for the looked up IP address. The `location` object includes the following attributes:
-  + `country` - `string` - The ISO 3166-1 alpha-2 country code to which the IP address belongs. This is the country specific geolocation of the IP address.
+    + `country` - `string` - The ISO 3166-1 alpha-2 country code to which the IP address belongs. This is the country specific geolocation of the IP address.
 + `elapsed_ms` - `float` - how much internal processing time was spent in ms (Example: `1.71`)
 
-If there is a datacenter match, the API response will always include the following keys:
+If the IP address belongs to a datacenter/hosting provider, the API response will also include the following keys:
 
-+ `datacenter` - `string` - to which datacenter the IP address belongs. For a full list of datacenters, check the [api.incolumitas.com/info endpoint](https://api.incolumitas.com/info) (Example: `"Amazon AWS"`)
-+ `cidr` - `string` - the CIDR range that this IP address belongs to (Example: `"13.34.52.96/27"`)
++ `datacenter` - `object` - Datacenter/hosting information for the looked up IP address. The `datacenter` object includes the following attributes:
+    + `datacenter` - `string` - to which datacenter the IP address belongs. For a full list of datacenters, check the [api.incolumitas.com/info endpoint](https://api.incolumitas.com/info) (Example: `"Amazon AWS"`)
+    + `cidr` - `string` - to which datacenter network the IP address belongs (Example: `"13.34.52.96/27"`)
 
 ### GET - `/` - Lookup a single IP address or ASN
 
@@ -159,8 +153,6 @@ This GET endpoint allows to lookup a single IPv4 or IPv6 IP address by specifyin
 ### POST - `/` - Lookup up to 100 IP addresses in one API call
 
 You can also make a bulk API lookup with up to 100 IP addresses (Either IPv4 or IPv6) in one single request.
-
-**Please note:** The API will return only matches for those IP addresses that belong to a datacenter. This approach saves networking bandwith.
 
 | <!-- -->         | <!-- -->                                           |
 |------------------|----------------------------------------------------|
@@ -189,15 +181,19 @@ curl --header "Content-Type: application/json" \
 
 Where do I get the [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) address ranges for the datacenters?
 
-Most datacenters publish their own IP ranges, such as AWS or Google Cloud. But often, those IP address ranges are not complete. For that reason, other means of lookup have to be used, such as [consulting whois data from Regional Internet Registries](https://en.wikipedia.org/wiki/WHOIS) or searching through [ASN data](https://en.wikipedia.org/wiki/Autonomous_system_(Internet)) databases.
+Most datacenters publish their own IP ranges, such as AWS or Google Cloud. But often, those IP address ranges are not complete. For that reason, other means of lookup have to be used, such as [consulting whois data from Regional Internet Registries](https://en.wikipedia.org/wiki/WHOIS) or searching through [ASN databases](https://en.wikipedia.org/wiki/Autonomous_system_(Internet)).
 
-This API uses a proprietary datacenter/hosting discovery algortithm that uses:
+The API provides a proprietary datacenter/hosting discovery algorithm that makes use of:
 
 1. Self reported IP ranges from cloud providers
 2. Publicly accessible whois data from regional internet registries such as ARIN or APNIC
-3. Daily published AS and netmask information from backbone Internet routers
+3. Daily published AS information from backbone Internet routers
 
 ## Change Log
+
+#### 11th September 2022
+
++ Updated this API documentation page to reflect that the API is no longer only a datacenter IP address API, but a more generic and powerful IP API
 
 #### 21th August 2022
 
