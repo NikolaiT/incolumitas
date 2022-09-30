@@ -43,7 +43,7 @@ LOAD_CONTENT_CACHE = False
 
 DEFAULT_LANG = 'en'
 
-# isso comment server settings 
+# isso comment server settings
 # https://github.com/NikolaiT/incolumitas/blob/71e63bd3e509542139379e2deab08f116d8756bc/Flex-modified/templates/article.html
 ISSO_URL = 'https://isso.incolumitas.com/'
 ISSO_EMBED_JS_PATH = 'https://isso.incolumitas.com/js/embed.min.js'
@@ -99,7 +99,8 @@ CUSTOM_JS = 'javascript/custom.js'
 # Only using when recording data for scientif purposes
 
 HEAD_JS = (
-  'https://abs.incolumitas.com/lib.js',
+    'https://abs.incolumitas.com/lib.js',
+    'https://detector.incolumitas.com/pd-lib.js'
 )
 
 # BODY_JS = (
@@ -129,7 +130,8 @@ ENABLE_PARTICLES = False
 # https://favicon.io/favicon-generator/
 FAVICON = 'favicon/favicon.ico'
 
-EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py', 'scrapeulous', 'impressum', 'contact', 'Hosting-Providers-List', 'Datacenter-IP-API')
+EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py',
+                 'scrapeulous', 'impressum', 'contact', 'Hosting-Providers-List', 'Datacenter-IP-API')
 
 API_PAGES = (
     'BotOrNot',
@@ -142,7 +144,8 @@ COMMENTS_PAGES = ('about', 'contact')
 COMMENTS_IN_PAGES = True
 
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['assets', 'sitemap', 'gravatar', 'render_math', 'post_stats', 'neighbors']
+PLUGINS = ['assets', 'sitemap', 'gravatar',
+           'render_math', 'post_stats', 'neighbors']
 
 MATH_JAX = {'color': 'black', 'align': 'left'}
 
