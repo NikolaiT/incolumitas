@@ -6,13 +6,13 @@ Slug: IP-API
 Status: published
 Sortorder: 5
 
-This free IP Address API returns useful information for each queried IP address. The response information includes the organization of the IP address, to which ASN the IP address belongs and the geolocation for the IP address.
+This free IP Address API gives you useful meta-information for each queried IP address. The API response includes the organization of the IP address, to which ASN the IP address belongs and the geolocation for the IP address.
 
 Furthermore, the API response allows you to derive security information for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if an IP address is a proxy (`is_proxy`) or belongs to an abuser (`is_abuser`).
 
 But why would you use *this* API? Aren't there many other IP Address API's?
 
-This API strongly emphasises datacenter / hosting detection. A complicated hosting detection algorithm is used to achieve a high detection rate. Currently, more than [1566 global hosting providers]({filename}/pages/datacenters.md) are tracked.
+This API strongly emphasises **datacenter/hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. Currently, more than [1566 global hosting providers]({filename}/pages/datacenters.md) are tracked. Whois records, public hosting IP ranges from hosting providers themselves and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a datacenter or not.
 
 ## Live API
 
@@ -48,7 +48,7 @@ var el = document.getElementById('data');
 hljs.highlightBlock(el);
 
 function makeApiRequest(query) {
-  let url = query ? 'https://api.incolumitas.com/datacenter?ip=' + query : 'https://api.incolumitas.com/datacenter';
+  let url = query ? 'https://api.incolumitas.com/?q=' + query : 'https://api.incolumitas.com/';
 
   fetch(url)
   .then(response => response.json())
@@ -81,16 +81,37 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 })
 </script>
 
+## Quickstart
+
+Lookup any IP address: [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)
+
+Lookup your own IP address: [https://api.incolumitas.com/](https://api.incolumitas.com/)
+
+Usage with JavaScript: 
+
+```JavaScript
+fetch('https://api.incolumitas.com/?q=23.236.48.55')
+  .then(res => res.json())
+  .then(res => console.log(res));
+```
+
+Usage with Curl: 
+
+```bash
+curl 'https://api.incolumitas.com/?q=32.5.140.2'
+```
+
 ## Introduction
 
-The IP adddress API makes use of the following sources:
+The IP adddress API internally uses the following data-sources:
 
 1. Public whois records from regional Internet address registries such as RIPE NCC, APNIC, ARIN and so on
 2. Public BGP information (In order to find ASN information and their associated routes/prefixes)
 3. Public blocklists such as [firehol/blocklist-ipset](https://github.com/firehol/blocklist-ipsets)
 4. The API uses several proprietary datacenter/hosting detection algorithms
-5. The API uses IP threat data from public honeypots
-6. IP geolocation information (Geolocation is accurate to the country level)
+5. Awesome open source projects that try to find hosting IP addresses such as [github.com/client9/ipcat](https://github.com/client9/ipcat), [github.com/Umkus/ip-index](https://github.com/Umkus/ip-index) or [https://github.com/X4BNet/lists_vpn](github.com/X4BNet/lists_vpn) are used.
+6. The API uses IP threat data from various honeypots
+7. IP geolocation information from several different geolocation providers (Geolocation is accurate to the country level)
 
 | <!-- -->    | <!-- -->    |
 |-------------|-------------|
@@ -99,18 +120,18 @@ The IP adddress API makes use of the following sources:
 | **API Version**         | **v0.9.5 (30th September 2022)**         |
 | **API Endpoint**         | [**https://api.incolumitas.com/?q=3.5.140.2**](https://api.incolumitas.com/?q=3.5.140.2)         |
 | **Total Tracked Hosting Providers**         |    **[1566 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **578,607** IPv4 CIDR ranges (1,124,037,736 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **491,415** IPv6 CIDR ranges (1.3398119786246428e+33 Addresses in total)      |
+| **Num Hosting Ipv4 Addresses**         |    **578,607** IPv4 CIDR ranges (1,124,037,736 Addresses in total)      |
+| **Num Hosting Ipv6 Addresses**         |    **491,415** IPv6 CIDR ranges (1.3398119786246428e+33 Addresses in total)      |
 
 ## API Features
 
 + **Ready for Production**: This API can be used in production and is stable
 + **Many datacenters supported:** [Thousands of different hosting providers and counting]({filename}/pages/datacenters.md) - From Huawei Cloud Service to ServerMania Inc. Find out whether the IP address is hosted by looking at the `is_datacenter` property!
-+ **Always updated**: The API database is automatically several times per week. IP data is gathered from many sources:
-  + Self published IP ranges from large cloud providers
-  + Public whois data from regional internet registries (RIR's) such as RIPE NCC or APNIC
-  + Many other data sources such as public [BGP data](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
-  + Open Source IP blocklists
++ **Always updated**: The API database is automatically updated several times per week. IP data is gathered from many sources:
+    + Self published IP ranges from large cloud providers
+    + Public whois data from regional internet registries (RIR's) such as RIPE NCC or APNIC
+    + Many other data sources such as public [BGP data](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
+    + Open Source IP blocklists
 + **AS (Autonomous System) support**: The API provides autonomous system information for each looked-up IP address
 + **Company Support**: The API provides organisational information for each network of each looked up IP address
 + **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
@@ -119,7 +140,7 @@ The IP adddress API makes use of the following sources:
 
 Let's explain the API output format by walking through an example. Most of the returned information is self-explanatory.
 
-This is how a typical API response looks like:
+This is how a typical API response looks like (The IP `107.174.138.172` was looked up with the API call [**https://api.incolumitas.com/?q=107.174.138.172**](https://api.incolumitas.com/?q=107.174.138.172)):
 
 ```json
 {
@@ -168,9 +189,9 @@ This is how a typical API response looks like:
 
 Let's dive into the different parts of the API response. Take a deep breath and fasten your seatbelt :)
 
-### Response Format: Top Level API Information
+### Response Format: Top Level API Output
 
-Let's first look at the top level API information:
+Let's first look at the top level API output:
 
 ```json
 {
@@ -194,7 +215,7 @@ The explanation for those fields is as follows:
 + `is_tor` - `boolean` - is true if the IP address belongs to the TOR network. This is the case here!
 + `is_proxy` - `boolean` - whether the IP address is a proxy. This is not the case here.
 + `is_abuser` - `boolean` - is true if the IP address committed abusive actions, which unfortunately was the case with `107.174.138.172`
-+ `elapsed_ms` - `float` - how much internal processing time was spent in ms. This lookup only took `0.32ms`, which is quite fast :)
++ `elapsed_ms` - `float` - how much internal processing time was spent in ms. This lookup only took `0.32ms`, which is quite fast.
 
 ### Response Format: The `datacenter` object
 
@@ -212,6 +233,39 @@ If the IP address belongs to a datacenter/hosting provider, the API response wil
 
 Most IP's don't belong to a hosting provider. In those cases, the `datacenter` object will not be present.
 
+For a couple of large cloud providers, such as Google Cloud, Amazon AWS, DigitalOcean or Microsoft Azure (and some others), the `datacenter` object is much more detailed.
+
+Amazon AWS example:
+
+```json
+{
+  "ip": "3.5.140.2",
+  "datacenter": {
+    "cidr": "3.5.140.0/22",
+    "region": "ap-northeast-2",
+    "datacenter": "Amazon AWS",
+    "service": "EC2",
+    "network_border_group": "ap-northeast-2"
+  },
+}
+```
+
+DigitalOcean example:
+
+```json
+{
+  "ip": "167.99.241.135",
+  "datacenter": {
+    "cidr": "167.99.240.0/20",
+    "datacenter": "DigitalOcean",
+    "code": "60341",
+    "city": "Frankfurt",
+    "state": "DE-HE",
+    "country": "DE"
+  },
+}
+```
+
 ### Response Format: The `company` object
 
 ```json
@@ -222,7 +276,7 @@ Most IP's don't belong to a hosting provider. In those cases, the `datacenter` o
   },
 ```
 
-Most IP addresses can be associated with an organization or company. This API uses public whois database information to infer which organization is the owner of a certain IP address. Most API lookups will have an `company` object with the following attributes:
+Most IP addresses can be associated with an organization or company. This API uses whois database information to infer which organization is the owner of a certain IP address. Most API lookups will have an `company` object with the following attributes:
 
 + `name` - `string` - The name of the company
 + `domain` - `string` - The domain name of the company
@@ -287,7 +341,7 @@ The API provides geolocation information for the looked up IP address. The `loca
 + `ip2location_country` - `string` - The country for this IP address as provided by [ip2location.com](https://www.ip2location.com/database)
 + `ipip_country` - `string` - The country for this IP address as provided by [ipip.net](https://en.ipip.net/product/ip.html)
 
-Please understand that geolocation information can never be 100% accurate. However, country level accuracy is quite good.
+Please understand that geolocation information **can never be 100% accurate**. However, country level accuracy is quite good, since the API provides information from several different geolocation service providers.
 You can cross-check with the different `country` attributes from the different geolocation data providers. The more matching country attributes, the better the accuracy.
 
 ## API Endpoints
@@ -296,7 +350,7 @@ The IP API currently has two endpoints.
 
 ### GET - `/` - Lookup a single IP address or ASN
 
-This GET endpoint allows to lookup a single IPv4 or IPv6 IP address by specifying the query parameter `ip`. Example: `ip=142.250.186.110`. You can also lookup **ASN** numbers by specifying the query `ip=AS209103`.
+This GET endpoint allows to lookup a single IPv4 or IPv6 IP address by specifying the query parameter `q`. Example: `q=142.250.186.110`. You can also lookup **ASN** numbers by specifying the query `q=AS209103`.
 
 | <!-- -->         | <!-- -->                                           |
 |------------------|----------------------------------------------------|
