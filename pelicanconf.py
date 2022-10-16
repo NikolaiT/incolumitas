@@ -134,6 +134,7 @@ EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py',
                  'scrapeulous', 'impressum', 'contact', 'Hosting-Providers-List', 'Datacenter-IP-API')
 
 API_PAGES = (
+    'Adblock-Detection',
     'BotOrNot',
     'IP-API',
     'TCP-IP-Fingerprint',

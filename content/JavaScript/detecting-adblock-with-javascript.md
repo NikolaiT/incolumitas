@@ -20,10 +20,10 @@ In case this will stop working in the next days / weeks, I will make the selecti
 <script type="text/javascript">
 /**
  * Author: Nikolai Tschacher
- * Updated: 15.10.2022
+ * Updated: 16.10.2022
  * Website: https://incolumitas.com/
  *
- * Detect uBlock Origin, Adblock Plus and Ghostery with JavaScript only
+ * Detects uBlock Origin, Adblock Plus and AdBlocker Ultimate with JavaScript only.
  *
  * Usage: detectAdblock().then((res) => { console.log(res) });
  *
@@ -73,6 +73,7 @@ function detectAdblock() {
       resolve({
         uBlockOrigin: results[0],
         adblockPlus: results[1],
+        usingAdblock: (results[0] === true) || (results[1] === true),
       });
     }).catch((err) => {
       reject(err);
@@ -85,17 +86,17 @@ detectAdblock().then((res) => {
   var adblockEl = document.getElementById('adblock_plus');
 
   if (res.uBlockOrigin) {
-    ublockEl.innerHTML = 'You are using uBlock Origin! (' + res.uBlockOrigin + ')';
+    ublockEl.innerHTML = 'You are using uBlock Origin!';
   } else {
     ublockEl.style.backgroundColor = '#63ff85';
-    ublockEl.innerHTML = 'You are not using uBlock Origin (' + res.uBlockOrigin + ')';
+    ublockEl.innerHTML = 'You are not using uBlock Origin';
   }
 
   if (res.adblockPlus) {
-    adblockEl.innerHTML = 'You are using Adblock Plus! (' + res.adblockPlus + ')';
+    adblockEl.innerHTML = 'You are using Adblock Plus / AdBlocker Ultimate!';
   } else {
     adblockEl.style.backgroundColor = '#63ff85';
-    adblockEl.innerHTML = 'You are not using Adblock Plus (' + res.adblockPlus + ')';
+    adblockEl.innerHTML = 'You are not using Adblock Plus';
   }
 });
 </script>

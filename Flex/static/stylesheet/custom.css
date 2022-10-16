@@ -1,318 +1,314 @@
 main article :not(pre)>code {
-    display: inline-block;
-    white-space: normal !important;
-    max-width: 100%;
-    word-break: break-all;
-    word-wrap: break-word;
+  display: inline-block;
+  white-space: normal !important;
+  max-width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 
 nav li a {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 body {
-    background-color: #fdfdfd;
-    color: #515151;
-    font: 400 16px/1.2 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    -moz-font-feature-settings: "kern" 1;
-    -o-font-feature-settings: "kern" 1;
-    -webkit-font-feature-settings: "kern" 1;
-    font-feature-settings: "kern" 1;
-    font-kerning: normal;
-    -webkit-text-size-adjust: 100%;
+  background-color: #fdfdfd;
+  color: #515151;
+  font: 400 16px/1.2 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -moz-font-feature-settings: "kern" 1;
+  -o-font-feature-settings: "kern" 1;
+  -webkit-font-feature-settings: "kern" 1;
+  font-feature-settings: "kern" 1;
+  font-kerning: normal;
+  -webkit-text-size-adjust: 100%;
 }
 
 main article {
-    margin: 0 5% 2%;
+  margin: 0 5% 2%;
 }
 
 p {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 time {
-    color: #505050;
-    font-weight: bold;
+  color: #505050;
+  font-weight: bold;
 }
 
 .tag-cloud p {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .post-content strong,
 .single strong {
-    font-weight: 650;
+  font-weight: 650;
 }
 
 .post-content p,
 .single p {
-    line-height: 1.4;
+  line-height: 1.4;
 }
 
 .post-content li,
 .single li {
-    line-height: 1.4;
+  line-height: 1.4;
 }
 
 .post-content>h1:first-child,
 .post-content>h2:first-child,
 .post-content>h3:first-child,
 .post-content>h4:first-child {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .post-content h1,
 .single h1 {
-    font-size: 210%;
-    font-weight: 550;
+  font-size: 210%;
+  font-weight: 550;
 }
 
 .post-content h2,
 .single h2 {
-    margin-top: 1.75em;
-    font-size: 170%;
-    font-weight: 550;
+  margin-top: 1.75em;
+  font-size: 170%;
+  font-weight: 550;
 }
 
 .post-content h3,
 .single h3 {
-    margin-top: 1.75em;
-    font-size: 147%;
-    font-weight: 550;
+  margin-top: 1.75em;
+  font-size: 147%;
+  font-weight: 550;
 }
 
 .post-content h4,
 .single h4 {
-    margin-top: 1.49em;
-    font-size: 130%;
-    font-weight: 550;
+  margin-top: 1.49em;
+  font-size: 130%;
+  font-weight: 550;
 }
 
 figure {
-    margin-bottom: 30px;
-    margin-top: 30px;
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .highlight {
-    font-size: 90%;
+  font-size: 90%;
 }
 
 .post-content {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .post-header {
-    margin-bottom: 36px;
+  margin-bottom: 36px;
 }
 
 header h2.articles-header {
-    font-size: 1.7em;
+  font-size: 1.7em;
 }
 
 header h2.articles-header a {
-    font-weight: 550;
-    color: #464646;
+  font-weight: 550;
+  color: #464646;
 }
 
 .post-header .fa {
-    width: 14.85px;
+  width: 14.85px;
 }
 
 .post-content img:hover,
 .post-content figure:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 figure figcaption {
-    color: rgb(94, 94, 94);
-    font-style: italic;
+  color: rgb(94, 94, 94);
+  font-style: italic;
 }
 
 .post-title {
-    font-size: 46px;
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    letter-spacing: -1px;
-    line-height: 1;
-    margin-bottom: 1rem;
+  font-size: 46px;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 1rem;
 }
 
 .post-title-index {
-    font-size: 32px;
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    letter-spacing: -1px;
-    line-height: 1;
-    margin-bottom: 1rem;
+  font-size: 32px;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 1rem;
 }
 
 .blog-title {
-    font-weight: 600;
-    font-size: 28px;
-    line-height: 1;
-    margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 2rem;
 }
 
 aside {
-    background: url(/theme/img/bg.webp) repeat #0a0d0f;
+  background: url(/theme/img/bg.webp) repeat #0a0d0f;
 }
 
 aside nav a:hover {
-    color: #d9411e;
-    text-decoration: none;
+  color: #d9411e;
+  text-decoration: none;
 }
 
 .post-title-index a {
-    color: black;
+  color: black;
 }
 
 aside nav ul li {
-    line-height: 1.6em;
-    font-size: 1.0em;
-    text-transform: lowercase;
+  line-height: 1.6em;
+  font-size: 1.0em;
+  text-transform: lowercase;
 }
 
 aside div p {
-    font-size: .8em;
+  font-size: .8em;
 }
 
 .metadata-description {
-    margin-left: .4rem;
-    color: #909090;
+  margin-left: .4rem;
+  color: #909090;
 }
 
 .meta-item {
-    margin-bottom: .2rem;
+  margin-bottom: .2rem;
 }
 
 .archive dd {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* Dont show particles with mobile devices */
 #particles-js {
-    height: 0;
-    width: 0;
+  height: 0;
+  width: 0;
 }
 
 .post-meta .fa {
-    width: 14.85px;
+  width: 14.85px;
 }
 
 main article blockquote {
-    font-size: 1.0em;
+  font-size: 1.0em;
 }
 
 
 /* Handle a bit larger desktop devices */
 @media screen and (min-width: 900px) {
-    main article {
-        margin-right: 14% !important;
-    }
+  main article {
+    margin-right: 14% !important;
+  }
 }
 
 
 /* Handle tablet and larger devices */
 @media screen and (min-width: 768px) {
-    #particles-js {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        overflow: hidden;
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
+  #particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-    aside {
-        width: 26vw;
-        overflow: hidden;
-    }
+  aside {
+    width: 26vw;
+    overflow: hidden;
+  }
 
-    main {
-        left: 26vw;
-        overflow-x: visible;
-        width: 73vw;
-    }
+  main {
+    left: 26vw;
+    overflow-x: visible;
+    width: 73vw;
+  }
 
-    main article {
-        margin-top: 2%;
-        margin-right: 6%;
-        margin-bottom: 2%;
-        margin-left: 4%;
-    }
+  main article {
+    margin-top: 2%;
+    margin-right: 6%;
+    margin-bottom: 2%;
+    margin-left: 4%;
+  }
 
-    .smallimg {
-        width: 36%;
-    }
+  .smallimg {
+    width: 36%;
+  }
 }
 
 .embed-youtube {
-    position: relative;
-    padding-bottom: 56.25%;
-    /* - 16:9 aspect ratio (most common) */
-    /* padding-bottom: 62.5%; - 16:10 aspect ratio */
-    /* padding-bottom: 75%; - 4:3 aspect ratio */
-    padding-top: 30px;
-    height: 0;
-    overflow: hidden;
+  position: relative;
+  padding-bottom: 56.25%;
+  /* - 16:9 aspect ratio (most common) */
+  /* padding-bottom: 62.5%; - 16:10 aspect ratio */
+  /* padding-bottom: 75%; - 4:3 aspect ratio */
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
 }
 
 .embed-youtube iframe,
 .embed-youtube object,
 .embed-youtube embed {
-    border: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  border: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .orange_button {
-    padding: 10px;
-    background-color: #d9411e;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border: none;
-    border-radius: 0.29em;
+  padding: 10px;
+  background-color: #d9411e;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border: none;
+  border-radius: 0.29em;
 }
 
 .orange_button:hover {
-    background-color: #c1391a;
-    color: #fff;
+  background-color: #c1391a;
+  color: #fff;
 }
 
 main article blockquote,
 main article pre {
-    background-color: hsla(0, 0%, 50%, .065);
-    border-left-color: hsla(0, 0%, 50%, 0.155);
+  background-color: hsla(0, 0%, 50%, .065);
+  border-left-color: hsla(0, 0%, 50%, 0.155);
 }
 
 aside div p {
-    line-height: 135%;
+  line-height: 135%;
 }
 
 @media only screen and (min-width: 1025px) {
-    aside div p {
-        margin: 0 40px 15px;
-    }
+  aside div p {
+    margin: 0 40px 15px;
+  }
 }
 
 #wrapper {
-    padding: 0;
-    background-color: #fff;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-left-width: 0;
-}
-
-nav ul.list li:nth-child(3) {
-    margin-bottom: 28px;
+  padding: 0;
+  background-color: #fff;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 0;
 }
 
 nav ul.list {
-    padding: 0 !important;
+  padding: 0 !important;
 }
