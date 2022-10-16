@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2022-09-30 22:00
+Modified: 2022-10-07 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -12,7 +12,7 @@ Furthermore, the API response allows you to derive security information for each
 
 But why would you use *this* API? Aren't there many other IP Address API's?
 
-This API strongly emphasises **datacenter/hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. Currently, more than [1566 global hosting providers]({filename}/pages/datacenters.md) are tracked. Whois records, public hosting IP ranges from hosting providers themselves and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a datacenter or not.
+This API strongly emphasises **datacenter/hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. Currently, more than [1566 global hosting providers](https://incolumitas.com/pages/Hosting-Providers-List/) are tracked. Whois records, public hosting IP ranges from hosting providers themselves and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a datacenter or not.
 
 ## Live API
 
@@ -87,7 +87,7 @@ Lookup any IP address: [https://api.incolumitas.com/?q=3.5.140.2](https://api.in
 
 Lookup your own IP address: [https://api.incolumitas.com/](https://api.incolumitas.com/)
 
-Usage with JavaScript: 
+Usage with JavaScript:
 
 ```JavaScript
 fetch('https://api.incolumitas.com/?q=23.236.48.55')
@@ -95,7 +95,7 @@ fetch('https://api.incolumitas.com/?q=23.236.48.55')
   .then(res => console.log(res));
 ```
 
-Usage with Curl: 
+Usage with Curl:
 
 ```bash
 curl 'https://api.incolumitas.com/?q=32.5.140.2'
@@ -118,20 +118,20 @@ The IP adddress API internally uses the following data-sources:
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **API Access**         | Free & unlimited (fair use)         |
 | **API Version**         | **v0.9.5 (30th September 2022)**         |
-| **API Endpoint**         | [**https://api.incolumitas.com/?q=3.5.140.2**](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[1566 hosting providers]({filename}/pages/datacenters.md)**      |
+| **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
+| **Total Tracked Hosting Providers**         |    [1566 hosting providers](https://incolumitas.com/pages/Hosting-Providers-List/)      |
 | **Num Hosting Ipv4 Addresses**         |    **578,607** IPv4 CIDR ranges (1,124,037,736 Addresses in total)      |
 | **Num Hosting Ipv6 Addresses**         |    **491,415** IPv6 CIDR ranges (1.3398119786246428e+33 Addresses in total)      |
 
 ## API Features
 
 + **Ready for Production**: This API can be used in production and is stable
-+ **Many datacenters supported:** [Thousands of different hosting providers and counting]({filename}/pages/datacenters.md) - From Huawei Cloud Service to ServerMania Inc. Find out whether the IP address is hosted by looking at the `is_datacenter` property!
++ **Many datacenters supported:** [Thousands of different hosting providers and counting](https://incolumitas.com/pages/Hosting-Providers-List/) - From Huawei Cloud Service to ServerMania Inc. Find out whether the IP address is hosted by looking at the `is_datacenter` property!
 + **Always updated**: The API database is automatically updated several times per week. IP data is gathered from many sources:
-    + Self published IP ranges from large cloud providers
-    + Public whois data from regional internet registries (RIR's) such as RIPE NCC or APNIC
-    + Many other data sources such as public [BGP data](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
-    + Open Source IP blocklists
+  + Self published IP ranges from large cloud providers
+  + Public whois data from regional internet registries (RIR's) such as RIPE NCC or APNIC
+  + Many other data sources such as public [BGP data](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
+  + Open Source IP blocklists
 + **AS (Autonomous System) support**: The API provides autonomous system information for each looked-up IP address
 + **Company Support**: The API provides organisational information for each network of each looked up IP address
 + **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
@@ -140,7 +140,7 @@ The IP adddress API internally uses the following data-sources:
 
 Let's explain the API output format by walking through an example. Most of the returned information is self-explanatory.
 
-This is how a typical API response looks like (The IP `107.174.138.172` was looked up with the API call [**https://api.incolumitas.com/?q=107.174.138.172**](https://api.incolumitas.com/?q=107.174.138.172)):
+This is how a typical API response looks like (The IP `107.174.138.172` was looked up with the API call [https://api.incolumitas.com/?q=107.174.138.172](https://api.incolumitas.com/?q=107.174.138.172)):
 
 ```json
 {
