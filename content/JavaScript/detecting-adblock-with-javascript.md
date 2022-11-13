@@ -1,13 +1,13 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
-Modified: 2022-10-15 22:31
+Modified: 2022-10-23 22:31
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
 Author: Nikolai Tschacher
 Summary: There are many resources in the Internet that show how to detect uBlock Origin and Adblock Plus. However, after some research, it became clear that most detection methods are unreliable and cease to exist after a while. In this blog article, a reliable detection method for uBlock Origin and Adblock Plus is demonstrated. No external libraries. Just plain and simple JavaScript.
 
-**Edit (15th October 2022):**
+**Edit (23th October 2022):**
 
 + [For the code, visit the GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only)
 + Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`
@@ -20,7 +20,7 @@ In case this will stop working in the next days / weeks, I will make the selecti
 <script type="text/javascript">
 /**
  * Author: Nikolai Tschacher
- * Updated: 16.10.2022
+ * Updated: 6th November 2022
  * Website: https://incolumitas.com/
  *
  * Detects uBlock Origin, Adblock Plus and AdBlocker Ultimate with JavaScript only.
@@ -32,12 +32,12 @@ function detectAdblock() {
   const adblockTests = {
     // https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt
     uBlockOrigin: {
-      url: 'https://incolumitas.com/data/pp34.js?sv=',
+      url: 'https://incolumitas.com/data/yzfdmoan.js',
       id: '837jlaBksSjd9jh',
     },
     // https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt
     adblockPlus: {
-      url: 'https://incolumitas.com/data/neutral.js?&adserver=',
+      url: 'https://incolumitas.com/data/utep_ad.js',
       id: 'hfuBadsf3hFAk',
     },
   };
@@ -122,10 +122,10 @@ This is the **newest** detection code:
 ```js
 /**
  * Author: Nikolai Tschacher
- * Updated: 15.10.2022
+ * Updated: 6th November 2022
  * Website: https://incolumitas.com/
  * 
- * Detect uBlock Origin, Adblock Plus and Ghostery with JavaScript only
+ * Detects uBlock Origin, Adblock Plus and AdBlocker Ultimate with JavaScript only.
  * 
  * Usage: detectAdblock().then((res) => { console.log(res) });
  * 
@@ -134,12 +134,12 @@ function detectAdblock() {
   const adblockTests = {
     // https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt
     uBlockOrigin: {
-      url: 'https://incolumitas.com/data/pp34.js?sv=',
+      url: 'https://incolumitas.com/data/yzfdmoan.js',
       id: '837jlaBksSjd9jh',
     },
     // https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt
     adblockPlus: {
-      url: 'https://incolumitas.com/data/neutral.js?&adserver=',
+      url: 'https://incolumitas.com/data/utep_ad.js',
       id: 'hfuBadsf3hFAk',
     },
   };
@@ -175,6 +175,7 @@ function detectAdblock() {
       resolve({
         uBlockOrigin: results[0],
         adblockPlus: results[1],
+        usingAdblock: (results[0] === true) || (results[1] === true),
       });
     }).catch((err) => {
       reject(err);

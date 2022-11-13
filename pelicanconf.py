@@ -99,7 +99,7 @@ CUSTOM_JS = 'javascript/custom.js'
 # Only using when recording data for scientif purposes
 
 HEAD_JS = (
-    'https://abs.incolumitas.com/lib.js',
+    # 'https://abs.incolumitas.com/lib.js',
     # 'https://detector.incolumitas.com/pd-lib.js'
 )
 
