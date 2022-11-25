@@ -1,13 +1,21 @@
 Title: Detecting uBlock Origin and Adblock Plus with JavaScript only
 Date: 2020-12-27 20:47
-Modified: 2022-10-23 22:31
+Modified: 2022-11-25 22:31
 Category: JavaScript
 Tags: Adblock Plus, uBlock Origin, Adblock Detection, JavaScript
 Slug: detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only
 Author: Nikolai Tschacher
 Summary: There are many resources in the Internet that show how to detect uBlock Origin and Adblock Plus. However, after some research, it became clear that most detection methods are unreliable and cease to exist after a while. In this blog article, a reliable detection method for uBlock Origin and Adblock Plus is demonstrated. No external libraries. Just plain and simple JavaScript.
 
-**Edit (23th October 2022):**
+**Edit (25th November 2022):**
+
+[My blog got listed on EasyList](https://github.com/easylist/easylist/issues/14102)
+
+Therefore, I had to remove all AdBlock baiting JavaScripts from this blog, in order to get unlisted.
+
+I am sorry I can not longer offer AdBlock detection here. I still think that it is valid for publishers to know whether clients are blocking ads. Publishing content is hard work and should be rewarded in some form. Intrusive ads are annoying, I get why clients are blocking them. But there is some middle ground I guess.
+
+---
 
 + [For the code, visit the GitHub page of this article](https://github.com/NikolaiT/adblock-detect-javascript-only)
 + Alternatively, install the Adblock detection script [from npm](https://www.npmjs.com/package/adblock-detect-javascript-only) with the command `npm i adblock-detect-javascript-only`

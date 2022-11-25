@@ -2,7 +2,7 @@ Title: Adblock Detection
 Date: 2022-10-16 22:00
 Author: Nikolai Tschacher
 Slug: Adblock-Detection
-Status: published
+Status: draft
 Sortorder: 10
 
 Two years ago, I wrote a blog article about [Adblock Detection using JavaScript only](https://incolumitas.com/2020/12/27/detecting-uBlock-Origin-and-Adblock-Plus-with-JavaScript-only/). Since then, I maintain a NodeJS library to **detect Adblock Plus and uBlock Origin**. If you want to use the Adblock Detection Library on your own website, you can learn how to include it by visiting the project pages:
