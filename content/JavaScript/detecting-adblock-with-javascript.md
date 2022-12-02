@@ -11,7 +11,7 @@ Summary: There are many resources in the Internet that show how to detect uBlock
 
 [My blog got listed on EasyList](https://github.com/easylist/easylist/issues/14102)
 
-Therefore, I had to remove all AdBlock baiting JavaScripts from this blog, in order to get unlisted.
+Therefore, I had to remove all AdBlock baiting JavaScripts from this blog. This means that the AdBlock Detection on this blog **no longer works**.
 
 I am sorry I can not longer offer AdBlock detection here. I still think that it is valid for publishers to know whether clients are blocking ads. Publishing content is hard work and should be rewarded in some form. Intrusive ads are annoying, I get why clients are blocking them. But there is some middle ground I guess.
 

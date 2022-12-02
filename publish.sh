@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PRIV_KEY=~/.ssh/root_new_server
-pelican -s publishconf.py
+# pelican -s publishconf.py
 
 # function deploy_isso () {
 #     scp -i $PRIV_KEY /home/nikolai/projects/work/backups/var/lib/isso/comments.db root@167.99.241.135:/var/lib/isso/comments.db;
@@ -19,6 +19,6 @@ echo "Upload blog contents"
 rsync -avc --delete -e "ssh -i $PRIV_KEY" output/ root@167.99.241.135:/var/www/incolumitas.com/
 ssh -i $PRIV_KEY root@167.99.241.135 "chown -R www-data:www-data /var/www/incolumitas.com/"
 
-echo "Restart server and isso"
-ssh -i $PRIV_KEY root@167.99.241.135 "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
-ssh -i $PRIV_KEY root@167.99.241.135 "/var/lib/isso/env/bin/isso --version"
+# echo "Restart server and isso"
+# ssh -i $PRIV_KEY root@167.99.241.135 "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
+# ssh -i $PRIV_KEY root@167.99.241.135 "/var/lib/isso/env/bin/isso --version"
