@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2022-12-02 22:00
+Modified: 2023-01-06 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -10,11 +10,11 @@ Sortorder: 5
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.9.7 (2nd December 2022)**         |
+| **API Version**         | **v0.9.9 (15th December 2022)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[13914 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **201,013** IPv4 CIDR ranges (583,028,945 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **29,290** IPv6 CIDR ranges (NaN Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[13888 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **241,899** IPv4 CIDR ranges (595,813,740 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **380,950** IPv6 CIDR ranges (2.2991877459804936e+33 Addresses in total)      |
 
 ## Live API
 
@@ -88,6 +88,8 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 1. [Quickstart](#quickstart)
 2. [Introduction](#introduction)
 3. [API Features](#api-features)
+    - [ASN Database](#asn-database)
+    - [Hosting IP Ranges Database](#hosting-ip-ranges-database)
 4. [API Response Format](#api-response-format)
     - [Top Level API Output](#response-format-top-level-api-output)
     - [The `datacenter` object](#response-format-the-datacenter-object)
@@ -149,6 +151,97 @@ The IP adddress API makes use of the following data sources:
 - **Company Support**: The API provides organisational information for each network of each looked up IP address
 - **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
 
+### ASN Database
+
+For offline ASN data access, the [**ASN Database**](https://ipapi.is/asn.html) is provided. The ASN database includes all assigned and allocated AS numbers by IANA and respective meta information. The database is updated several times per week. For active ASN's (at least one route/prefix assigned to the AS), the database includes rich meta information. For example, the provided information for the ASN `50673` would be:
+
+```JavaScript
+"50673": {
+  "asn": "50673",
+  "org": "Serverius Holding B.V.",
+  "domain": "serverius.net",
+  "abuse": "abuse@serverius.net",
+  "type": "hosting",
+  "created": "2010-09-07",
+  "updated": "2022-11-15",
+  "rir": "ripe",
+  "descr": "SERVERIUS-AS, NL",
+  "country": "NL",
+  "active": true,
+  "prefixes": [
+    "2.59.183.0/24",
+    "5.56.133.0/24",
+    // many more IPv4 prefixes ...
+  ],
+  "prefixesIPv6": [
+    "2001:67c:b0::/48",
+    "2a00:1ca8::/32",
+    // many more IPv6 prefixes ...
+  ]
+},
+```
+
+The database is in JSON format. The key is the ASN as `int` and the value is an object with AS meta information such as the one above.
+
+[Click here to download the ASN Database](https://github.com/NikolaiT/IP-Address-API)
+
+**How to download & parse the database?**
+
+Download and unzip the ASN database:
+
+```bash
+cd /tmp
+curl -O https://raw.githubusercontent.com/NikolaiT/IP-Address-API/main/databases/fullASN.json.zip
+unzip fullASN.json.zip
+```
+
+And parse with nodejs:
+
+```JavaScript
+let asnDatabase = require('./fullASN.json');
+for (let asn in asnDatabase) {
+  console.log(asn, asnDatabase[asn]);
+}
+```
+
+### Hosting IP Ranges Database
+
+Furthermore, the **Hosting IP ranges Database** is provided for offline and scalable access. This database contains all known datacenter IP ranges in the Internet. A proprietary algorithm was developed to determine if a network belongs to a hosting provider.
+
+The file format of the database is tab separated text file (.tsv), where each line of the file contains the `company`, `network` and `domain` of the hosting provider.
+
+Example excerpt of the database:
+
+```text
+Linode, LLC 178.79.160.0 - 178.79.167.255 www.linode.com
+OVH Sp. z o. o. 178.32.191.0 - 178.32.191.127 www.ovh.com
+myLoc managed IT AG 46.245.176.0 - 46.245.183.255 www.myloc.de
+```
+
+[Click here to download the Hosting IP Ranges Database](https://github.com/NikolaiT/IP-Address-API)
+
+**How to download & parse the database?**
+
+Download and unzip the Hosting Ranges database:
+
+```bash
+cd /tmp
+curl -O https://raw.githubusercontent.com/NikolaiT/IP-Address-API/main/databases/hostingRanges.tsv.zip
+unzip hostingRanges.tsv.zip
+```
+
+And parse with nodejs:
+
+```JavaScript
+const fs = require('fs');
+
+let hostingRanges = fs.readFileSync('hostingRanges.tsv').toString().split('\n');
+for (let line of hostingRanges) {
+  let [company, network, domain] = line.split('\t');
+  console.log(company, network, domain);
+}
+```
+
 ## API Response Format
 
 The API output format is explaind by walking through an example. Most of the returned information is self-explanatory.
@@ -163,6 +256,7 @@ This is how a typical API response looks like. The IP `107.174.138.172` was quer
   "is_datacenter": true,
   "is_tor": true,
   "is_proxy": false,
+  "is_vpn": false,
   "is_abuser": true,
   "company": {
     "name": "ColoCrossing",
@@ -198,10 +292,10 @@ This is how a typical API response looks like. The IP `107.174.138.172` was quer
     "longitude": "-78.878800",
     "zip": "14202",
     "timezone": "-05:00",
-    "local_time": "2022-12-02 08:18:42.906-0500",
-    "local_time_unix": 1669969122.906
+    "local_time": "2022-12-20 07:31:16.256-0500",
+    "local_time_unix": 1671521476.256
   },
-  "elapsed_ms": 2.24
+  "elapsed_ms": 2.4
 }
 ```
 
@@ -219,21 +313,23 @@ The top level API output looks as follows:
   "is_datacenter": true,
   "is_tor": true,
   "is_proxy": false,
+  "is_vpn": false,
   "is_abuser": true,
-  "elapsed_ms": 2.24
+  "elapsed_ms": 2.4
 }
 ```
 
-The explanation for those fields is as follows:
+The explanation for the top level API fields is as follows:
 
 - `ip` - `string` - the IP address that was looked up, here it was `107.174.138.172`
 - `rir` - `string` - to which [Regional Internet Registry](https://en.wikipedia.org/wiki/Regional_Internet_registry) the IP address belongs. Here it belongs to `ARIN`, which is the RIR responsible for North America
-- `is_bogon` - `boolean` - Whether the IP address is bogon. For example, the loopback IP `127.0.0.1` is a special/bogon IP address. The IP address `107.174.138.172` is not bogon, hence it is set to `false` here.
-- `is_datacenter` - `boolean` - whether the IP address belongs to a datacenter. Here, we have the value `true`, since `107.174.138.172` belongs to the datacenter provider `ColoCrossing`.
-- `is_tor` - `boolean` - is true if the IP address belongs to the TOR network. This is the case here.
-- `is_proxy` - `boolean` - whether the IP address is a proxy. This is not the case here.
-- `is_abuser` - `boolean` - is true if the IP address committed abusive actions, which was the case with `107.174.138.172`
-- `elapsed_ms` - `float` - how much internal processing time was spent in ms. This lookup only took `2.24ms`, which is quite fast.
+- `is_bogon` - `boolean` - Whether the IP address is bogon. [Bogon IP Addresses](https://en.wikipedia.org/wiki/Bogon_filtering) is the set of IP Addresses not assigned/allocated to IANA and any RIR (Regional Internet Resgistry). For example, the loopback IP `127.0.0.1` is a special/bogon IP address. The IP address `107.174.138.172` is not bogon, hence it is set to `false` here.
+- `is_datacenter` - `boolean` - whether the IP address belongs to a datacenter. Here, we have the value `true`, since `107.174.138.172` belongs to the hosting provider `ColoCrossing`.
+- `is_tor` - `boolean` - is true if the IP address belongs to the TOR network. This is the case here. Tor detection is accurate, so you can rely on the value of `is_tor`. The API detects most TOR exit nodes reliably.
+- `is_proxy` - `boolean` - whether the IP address is a proxy. This is not the case here. In general, the flag `is_proxy` only covers a subset of all proxies in the Internet.
+- `is_vpn` - `boolean` - whether the IP address is a VPN. This is not the case with the IP `107.174.138.172`. In general, the flag `is_vpn` only covers a subset of all VPN's in the Internet. It is not possible to detect all VPN exit nodes passively.
+- `is_abuser` - `boolean` - is true if the IP address committed abusive actions, which was the case with `107.174.138.172`. Various IP blocklists and threat intelligence feeds are used to populate the `is_abuser` flag.
+- `elapsed_ms` - `float` - how much internal processing time was spent in milliseconds (ms). This lookup only took `2.4ms`, which is quite fast.
 
 ### Response Format: The `datacenter` object
 
@@ -251,37 +347,52 @@ If the IP address belongs to a datacenter/hosting provider, the API response wil
 - `domain` - `string` - The domain name of the company
 - `network` - `string` - the network this IP address belongs to (In the above case: `107.172.0.0 - 107.175.255.255`)
 
-Most IP's don't belong to a hosting provider. In those cases, the `datacenter` object will not be present.
+Most IP's don't belong to a hosting provider. In those cases, the `datacenter` object will not be present in the API output.
 
 For a couple of large cloud providers, such as Google Cloud, Amazon AWS, DigitalOcean or Microsoft Azure (and some others), the `datacenter` object is more detailed.
 
-Amazon AWS example:
+[Amazon AWS](https://aws.amazon.com/) example:
 
 ```json
 {
   "ip": "3.5.140.2",
   "datacenter": {
-    "cidr": "3.5.140.0/22",
-    "region": "ap-northeast-2",
     "datacenter": "Amazon AWS",
+    "network": "3.5.140.0/22",
+    "region": "ap-northeast-2",
     "service": "EC2",
     "network_border_group": "ap-northeast-2"
-  },
+  }
 }
 ```
 
-DigitalOcean example:
+[DigitalOcean](https://www.digitalocean.com/) example:
 
 ```json
 {
-  "ip": "167.99.241.135",
+  "ip": "167.99.241.130",
   "datacenter": {
-    "cidr": "167.99.240.0/20",
     "datacenter": "DigitalOcean",
     "code": "60341",
     "city": "Frankfurt",
     "state": "DE-HE",
-    "country": "DE"
+    "country": "DE",
+    "network": "167.99.240.0/20"
+  },
+}
+```
+
+[`Linode`](https://www.linode.com/) example:
+
+```json
+{
+  "ip": "72.14.182.54",
+  "datacenter": {
+    "datacenter": "Linode",
+    "name": "US-TX",
+    "city": "Richardson",
+    "country": "US",
+    "network": "72.14.182.0/24"
   },
 }
 ```
@@ -413,6 +524,14 @@ curl --header "Content-Type: application/json" \
 
 
 ## Change Log
+
+#### 11th December 2022
+
++ Now serving daily 1M requests
++ Introduced the `is_vpn` flag (Mostly using [github.com/X4BNet/lists_vpn](https://github.com/X4BNet/lists_vpn) as data source)
++ Added self published cloud IP ranges from `Alibaba Cloud`, `SAP Cloud`, `Servicenow Cloud`
++ Upgraded to more powerful server (16GB RAM, 4vCPU)
++ **TODO:** Run Node.js HTTP Express.js Server on Multiple CPU Cores in order to deal with high load
 
 #### 2nd December 2022
 

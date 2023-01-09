@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PRIV_KEY=~/.ssh/root_new_server
-# pelican -s publishconf.py
+pelican -s publishconf.py
 
 # function deploy_isso () {
 #     scp -i $PRIV_KEY /home/nikolai/projects/work/backups/var/lib/isso/comments.db root@167.99.241.135:/var/lib/isso/comments.db;
