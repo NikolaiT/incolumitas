@@ -3,7 +3,7 @@ Date: 2022-02-17 20:30
 Modified: 2022-08-04 14:00
 Author: Nikolai Tschacher
 Slug: TLS-Fingerprint
-Status: published
+Status: draft
 Sortorder: 8
 
 | <!-- -->         | <!-- -->                                      |
@@ -13,7 +13,6 @@ Sortorder: 8
 | **Version Date** | 6th June 2022                            |
 | **API Access**   | Free                                          |
 | **Download**     | Closed Source (Upon request only)             |
-
 
 ## TLS Fingerprint API Demo
 
@@ -37,7 +36,7 @@ fetch('https://tls.incolumitas.com/fps')
   })
 </script>
 
-Your User-Agent (`navigator.userAgent`) says that you are 
+Your User-Agent (`navigator.userAgent`) says that you are
 
 <pre style="overflow: auto;" id="userAgent">
 </pre>
@@ -46,12 +45,11 @@ Your User-Agent (`navigator.userAgent`) says that you are
 document.getElementById('userAgent').innerText = navigator.userAgent;
 </script>
 
-
 ## TLS Fingerprint API
 
 The TLS fingerprinting API allows you to get your [TLS fingerprint](https://tls.incolumitas.com/fps). It can be used for various purposes such as:
 
-1. Networking traffic analyisis 
+1. Networking traffic analyisis
 2. Malware detection
 3. Bot detection
 
@@ -61,10 +59,9 @@ The `/fps` endpoint returns the most recent TLS fingerprint from the requesting 
 
 | Endpoint         | Description                                      |
 |------------------|-----------------------------------------------|
-|  <a href="https://tls.incolumitas.com/fps">tls.incolumitas.com/fps</a>          | This endpoint returns the most recent TLS fingerprint for the requesting client. | 
+|  <a href="https://tls.incolumitas.com/fps">tls.incolumitas.com/fps</a>          | This endpoint returns the most recent TLS fingerprint for the requesting client. |
 | <a href="https://tls.incolumitas.com/fps?detail=1">tls.incolumitas.com/fps?detail=1</a> | Request a detailed/verbose version of the TLS fingerprint for the current connection.                                                                                                                                                                                   |
 | <a href="https://tls.incolumitas.com/fps?all=1"> tls.incolumitas.com/fps?all=1 </a>    | Request all TLS fingerprints for this client that exist in server memory (The server is restarted periodically).   All the fingerprints that match the client's IP address will be returned.                                                                            |
-
 
 #### Example for endpoint `/fps`
 
@@ -94,7 +91,6 @@ returns the following JSON response from the API:
 }
 ```
 
-
 ## Endpoint `/stats`
 
 The `/stats` endpoint returns statistics over all stored TLS connections on the server side. Due to performance reasons, only the most recent 50MB of TLS data are considered in `/stats` lookups. Thus, the database is of reduced accuracy and statistical significance.
@@ -103,7 +99,6 @@ The `/stats` endpoint returns statistics over all stored TLS connections on the 
 |------------------|-----------------------------------------------|
 | <a href="https://tls.incolumitas.com/stats">tls.incolumitas.com/stats</a>        | Lists all TLS statistics.                                                                                                                                                                                                                                               |
 | <a href="https://tls.incolumitas.com/stats?bo=1">tls.incolumitas.com/stats?bo=1</a>   | Get statistics only for TLS fingerprints with associated User-Agents                                                                                                                                                                                                    |
-
 
 # Introduction
 
@@ -115,7 +110,6 @@ Such a TLS fingerprint may be used to identify devices / TLS protocol implementa
 2. How unique is the TLS fingerprint among all clients?
 3. Based on past observations and collected TLS client data, is this fingerprint a legit one?
 4. To which TLS implementation does this fingerprint belong?
-
 
 # TLS Fingerprint Definition
 
@@ -173,7 +167,6 @@ As it can be observed, the first element of `ciphers`, `extensions` and `support
 
 **Solution:** Only non-Reserved and non-Unassigned values for `ciphers`, `extensions` and `supported_groups` in the TLS fingerprint will be considered.
 
-
 # Recommended Reading List
 
 So you want to start fingerprinting TLS connections? It's plenty of fun. The following reading list is highly recommended:
@@ -183,9 +176,8 @@ So you want to start fingerprinting TLS connections? It's plenty of fun. The fol
 2. A rather new paper by researchers from the Technical University of Munich named [TLS Fingerprinting Techniques](https://www.net.in.tum.de/fileadmin/TUM/NET/NET-2020-04-1/NET-2020-04-1_04.pdf) is also a highly suggested read about TLS fingerprinting.
 3. Another great read is a blog article named [TLS Fingerprinting with JA3 and JA3S from Salesforce](https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967) which explains in-depth how Salesforce's JA3 and JA3S TLS fingerprinting works. The code for [JA3 and JA3S is open sourced](https://github.com/salesforce/ja3).
 
-
 # TODO
 
-- Add tool support for TLS 1.3
-- Setup nginx to use TLS 1.3 on the server side
-- Think about including the server response in the fingerprint as [JA3S](https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967) does it: *After some time we found that, though servers will respond to different clients differently, they will always respond to the same client the same.*
++ Add tool support for TLS 1.3
++ Setup nginx to use TLS 1.3 on the server side
++ Think about including the server response in the fingerprint as [JA3S](https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967) does it: *After some time we found that, though servers will respond to different clients differently, they will always respond to the same client the same.*

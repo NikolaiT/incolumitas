@@ -20,5 +20,5 @@ rsync -avc --delete -e "ssh -i $PRIV_KEY" output/ root@167.99.241.135:/var/www/i
 ssh -i $PRIV_KEY root@167.99.241.135 "chown -R www-data:www-data /var/www/incolumitas.com/"
 
 # echo "Restart server and isso"
-# ssh -i $PRIV_KEY root@167.99.241.135 "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
-# ssh -i $PRIV_KEY root@167.99.241.135 "/var/lib/isso/env/bin/isso --version"
+ssh -i $PRIV_KEY root@167.99.241.135 "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
+ssh -i $PRIV_KEY root@167.99.241.135 "/var/lib/isso/env/bin/isso --version"

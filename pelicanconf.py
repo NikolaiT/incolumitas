@@ -138,7 +138,7 @@ API_PAGES = (
     'BotOrNot',
     'IP-API',
     'TCP-IP-Fingerprint',
-    'TLS-Fingerprint'
+    # 'TLS-Fingerprint'
 )
 
 COMMENTS_PAGES = ('about', 'contact')
