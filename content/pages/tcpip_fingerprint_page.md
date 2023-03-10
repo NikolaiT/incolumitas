@@ -1,6 +1,6 @@
 Title: TCP/IP Fingerprint API
 Date: 2022-02-17 23:30
-Modified: 2023-03-10 14:00
+Modified: 2023-03-11 14:00
 Author: Nikolai Tschacher
 Slug: TCP-IP-Fingerprint
 Status: published
@@ -16,11 +16,11 @@ Sortorder: 9
 
 ## TCP/IP Fingerprint API Demo
 
-**API Endpoint with full details:** [https://tcpip.incolumitas.com/classify?by_ip=1&detail=1](https://tcpip.incolumitas.com/classify?by_ip=1&detail=1)
+**Detailed TCP/IP Fingerprint:** [https://tcpip.incolumitas.com/classify?detail=1](https://tcpip.incolumitas.com/classify?detail=1)
 
-**API Endpoint:** [https://tcpip.incolumitas.com/classify?by_ip=1](https://tcpip.incolumitas.com/classify?by_ip=1)
+**Short TCP/IP Fingerprint:** [https://tcpip.incolumitas.com/classify](https://tcpip.incolumitas.com/classify)
 
-Based on your initial TCP/IP SYN packet, your device most likely is:
+Based on your last observed TCP/IP SYN packet, the following TCP/IP fingerprint data was collected:
 
 <pre id="wrapper">
   <code id="tcpip_fp" class="JSON hljs">...loading (JavaScript required)</code>
@@ -30,7 +30,7 @@ Based on your initial TCP/IP SYN packet, your device most likely is:
 var el = document.getElementById('tcpip_fp');
 hljs.highlightBlock(el);
 
-fetch('https://tcpip.incolumitas.com/classify?by_ip=1&detail=1')
+fetch('https://tcpip.incolumitas.com/classify?detail=1')
   .then(response => response.json())
   .then(function(data) {
     document.getElementById('tcpip_fp').innerHTML = JSON.stringify(data, null, 2);
@@ -49,26 +49,26 @@ document.getElementById('userAgent').innerText = navigator.userAgent;
 
 ## TCP/IP Fingerprint API
 
-The TCP/IP fingerprinting API allows you to get your [TCP/IP fingerprint](https://tcpip.incolumitas.com/classify?by_ip=1). It can be used for various purposes such as:
+The TCP/IP fingerprinting API allows you to get your [TCP/IP fingerprint](https://tcpip.incolumitas.com/classify?). It can be used for various purposes such as:
 
 1. Networking traffic analysis
-2. Proxy / VPN detection
+2. Proxy detection
 
 Currently, there is only one public API endpoint:
 
 | <!-- -->         | <!-- -->                                           |
 |------------------|----------------------------------------------------|
-| **Endpoint**       | /classify                                  |
 | **Description**  | This endpoint returns the TCP/IP fingerprint for the requesting client                                               |
-| **Live API Call** | [tcpip.incolumitas.com/classify](https://tcpip.incolumitas.com/classify)                                      |
+| **Detailed** | [/classify?detail=1](https://tcpip.incolumitas.com/classify?detail=1)                                      |
+| **Short** | [/classify](https://tcpip.incolumitas.com/classify)                                      |
 
 You can invoke this API endpoint also with curl:
 
 Example by using `curl`:
 
 ```bash
-curl 'https://tcpip.incolumitas.com/classify?by_ip=1'
-curl 'https://tcpip.incolumitas.com/classify?by_ip=1&detail=1'
+curl 'https://tcpip.incolumitas.com/classify?'
+curl 'https://tcpip.incolumitas.com/classify?detail=1'
 ```
 
 ## What is TCP/IP fingerprinting?
