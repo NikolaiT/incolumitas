@@ -100,7 +100,7 @@ CUSTOM_JS = 'javascript/custom.js'
 
 HEAD_JS = (
     # 'https://abs.incolumitas.com/lib.js',
-    'https://detector.incolumitas.com/pd-lib.js',
+    # 'https://detector.incolumitas.com/pd-lib.js',
 )
 
 # BODY_JS = (
