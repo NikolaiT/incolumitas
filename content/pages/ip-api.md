@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2023-03-07 22:00
+Modified: 2023-03-20 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -10,11 +10,11 @@ Sortorder: 5
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.9.12 (19th February 2023)**         |
+| **API Version**         | **v0.9.13 (20th March 2023)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[13842 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **245,326** IPv4 CIDR ranges (597,121,410 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **283,703** IPv6 CIDR ranges (2.325223070892958e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[14910 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **264,107** IPv4 CIDR ranges (737,855,059 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **285,909** IPv6 CIDR ranges (2.742934456262051e+33 Addresses in total)      |
 
 ## Live API
 
