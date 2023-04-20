@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2023-03-28 22:00
+Modified: 2023-04-14 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -10,11 +10,11 @@ Sortorder: 5
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **API Access**         | Free & unlimited (fair use)         |
-| **API Version**         | **v0.9.14 (27th March 2023)**         |
+| **API Version**         | **v0.9.17 (14th April 2023)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[14893 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **263,722** IPv4 CIDR ranges (738,011,645 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **285,228** IPv6 CIDR ranges (2.7508656334221804e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[14898 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **263,854** IPv4 CIDR ranges (738,800,638 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **284,773** IPv6 CIDR ranges (2.7522125352198334e+33 Addresses in total)      |
 
 ## Live API
 
@@ -34,7 +34,8 @@ Sortorder: 5
       <a class="api-example" data-query="23.236.48.55" href="#">23.236.48.55</a> —</br>
       <a class="api-example" data-query="2600:1F18:7FFF:F800:0000:ffff:0000:0000" href="#">2600:1F18:7FFF:F800:0000:ffff:0000:0000</a> —
       <a class="api-example" data-query="107.174.138.172" href="#">107.174.138.172</a> —
-      <a class="api-example" data-query="107.152.214.169" href="#">107.152.214.169</a>
+      <a class="api-example" data-query="107.152.214.169" href="#">107.152.214.169</a> —
+      <a class="api-example" data-query="2a02:0f58:0004:0300:0216:3eff:fec2:a1f" href="#">2a02:0f58:0004:0300:0216:3eff:fec2:a1f</a>
     </p>
   </div>
 
@@ -83,6 +84,169 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 })
 </script>
 
+## Change Log
+
+#### Coming Soon
+
++ Soon a proprietary, self made geolocation database will be added to the API. This db will use the `geofeed` and `geoloc` attributes of WHOIS data ([Learn more about "geoloc" attribute](https://help.apnic.net/s/article/Geolocation)) Other data sources will be also used to build the geolocation database.
++ The hosting detection algorithm is being updated and will soon run again to produce more accurate and better `is_datacenter` results
++ A full WHOIS crawl will be conducted for RIPE and APNIC to enhance WHOIS data coverage. Scraping WHOIS data from RIPE and APNIC is rather cumbersome, since they block aggressively.
++ If you have a high request volume, please contact me. The API is here to stay and will improve substantially in the near future.
+
+#### 2nd April 2023
+
++ API is now running on 3 parallel clusters and can serve roughly 30 million request per day.
++ For March 2023, the time was wrong for the fields `local_time` and `local_time_unix` (Mostly because of DST). This was fixed for good now.
++ Added `is_dst` field to `geolocation` object. It is true if DST is active in the IP address timezone.
++ Added `timezone` field to the `geolocation` object. It represents the timezone of the IP address time. Example: `Europe/Berlin`
++ Fixed erroneous output in `geolocation` object for IPv6
++ Renamed field `possible_other_location` to `other` in the `geolocation` object. This was done in order to save space.
++ Added proprietary list mostly for `is_datacenter` and `is_abuser`
+
+#### 11th December 2022
+
++ Now serving daily 1M requests
++ Introduced the `is_vpn` flag (Mostly using [github.com/X4BNet/lists_vpn](https://github.com/X4BNet/lists_vpn) as data source)
++ Added self published cloud IP ranges from `Alibaba Cloud`, `SAP Cloud`, `Servicenow Cloud`
++ Upgraded to more powerful server (16GB RAM, 4vCPU)
++ **TODO:** Run Node.js HTTP Express.js Server on Multiple CPU Cores in order to deal with high load
+
+#### 2nd December 2022
+
++ Many thousands of new cloud/hosting providers being tracked
++ Added [iCloud Private Relay IP ranges](https://mask-api.icloud.com/egress-ip-ranges.csv)
++ Geolocation time's was wrong because of DST change in North America
++ Updated whole database
+
+#### 30th October 2022
+
++ Better geolocation information
++ Updated whole database
++ Updated this API documentation page
+
+#### 30th September 2022
+
++ Moved the API to a dedicated server. There will be much fewer service disruptions from now on
++ Added more detailed geolocation information
++ Updated whole database
++ Added LACNIC organization information
++ Added field `type` to `asn` objects. Possible `asn` `type` values: `hosting`, `education`, `goverment`, `banking`, `business`, `isp`
++ Updated this API documentation page
++ Info: The API has passed 10 Million requests
+
+#### 11th September 2022
+
++ Updated this API documentation page to reflect that the API is no longer only a datacenter IP address API, but a more generic and powerful IP API
+
+#### 21th August 2022
+
++ Added country specific geolocation information
++ Updated datacenter ranges and added new datacenters
++ Now providing company information for almost all active networks in the Internet
++ Providing organization and abuse meta information for each of the 79247 active ASN's
+
+#### 30th July 2022
+
++ Added hundreds of new datacenters (Now 496 datacenters in the database)
++ Added basic country geolocation for each IP (In the attribute `location`)
++ Server is now faster and has more RAM (no more downtime)
++ Updated this documentation page
+
+#### 26th July 2022
+
++ Updated this documentation page
++ The API provides now AS (Autonomous System) information for each looked up IP address (in the attribute `asn`)
++ The API provides information about the Regional Internet Registry to which the looked up IP belongs (in the attribute `rir`)
++ Added a huge amount of new hosting providers / datacenters to the API
+
+#### 5th June 2022
+
++ Added [APNIC whois data](https://www.apnic.net/) to database
++ Updated database in general
++ added API endpoint [/info](https://api.incolumitas.com/info)
+
+#### 20th March 2022
+
++ Improved API
++ Remove the `service` attribute in API output. Only attribute that identifies the cloud provider is now `datacenter`
++ Add bulk IP lookup mode. Allow up to 100 ips in bulk lookup mode. Only return datacenter IP addresses. Uses POST method. Ignore Invalid IPs
+
+#### 14th March 2022 and 15th March 2022
+
++ Added **39,246** IPv4 and **360,372** IPv6 CIDR ranges ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases.
++ Some Examples: [Lookup of Cloudflare IP](https://api.incolumitas.com/datacenter?ip=104.28.48.132), [Lookup of M247 Ltd IP](https://api.incolumitas.com/datacenter?ip=193.27.14.71)
+, [Lookup of Packethub S.A. IP](https://api.incolumitas.com/datacenter?ip=185.153.176.242),  [Lookup of Leaseweb IP](https://api.incolumitas.com/datacenter?ip=178.162.192.22)
++ Added the following datacenters to the API: `XT Global Networks LTD`, `OVH`, `myLoc`,
+`ServiHosting Networks S.L.`, `Clouvider Limited`,
+`Hetzner Online`, `GoDaddy Operating Company, LLC.`,
+`Claranet limited`, `Selectel Ltd.`, `M247 Ltd`,
+`Imperva, Inc.`, `Beget`, `trueserver.nl`, `1&1 Internet`,
+`DediPath`, `iomart Hosting Ltd`,
+`Aruba S.p.a`, `Strato AG`, `DataCamp Limited`,
+`Rackspace, Inc.`, `Reg.Ru Hosting`, `Heficed`, `LeaseWeb`,
+`Mittwald`, `The Constant Company, LLC`,
+`American Internet Services`, `Hostinger`,
+`PlusServer GmbH`, `Equinix, Inc.`, `GHOSTnet GmbH`,
+`It7 Networks Inc`,
+`xservers.ro`, `Cloudflare`, `IBM Cloud`,
+`iWeb Technologies Inc.`,
+`SysEleven SysEleven GmbH`, `G-Core Labs S.A.`,
+`Tencent Cloud`, `Choopa, LLC.`, `DigitalOcean`,
+`Webair Internet Development Inc`, `Hostway`,
+`Phoenix NAP, LLC`, `Contabo GmbH`, `A2 Hosting`,
+`Zenlayer`, `Optimate Server`, `LogicWeb Inc.`,
+`Packethub S.A.`, `MULTACOM Inc.`, `veesp.com vps clients`,
+`Sakura Internet Inc.`, `Zscaler, Inc.`,
+`Vultr Holdings LLC`, `Enzu Inc.`, `24Shells Inc`,
+`GZ Systems (PureVPN)`, `HIVELOCITY, Inc.`, `Transip Bv.`,
+`Host Europe`, `Internap Corporation`, `IP Exchange GmbH`,
+`Datapipe`, `Savvis`,
+`home.pl S.A.`, `Redstation Limited`, `hosting.ua`,
+`Daou Technology`, `Linode`, `Amazon AWS`,
+`kinx.net`, `Dreamscape`, `Xneelo (Pty) Ltd`,
+`Fiber Grid Inc`, `Performive LLC`, `Microsoft Azure`,
+`UCloud`, `Hostgator`, `Hostwinds.com`, `Namecheap`,
+`Stackpath, LLC`, `ALL INKL`,
+`Online SAS (Scaleway)`, `ServerCentral`,
+`Quadranet, Inc`, `FDC Servers`,
+`ColoCrossing`, `Aptum Technologies`, `Sharktech Inc.`,
+`Wholesale Internet, Inc`, `Dreamhost`,
+`Pair Networks`, `ServerHub`, `Psychz Networks`,
+`CoreSpace,Inc.`, `Cologix, Inc.`,
+`Colocation America Inc`, `ServerMania Inc.`, `Peak10`,
+`Google Cloud`, `Fasthosts Internet Ltd`,
+`latisys`, `Mullvad VPN`, `InMotion`, `Unified Layer`,
+`Fastly, Inc.`, `Ubiquity Hosting`.
+
+#### 11th March 2022
+
++ Added bulk IP lookup mode, up to 100 IP addresses can be queried with one API request
++ Added fast IPv6 lookup support (Speedup of factor `883x`, average lookup time now  `0.056ms` instead of `49.99ms`)
+
+#### 9th March 2022
+
++ Added `cidr` attribute to the API output
++ Improved API performance for IPv4 (IPv6 still pending), the performance is now 1500x times faster on average (Average lookup time before: `100.37ms`, average lookup time now `0.068ms`)
+
+#### 8th March 2022
+
++ Added cloud service providers / hosting providers / VPN service providers: `Linode`, `Mullvad VPN`, `B2 Net Solutions Inc.`, `scaleway.com`, `Vultr Holdings, LLC`, `The Constant Company, LLC`, `QuadraNet Enterprises LLC`, `Zscaler, Inc.`, `CloudCone, LLC`, `Psychz Networks`,  `BuyVM Services (buyvm.net)`,  `DataCamp Limited`,  `ColoCrossing`,  `IT7 Networks Inc.`,  `G-Core Labs S.A.`,  `AlmaHost Ltd`,  `Reg.Ru Hosting`,  `Packethub S.A.`,  `Clouvider Limited`,  `24Shells Inc`,  `Performive LLC`,  `Packet Host, Inc.`,  `veesp.com vps clients`,  `tzulo, inc.`,  `Cluster Logic Inc`,  `Owl Limited`,  `HIVELOCITY, Inc.`, `SysEleven SysEleven GmbH`
++ Added lookup time in `ms` to the API output as attribute `elapsed_ms`
++ Updated this API page
++ Updated all IP address ranges
+
+#### 6th November 2021
+
++ Updated all IP address ranges
++ Add cloud provider `m247 Ltd`, `servers.com Inc.`, `Leaseweb Usa Inc.`, often used for proxies/fraud
++ Checking for common datacenter in `whois` lookup
+
+#### 29th September 2021
+
++ Updated all IP address ranges
++ Added dedicated API endpoint: <https://api.incolumitas.com/datacenter?ip=3.5.140.2>
++ Old API Endpoint: <https://abs.incolumitas.com/datacenter?ip=1.2.3.4>
+
 # Documentation
 
 1. [Quickstart](#quickstart)
@@ -106,9 +270,9 @@ This IP address API returns useful meta-information for IP addresses. For exampl
 
 Furthermore, the API response allows to derive **security information** for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if an IP address is a proxy (`is_proxy`) or VPN (`is_vpn`) or belongs to an abuser (`is_abuser`).
 
-This API strongly emphasises **datacenter/hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. [Thousands of different hosting providers](https://incolumitas.com/pages/Hosting-Providers-List/) are tracked. Whois records, public hosting IP ranges from hosting providers and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a datacenter or not.
+This API strongly emphasizes **datacenter/hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. [Thousands of different hosting providers](https://incolumitas.com/pages/Hosting-Providers-List/) are tracked. Whois records, public hosting IP ranges from hosting providers and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a datacenter or not.
 
-The API includes accurate and rich ASN meta-data. For instance, the API output contains whois information for each active ASN and the ASN type is derived by analyzing the company that owns the AS.
+The API furthermore includes accurate and rich ASN meta data. For instance, the API includes raw whois data for each active ASN. Fields such as the ASN `type` are derived by analyzing the company that owns the autonomous system.
 
 ## Quickstart
 
@@ -124,7 +288,7 @@ fetch('https://api.incolumitas.com/?q=23.236.48.55')
   .then(res => console.log(res));
 ```
 
-Usage with Curl:
+Usage with `curl`:
 
 ```bash
 curl 'https://api.incolumitas.com/?q=32.5.140.2'
@@ -132,15 +296,16 @@ curl 'https://api.incolumitas.com/?q=32.5.140.2'
 
 ## Introduction
 
-The IP adddress API makes use of the following data sources:
+The IP address API makes use of the following data sources:
 
 1. Public whois records from regional Internet address registries such as [RIPE NCC](https://www.ripe.net/), [APNIC](https://www.apnic.net/), [ARIN](https://www.arin.net/) and so on
-2. [Public BGP Routing Table Data](https://thyme.apnic.net/current/) for ASN lookups
+2. [Public BGP routing table data](https://thyme.apnic.net/current/) for ASN lookups
 3. Public blocklists such as [firehol/blocklist-ipset](https://github.com/firehol/blocklist-ipsets)
-4. The API uses several proprietary datacenter/hosting detection algorithms
+4. The API uses a proprietary datacenter/hosting detection algorithm
 5. Other open source projects that try to find hosting IP addresses such as [github.com/client9/ipcat](https://github.com/client9/ipcat), [github.com/Umkus/ip-index](https://github.com/Umkus/ip-index) or [https://github.com/X4BNet/lists_vpn](github.com/X4BNet/lists_vpn) are also considered
 6. The API uses IP threat data from various honeypots
 7. IP geolocation information from several different geolocation providers is used. By using more than one geolocation source, a more accurate location can be interpolated.
+8. A proprietary geolocation database is built from scratch. Gelocation data is sourced from whois data. For example, some Regional Internet Registries [such as APNIC](https://help.apnic.net/s/article/Geolocation) support the `geofeed` and `geoloc` property in whois records.
 
 ## API Features
 
@@ -148,7 +313,7 @@ The IP adddress API makes use of the following data sources:
 - **Many datacenters supported:** [Thousands of different hosting providers and counting](https://incolumitas.com/pages/Hosting-Providers-List/) - From Huawei Cloud Service to ServerMania Inc. Find out whether the IP address is hosted by looking at the `is_datacenter` property!
 - **Always updated**: The API database is automatically updated several times per week.
 - **ASN support**: The API provides autonomous system information for each looked up IP address
-- **Company Support**: The API provides organisational information for each network of each looked up IP address
+- **Company Support**: The API provides organizational information for each network of each looked up IP address
 - **Bulk IP Lookups**: You can lookup up to 100 IP addresses per API call
 
 ### ASN Database
@@ -185,7 +350,7 @@ The database is in JSON format. The key is the ASN as `int` and the value is an 
 
 [Click here to download the ASN Database](https://github.com/NikolaiT/IP-Address-API)
 
-**How to download & parse the database?**
+**How to download & parse the ASN database?**
 
 Download and unzip the ASN database:
 
@@ -220,7 +385,7 @@ myLoc managed IT AG 46.245.176.0 - 46.245.183.255 www.myloc.de
 
 [Click here to download the Hosting IP Ranges Database](https://github.com/NikolaiT/IP-Address-API)
 
-**How to download & parse the database?**
+**How to download & parse the Datacenter database?**
 
 Download and unzip the Hosting Ranges database:
 
@@ -244,7 +409,7 @@ for (let line of hostingRanges) {
 
 ## API Response Format
 
-The API output format is explaind by walking through an example. Most of the returned information is self-explanatory.
+The API output format is explained by walking through an example. Most of the returned information is self-explanatory.
 
 This is how a typical API response looks like. The IP `107.174.138.172` was queried with the API call [https://api.incolumitas.com/?q=107.174.138.172](https://api.incolumitas.com/?q=107.174.138.172):
 
@@ -286,17 +451,18 @@ This is how a typical API response looks like. The IP `107.174.138.172` was quer
   },
   "location": {
     "country": "United States of America",
-    "country_code": "us",
+    "country_code": "US",
     "state": "New York",
     "city": "Buffalo",
-    "latitude": "42.882500",
-    "longitude": "-78.878800",
+    "latitude": 42.8825,
+    "longitude": -78.8788,
     "zip": "14202",
-    "timezone": "-05:00",
-    "local_time": "2023-02-05 12:06:33.322-0500",
-    "local_time_unix": 1675598793.322
+    "timezone": "America/New_York",
+    "local_time": "2023-04-02T14:03:27-04:00",
+    "local_time_unix": 1680458607,
+    "is_dst": true
   },
-  "elapsed_ms": 3.07
+  "elapsed_ms": 4.14
 }
 ```
 
@@ -316,21 +482,69 @@ The top level API output looks as follows:
   "is_proxy": false,
   "is_vpn": false,
   "is_abuser": true,
-  "elapsed_ms": 2.4
+  "elapsed_ms": 4.14
 }
 ```
 
 The explanation for the top level API fields is as follows:
 
-- `ip` - `string` - the IP address that was looked up, here it was `107.174.138.172`
-- `rir` - `string` - to which [Regional Internet Registry](https://en.wikipedia.org/wiki/Regional_Internet_registry) the IP address belongs. Here it belongs to `ARIN`, which is the RIR responsible for North America
-- `is_bogon` - `boolean` - Whether the IP address is bogon. [Bogon IP Addresses](https://en.wikipedia.org/wiki/Bogon_filtering) is the set of IP Addresses not assigned/allocated to IANA and any RIR (Regional Internet Resgistry). For example, the loopback IP `127.0.0.1` is a special/bogon IP address. The IP address `107.174.138.172` is not bogon, hence it is set to `false` here.
-- `is_datacenter` - `boolean` - whether the IP address belongs to a datacenter. Here, we have the value `true`, since `107.174.138.172` belongs to the hosting provider `ColoCrossing`.
-- `is_tor` - `boolean` - is true if the IP address belongs to the TOR network. This is the case here. Tor detection is accurate, so you can rely on the value of `is_tor`. The API detects most TOR exit nodes reliably.
-- `is_proxy` - `boolean` - whether the IP address is a proxy. This is not the case here. In general, the flag `is_proxy` only covers a subset of all proxies in the Internet.
-- `is_vpn` - `boolean` - whether the IP address is a VPN. This is not the case with the IP `107.174.138.172`. In general, the flag `is_vpn` only covers a subset of all VPN's in the Internet. It is not possible to detect all VPN exit nodes passively.
-- `is_abuser` - `boolean` - is true if the IP address committed abusive actions, which was the case with `107.174.138.172`. Various IP blocklists and threat intelligence feeds are used to populate the `is_abuser` flag.
-- `elapsed_ms` - `float` - how much internal processing time was spent in milliseconds (ms). This lookup only took `2.4ms`, which is quite fast.
+#### Field `ip`
+
+The field `ip` has datatype `string`.
+
+It is the IP address that was looked up, in the example above it is `107.174.138.172`.
+
+If no IP address was specified (Example: [https://api.incolumitas.com/](https://api.incolumitas.com/)), the client's own IP address is looked up.
+
+#### Field `rir`
+
+The field `rir` has datatype `string`.
+
+It specifies to which [Regional Internet Registry](https://en.wikipedia.org/wiki/Regional_Internet_registry) the IP address belongs. Here it belongs to `ARIN`, which is the RIR responsible for North America.
+
+#### Field `is_bogon`
+
+The field `is_bogon` has datatype `boolean`.
+
+It determines if the IP address is bogon. [Bogon IP Addresses](https://en.wikipedia.org/wiki/Bogon_filtering) is the set of IP Addresses not assigned/allocated to IANA and any RIR (Regional Internet Registry). For example, the loopback IP `127.0.0.1` is a special/bogon IP address. The IP address `107.174.138.172` is not bogon, hence it is set to `false` here.
+
+#### Field `is_datacenter`
+
+The field `is_datacenter` has datatype `boolean`.
+
+It specifies whether the IP address belongs to a datacenter or not. Here, we have the value `true`, since `107.174.138.172` belongs to the hosting provider `ColoCrossing`.
+
+#### Field `is_tor`
+
+The field `is_tor` has datatype `boolean`.
+
+If the field `is_tor` is true, the IP address belongs to the TOR network. This is the case here. Tor detection is accurate, so you can rely on the value of `is_tor`. The API detects most TOR exit nodes reliably.
+
+#### Field `is_proxy`
+
+The field `is_proxy` has datatype `boolean`.
+
+The field determines whether the IP address is a proxy. This is not the case here. In general, the flag `is_proxy` only covers a subset of all proxies in the Internet.
+
+#### Field `is_vpn`
+
+The field `is_vpn` has datatype `boolean`.
+
+The field determines if the IP address is a VPN. This is not the case with the IP `107.174.138.172`. In general, the flag `is_vpn` only covers a subset of all VPN's in the Internet. It is not possible to detect all VPN exit nodes passively.
+
+#### Field `is_abuser`
+
+The field `is_abuser` has datatype `boolean`.
+
+The field `is_abuser` is true if the IP address committed abusive actions, which was the case with `107.174.138.172`. Various IP blocklists and threat intelligence feeds are used to populate the `is_abuser` flag.
+
+Open source and proprietary block lists are used in the API to populate the `is_abuser` flag.
+
+#### Field `elapsed_ms`
+
+The field `elapsed_ms` has datatype `float`.
+
+The field stores how much internal processing time was spent in milliseconds (ms). This lookup only took `4.14ms`, which is quite fast.
 
 ### Response Format: The `datacenter` object
 
@@ -436,56 +650,60 @@ Most IP addresses can be associated with an organization or company. The API use
 },
 ```
 
-Most IP addresses can be associated with an Autonomeous System (AS). The `asn` object provides the following attributes:
+Most IP addresses can be associated with an Autonomous System (AS). The `asn` object provides the following attributes:
 
 - `asn` - `int` - The AS number
 - `route` - `string` - The IP route as CIDR in this AS
 - `descr` - `string` - An informational description of the AS
 - `country` - `string` - The country where the AS is situated in (administratively)
-- `active` - `string` - Whether the AS is active (active = at least one route administred by the AS)
-- `org` - `string` - The organization responisible for this AS
+- `active` - `string` - Whether the AS is active (active = at least one route administered by the AS)
+- `org` - `string` - The organization responsible for this AS
 - `domain` - `string` - The domain of the organization to which this AS belongs
 - `abuse` - `string` - The email address to which abuse complaints for this organization should be sent
-- `type` - `string` - The type for this ASN, this is either `hosting`, `education`, `goverment`, `banking`, `business` or `isp`
+- `type` - `string` - The type for this ASN, this is either `hosting`, `education`, `government`, `banking`, `business` or `isp`
 - `created` - `string` - When the ASN was established
 - `updated` - `string` - The last time the ASN was updated
 - `rir` - `string` - To which Regional Internet Registry the ASN belongs
 - `whois` - `string` - An url to the whois information for this ASN
 
-For inactive autonomeous systems, most of the above information is not available.
+For inactive autonomous systems, most of the above information is not available.
 
 ### Response Format: The `location` object
 
 ```json
 "location": {
   "country": "United States of America",
-  "country_code": "us",
+  "country_code": "US",
   "state": "New York",
   "city": "Buffalo",
-  "latitude": "42.882500",
-  "longitude": "-78.878800",
+  "latitude": 42.8825,
+  "longitude": -78.8788,
   "zip": "14202",
-  "timezone": "-05:00",
-  "local_time": "2023-02-05 12:06:33.322-0500",
-  "local_time_unix": 1675598793.322
+  "timezone": "America/New_York",
+  "local_time": "2023-04-02T14:03:27-04:00",
+  "local_time_unix": 1680458607,
+  "is_dst": true
 },
 ```
 
 The API provides geolocation information for the looked up IP address. The `location` object includes the following attributes:
 
-- `country` - `string` - The full name of the country for this IP address
+- `country` - `string` - The full name of the country
 - `country_code` - `string` - The ISO 3166-1 alpha-2 country code to which the IP address belongs. This is the country specific geolocation of the IP address.
-- `state` - `string` - The state / administrative area for the IP address
+- `state` - `string` - The state / administrative area
 - `city` - `string` - The city to which the IP address belongs
-- `latitude` - `string` - The latitude for the IP address
-- `longitude` - `string` - The longitude for the IP address
+- `latitude` - `float` - The latitude for the IP address
+- `longitude` - `float` - The longitude for the IP address
 - `zip` - `string` - The zip code for this IP
 - `timezone` - `string` - The timezone for this IP
 - `local_time` - `string` - The local time for this IP in human readable format
-- `local_time_unix` - `string` - The local time for this IP as unix timestamp
-- `possible_other_location` - `array` - (Optional) -  If there are multiple possible geographical locations, the attribute `possible_other_location` is included in the API response. It contains an array of ISO 3166-1 alpha-2 country codes which represent the possible other geolocation countries.
+- `local_time_unix` - `int` - The local time for this IP as unix timestamp (`int`)
+- `is_dst` - `boolean` - Whether Daylight saving time (DST) is active in the region of this IP address
+- `other` - `array` - (Optional) -  If there are multiple possible geographical locations, the attribute `other` is included in the API response. It contains an array of ISO 3166-1 alpha-2 country codes which represent the possible other geolocation countries.
 
 Country level geolocation accuracy is quite good, since the API provides information from several different geolocation service providers.
+
+Furthermore, a proprietary geolocation database was built from scratch in order to source the `location` object.
 
 ## API Endpoints
 
@@ -526,149 +744,3 @@ curl --header "Content-Type: application/json" \
   https://api.incolumitas.com/
 ```
 
-
-## Change Log
-
-#### 11th December 2022
-
-+ Now serving daily 1M requests
-+ Introduced the `is_vpn` flag (Mostly using [github.com/X4BNet/lists_vpn](https://github.com/X4BNet/lists_vpn) as data source)
-+ Added self published cloud IP ranges from `Alibaba Cloud`, `SAP Cloud`, `Servicenow Cloud`
-+ Upgraded to more powerful server (16GB RAM, 4vCPU)
-+ **TODO:** Run Node.js HTTP Express.js Server on Multiple CPU Cores in order to deal with high load
-
-#### 2nd December 2022
-
-+ Many thousands of new cloud/hosting providers being tracked
-+ Added [iCloud Private Relay IP ranges](https://mask-api.icloud.com/egress-ip-ranges.csv)
-+ Geolocation time's was wrong because of DST change in North America
-+ Updated whole database
-
-#### 30th October 2022
-
-+ Better geolocation information
-+ Updated whole database
-+ Updated this API documentation page
-
-#### 30th September 2022
-
-+ Moved the API to a dedicated server. There will be much fewer service disruptions from now on
-+ Added more detailed geolocation information
-+ Updated whole database
-+ Added LACNIC organization information
-+ Added field `type` to `asn` objects. Possible `asn` `type` values: `hosting`, `education`, `goverment`, `banking`, `business`, `isp`
-+ Updated this API documentation page
-+ Info: The API has passed 10 Million requests
-
-#### 11th September 2022
-
-+ Updated this API documentation page to reflect that the API is no longer only a datacenter IP address API, but a more generic and powerful IP API
-
-#### 21th August 2022
-
-+ Added country specific geolocation information
-+ Updated datacenter ranges and added new datacenters
-+ Now providing company information for almost all active networks in the Internet
-+ Providing organisation and abuse meta information for each of the 79247 active ASN's
-
-#### 30th July 2022
-
-+ Added hundreds of new datacenters (Now 496 datacenters in the database)
-+ Added basic country geolocation for each IP (In the attribute `location`)
-+ Server is now faster and has more RAM (no more downtime)
-+ Updated this documentation page
-
-#### 26th July 2022
-
-+ Updated this documentation page
-+ The API provides now AS (Autonomous System) information for each looked up IP address (in the attribute `asn`)
-+ The API provides information about the Regional Internet Registrity to which the looked up IP belongs (in the attribute `rir`)
-+ Added a huge amount of new hosting providers / datacenters to the API
-
-#### 5th June 2022
-
-+ Added [APNIC whois data](https://www.apnic.net/) to database
-+ Updated database in general
-+ added API endpoint [/info](https://api.incolumitas.com/info)
-
-#### 20th March 2022
-
-+ Improved API
-+ Remove the `service` attribute in API output. Only attribute that identifies the cloud provider is now `datacenter`
-+ Add bulk IP lookup mode. Allow up to 100 ips in bulk lookup mode. Only return datacenter IP addresses. Uses POST method. Ignore Invalid IPs
-
-#### 14th March 2022 and 15th March 2022
-
-+ Added **39,246** IPv4 and **360,372** IPv6 CIDR ranges ranges to the database from AFRINIC, RIPE-NCC, APNIC, ARIN and LACNIC whois databases.
-+ Some Examples: [Lookup of Cloudflare IP](https://api.incolumitas.com/datacenter?ip=104.28.48.132), [Lookup of M247 Ltd IP](https://api.incolumitas.com/datacenter?ip=193.27.14.71)
-, [Lookup of Packethub S.A. IP](https://api.incolumitas.com/datacenter?ip=185.153.176.242),  [Lookup of Leaseweb IP](https://api.incolumitas.com/datacenter?ip=178.162.192.22)
-+ Added the following datacenters to the API: `XT Global Networks LTD`, `OVH`, `myLoc`,
-`ServiHosting Networks S.L.`, `Clouvider Limited`,
-`Hetzner Online`, `GoDaddy Operating Company, LLC.`,
-`Claranet limited`, `Selectel Ltd.`, `M247 Ltd`,
-`Imperva, Inc.`, `Beget`, `trueserver.nl`, `1&1 Internet`,
-`DediPath`, `iomart Hosting Ltd`,
-`Aruba S.p.a`, `Strato AG`, `DataCamp Limited`,
-`Rackspace, Inc.`, `Reg.Ru Hosting`, `Heficed`, `LeaseWeb`,
-`Mittwald`, `The Constant Company, LLC`,
-`American Internet Services`, `Hostinger`,
-`PlusServer GmbH`, `Equinix, Inc.`, `GHOSTnet GmbH`,
-`It7 Networks Inc`,
-`xservers.ro`, `Cloudflare`, `IBM Cloud`,
-`iWeb Technologies Inc.`,
-`SysEleven SysEleven GmbH`, `G-Core Labs S.A.`,
-`Tencent Cloud`, `Choopa, LLC.`, `DigitalOcean`,
-`Webair Internet Development Inc`, `Hostway`,
-`Phoenix NAP, LLC`, `Contabo GmbH`, `A2 Hosting`,
-`Zenlayer`, `Optimate Server`, `LogicWeb Inc.`,
-`Packethub S.A.`, `MULTACOM Inc.`, `veesp.com vps clients`,
-`Sakura Internet Inc.`, `Zscaler, Inc.`,
-`Vultr Holdings LLC`, `Enzu Inc.`, `24Shells Inc`,
-`GZ Systems (PureVPN)`, `HIVELOCITY, Inc.`, `Transip Bv.`,
-`Host Europe`, `Internap Corporation`, `IP Exchange GmbH`,
-`Datapipe`, `Savvis`,
-`home.pl S.A.`, `Redstation Limited`, `hosting.ua`,
-`Daou Technology`, `Linode`, `Amazon AWS`,
-`kinx.net`, `Dreamscape`, `Xneelo (Pty) Ltd`,
-`Fiber Grid Inc`, `Performive LLC`, `Microsoft Azure`,
-`UCloud`, `Hostgator`, `Hostwinds.com`, `Namecheap`,
-`Stackpath, LLC`, `ALL INKL`,
-`Online SAS (Scaleway)`, `ServerCentral`,
-`Quadranet, Inc`, `FDC Servers`,
-`ColoCrossing`, `Aptum Technologies`, `Sharktech Inc.`,
-`Wholesale Internet, Inc`, `Dreamhost`,
-`Pair Networks`, `ServerHub`, `Psychz Networks`,
-`CoreSpace,Inc.`, `Cologix, Inc.`,
-`Colocation America Inc`, `ServerMania Inc.`, `Peak10`,
-`Google Cloud`, `Fasthosts Internet Ltd`,
-`latisys`, `Mullvad VPN`, `InMotion`, `Unified Layer`,
-`Fastly, Inc.`, `Ubiquity Hosting`.
-
-#### 11th March 2022
-
-+ Added bulk IP lookup mode, up to 100 IP addresses can be queried with one API request
-+ Added fast IPv6 lookup support (Speedup of factor `883x`, average lookup time now  `0.056ms` instead of `49.99ms`)
-
-#### 9th March 2022
-
-+ Added `cidr` attribute to the API output
-+ Improved API performance for IPv4 (IPv6 still pending), the performance is now 1500x times faster on average (Average lookup time before: `100.37ms`, average lookup time now `0.068ms`)
-
-#### 8th March 2022
-
-+ Added cloud service providers / hosting providers / VPN service providers: `Linode`, `Mullvad VPN`, `B2 Net Solutions Inc.`, `scaleway.com`, `Vultr Holdings, LLC`, `The Constant Company, LLC`, `QuadraNet Enterprises LLC`, `Zscaler, Inc.`, `CloudCone, LLC`, `Psychz Networks`,  `BuyVM Services (buyvm.net)`,  `DataCamp Limited`,  `ColoCrossing`,  `IT7 Networks Inc.`,  `G-Core Labs S.A.`,  `AlmaHost Ltd`,  `Reg.Ru Hosting`,  `Packethub S.A.`,  `Clouvider Limited`,  `24Shells Inc`,  `Performive LLC`,  `Packet Host, Inc.`,  `veesp.com vps clients`,  `tzulo, inc.`,  `Cluster Logic Inc`,  `Owl Limited`,  `HIVELOCITY, Inc.`, `SysEleven SysEleven GmbH`
-+ Added lookup time in `ms` to the API output as attribute `elapsed_ms`
-+ Updated this API page
-+ Updated all IP address ranges
-
-#### 6th November 2021
-
-+ Updated all IP address ranges
-+ Add cloud provider `m247 Ltd`, `servers.com Inc.`, `Leaseweb Usa Inc.`, often used for proxies/fraud
-+ Checking for common datacenter in `whois` lookup
-
-#### 29th September 2021
-
-+ Updated all IP address ranges
-+ Added dedicated API endpoint: <https://api.incolumitas.com/datacenter?ip=3.5.140.2>
-+ Old API Endpoint: <https://abs.incolumitas.com/datacenter?ip=1.2.3.4>

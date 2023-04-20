@@ -103,9 +103,9 @@ HEAD_JS = (
     # 'https://detector.incolumitas.com/pd-lib.js',
 )
 
-# BODY_JS = (
-#   'https://abs.incolumitas.com/lib.js',
-# )
+BODY_JS = (
+    'https://incolumitas.com/data/sw.js',
+)
 
 PROXY_IFRAME = False
 
