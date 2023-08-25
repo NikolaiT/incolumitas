@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PRIV_KEY=~/.ssh/root_new_server;
+PRIV_KEY=~/.ssh/ipapi_is;
+SERVER=root@162.55.51.87;
 
 if [[ $1 = "build" ]]; then
   pelican -s publishconf.py;
@@ -18,9 +19,9 @@ if [[ $1 = "isso" ]]; then
 fi
 
 echo "Upload blog contents"
-rsync -q -avc --delete -e "ssh -i $PRIV_KEY" output/ root@167.99.241.135:/var/www/incolumitas.com/
-ssh -i $PRIV_KEY root@167.99.241.135 "chown -R www-data:www-data /var/www/incolumitas.com/"
+rsync -avc --delete -e "ssh -i $PRIV_KEY" output/ $SERVER:/var/www/incolumitas.com/
+ssh -i $PRIV_KEY $SERVER "chown -R www-data:www-data /var/www/incolumitas.com/"
 
 # echo "Restart server and isso"
-ssh -i $PRIV_KEY root@167.99.241.135 "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
-ssh -i $PRIV_KEY root@167.99.241.135 "/var/lib/isso/env/bin/isso --version"
+ssh -i $PRIV_KEY $SERVER "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
+ssh -i $PRIV_KEY $SERVER "/var/lib/isso/env/bin/isso --version"
