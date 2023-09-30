@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2023-09-25 22:00
+Modified: 2023-09-30 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -11,7 +11,7 @@ Sortorder: 5
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **Pro Version**         | [ipapi.is](https://ipapi.is/)          |
 | **GitHub**         | [IP API GitHub Page](https://github.com/NikolaiT/IP-Address-API)          |
-| **API Version**         | **v0.12.1 (25th September 2023)**         |
+| **API Version**         | **v0.12.1 (30th September 2023)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
 | **Total Tracked Hosting Providers**         |    **[52951 hosting providers]({filename}/pages/datacenters.md)**      |
 | **Number of Ipv4 Addresses**         |    **378,753** IPv4 CIDR ranges (836,818,346 Addresses in total)      |

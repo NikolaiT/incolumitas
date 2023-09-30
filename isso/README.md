@@ -16,6 +16,7 @@ scp -i /Users/nikolaitschacher/.ssh/pd_server comments.db root@162.55.51.87:/var
 
 <https://isso-comments.de/docs/guides/quickstart/>
 <https://isso-comments.de/docs/reference/installation/>
+<https://isso-comments.de/docs/reference/installation/#init-scripts>
 
 ```bash
 apt install python3-pip
@@ -24,18 +25,6 @@ pip install isso
 ```
 
 Create config `/var/lib/isso/isso.cfg`
-
-```config
-[general]
-; database location, check permissions, automatically created if it
-; does not exist
-dbpath = /var/lib/isso/comments.db
-; your website or blog (not the location of Isso!)
-host = https://incolumitas.com
-
-[moderation]
-enabled = true
-```
 
 ```bash
 isso -c /var/lib/isso/isso.cfg run
@@ -61,6 +50,28 @@ pip install git+https://github.com/posativ/isso.git
 cp -r  env/lib/python3.6/site-packages/isso/js/ .
 pip install git+https://github.com/posativ/isso.git
 cp -r js/ env/lib/python3.6/site-packages/isso/
+```
+
+### Create a systemd service
+
+```bash
+vim /etc/systemd/system/isso.service
+```
+
+```bash
+[Unit]
+Description=isso
+
+[Service]
+ExecStart=/usr/local/bin/isso -c /var/lib/isso/isso.cfg run
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+systemctl daemon-reload
 ```
 
 ### Import disqus comments
