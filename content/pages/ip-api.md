@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2023-10-01 22:00
+Modified: 2023-10-08 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -9,13 +9,12 @@ Sortorder: 5
 | <!-- -->    | <!-- -->    |
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
-| **Pro Version**         | [ipapi.is](https://ipapi.is/)          |
 | **GitHub**         | [IP API GitHub Page](https://github.com/NikolaiT/IP-Address-API)          |
-| **API Version**         | **v0.12.1 (1st October 2023)**         |
+| **API Version**         | **v0.12.3 (8th October 2023)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[53186 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **379,303** IPv4 CIDR ranges (838,790,631 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **306,822** IPv6 CIDR ranges (4.438395664733366e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[53843 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **390,750** IPv4 CIDR ranges (869,039,550 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **307,193** IPv6 CIDR ranges (4.475655595492009e+33 Addresses in total)      |
 
 ## Live API
 
@@ -96,7 +95,6 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
   + added `type` to the `company` object
 + I added a lot of hosting IP ranges to the API
 + The `asn` and `company` type field (`type`) is much more accurate in the most recent version
-+ You can now use the IP API in your professional projects: [ipapi.is](https://ipapi.is/)
 
 ### 2nd April 2023
 
@@ -262,14 +260,14 @@ This API strongly emphasizes **hosting detection**. A complicated hosting detect
 
 ## Quickstart
 
-Lookup any IP address: [https://api.ipapi.is/?q=3.5.140.2](https://api.ipapi.is/?q=3.5.140.2)
+Lookup any IP address: [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)
 
-Lookup your own IP address: [https://api.ipapi.is/](https://api.ipapi.is/)
+Lookup your own IP address: [https://api.incolumitas.com/](https://api.incolumitas.com/)
 
 Usage with JavaScript:
 
 ```JavaScript
-fetch('https://api.ipapi.is/?q=23.236.48.55')
+fetch('https://api.incolumitas.com/?q=23.236.48.55')
   .then(res => res.json())
   .then(res => console.log(res));
 ```
@@ -277,7 +275,7 @@ fetch('https://api.ipapi.is/?q=23.236.48.55')
 Usage with `curl`:
 
 ```bash
-curl 'https://api.ipapi.is/?q=32.5.140.2'
+curl 'https://api.incolumitas.com/?q=32.5.140.2'
 ```
 
 For a full documentation, please visit the [documentation page](https://ipapi.is/developers.html).
