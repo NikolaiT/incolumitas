@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2023-10-08 22:00
+Modified: 2023-10-13 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -10,11 +10,11 @@ Sortorder: 5
 |-------------|-------------|
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **GitHub**         | [IP API GitHub Page](https://github.com/NikolaiT/IP-Address-API)          |
-| **API Version**         | **v0.12.3 (8th October 2023)**         |
+| **API Version**         | **v0.12.4 (13th October 2023)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[53843 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **390,750** IPv4 CIDR ranges (869,039,550 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **307,193** IPv6 CIDR ranges (4.475655595492009e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[53954 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **390,490** IPv4 CIDR ranges (885,038,508 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **287,043** IPv6 CIDR ranges (4.5034760814892025e+33 Addresses in total)      |
 
 ## Live API
 
@@ -256,7 +256,7 @@ This IP address API returns useful meta-information for IP addresses. For exampl
 
 Furthermore, the API response allows to derive **security information** for each IP address, for example whether an IP address belongs to a hosting provider (`is_datacenter`), is a TOR exit node (`is_tor`), if an IP address is a proxy (`is_proxy`) or VPN (`is_vpn`) or belongs to an abuser (`is_abuser`).
 
-This API strongly emphasizes **hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. [Thousands of different hosting providers](https://ipapi.is/hosting-detection.html) are tracked. Whois records, public hosting IP ranges from hosting providers and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a hosting provider or not.
+This API strongly emphasizes **hosting detection**. A complicated hosting detection algorithm was developed to achieve a high detection rate. Whois records, public hosting IP ranges from hosting providers and a proprietary hosting discovery algorithm are used to decide whether an IP address belongs to a hosting provider or not.
 
 ## Quickstart
 
@@ -277,7 +277,5 @@ Usage with `curl`:
 ```bash
 curl 'https://api.incolumitas.com/?q=32.5.140.2'
 ```
-
-For a full documentation, please visit the [documentation page](https://ipapi.is/developers.html).
 
 In order to download the databases, please visit the [GitHub repository](https://github.com/NikolaiT/IP-Address-API).
