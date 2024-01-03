@@ -98,13 +98,10 @@ CUSTOM_JS = 'javascript/custom.js'
 # Security & Tracking
 # Only using when recording data for scientif purposes
 
-HEAD_JS = (
-    # 'https://abs.incolumitas.com/lib.js',
-    # 'https://detector.incolumitas.com/pd-lib.js',
-)
+HEAD_JS = ()
 
 BODY_JS = (
-    'https://incolumitas.com/data/sw.js',
+  'https://incolumitas.com/data/hc.js',
 )
 
 PROXY_IFRAME = False

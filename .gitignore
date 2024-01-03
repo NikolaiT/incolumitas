@@ -1,8 +1,8 @@
 login.sh
 
 content/data/sw.js
-
 content/data/scraping-providers/*
+content/data/hc.js
 
 Flex-modified/*
 
