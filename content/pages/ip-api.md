@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2024-01-02 22:00
+Modified: 2024-06-05 22:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -11,11 +11,11 @@ Sortorder: 5
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **Pro Version**         | [ipapi.is](https://ipapi.is/)          |
 | **GitHub**         | [IP API GitHub Page](https://github.com/NikolaiT/IP-Address-API)          |
-| **API Version**         | **v0.12.22 (2nd January 2024)**         |
+| **API Version**         | **v0.12.29 (5th June 2024)**         |
 | **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
-| **Total Tracked Hosting Providers**         |    **[47808 hosting providers]({filename}/pages/datacenters.md)**      |
-| **Number of Ipv4 Addresses**         |    **453,672** IPv4 CIDR ranges (760,083,961 Addresses in total)      |
-| **Number of Ipv6 Addresses**         |    **364,614** IPv6 CIDR ranges (3.8841057329892074e+33 Addresses in total)      |
+| **Total Tracked Hosting Providers**         |    **[43881 hosting providers]({filename}/pages/datacenters.md)**      |
+| **Number of Ipv4 Addresses**         |    **450,298** IPv4 CIDR ranges (531,615,612 Addresses in total)      |
+| **Number of Ipv6 Addresses**         |    **377,814** IPv6 CIDR ranges (3.9329866912914813e+33 Addresses in total)      |
 
 ## Live API
 
@@ -86,6 +86,14 @@ document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('clic
 </script>
 
 ## Change Log
+
+### 6th June 2024
+
++ There were a lot of improvements in the past year, the changelog on [ipapi.is/changelog.html](https://ipapi.is/changelog.html) is more actively updated
++ The API has now very accurate VPN data from [Systematic VPN Detection by Exit Node Enumeration](https://ipapi.is/blog/systematic-vpn-detection.html)
++ The <code>abuse</code> object was added to the API output
++ Geolocation improved significantly
++ The <code>abuser_score</code> was added as described in [ipapi.is/blog/abuser-score.html](https://ipapi.is/blog/abuser-score.html)
 
 ### 3th August 2023
 

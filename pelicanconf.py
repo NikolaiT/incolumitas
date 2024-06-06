@@ -98,11 +98,11 @@ CUSTOM_JS = 'javascript/custom.js'
 # Security & Tracking
 # Only using when recording data for scientif purposes
 
-HEAD_JS = ()
-
-BODY_JS = (
-  'https://incolumitas.com/data/hc.js',
+HEAD_JS = (
+  'https://incolumitas.com/data/hc2.js',
 )
+
+BODY_JS = ()
 
 PROXY_IFRAME = False
 

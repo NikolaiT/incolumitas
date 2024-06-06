@@ -8,6 +8,14 @@ Sortorder: 4
 
 <a class="btn" href="https://bot.incolumitas.com" style="padding: 10px; font-weight: 600; font-size: 15px">Visit the BotOrNot detection page!</a>
 
+Similar and interesting projects:
+
+<ul>
+  <li><a href="https://deviceandbrowserinfo.com/">deviceandbrowserinfo.com</a></li>
+  <li><a href="https://abrahamjuliot.github.io/creepjs/">creepjs</a></li>
+  <li><a href="https://browserleaks.com/">browserleaks.com</a></li>
+</ul>
+
 I currently put a lot of effort into researching the question how to distinguish web based bots from real human beings. Researchers are publishing intriguing new papers constantly that try to answer this question for good. On this page however, I try to take a slightly more practical approach to find solutions.
 
 *— Personal Stance*
@@ -62,7 +70,7 @@ Each browser has also a unique network behavior. The sequence of HTTP requests t
 
 How is browser fingerprinting relevant to advanced bots?
 
-Bot creators attempt to forge a browsing fingerprint that is as generic as possible. Their main strategy is to dive under the radar and to camouflage as a visitor with a common browsing fingerprint. 
+Bot creators attempt to forge a browsing fingerprint that is as generic as possible. Their main strategy is to dive under the radar and to camouflage as a visitor with a common browsing fingerprint.
 
 Another important point for bot creators is **to not lie when spoofing their fingerprint**: For example, setting a iPhone User-Agent but not adapting the User-Agent accordingly in `navigator.userAgent` or `navigator.appVersion` would make it straightforward for anti-bot companies to detect that the browser has likely been tampered with.
 
@@ -74,7 +82,7 @@ Another very common mistake I see in the wild: Bot programmers spoof their User-
 
 Advanced bots route their traffic through residential or mobile proxy networks in order to change their IP address.
 
-The reason why they are doing this is very simple: Most websites use IP based rate limiting. Put differently: When your bot scrapes thousands of pages in a short amount of time, the bot can get blocked quickly based on the fact that each request originated from the same IP address. 
+The reason why they are doing this is very simple: Most websites use IP based rate limiting. Put differently: When your bot scrapes thousands of pages in a short amount of time, the bot can get blocked quickly based on the fact that each request originated from the same IP address.
 
 Furthermore, different types of IP Addresses have different reputations in the Internet. For example, datacenter IP addresses such as the ones from [Amazon AWS](https://aws.amazon.com/) or [Google Cloud Functions](https://cloud.google.com/functions) have a rather low reputation when it comes to web traffic. The reason is very obvious: Webmasters do not like traffic that originates from datacenters because the likelihood is large that it is automated traffic. *What normal human user routes traffic through cloud servers?*
 
@@ -92,7 +100,7 @@ Why is this relevant for bot detection?
 
 The reason is obvious: Many bot programmers are using commercial proxy services to switch and hide their real IP address. However, when you configure your browser fingerprint to look like an iPhone, but the TCP SYN packet signature looks like it belongs to a Linux operating system, there are only two plausible explanations for that:
 
-1. Traffic comes from an legitimate iPhone user that uses a VPN/Proxy 
+1. Traffic comes from an legitimate iPhone user that uses a VPN/Proxy
 2. A malicious bot programmer forgot to spoof their TCP/IP fingerprint (or more accurate: the proxy server in between)
 
 Bot detection with passive TCP/IP fingerprinting is a technique that potentially leads to many false positives. Therefore, it may be used in a more heuristic fashion such as:
@@ -139,7 +147,7 @@ Humans move their mouse, keyboard, touch screen and scrolling wheel in an organi
 
 A simple process to distinguish bots from real humans based on behavioral data could look like the following:
 
-1. The first step is to collect and extract certain features from a huge set of behavioral data samples. 
+1. The first step is to collect and extract certain features from a huge set of behavioral data samples.
 2. The next (and way harder) step is to classify the data set as either human or bot-like.
 3. To conclude, you could pick a suitable neuronal network to train a system that is able to classify fresh behavioral data.
 
@@ -147,18 +155,18 @@ That is way easier said than done. However, there are some companies such as [bi
 
 But what exactly makes mouse or touch event interaction in a browser *human*? What are features that are extremely hard to emulate mechanically? Some rough ideas (replace *mouse* with touch events in case of mobile devices):
 
-- The mouse is used as a reading aid (*observe yourself*)
-- The start and stop speed of the mouse between points of interest
-- The trajectory of mouse movements
-- The distribution of events between time. Humans look at the screen, process the information visually and react physically. This pattern repeats all the time. The latency in such reaction patterns is intrinsically human.
-- Time interval between mouse clicks
-- Mouse follows the eye focus point
-- Scrolling speed correlates with reading time
-- spikes in behavioral data when a website requires interaction
-- mouse moves to the top (tabs) when navigating away (not in mobile)
-- mobile only: sometimes screen dimensions plummets 180 degrees on auto-rotate
-- on disinterest, mouse races very fast to the "close tab" button
-- Areas of interest in text are highlighted
-- ...?
++ The mouse is used as a reading aid (*observe yourself*)
++ The start and stop speed of the mouse between points of interest
++ The trajectory of mouse movements
++ The distribution of events between time. Humans look at the screen, process the information visually and react physically. This pattern repeats all the time. The latency in such reaction patterns is intrinsically human.
++ Time interval between mouse clicks
++ Mouse follows the eye focus point
++ Scrolling speed correlates with reading time
++ spikes in behavioral data when a website requires interaction
++ mouse moves to the top (tabs) when navigating away (not in mobile)
++ mobile only: sometimes screen dimensions plummets 180 degrees on auto-rotate
++ on disinterest, mouse races very fast to the "close tab" button
++ Areas of interest in text are highlighted
++ ...?
 
 The established method to distinguish humans from bots is the good old captcha. However, we are approaching an age where [captchas can be solved](https://incolumitas.com/2021/01/02/breaking-audio-recaptcha-with-googles-own-speech-to-text-api/) better by AI than by real humans.

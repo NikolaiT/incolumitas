@@ -1,32 +1,25 @@
 Title: Projects
 Date: 2013-12-27 14:27
-Modified: 2022-10-16 18:28
+Modified: 2024-06-06 18:28
 Author: Nikolai Tschacher
 Slug: projects
 Status: published
 Sortorder: 1
 
-**Last Update:** October 2022
+**Last Update:** June 2024
 
 My main development is done in Node.js and Typescript. Nowadays, I mostly program in modern JavaScript and Typescript. When I have to do low level networking stuff or data analysis / machine learning, I use Python3. I also started programming in Python back in 2012.
 
 I used the following libraries and frameworks in the past:
 
-- [Tensorflow](https://www.tensorflow.org/)
-- [React](https://reactjs.org/)
-- [Ant.design](https://ant.design/)
-- [puppeteer](https://github.com/puppeteer/puppeteer)
-- [express](https://expressjs.com/de/)
-- [AFL](https://github.com/google/AFL)
-- [LibFuzzer](https://llvm.org/docs/LibFuzzer.html)
-- [bulma.io](https://bulma.io/)
+[Tensorflow](https://www.tensorflow.org/), [React](https://reactjs.org/), [Ant.design](https://ant.design/), [puppeteer](https://github.com/puppeteer/puppeteer), [express](https://expressjs.com/de/), [AFL](https://github.com/google/AFL), [LibFuzzer](https://llvm.org/docs/LibFuzzer.html), [bulma.io](https://bulma.io/)
 
 ### Actively Maintained Projects
 
 The following projects will be updated in the coming years and they are safe to use in production:
 
+- [IP Address API](https://incolumitas.com/pages/IP-API/) - I maintain a public IP Address API that gives ASN, geolocation and company information for each IP address. There is also a commercial version of the IP address API named [ipapi.is](https://ipapi.is/) that is constantly improved and has already more than 1000 registered users as of June 2024.
 - [Adblock Detection](https://incolumitas.com/pages/Adblock-Detection/) - This is a JavaScript library that allows to detect whether browseres have Adblock extensions installed in their browsers (uBlock Origin or Adblock Plus). It is based on JavaScript only and thus is very easy to setup. The approach is very reliable and will likely continue to work for a long time.
-- [IP Address API](https://incolumitas.com/pages/IP-API/) - I maintain a public IP Address API that gives ASN, geolocation and company information for each IP address.
 - [TLS Fingerprinting](https://incolumitas.com/pages/TLS-Fingerprint/) - In this project, I investigate several different approaches to fingerprint TLS 1.2 and TLS 1.3 connections. I make use of existing research and deep-dive into TLS fingerprinting techniques and try to get one step further than existing solutions such as Saleforce's [JA3 and JA3S TLS fingerprint](https://github.com/salesforce/ja3) and the [Cisco TLS fingerprint](https://github.com/cisco/joy) have gone.
 - [TCP/IP Fingerprinting](https://incolumitas.com/pages/TCP-IP-Fingerprint/) - Similar to the TLS fingerprinting technique, different operating systems use different TCP/IP stack configurations which are advertised in the initial SYN packet in a TCP/IP three-way handshake. By correlating the HTTP User-Agent with OS-specific TCP/IP header fields, it is possible to deduce the operating system by looking exclusively at the TCP/IP layer. The research has been released as [zardaxt.py](https://github.com/NikolaiT/zardaxt).
 - [Proxy/VPN Detection Test Site](https://bot.incolumitas.com/proxy_detect.html) - In this project, I make use of [several different methods](https://incolumitas.com/2021/10/16/7-different-ways-to-detect-proxies/) to detect proxies and VPN's. The sum of independent detection tests gives a good heuristic score if a visitor of a website is using a proxy to hide their true IP address.
