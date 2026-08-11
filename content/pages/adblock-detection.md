@@ -16,7 +16,7 @@ Two years ago, I wrote a blog article about [Adblock Detection using JavaScript 
 <script type="text/javascript">
 /**
  * Author: Nikolai Tschacher
- * Updated: 6th November 2022
+ * Updated: 11th August 2026
  * Website: https://incolumitas.com/
  *
  * Detects uBlock Origin, Adblock Plus and AdBlocker Ultimate with JavaScript only.
@@ -26,14 +26,17 @@ Two years ago, I wrote a blog article about [Adblock Detection using JavaScript 
  */
 function detectAdblock() {
   const adblockTests = {
-    // https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt
+    // Bait rule "/piwik." from EasyPrivacy, which uBlock Origin
+    // enables by default (Adblock Plus does not):
+    // https://github.com/easylist/easylist/blob/master/easyprivacy/easyprivacy_general.txt
     uBlockOrigin: {
-      url: 'https://incolumitas.com/data/yzfdmoan.js',
+      url: 'https://incolumitas.com/data/piwik.js',
       id: '837jlaBksSjd9jh',
     },
+    // Bait rule "/pagead/conversion.js" from EasyList:
     // https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt
     adblockPlus: {
-      url: 'https://incolumitas.com/data/utep_ad.js',
+      url: 'https://incolumitas.com/data/pagead/conversion.js',
       id: 'hfuBadsf3hFAk',
     },
   };
@@ -118,7 +121,7 @@ This is the source code which detects uBlock Origin, Adblock Plus and AdBlocker 
 ```js
 /**
  * Author: Nikolai Tschacher
- * Updated: 6th November 2022
+ * Updated: 11th August 2026
  * Website: https://incolumitas.com/
  * 
  * Detects uBlock Origin, Adblock Plus and AdBlocker Ultimate with JavaScript only.
@@ -128,14 +131,17 @@ This is the source code which detects uBlock Origin, Adblock Plus and AdBlocker 
  */
 function detectAdblock() {
   const adblockTests = {
-    // https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters-2022.txt
+    // Bait rule "/piwik." from EasyPrivacy, which uBlock Origin
+    // enables by default (Adblock Plus does not):
+    // https://github.com/easylist/easylist/blob/master/easyprivacy/easyprivacy_general.txt
     uBlockOrigin: {
-      url: 'https://incolumitas.com/data/yzfdmoan.js',
+      url: 'https://incolumitas.com/data/piwik.js',
       id: '837jlaBksSjd9jh',
     },
+    // Bait rule "/pagead/conversion.js" from EasyList:
     // https://github.com/easylist/easylist/blob/master/easylist/easylist_general_block.txt
     adblockPlus: {
-      url: 'https://incolumitas.com/data/utep_ad.js',
+      url: 'https://incolumitas.com/data/pagead/conversion.js',
       id: 'hfuBadsf3hFAk',
     },
   };
