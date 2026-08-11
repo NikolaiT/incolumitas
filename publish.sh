@@ -7,11 +7,12 @@ if [[ $1 = "build" ]]; then
   pelican -s publishconf.py;
 fi
 
+# isso runs on the same server as the blog (proxied via isso.incolumitas.com -> localhost:7136).
+# Config lives at /var/lib/isso/isso.cfg, service unit at /etc/systemd/system/isso.service.
 function deploy_isso () {
-  scp -i $PRIV_KEY /home/nikolai/projects/work/backups/var/lib/isso/comments.db root@167.99.241.135:/var/lib/isso/comments.db;
-  scp -i $PRIV_KEY /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.cfg root@167.99.241.135:/etc/isso.cfg;
-  scp -i $PRIV_KEY /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso_nginx.conf root@167.99.241.135:/etc/nginx/sites-available/isso_nginx.conf;
-  scp -i $PRIV_KEY /home/nikolai/projects/private/incolumitas/incolumitas/isso/isso.service root@167.99.241.135:/etc/systemd/system/isso.service;
+  scp -i $PRIV_KEY isso/isso.service $SERVER:/etc/systemd/system/isso.service;
+  scp -i $PRIV_KEY isso/isso_nginx.conf $SERVER:/etc/nginx/sites-available/isso_nginx.conf;
+  ssh -i $PRIV_KEY $SERVER "systemctl daemon-reload && systemctl restart isso && systemctl reload nginx";
 }
 
 if [[ $1 = "isso" ]]; then
@@ -19,9 +20,10 @@ if [[ $1 = "isso" ]]; then
 fi
 
 echo "Upload blog contents"
-rsync -avc --delete -e "ssh -i $PRIV_KEY" output/ $SERVER:/var/www/incolumitas.com/
+# --exclude protects legacy content that only exists on the server
+# (no source in this repo) from being deleted by --delete:
+#   /pages/Hosting-Providers-List/  -> old generated page, still gets traffic
+rsync -avc --delete \
+  --exclude '/pages/Hosting-Providers-List/' \
+  -e "ssh -i $PRIV_KEY" output/ $SERVER:/var/www/incolumitas.com/
 ssh -i $PRIV_KEY $SERVER "chown -R www-data:www-data /var/www/incolumitas.com/"
-
-# echo "Restart server and isso"
-# ssh -i $PRIV_KEY $SERVER "systemctl daemon-reload && systemctl restart isso && systemctl restart nginx"
-# ssh -i $PRIV_KEY $SERVER "/var/lib/isso/env/bin/isso --version"

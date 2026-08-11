@@ -72,6 +72,10 @@ USE_FONTAWESOME = True
 
 STATUSCAKE = True
 
+# Links shown in the sidebar below the pages
+LINKS = (('botstop.io', 'https://botstop.io'),)
+LINKS_IN_NEW_TAB = 'external'
+
 # Social widget
 SOCIAL = (('twitter', 'https://twitter.com/incolumitas_'),
           ('github', 'https://github.com/NikolaiT'),
