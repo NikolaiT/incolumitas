@@ -17,7 +17,6 @@ Behind the scenes, the page passively collects a bunch of browser signals and ru
 A few things I care about in the design:
 
 - Sitting still is not held against you. The page literally asks you to do nothing, so the absence of mouse and keyboard input is not a bot signal here. Only positive evidence counts: well known tells like `navigator.webdriver` plus a bunch of quieter ones I will not enumerate.
-- Every check gets a shareable link, so you can send your result to other people.
 - The individual signals are never shown publicly, only the verdict and a score. If the site showed exactly which probes fired, it would be a free calibration tool for bot authors.
 
 If you write scrapers or browser automation, point them at [botstop.io](https://botstop.io) and see what happens. Vanilla headless Chrome scores around 90 and gets flagged as automated. If you manage to look human with a bot, I would honestly love to hear how you did it in the comments.
