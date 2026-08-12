@@ -10,13 +10,13 @@ Summary: I launched a new little project called botstop.io. You open the page an
 
 After a long time without side projects, I finally shipped a new one: [botstop.io](https://botstop.io).
 
-The idea is dead simple. You open the page and you instantly get a verdict: **human**, **suspicious** or **automated**. Most signals are available right away, so there is no reason to make you stare at a spinner. A few probes need a little longer (the worker cross check for example), so the page keeps watching and quietly refines the verdict a couple of seconds later if new evidence comes in. That's it. No CAPTCHA, no clicking on fire hydrants.
+The idea is dead simple. You open the page and you instantly get a verdict: **human**, **suspicious** or **automated**. Most signals are available right away, so there is no reason to make you stare at a spinner. A few probes need a little longer, so the page keeps watching and quietly refines the verdict a couple of seconds later if new evidence comes in. That's it. No CAPTCHA, no clicking on fire hydrants.
 
-Behind the scenes, the page passively collects browser signals: input events, headless browser tells, a worker cross check, WebGL and canvas environment data and a small anti-replay challenge that runs inside an obfuscated JavaScript VM. The same detection engine gates signups and logins at [ipapi.is](https://ipapi.is/), so botstop.io is basically a public playground for it.
+Behind the scenes, the page passively collects a bunch of browser signals and runs a small anti-replay challenge inside an obfuscated JavaScript VM. I will not spell out the exact checks here, that would only help the people writing the bots. The same detection engine gates signups and logins at [ipapi.is](https://ipapi.is/), so botstop.io is basically a public playground for it.
 
 A few things I care about in the design:
 
-- Sitting still is not held against you. The page literally asks you to do nothing, so the absence of mouse and keyboard input is not a bot signal here. Only positive evidence counts: `navigator.webdriver`, automation globals, synthetic events, worker spoofing mismatches and so on.
+- Sitting still is not held against you. The page literally asks you to do nothing, so the absence of mouse and keyboard input is not a bot signal here. Only positive evidence counts: well known tells like `navigator.webdriver` plus a bunch of quieter ones I will not enumerate.
 - Every check gets a shareable link, so you can send your result to other people.
 - The individual signals are never shown publicly, only the verdict and a score. If the site showed exactly which probes fired, it would be a free calibration tool for bot authors.
 
