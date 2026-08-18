@@ -97,7 +97,7 @@ ipInputEl.addEventListener('keydown', function (evt) {
 
 ### 18th August 2026
 
-+ The live demo now queries [api.ipapi.is](https://api.ipapi.is) — the same endpoint as the [ipapi.is](https://ipapi.is/) homepage — and pretty-prints the full JSON response
++ The live demo now queries [api.ipapi.is](https://api.ipapi.is) the same way as the [ipapi.is](https://ipapi.is/) homepage (`fetch` + pretty-printed JSON) and is treated as a site visitor so the response is the full lookup, not the anonymous compact body
 
 
 ### 6th June 2024

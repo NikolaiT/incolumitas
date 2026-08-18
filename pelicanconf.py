@@ -82,7 +82,7 @@ LINKS_IN_NEW_TAB = 'external'
 SIDEBAR_TOOLS = (
     ('botstop.io', 'https://botstop.io'),
     ('BotOrNot', 'BotOrNot'),
-    ('Proxy/VPN Detection Tests', 'https://bot.incolumitas.com/proxy_detect.html'),
+    ('Proxy/VPN Detection Tests', 'https://proxydetect.live/'),
     ('Ad Blocker Detection', 'Adblock-Detection'),
     ('IP Address API', 'IP-API'),
     ('TCP/IP Fingerprint API', 'TCP-IP-Fingerprint'),
@@ -163,7 +163,11 @@ PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = ['assets', 'sitemap', 'gravatar',
            'render_math', 'post_stats', 'neighbors']
 
-MATH_JAX = {'color': 'black', 'align': 'left'}
+MATH_JAX = {
+    'color': 'black',
+    'align': 'left',
+    'source': "'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML'",
+}
 
 SITEMAP = {
     'format': 'xml',

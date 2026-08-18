@@ -22,11 +22,9 @@ Status: Published
     </p>
   </div>
 
-  <pre id="wrapper">
-    <code id="data"class="JSON hljs">{
-  "message": "Please make an API request",
-}</code>
-  </pre>
+  <pre id="wrapper"><code id="data" class="JSON hljs">{
+  "message": "Please make an API request"
+}</code></pre>
 </div>
 
 <script>
@@ -34,24 +32,28 @@ var el = document.getElementById('data');
 highlightCode(el);
 
 function makeApiRequest(query) {
-  let url = query ? 'https://api.incolumitas.com/datacenter?ip=' + query : 'https://api.incolumitas.com/datacenter';
+  let url = query ? 'https://api.ipapi.is?q=' + encodeURIComponent(query) : 'https://api.ipapi.is';
 
-  fetch(url) 
+  fetch(url)
     .then(response => response.json())
     .then(function(data) {
     var el = document.getElementById('data');
-    if (data) {
-      try {
-        delete data.is_datacenter;
-        delete data.datacenter;
-      } catch (err) {}
+    // An IP lookup nests the AS record under `asn`; an AS number lookup
+    // returns it at the top level.
+    let asn = data && data.asn && typeof data.asn === 'object' ? data.asn : data;
+    if (asn) {
+      delete asn.whois;
     }
-    el.textContent = JSON.stringify(data, null, 2);
+    el.textContent = JSON.stringify(asn, null, 2);
     highlightCode(el);
-    if (!query) {
+    if (!query && data.ip) {
       document.getElementById('ip').value = data.ip;
     }
   })
+    .catch(function(err) {
+      console.error(err);
+      el.textContent = 'Could not make API request. Please try again later.';
+    });
 }
 
 let linkNodes = document.querySelectorAll('a.api-example');
