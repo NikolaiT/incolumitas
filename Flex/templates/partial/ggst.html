@@ -1,0 +1,10 @@
+{% if GOOGLE_GLOBAL_SITE_TAG %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_GLOBAL_SITE_TAG }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ GOOGLE_GLOBAL_SITE_TAG }}');
+</script>
+{% endif %}

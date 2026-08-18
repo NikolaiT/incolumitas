@@ -26,13 +26,13 @@ This is your last seen TLS fingerprint - Taken from the initial TLS Client Hello
 
 <script>
 var el = document.getElementById('tls_fp');
-hljs.highlightBlock(el);
+highlightCode(el);
 
 fetch('https://tls.incolumitas.com/fps')
   .then(response => response.json())
   .then(function(data) {
-    document.getElementById('tls_fp').innerHTML = JSON.stringify(data, null, 2);
-    hljs.highlightBlock(el);
+    el.textContent = JSON.stringify(data, null, 2);
+    highlightCode(el);
   })
 </script>
 

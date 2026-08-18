@@ -1,6 +1,6 @@
 Title: IP Address API
 Date: 2022-09-11 22:00
-Modified: 2024-06-05 22:00
+Modified: 2026-08-18 12:00
 Author: Nikolai Tschacher
 Slug: IP-API
 Status: published
@@ -11,8 +11,8 @@ Sortorder: 5
 | **Author**         | Nikolai Tschacher ([incolumitas.com](https://incolumitas.com/))     |
 | **Pro Version**         | [ipapi.is](https://ipapi.is/)          |
 | **GitHub**         | [IP API GitHub Page](https://github.com/NikolaiT/IP-Address-API)          |
-| **API Version**         | **v0.12.29 (5th June 2024)**         |
-| **API Endpoint**         | [https://api.incolumitas.com/?q=3.5.140.2](https://api.incolumitas.com/?q=3.5.140.2)         |
+| **API**         | Live on [ipapi.is](https://ipapi.is/)         |
+| **API Endpoint**         | [https://api.ipapi.is?q=3.5.140.2](https://api.ipapi.is?q=3.5.140.2)         |
 | **Total Tracked Hosting Providers**         |    **[43881 hosting providers]({filename}/pages/datacenters.md)**      |
 | **Number of Ipv4 Addresses**         |    **450,298** IPv4 CIDR ranges (531,615,612 Addresses in total)      |
 | **Number of Ipv6 Addresses**         |    **377,814** IPv6 CIDR ranges (3.9329866912914813e+33 Addresses in total)      |
@@ -21,8 +21,8 @@ Sortorder: 5
 
 <div class="ipAPIDemo">
   <label style="font-weight: 600; font-size: 16px" for="ip">IP Address / ASN:</label>
-  <input style="padding: 8px; margin-left: 4px; margin-right: 4px" type="text" id="ip" name="ip" value="13.34.52.117">
-  <input class="orange_button" style="" type="submit" value="Make API Request" placeholder="IP Address or ASN">
+  <input style="padding: 8px; margin-left: 4px; margin-right: 4px" type="text" id="ip" name="ip" value="" placeholder="IP address or ASN" autocomplete="off" autocapitalize="none" spellcheck="false">
+  <input class="orange_button" type="submit" id="apiLookup" value="Make API Request">
 
   <div>
     <p><strong>Examples:</strong>
@@ -32,7 +32,7 @@ Sortorder: 5
       <a class="api-example" data-query="20.1.28.0" href="#">20.1.28.0</a> —
       <a class="api-example" data-query="194.126.177.0" href="#">194.126.177.0</a> —
       <a class="api-example" data-query="AS209103" href="#">AS209103</a> —
-      <a class="api-example" data-query="23.236.48.55" href="#">23.236.48.55</a> —</br>
+      <a class="api-example" data-query="23.236.48.55" href="#">23.236.48.55</a> —<br>
       <a class="api-example" data-query="2600:1F18:7FFF:F800:0000:ffff:0000:0000" href="#">2600:1F18:7FFF:F800:0000:ffff:0000:0000</a> —
       <a class="api-example" data-query="107.174.138.172" href="#">107.174.138.172</a> —
       <a class="api-example" data-query="107.152.214.169" href="#">107.152.214.169</a> —
@@ -40,52 +40,65 @@ Sortorder: 5
     </p>
   </div>
 
-  <pre id="wrapper">
-    <code id="data"class="JSON hljs">{
-  "message": "Please make an API request",
-}</code>
-  </pre>
+  <pre id="wrapper"><code id="data" class="JSON hljs">{
+  "message": "Please make an API request"
+}</code></pre>
 </div>
 
 <script>
-var el = document.getElementById('data');
-hljs.highlightBlock(el);
-
 function makeApiRequest(query) {
-  let url = query ? 'https://api.incolumitas.com/?q=' + query : 'https://api.incolumitas.com/';
+  var el = document.getElementById('data');
+  var url = query ? 'https://api.ipapi.is?q=' + encodeURIComponent(query) : 'https://api.ipapi.is';
 
   fetch(url)
-  .then(response => response.json())
-  .then(function(data) {
-    var el = document.getElementById('data');
-    el.innerHTML = JSON.stringify(data, null, 2);
-    hljs.highlightBlock(el);
-    if (!query) {
-      document.getElementById('ip').value = data.ip;
-    }
-  })
+    .then(function (response) { return response.json(); })
+    .then(function (data) {
+      el.textContent = JSON.stringify(data, null, 2);
+      highlightCode(el);
+      if (!query && data.ip) {
+        document.getElementById('ip').value = data.ip;
+      }
+    })
+    .catch(function (err) {
+      console.error(err);
+      el.textContent = 'Could not make API request. Please try again later.';
+    });
 }
 
-let linkNodes = document.querySelectorAll('a.api-example');
+var dataEl = document.getElementById('data');
+highlightCode(dataEl);
 
-for (let node of linkNodes) {
-  node.addEventListener('click', function(evt) {
+document.querySelectorAll('a.api-example').forEach(function (node) {
+  node.addEventListener('click', function (evt) {
     evt.preventDefault();
-    let query = evt.target.getAttribute('data-query');
+    var query = evt.currentTarget.getAttribute('data-query');
     document.getElementById('ip').value = query;
     makeApiRequest(query);
   });
-}
+});
 
 makeApiRequest('');
 
-document.querySelector('.ipAPIDemo input[type="submit"]').addEventListener('click', function(evt) {
-  var ip = document.getElementById('ip').value;
-  makeApiRequest(ip)
-})
+var lookupEl = document.getElementById('apiLookup');
+var ipInputEl = document.getElementById('ip');
+lookupEl.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  makeApiRequest(ipInputEl.value);
+});
+ipInputEl.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    makeApiRequest(ipInputEl.value);
+  }
+});
 </script>
 
 ## Change Log
+
+### 18th August 2026
+
++ The live demo now queries [api.ipapi.is](https://api.ipapi.is) — the same endpoint as the [ipapi.is](https://ipapi.is/) homepage — and pretty-prints the full JSON response
+
 
 ### 6th June 2024
 

@@ -31,14 +31,14 @@ Status: Published
 
 <script>
 var el = document.getElementById('data');
-hljs.highlightBlock(el);
+highlightCode(el);
 
 function makeApiRequest(query) {
   let url = query ? 'https://api.incolumitas.com/datacenter?ip=' + query : 'https://api.incolumitas.com/datacenter';
 
   fetch(url) 
-  .then(response => response.json())
-  .then(function(data) {
+    .then(response => response.json())
+    .then(function(data) {
     var el = document.getElementById('data');
     if (data) {
       try {
@@ -46,8 +46,8 @@ function makeApiRequest(query) {
         delete data.datacenter;
       } catch (err) {}
     }
-    el.innerHTML = JSON.stringify(data, null, 2);
-    hljs.highlightBlock(el);
+    el.textContent = JSON.stringify(data, null, 2);
+    highlightCode(el);
     if (!query) {
       document.getElementById('ip').value = data.ip;
     }

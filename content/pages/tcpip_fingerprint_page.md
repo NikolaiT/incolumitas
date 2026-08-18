@@ -28,13 +28,13 @@ Based on your last observed TCP/IP SYN packet, the following TCP/IP fingerprint 
 
 <script>
 var el = document.getElementById('tcpip_fp');
-hljs.highlightBlock(el);
+highlightCode(el);
 
 fetch('https://tcpip.incolumitas.com/classify?detail=1')
   .then(response => response.json())
   .then(function(data) {
-    document.getElementById('tcpip_fp').innerHTML = JSON.stringify(data, null, 2);
-    hljs.highlightBlock(el);
+    el.textContent = JSON.stringify(data, null, 2);
+    highlightCode(el);
   })
 </script>
 

@@ -114,7 +114,9 @@ header h2.articles-header a {
   color: #464646;
 }
 
-.post-header .fa {
+.post-header .fa,
+.post-header .fa-solid,
+.post-header .fa-regular {
   width: 14.85px;
 }
 
@@ -193,7 +195,9 @@ aside div p {
   width: 0;
 }
 
-.post-meta .fa {
+.post-meta .fa,
+.post-meta .fa-solid,
+.post-meta .fa-regular {
   width: 14.85px;
 }
 
@@ -226,7 +230,10 @@ main article blockquote {
 
   aside {
     width: 26vw;
-    overflow: hidden;
+    /* Must scroll: otherwise longer menus (tools + social) get clipped
+       and different pages look like they have different sidebars. */
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   main {

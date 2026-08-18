@@ -1,12 +1,14 @@
 <!-- StatusCake -->
-{% if STATUSCAKE['trackid'] %}
+{% if STATUSCAKE is mapping %}
+{% if STATUSCAKE.get('trackid') %}
 <a href="https://www.statuscake.com" title="{{ SITENAME }} Uptime">
-  <img src="https://app.statuscake.com/button/index.php?Track={{ STATUSCAKE['trackid'] }}&amp;Days={{ STATUSCAKE['days'] }}&amp;Design={{ STATUSCAKE['design'] }}" alt="{{ SITENAME }} Uptime"/>
+  <img src="https://app.statuscake.com/button/index.php?Track={{ STATUSCAKE['trackid'] }}&amp;Days={{ STATUSCAKE.get('days', 7) }}&amp;Design={{ STATUSCAKE.get('design', 1) }}" alt="{{ SITENAME }} Uptime"/>
 </a>
 {% endif %}
 
-{% if STATUSCAKE['rumid'] %}
+{% if STATUSCAKE.get('rumid') %}
 <script type="text/javascript">var SC_RumID = {{ STATUSCAKE['rumid'] }};</script>
 <script type="text/javascript" async src="https://www.statuscake.com/App/RUM/embed.js"></script>
+{% endif %}
 {% endif %}
 <!-- End StatusCake -->

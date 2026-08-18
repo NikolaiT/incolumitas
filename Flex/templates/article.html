@@ -27,7 +27,7 @@
     <h1 class="post-title" id="{{ article.slug }}">{{ article.title }}</h1>
     <div class="post-meta">
       <div class="published-date meta-item">
-          <i class="fa fa-clock-o"></i>
+          <i class="fa-regular fa-clock"></i>
           <span class="metadata-description">Published on </span>
           <time class="date dt-published" datetime="{{ article.locale_date }}" itemprop="datePublished">
               {{ article.locale_date }}
@@ -39,7 +39,7 @@
       </div>
       {% if article.modified %}
       <div class="modified-date meta-item">
-          <i class="fa fa-history"></i>
+          <i class="fa-solid fa-clock-rotate-left"></i>
           <span class="metadata-description">Modified on </span>
           <time class="date dt-modified" datetime="{{ article.modified }}" itemprop="dateModified">
               {{ article.modified.strftime('%B %d, %Y') }}
@@ -47,12 +47,12 @@
       </div>
       {% endif %}
       <div class="category meta-item">
-          <i class="fa fa-folder"></i>
+          <i class="fa-solid fa-folder"></i>
           <span class="metadata-description">Category </span>
           <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>
       </div>
       <div class="author meta-item">
-          <i class="fa fa-user"></i>
+          <i class="fa-solid fa-user"></i>
           <span class="metadata-description">Author </span>
           <a href="https://incolumitas.com/pages/about/">{{ article.author }}</a>
       </div>
@@ -93,6 +93,10 @@
     </p>
   </div>
 
+  {% if article.share_post %}
+  {% include "partial/share_post.html" %}
+  {% endif %}
+
   {% if ADD_THIS_ID %}
   <div class="center social-share">
     <p>{{ _('Like this article? Share it with your friends!') }}</p>
@@ -115,6 +119,29 @@
   </div>
   {% elif ADD_THIS_ID %}
     <div class="addthis_relatedposts_inline"></div>
+  {% endif %}
+
+  {% if article.series %}
+  <div class="related-posts">
+   {% set text = SERIES_TEXT|default('Part %(index)s of the %(name)s series') %}
+    <h4>{{ text|format(index=article.series.index, name=article.series.name) }}</h4>
+    {% if article.series.all_previous %}
+       <h5>Previous articles</h5>
+       <ul>
+       {% for article in article.series.all_previous %}
+           <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
+       {% endfor %}
+       </ul>
+    {% endif %}
+    {% if article.series.all_next %}
+       <h5>Next articles</h5>
+       <ul>
+       {% for article in article.series.all_next %}
+           <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
+       {% endfor %}
+       </ul>
+    {% endif %}
+  </div>
   {% endif %}
 
   {% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads.article_bottom %}

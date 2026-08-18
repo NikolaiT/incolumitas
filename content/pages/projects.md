@@ -1,6 +1,6 @@
 Title: Projects
 Date: 2013-12-27 14:27
-Modified: 2026-08-11 19:30
+Modified: 2026-08-12 13:40
 Author: Nikolai Tschacher
 Slug: projects
 Status: published
@@ -18,7 +18,7 @@ I used the following libraries and frameworks in the past:
 
 The following projects will be updated in the coming years and they are safe to use in production:
 
-- [botstop.io](https://botstop.io) - A single-purpose site that answers one question: does this visitor look like a bot? You open the page, wait around three seconds and you get a verdict (human, suspicious or automated) derived from passive browser signals. It runs on the same behavioral bot detection engine that protects [ipapi.is](https://ipapi.is/) signups and logins. Read the [launch blog post](https://incolumitas.com/2026/08/11/botstop-io/) for more details.
+- [botstop.io](https://botstop.io) - A single-purpose site that answers one question: does this visitor look like a bot? You open the page and get an immediate verdict (human, suspicious or automated) from passive browser signals, with the result refining as slower checks finish. It runs on the same behavioral bot detection engine that protects [ipapi.is](https://ipapi.is/) signups and logins. Read the [launch blog post](https://incolumitas.com/2026/08/11/botstop-io/) for more details.
 - [IP Address API](https://incolumitas.com/pages/IP-API/) - I maintain a public IP Address API that gives ASN, geolocation and company information for each IP address. There is also a commercial version of the IP address API named [ipapi.is](https://ipapi.is/) that is constantly improved and has already more than 1000 registered users as of June 2024.
 - [Adblock Detection](https://incolumitas.com/pages/Adblock-Detection/) - This is a JavaScript library that allows to detect whether browsers have Adblock extensions installed (uBlock Origin or Adblock Plus). It is based on JavaScript only and thus is very easy to setup. The approach is very reliable and will likely continue to work for a long time.
 - [TLS Fingerprinting](https://incolumitas.com/2022/01/18/fingerprinting-TLS/) - In this project, I investigate several different approaches to fingerprint TLS 1.2 and TLS 1.3 connections. I make use of existing research and deep-dive into TLS fingerprinting techniques and try to get one step further than existing solutions such as Salesforce's [JA3 and JA3S TLS fingerprint](https://github.com/salesforce/ja3) and the [Cisco TLS fingerprint](https://github.com/cisco/joy) have gone.

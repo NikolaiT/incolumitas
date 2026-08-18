@@ -70,11 +70,23 @@ SHOW_SUMMARY_ON_INDEX = True
 USE_GOOGLE_FONTS = False
 USE_FONTAWESOME = True
 
-STATUSCAKE = True
+# StatusCake button is only rendered when this is a mapping with trackid/rumid.
+STATUSCAKE = False
 
-# Links shown in the sidebar below the pages
-LINKS = (('botstop.io', 'https://botstop.io'),)
+# Extra sidebar links (kept empty; tools live in SIDEBAR_TOOLS below)
+LINKS = ()
 LINKS_IN_NEW_TAB = 'external'
+
+# Ordered tool / demo links under About / Projects / Donations.
+# ('Label', 'https://...') for external URLs, or ('Label', 'slug') for pages.
+SIDEBAR_TOOLS = (
+    ('botstop.io', 'https://botstop.io'),
+    ('BotOrNot', 'BotOrNot'),
+    ('Proxy/VPN Detection Tests', 'https://bot.incolumitas.com/proxy_detect.html'),
+    ('Ad Blocker Detection', 'Adblock-Detection'),
+    ('IP Address API', 'IP-API'),
+    ('TCP/IP Fingerprint API', 'TCP-IP-Fingerprint'),
+)
 
 # Social widget
 SOCIAL = (('twitter', 'https://twitter.com/incolumitas_'),
@@ -120,7 +132,7 @@ MENUITEMS = (('Archives', '/archives.html'),
 PAGES_SORT_ATTRIBUTE = 'sortorder'
 
 COPYRIGHT_NAME = 'Nikolai Tschacher - incolumitas.com'
-COPYRIGHT_YEAR = 2022
+COPYRIGHT_YEAR = 2026
 MAIN_MENU = True
 USE_FOLDER_AS_CATEGORY = True
 LOAD_CONTENT_CACHE = False
@@ -134,6 +146,8 @@ FAVICON = 'favicon/favicon.ico'
 EXCLUDE_PAGES = ('FireHOL-API', 'lichess-bot', 'svgcaptcha', 'googlescraper-py',
                  'scrapeulous', 'impressum', 'contact', 'Hosting-Providers-List', 'Datacenter-IP-API')
 
+# Pages that belong to the tools section (hidden from the top page list).
+# Order is controlled by SIDEBAR_TOOLS, not this tuple.
 API_PAGES = (
     'Adblock-Detection',
     'BotOrNot',

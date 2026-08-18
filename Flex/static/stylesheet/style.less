@@ -190,6 +190,7 @@ main {
     }
 
     blockquote {
+      margin: 0;
       padding: 10px 20px;
       font-weight: 300;
       font-size: 1.1em;
@@ -274,6 +275,23 @@ main {
     // section. By default, they are squished together, which looks terrible.
     section#isso-thread .auth-section .input-wrapper {
       margin-right: 5px;
+    }
+
+    .toc {
+      margin-top: 2em;
+
+      .toctitle {
+        font-size: 1.3em
+      }
+
+      ul {
+        list-style: none;
+        padding-inline-start: 1rem;
+      }
+
+      > ul {
+        padding: 0;
+      }
     }
   }
 
@@ -470,7 +488,7 @@ ul.social {
     background-color: @github-bg-color;
   }
 
-  a.sc-envelope {
+  a.sc-at, a.sc-mailbox, a.sc-envelope {
     background-color: @email-bg-color;
   }
 
@@ -535,9 +553,9 @@ ul.social {
     width: 25vw;
     height: 100vh;
     position: fixed;
+    z-index: 1000;
     top: 0;
     left: 0;
-    overflow-y: auto;
 
     div {
       padding: 36px 18px;
@@ -558,18 +576,12 @@ ul.social {
   }
 
   main {
-    width: 75vw;
     height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 25vw;
-    overflow-x: hidden;
+    position: relative;
+    padding-left: 25vw;
 
     article {
-
-      &.single {
-        min-height: 80vh;
-      }
+      max-width: 760px;
 
       ul.list {
         li {
@@ -599,7 +611,7 @@ div.admonition {
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 7 Free";
   }
 
   p.admonition-title {
@@ -700,21 +712,28 @@ div.admonition.warning {
   background-color: @admonition-warning-bg-color;
 }
 
+figure,
 div.figure {
   font-size: 90%;
   color: @figure-color;
-  
+
+  figcaption {
+    margin-top: 0.5em;
+    text-align: center;
+    color: @text-color;
+  }
+
   img {
     vertical-align: middle;
     line-height: 1;
     display: inline;
   }
-  
+
   p {
     margin-top: 0;
     margin-bottom: 0;
   }
-  
+
   p.caption {
     font-style: italic;
   }
@@ -724,14 +743,43 @@ div.figure {
   }
 }
 
+figure.align-left,
 div.figure.align-left {
   text-align: left;
 }
 
+figure.align-center,
 div.figure.align-center {
   text-align: center;
 }
 
+figure.align-right,
 div.figure.align-right {
   text-align: right;
+}
+
+.github-corner:hover .octo-arm {
+  animation:octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+  0%,100% {
+    transform:rotate(0);
+  }
+  20%,60% {
+    transform:rotate(-25deg);
+  }
+  40%,80% {
+    transform:rotate(10deg);
+  }
+}
+
+@media (max-width:500px) {
+  .github-corner:hover .octo-arm {
+    animation:none;
+  }
+
+  .github-corner .octo-arm{
+    animation:octocat-wave 560ms ease-in-out;
+  }
 }
