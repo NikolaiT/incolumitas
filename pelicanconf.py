@@ -120,6 +120,12 @@ HEAD_JS = (
 
 BODY_JS = ()
 
+# botstop.io embed: passive bot-detection telemetry on every page, reported to
+# our own botstop.io service (one snapshot per browsing session by default).
+# See ~/projects/botstop.io README "Embedding on our other sites".
+# Currently off; set it back to 'https://botstop.io/js/embed.js' to re-enable.
+BOTSTOP_JS = None
+
 PROXY_IFRAME = False
 
 MENUITEMS = (('Archives', '/archives.html'),

@@ -27,6 +27,13 @@
   {% endfor %}
   {% endif %}
 
+  {# botstop.io traffic-quality telemetry: passive bot-detection snapshot sent
+     to our own botstop.io service. async + fail-open, never blocks the page.
+     Configured via BOTSTOP_JS in pelicanconf.py. #}
+  {% if BOTSTOP_JS %}
+  <script async crossorigin="anonymous" src="{{ BOTSTOP_JS }}"></script>
+  {% endif %}
+
   {% if USE_GOOGLE_FONTS != False %}
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   {% endif %}

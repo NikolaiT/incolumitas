@@ -89,8 +89,18 @@ time {
 }
 
 figure {
-  margin-bottom: 30px;
-  margin-top: 30px;
+  display: table;
+  width: fit-content;
+  max-width: 100%;
+  margin: 30px 0;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .highlight {
@@ -126,6 +136,9 @@ header h2.articles-header a {
 }
 
 figure figcaption {
+  display: table-caption;
+  caption-side: bottom;
+  text-align: left;
   color: rgb(94, 94, 94);
   font-style: italic;
 }
